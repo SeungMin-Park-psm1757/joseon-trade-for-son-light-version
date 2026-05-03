@@ -1,0 +1,1113 @@
+[
+  {
+    "id": "hanyang",
+    "title": "임금길이 닿는 큰 장",
+    "line": "관청 문서와 고급 물건이 모이는 조선의 으뜸 도시예요.",
+    "market": "쌀과 소금은 늘 필요하고, 비단과 인삼은 좋은 값을 받아요.",
+    "office": "서울(한양) 관청은 허가와 납품 장부를 꼼꼼히 살핍니다.",
+    "tavern": "문방 물건과 고급 약재를 찾는 손님 이야기가 많아요.",
+    "yard": "내륙 길은 튼튼한 수레가 먼저입니다. 짐말도 살펴보세요.",
+    "rumor": "서울(한양)에서는 인삼, 비단, 건어물 값이 쉽게 내려가지 않아요.",
+    "goods": [
+      "paper",
+      "books",
+      "silk"
+    ],
+    "marketSlots": [
+      "paper",
+      "books",
+      "silk",
+      "ginseng",
+      "rice",
+      "salt",
+      "horse",
+      "dried_fish"
+    ],
+    "stallPositions": {
+      "paper": {
+        "x": 16,
+        "y": 22
+      },
+      "books": {
+        "x": 34,
+        "y": 15
+      },
+      "silk": {
+        "x": 52,
+        "y": 22
+      },
+      "ginseng": {
+        "x": 72,
+        "y": 18
+      },
+      "rice": {
+        "x": 22,
+        "y": 64
+      },
+      "salt": {
+        "x": 42,
+        "y": 68
+      },
+      "horse": {
+        "x": 62,
+        "y": 64
+      },
+      "dried_fish": {
+        "x": 80,
+        "y": 68
+      }
+    }
+  },
+  {
+    "id": "ganghwa",
+    "title": "갯벌과 서울길의 관문",
+    "line": "밀물과 썰물을 살피며 서울(한양)으로 물건을 올리는 포구예요.",
+    "market": "소금과 건어물이 좋고, 서울(한양)으로 갈 문방 물건을 기다려요.",
+    "office": "검문과 세금 장부를 조심하세요. 허가 확인이 잦습니다.",
+    "tavern": "안개 낀 날에는 갯벌 좌초 이야기가 꼭 나와요.",
+    "yard": "얕은 물길이라 작은 배와 수레 관리가 중요합니다.",
+    "rumor": "강화에서 산 소금은 충주와 서울(한양)에서 다시 팔기 좋아요.",
+    "goods": [
+      "salt",
+      "dried_fish",
+      "rice"
+    ],
+    "marketSlots": [
+      "salt",
+      "dried_fish",
+      "rice",
+      "paper",
+      "books",
+      "ginseng"
+    ],
+    "stallPositions": {
+      "salt": {
+        "x": 16,
+        "y": 24
+      },
+      "dried_fish": {
+        "x": 36,
+        "y": 16
+      },
+      "rice": {
+        "x": 56,
+        "y": 22
+      },
+      "paper": {
+        "x": 76,
+        "y": 18
+      },
+      "books": {
+        "x": 36,
+        "y": 66
+      },
+      "ginseng": {
+        "x": 64,
+        "y": 66
+      }
+    }
+  },
+  {
+    "id": "chungju",
+    "title": "강물 따라 모이는 내륙 길목",
+    "line": "나무와 곡식이 많고, 바닷가 물건을 반기는 장터예요.",
+    "market": "소금과 건어물을 가져오면 장꾼들이 금방 둘러봅니다.",
+    "office": "큰 관청은 아니지만 물길 통행 장부는 챙겨야 해요.",
+    "tavern": "서울(한양)과 대구 사이를 오가는 마부들이 길 이야기를 해요.",
+    "yard": "산길 전에는 수레 바퀴와 짐끈을 꼭 확인하세요.",
+    "rumor": "충주는 목재가 싸고 바닷가 물건 수요가 꾸준합니다.",
+    "goods": [
+      "lumber",
+      "rice",
+      "beans"
+    ],
+    "marketSlots": [
+      "lumber",
+      "rice",
+      "beans",
+      "salt",
+      "dried_fish",
+      "cotton_cloth"
+    ],
+    "stallPositions": {
+      "lumber": {
+        "x": 17,
+        "y": 24
+      },
+      "rice": {
+        "x": 37,
+        "y": 18
+      },
+      "beans": {
+        "x": 57,
+        "y": 24
+      },
+      "salt": {
+        "x": 77,
+        "y": 18
+      },
+      "dried_fish": {
+        "x": 35,
+        "y": 66
+      },
+      "cotton_cloth": {
+        "x": 66,
+        "y": 66
+      }
+    }
+  },
+  {
+    "id": "jeonju",
+    "title": "종이와 곡식의 고장",
+    "line": "쌀과 한지, 부채가 오가는 안정적인 내륙 장터예요.",
+    "market": "곡식과 한지가 넉넉하고 바닷가 소금 수요가 있어요.",
+    "office": "호남 납품과 세곡 확인에 맞는 관청입니다.",
+    "tavern": "목포(목포진)와 군산(군산포)에서 들어온 소금 이야기가 자주 들립니다.",
+    "yard": "평야 길에는 손수레와 달구지가 잘 어울려요.",
+    "rumor": "전주 장터는 한지와 부채가 계절을 타요.",
+    "goods": [
+      "rice",
+      "paper",
+      "fan"
+    ],
+    "marketSlots": [
+      "rice",
+      "paper",
+      "fan",
+      "beans",
+      "salt",
+      "books"
+    ],
+    "stallPositions": {
+      "rice": {
+        "x": 18,
+        "y": 20
+      },
+      "paper": {
+        "x": 38,
+        "y": 16
+      },
+      "fan": {
+        "x": 58,
+        "y": 22
+      },
+      "beans": {
+        "x": 78,
+        "y": 18
+      },
+      "salt": {
+        "x": 34,
+        "y": 64
+      },
+      "books": {
+        "x": 66,
+        "y": 64
+      }
+    }
+  },
+  {
+    "id": "gunsan",
+    "title": "금강 곡식이 쌓이는 포구",
+    "line": "쌀과 보리가 배에 실리고, 썰물에는 조심해야 하는 포구예요.",
+    "market": "곡식은 싸지만 면포와 목재를 찾는 사람이 있어요.",
+    "office": "세곡 배와 갯벌 길 기록을 살피는 곳입니다.",
+    "tavern": "안개 낀 아침에는 배를 늦게 띄우라는 말이 돌아요.",
+    "yard": "작은 조선소에서 바닥이 얕은 배를 손볼 수 있어요.",
+    "rumor": "군산(군산포) 곡식은 목포(목포진)와 강화로 보내면 손해가 적어요.",
+    "goods": [
+      "rice",
+      "barley",
+      "salt"
+    ],
+    "marketSlots": [
+      "rice",
+      "barley",
+      "salt",
+      "dried_fish",
+      "cotton_cloth",
+      "lumber"
+    ],
+    "stallPositions": {
+      "rice": {
+        "x": 15,
+        "y": 22
+      },
+      "barley": {
+        "x": 35,
+        "y": 16
+      },
+      "salt": {
+        "x": 55,
+        "y": 22
+      },
+      "dried_fish": {
+        "x": 75,
+        "y": 18
+      },
+      "cotton_cloth": {
+        "x": 36,
+        "y": 66
+      },
+      "lumber": {
+        "x": 66,
+        "y": 66
+      }
+    }
+  },
+  {
+    "id": "mokpo",
+    "title": "서남해 갯벌 포구",
+    "line": "소금, 홍어, 건어물이 모이지만 물때를 조심해야 해요.",
+    "market": "갯벌 물건은 흔하지만 내륙까지 옮기면 이익이 커져요.",
+    "office": "섬길과 갯벌 항로의 위험 정보를 확인하세요.",
+    "tavern": "뱃사람들이 제주 바람과 흑산도 암초 이야기를 합니다.",
+    "yard": "배 수리와 제주 준비를 시작하기 좋은 포구예요.",
+    "rumor": "목포(목포진)에서는 소금과 홍어가 가장 먼저 배에 실립니다.",
+    "goods": [
+      "salt",
+      "skate",
+      "dried_fish"
+    ],
+    "marketSlots": [
+      "salt",
+      "skate",
+      "dried_fish",
+      "seaweed",
+      "rice",
+      "lumber"
+    ],
+    "stallPositions": {
+      "salt": {
+        "x": 16,
+        "y": 22
+      },
+      "skate": {
+        "x": 36,
+        "y": 14
+      },
+      "dried_fish": {
+        "x": 56,
+        "y": 22
+      },
+      "seaweed": {
+        "x": 76,
+        "y": 18
+      },
+      "rice": {
+        "x": 34,
+        "y": 64
+      },
+      "lumber": {
+        "x": 66,
+        "y": 64
+      }
+    }
+  },
+  {
+    "id": "heuksando",
+    "title": "검은 바다의 작은 섬장",
+    "line": "홍어와 미역은 좋지만, 먼 바닷길이라 보급을 챙겨야 해요.",
+    "market": "섬 물건은 싸고 육지 곡식은 귀합니다.",
+    "office": "작은 초소뿐이라 큰 허가 일은 목포(목포진)에서 처리하세요.",
+    "tavern": "암초와 해적 소문이 늘 따라다니는 섬입니다.",
+    "yard": "응급 수리만 가능합니다. 큰 배 수리는 육지로 가야 해요.",
+    "rumor": "흑산도 홍어는 내륙 장터에서 값이 크게 뜁니다.",
+    "goods": [
+      "skate",
+      "dried_fish",
+      "seaweed"
+    ],
+    "marketSlots": [
+      "skate",
+      "dried_fish",
+      "seaweed",
+      "rice",
+      "salt",
+      "lumber"
+    ],
+    "stallPositions": {
+      "skate": {
+        "x": 18,
+        "y": 20
+      },
+      "dried_fish": {
+        "x": 38,
+        "y": 14
+      },
+      "seaweed": {
+        "x": 58,
+        "y": 22
+      },
+      "rice": {
+        "x": 78,
+        "y": 18
+      },
+      "salt": {
+        "x": 36,
+        "y": 66
+      },
+      "lumber": {
+        "x": 66,
+        "y": 66
+      }
+    }
+  },
+  {
+    "id": "yeosu",
+    "title": "섬 사이 남해 어장",
+    "line": "건어물과 미역이 많고, 남해 바람을 읽어야 하는 항구예요.",
+    "market": "바다 물건은 넉넉하고 쌀과 면포를 반깁니다.",
+    "office": "수군 초소에서 해적 소문을 먼저 듣는 곳입니다.",
+    "tavern": "통영(통제영)과 제주로 가는 뱃길 이야기가 끊이지 않아요.",
+    "yard": "어선과 연안 상선을 준비하기 좋은 남해 조선소예요.",
+    "rumor": "여수 미역과 건어물은 내륙으로 갈수록 값이 좋아집니다.",
+    "goods": [
+      "dried_fish",
+      "seaweed",
+      "salt"
+    ],
+    "marketSlots": [
+      "dried_fish",
+      "seaweed",
+      "salt",
+      "lumber",
+      "rice",
+      "cotton_cloth"
+    ],
+    "stallPositions": {
+      "dried_fish": {
+        "x": 16,
+        "y": 20
+      },
+      "seaweed": {
+        "x": 36,
+        "y": 14
+      },
+      "salt": {
+        "x": 56,
+        "y": 22
+      },
+      "lumber": {
+        "x": 76,
+        "y": 18
+      },
+      "rice": {
+        "x": 36,
+        "y": 66
+      },
+      "cotton_cloth": {
+        "x": 66,
+        "y": 66
+      }
+    }
+  },
+  {
+    "id": "tongyeong",
+    "title": "수군과 조선의 남해 거점",
+    "line": "목재와 건어물이 모이고, 배를 손보기 좋은 항구예요.",
+    "market": "배 만드는 목재와 바다 물건이 먼저 눈에 들어옵니다.",
+    "office": "수군 초소에서 해적과 태풍 정보를 확인할 수 있어요.",
+    "tavern": "여수, 제주, 부산(부산포)로 가는 선원들이 모입니다.",
+    "yard": "남해 항로를 열려면 여기서 배를 점검하세요.",
+    "rumor": "통영(통제영) 목재는 조선소가 있는 항구에서 늘 쓰입니다.",
+    "goods": [
+      "lumber",
+      "dried_fish",
+      "seaweed"
+    ],
+    "marketSlots": [
+      "lumber",
+      "dried_fish",
+      "seaweed",
+      "iron",
+      "rice",
+      "gunpowder"
+    ],
+    "stallPositions": {
+      "lumber": {
+        "x": 16,
+        "y": 22
+      },
+      "dried_fish": {
+        "x": 36,
+        "y": 16
+      },
+      "seaweed": {
+        "x": 56,
+        "y": 22
+      },
+      "iron": {
+        "x": 76,
+        "y": 18
+      },
+      "rice": {
+        "x": 36,
+        "y": 66
+      },
+      "gunpowder": {
+        "x": 66,
+        "y": 66
+      }
+    }
+  },
+  {
+    "id": "jinhae_jepo",
+    "title": "부산과 통영(통제영) 사이 작은 포구",
+    "line": "건어물과 목재가 오가고, 남해 길을 쉬어 가기 좋아요.",
+    "market": "작은 장이지만 건어물과 목재는 알차게 들어옵니다.",
+    "office": "큰 허가는 부산(부산포)에서, 간단한 길 확인은 여기서 해요.",
+    "tavern": "부산(부산포)보다 조용해서 선원들이 숨을 고르는 곳입니다.",
+    "yard": "작은 배 수리와 짐 정리에 어울리는 포구예요.",
+    "rumor": "진해(제포)에서 건어물을 사 부산(부산포)나 대구로 넘기는 상인이 많아요.",
+    "goods": [
+      "dried_fish",
+      "lumber",
+      "rice"
+    ],
+    "marketSlots": [
+      "dried_fish",
+      "lumber",
+      "rice",
+      "cotton_cloth",
+      "salt"
+    ],
+    "stallPositions": {
+      "dried_fish": {
+        "x": 18,
+        "y": 22
+      },
+      "lumber": {
+        "x": 40,
+        "y": 16
+      },
+      "rice": {
+        "x": 62,
+        "y": 22
+      },
+      "cotton_cloth": {
+        "x": 80,
+        "y": 18
+      },
+      "salt": {
+        "x": 50,
+        "y": 66
+      }
+    }
+  },
+  {
+    "id": "busanpo",
+    "title": "왜관 길목의 큰 포구",
+    "line": "쓰시마(대마도) 소식과 남해 물건이 먼저 모이는 시작 항구예요.",
+    "market": "면포와 건어물이 많이 보여요. 첫 장사는 면포부터 눌러보세요.",
+    "office": "왜관 허가와 납품 의뢰가 이 항구에서 이어집니다.",
+    "tavern": "상인들은 대구와 진해(제포) 쪽 값을 자주 물어봐요.",
+    "yard": "큰 포구라 배 수리와 새 배 구경이 쉬워요.",
+    "rumor": "부산(부산포) 사람들은 면포와 인삼 값을 늘 살핍니다.",
+    "goods": [
+      "cotton_cloth",
+      "dried_fish",
+      "ginseng"
+    ],
+    "marketSlots": [
+      "cotton_cloth",
+      "dried_fish",
+      "rice",
+      "ginseng",
+      "silk",
+      "books",
+      "paper",
+      "salt"
+    ],
+    "stallPositions": {
+      "cotton_cloth": {
+        "x": 16,
+        "y": 20
+      },
+      "dried_fish": {
+        "x": 34,
+        "y": 14
+      },
+      "rice": {
+        "x": 52,
+        "y": 20
+      },
+      "ginseng": {
+        "x": 72,
+        "y": 18
+      },
+      "silk": {
+        "x": 20,
+        "y": 62
+      },
+      "books": {
+        "x": 40,
+        "y": 66
+      },
+      "paper": {
+        "x": 60,
+        "y": 62
+      },
+      "salt": {
+        "x": 80,
+        "y": 66
+      }
+    }
+  },
+  {
+    "id": "tsushima",
+    "title": "허가가 필요한 바깥섬",
+    "line": "왜관 허가가 있어야 제대로 교역할 수 있는 해외 거점이에요.",
+    "market": "은과 칠기, 일본 종이가 보이지만 검문을 조심하세요.",
+    "office": "허가 확인과 외국 상인 평판을 챙겨야 합니다.",
+    "tavern": "통역과 상인들이 부산(부산포) 물건 값을 묻고 있어요.",
+    "yard": "큰 조선소는 없어도 응급 수리는 기대할 수 있어요.",
+    "rumor": "쓰시마(대마도)에서는 인삼과 면포가 좋은 대접을 받습니다.",
+    "goods": [
+      "silver",
+      "japanese_paper",
+      "lacquerware"
+    ],
+    "marketSlots": [
+      "silver",
+      "japanese_paper",
+      "lacquerware",
+      "dried_fish",
+      "cotton_cloth"
+    ],
+    "stallPositions": {
+      "silver": {
+        "x": 18,
+        "y": 20
+      },
+      "japanese_paper": {
+        "x": 40,
+        "y": 16
+      },
+      "lacquerware": {
+        "x": 62,
+        "y": 22
+      },
+      "dried_fish": {
+        "x": 80,
+        "y": 20
+      },
+      "cotton_cloth": {
+        "x": 50,
+        "y": 64
+      }
+    }
+  },
+  {
+    "id": "ulsan",
+    "title": "쇠와 나무가 드나드는 동남 포구",
+    "line": "철과 목재가 좋고, 부산(부산포)와 가까운 안정적인 해안 장터예요.",
+    "market": "철, 소금, 목재가 보입니다. 면포와 쌀은 잘 팔려요.",
+    "office": "동해로 올라가기 전 길과 날씨를 확인하세요.",
+    "tavern": "부산(부산포) 상인들이 울산 철값을 자주 묻습니다.",
+    "yard": "중간 크기 배를 손보고 동해 항로를 준비할 수 있어요.",
+    "rumor": "울산 철은 통영(통제영) 조선소나 내륙 장터에서 수요가 있습니다.",
+    "goods": [
+      "iron",
+      "salt",
+      "lumber"
+    ],
+    "marketSlots": [
+      "iron",
+      "salt",
+      "lumber",
+      "dried_fish",
+      "rice",
+      "cotton_cloth"
+    ],
+    "stallPositions": {
+      "iron": {
+        "x": 16,
+        "y": 22
+      },
+      "salt": {
+        "x": 36,
+        "y": 16
+      },
+      "lumber": {
+        "x": 56,
+        "y": 22
+      },
+      "dried_fish": {
+        "x": 76,
+        "y": 18
+      },
+      "rice": {
+        "x": 36,
+        "y": 66
+      },
+      "cotton_cloth": {
+        "x": 66,
+        "y": 66
+      }
+    }
+  },
+  {
+    "id": "pohang",
+    "title": "동해 물고기와 쇠의 중간항",
+    "line": "철과 건어물이 있고, 강릉으로 오르는 바닷길의 쉼터예요.",
+    "market": "철과 미역은 좋지만 쌀과 소금은 귀하게 팔립니다.",
+    "office": "동해 풍랑 소식은 꼭 듣고 출발하세요.",
+    "tavern": "거친 물살 이야기가 많아 선원들이 날씨를 살펴요.",
+    "yard": "작은 배 수리와 짐 정리에 알맞습니다.",
+    "rumor": "포항(영일만) 철은 부산(부산포)보다 조용히 사기 좋을 때가 있어요.",
+    "goods": [
+      "iron",
+      "dried_fish",
+      "seaweed"
+    ],
+    "marketSlots": [
+      "iron",
+      "dried_fish",
+      "seaweed",
+      "rice",
+      "salt",
+      "cotton_cloth"
+    ],
+    "stallPositions": {
+      "iron": {
+        "x": 18,
+        "y": 22
+      },
+      "dried_fish": {
+        "x": 38,
+        "y": 16
+      },
+      "seaweed": {
+        "x": 58,
+        "y": 22
+      },
+      "rice": {
+        "x": 78,
+        "y": 18
+      },
+      "salt": {
+        "x": 36,
+        "y": 66
+      },
+      "cotton_cloth": {
+        "x": 66,
+        "y": 66
+      }
+    }
+  },
+  {
+    "id": "gangneung",
+    "title": "산과 바다가 만나는 동해 장",
+    "line": "목재와 약초가 좋고, 눈과 산길 위험을 함께 살펴야 해요.",
+    "market": "목재와 약초는 싸고, 쌀과 소금은 늘 필요합니다.",
+    "office": "눈길과 산짐승 소문을 확인한 뒤 움직이세요.",
+    "tavern": "산길을 넘은 장꾼들이 호랑이 이야기를 낮게 합니다.",
+    "yard": "동해 배보다 수레와 산길 준비가 더 중요할 때가 많아요.",
+    "rumor": "강릉 약초와 목재는 서울(한양)과 안동에서 찾는 사람이 있습니다.",
+    "goods": [
+      "lumber",
+      "herbs",
+      "dried_fish"
+    ],
+    "marketSlots": [
+      "lumber",
+      "herbs",
+      "dried_fish",
+      "salt",
+      "rice",
+      "cotton_cloth"
+    ],
+    "stallPositions": {
+      "lumber": {
+        "x": 16,
+        "y": 22
+      },
+      "herbs": {
+        "x": 36,
+        "y": 16
+      },
+      "dried_fish": {
+        "x": 56,
+        "y": 22
+      },
+      "salt": {
+        "x": 76,
+        "y": 18
+      },
+      "rice": {
+        "x": 36,
+        "y": 66
+      },
+      "cotton_cloth": {
+        "x": 66,
+        "y": 66
+      }
+    }
+  },
+  {
+    "id": "daegu",
+    "title": "영남 내륙 큰 장",
+    "line": "소금과 해산물, 부산(부산포) 면포를 비싸게 사는 영남 내륙 장터예요.",
+    "market": "바닷가 물건과 면포를 가져오면 장꾼들이 금세 모여요.",
+    "office": "내륙 납품 의뢰와 손수레 준비를 확인하기 좋습니다.",
+    "tavern": "부산(부산포)에서 온 짐꾼들이 소금값 이야기를 많이 해요.",
+    "yard": "수레방에서 손수레와 짐말을 둘러볼 수 있어요.",
+    "rumor": "대구에서는 소금, 건어물, 미역, 면포를 눈여겨봅니다.",
+    "goods": [
+      "salt",
+      "dried_fish",
+      "cotton_cloth"
+    ],
+    "marketSlots": [
+      "salt",
+      "dried_fish",
+      "seaweed",
+      "cotton_cloth",
+      "herbs",
+      "beans"
+    ],
+    "stallPositions": {
+      "salt": {
+        "x": 18,
+        "y": 22
+      },
+      "dried_fish": {
+        "x": 38,
+        "y": 16
+      },
+      "seaweed": {
+        "x": 58,
+        "y": 22
+      },
+      "cotton_cloth": {
+        "x": 78,
+        "y": 18
+      },
+      "herbs": {
+        "x": 32,
+        "y": 64
+      },
+      "beans": {
+        "x": 66,
+        "y": 64
+      }
+    }
+  },
+  {
+    "id": "andong",
+    "title": "서책과 약초의 산골 장",
+    "line": "약초와 종이, 책이 오가고 바닷가 음식은 귀한 내륙 도시예요.",
+    "market": "약초와 문방 물건은 좋고 소금과 건어물은 잘 팔립니다.",
+    "office": "선비 집안 납품과 문서 심부름 의뢰가 가끔 나옵니다.",
+    "tavern": "눈길과 산적을 피해 움직이라는 충고가 많아요.",
+    "yard": "산길에는 짐말이 손수레보다 편할 때가 있어요.",
+    "rumor": "안동 책과 약초는 서울(한양)에서 값을 받을 수 있습니다.",
+    "goods": [
+      "herbs",
+      "paper",
+      "books"
+    ],
+    "marketSlots": [
+      "herbs",
+      "paper",
+      "books",
+      "salt",
+      "dried_fish",
+      "rice"
+    ],
+    "stallPositions": {
+      "herbs": {
+        "x": 18,
+        "y": 22
+      },
+      "paper": {
+        "x": 38,
+        "y": 16
+      },
+      "books": {
+        "x": 58,
+        "y": 22
+      },
+      "salt": {
+        "x": 78,
+        "y": 18
+      },
+      "dried_fish": {
+        "x": 36,
+        "y": 66
+      },
+      "rice": {
+        "x": 66,
+        "y": 66
+      }
+    }
+  },
+  {
+    "id": "jeju",
+    "title": "바람 많은 섬 장터",
+    "line": "말과 감귤, 해산물이 유명하지만 돌아갈 준비가 필요해요.",
+    "market": "말과 감귤은 비싸지만 짐칸을 많이 차지해요.",
+    "office": "먼 항로를 오간 기록과 납품을 확인합니다.",
+    "tavern": "뱃사람들이 바람의 잠잠한 날을 귀띔해 줍니다.",
+    "yard": "수리막에서 배 상태를 꼭 확인하고 떠나세요.",
+    "rumor": "제주에서는 말, 감귤, 미역이 가장 눈에 띕니다.",
+    "goods": [
+      "horse",
+      "citrus",
+      "seaweed"
+    ],
+    "marketSlots": [
+      "horse",
+      "citrus",
+      "seaweed",
+      "dried_fish",
+      "rice",
+      "salt"
+    ],
+    "stallPositions": {
+      "horse": {
+        "x": 18,
+        "y": 22
+      },
+      "citrus": {
+        "x": 38,
+        "y": 16
+      },
+      "seaweed": {
+        "x": 58,
+        "y": 22
+      },
+      "dried_fish": {
+        "x": 78,
+        "y": 18
+      },
+      "rice": {
+        "x": 36,
+        "y": 64
+      },
+      "salt": {
+        "x": 66,
+        "y": 64
+      }
+    }
+  },
+  {
+    "id": "pyeongyang",
+    "title": "대동강의 북부 큰 장",
+    "line": "북방 물산과 관청 장부가 모이는 큰 도시예요.",
+    "market": "쌀과 문방 물건이 나오고, 소금과 해산물 수요가 높아요.",
+    "office": "관문 장부와 세금 검문이 꼼꼼합니다.",
+    "tavern": "평양 상인들은 남포와 개성 길의 가격 이야기를 자주 합니다.",
+    "yard": "북상 길은 수레 내구를 확인하고 떠나는 편이 좋아요.",
+    "rumor": "남포 소금과 동해 건어물을 평양으로 올리면 좋은 값을 기대할 수 있어요.",
+    "goods": [
+      "rice",
+      "paper",
+      "books"
+    ],
+    "marketSlots": [
+      "rice",
+      "paper",
+      "books",
+      "beans",
+      "salt",
+      "dried_fish",
+      "ginseng",
+      "iron"
+    ]
+  },
+  {
+    "id": "nampo",
+    "title": "대동강 하구 포구",
+    "line": "평양으로 들어가는 서해 물길의 문이에요.",
+    "market": "소금과 건어물이 싸고, 평양으로 올릴 문방 물건을 기다려요.",
+    "office": "하구 검문과 조수 시간을 같이 봐야 합니다.",
+    "tavern": "안개가 짙은 날에는 강화까지 가는 배가 늦어져요.",
+    "yard": "얕은 갯벌 포구라 작은 배와 수리가 중요합니다.",
+    "rumor": "남포에서 산 소금은 평양과 개성에서 수요가 좋아요.",
+    "goods": [
+      "salt",
+      "dried_fish",
+      "rice"
+    ],
+    "marketSlots": [
+      "salt",
+      "dried_fish",
+      "rice",
+      "paper",
+      "books",
+      "lumber",
+      "cotton_cloth"
+    ]
+  },
+  {
+    "id": "sinuiju",
+    "title": "압록강 변경 장터",
+    "line": "신의주(의주)는 압록강 길목에서 청 장시 소문이 모이는 곳이에요.",
+    "market": "인삼과 약초가 좋고, 비단과 차는 허가 있는 장사꾼만 노려요.",
+    "office": "압록강 검문이 잦으니 청 교역 허가와 장부를 챙겨야 합니다.",
+    "tavern": "단둥 방면(책문 장시)로 가려면 큰 수레와 믿을 만한 호위가 필요하대요.",
+    "yard": "긴 육로라 수레 내구와 짐칸이 가장 중요합니다.",
+    "rumor": "신의주(의주) 인삼은 단둥 방면(책문 장시)에서 좋은 값을 기대할 수 있어요.",
+    "goods": [
+      "herbs",
+      "ginseng",
+      "lumber"
+    ],
+    "marketSlots": [
+      "herbs",
+      "ginseng",
+      "lumber",
+      "salt",
+      "cotton_cloth",
+      "paper",
+      "silk",
+      "tea"
+    ]
+  },
+  {
+    "id": "wonsan",
+    "title": "동해로 열린 북부 항구",
+    "line": "바닷길과 산길이 만나는 북동 교역의 문이에요.",
+    "market": "건어물과 미역, 목재가 나오고 쌀과 면포를 기다려요.",
+    "office": "동해 풍랑과 산길 위험을 함께 기록합니다.",
+    "tavern": "강릉에서 올라온 뱃사람들이 바람 이야기를 합니다.",
+    "yard": "해로와 산길 모두 준비해야 하는 거점입니다.",
+    "rumor": "원산 해산물은 평양 산길을 넘기면 값이 커져요.",
+    "goods": [
+      "dried_fish",
+      "seaweed",
+      "lumber"
+    ],
+    "marketSlots": [
+      "dried_fish",
+      "seaweed",
+      "lumber",
+      "rice",
+      "salt",
+      "cotton_cloth",
+      "paper"
+    ]
+  },
+  {
+    "id": "hamhung",
+    "title": "함경 산물과 동해 어물",
+    "line": "약초와 목재, 동해 어물이 함께 모이는 장터예요.",
+    "market": "약초와 목재가 좋고 쌀과 소금 수요가 높아요.",
+    "office": "겨울 산길과 풍랑 기록을 확인합니다.",
+    "tavern": "청진(경흥)으로 오르는 북쪽 산길 이야기가 많아요.",
+    "yard": "동해 연안 수리와 수레 점검을 함께 보세요.",
+    "rumor": "함흥 약초는 개성과 서울(한양) 쪽에서 더 좋은 값을 받아요.",
+    "goods": [
+      "herbs",
+      "lumber",
+      "dried_fish"
+    ],
+    "marketSlots": [
+      "herbs",
+      "lumber",
+      "dried_fish",
+      "salt",
+      "rice",
+      "paper",
+      "cotton_cloth"
+    ]
+  },
+  {
+    "id": "chongjin",
+    "title": "두만강 변경 장시",
+    "line": "청진(경흥)은 두만강 가까이 북방 말과 철이 모이는 곳이에요.",
+    "market": "말과 철, 목재가 좋고 쌀과 면포는 북방에서 귀하게 팔려요.",
+    "office": "두만강 국경 검문과 겨울 길 위험을 먼저 확인합니다.",
+    "tavern": "북방 장시 소문은 좋지만 허가와 호위가 없으면 위험하대요.",
+    "yard": "긴 산길이라 수레와 짐칸을 먼저 살펴야 합니다.",
+    "rumor": "청진(경흥) 말과 철은 남쪽 큰 장에서 값이 크지만 길이 멀어요.",
+    "goods": [
+      "iron",
+      "horse",
+      "lumber"
+    ],
+    "marketSlots": [
+      "iron",
+      "horse",
+      "lumber",
+      "rice",
+      "salt",
+      "cotton_cloth",
+      "paper",
+      "tea"
+    ]
+  },
+  {
+    "id": "qing_yalu_market",
+    "title": "청 상인과 만나는 단둥 방면(책문 장시)",
+    "line": "압록강 너머 비단, 차, 도자기가 들어오는 국경 장이에요.",
+    "market": "비단과 차, 도자기가 보이지만 허가와 큰 짐칸이 필요해요.",
+    "office": "청 교역 허가와 세금 장부를 꼭 확인합니다.",
+    "tavern": "조선 인삼과 한지는 이곳에서 더 좋은 값을 들을 수 있어요.",
+    "yard": "수레가 약하면 국경 장시 물건을 많이 싣기 어렵습니다.",
+    "rumor": "책문 비단은 서울(한양)과 부산(부산포)에서 고급 수요가 있습니다.",
+    "goods": [
+      "silk",
+      "tea",
+      "ceramics"
+    ],
+    "marketSlots": [
+      "silk",
+      "tea",
+      "ceramics",
+      "silk_thread",
+      "ginseng",
+      "cotton_cloth",
+      "paper"
+    ]
+  },
+  {
+    "id": "tumen_north_market",
+    "title": "두만강 북방(북방장)",
+    "line": "북방 말과 철, 목재가 오가는 작은 국경 장이에요.",
+    "market": "말과 철은 값이 크지만 멀리 옮길 준비가 필요해요.",
+    "office": "두만강 통행 허가와 겨울 길 검문을 확인합니다.",
+    "tavern": "쌀과 소금, 면포는 북방 장에서 귀하게 여긴대요.",
+    "yard": "수레 짐칸과 호위 준비가 없으면 손해가 커질 수 있어요.",
+    "rumor": "북방 철은 함흥과 원산을 거쳐 남쪽 조선소로 팔 수 있습니다.",
+    "goods": [
+      "horse",
+      "iron",
+      "lumber"
+    ],
+    "marketSlots": [
+      "horse",
+      "iron",
+      "lumber",
+      "silver",
+      "rice",
+      "salt",
+      "cotton_cloth"
+    ]
+  },
+  {
+    "id": "kaesong",
+    "title": "오래된 상업 관문",
+    "line": "서울(한양)과 평양 사이에서 인삼과 문방 물건이 오갑니다.",
+    "market": "인삼과 한지가 좋고, 소금과 비단 수요도 있어요.",
+    "office": "남북 길목이라 통행 장부가 자주 확인됩니다.",
+    "tavern": "서울(한양)과 평양 양쪽 가격을 비교하는 상인들이 많아요.",
+    "yard": "짧은 길처럼 보여도 수레 짐칸을 확인하세요.",
+    "rumor": "개성 인삼은 서울(한양)과 부산(부산포)에서 고급 수요가 있습니다.",
+    "goods": [
+      "ginseng",
+      "paper",
+      "books"
+    ],
+    "marketSlots": [
+      "ginseng",
+      "paper",
+      "books",
+      "salt",
+      "silk",
+      "rice",
+      "dried_fish"
+    ]
+  }
+]

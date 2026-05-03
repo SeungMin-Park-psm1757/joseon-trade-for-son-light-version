@@ -1,0 +1,836 @@
+[
+  {
+    "id": "rice",
+    "name": "쌀",
+    "category": "grain",
+    "basePrice": 12,
+    "weight": 1,
+    "volume": 1,
+    "perishableDays": 0,
+    "legalRisk": 0,
+    "description": "가장 안정적인 기본 교역품. 곡창지대에서는 싸고 도시·섬에서는 비싸다.",
+    "tags": [
+      "grain",
+      "stable"
+    ],
+    "seasonal": {
+      "1": 1.1,
+      "2": 1.1,
+      "9": 0.82,
+      "10": 0.88
+    },
+    "iconAsset": "/assets/painted2d/goods/rice.png",
+    "volatility": 0.16,
+    "supplyLevel": 1.2,
+    "demandLevel": 0.9,
+    "originPorts": [
+      "ganghwa",
+      "chungju",
+      "jeonju",
+      "gunsan",
+      "busanpo"
+    ],
+    "taxRate": 0.02,
+    "tier": 1,
+    "rarity": "common"
+  },
+  {
+    "id": "barley",
+    "name": "보리",
+    "category": "grain",
+    "basePrice": 8,
+    "weight": 1,
+    "volume": 1,
+    "perishableDays": 0,
+    "legalRisk": 0,
+    "description": "쌀보다 이익은 낮지만 초반 현금 회전에 좋다.",
+    "tags": [
+      "grain",
+      "stable"
+    ],
+    "seasonal": {
+      "1": 1.08,
+      "6": 0.88,
+      "7": 0.9
+    },
+    "iconAsset": "/assets/painted2d/goods/barley.png",
+    "volatility": 0.14,
+    "supplyLevel": 1.18,
+    "demandLevel": 0.72,
+    "originPorts": [
+      "gunsan"
+    ],
+    "taxRate": 0.02,
+    "tier": 1,
+    "rarity": "common"
+  },
+  {
+    "id": "beans",
+    "name": "콩",
+    "category": "grain",
+    "basePrice": 9,
+    "weight": 1,
+    "volume": 1,
+    "perishableDays": 0,
+    "legalRisk": 0,
+    "description": "내륙 장터에서 꾸준히 팔리는 식량 상품.",
+    "tags": [
+      "grain"
+    ],
+    "seasonal": {
+      "10": 0.9,
+      "11": 0.95
+    },
+    "iconAsset": "/assets/painted2d/goods/beans.png",
+    "volatility": 0.16,
+    "supplyLevel": 1.08,
+    "demandLevel": 0.7,
+    "originPorts": [
+      "chungju",
+      "jeonju",
+      "daegu"
+    ],
+    "taxRate": 0.02,
+    "tier": 1,
+    "rarity": "common"
+  },
+  {
+    "id": "salt",
+    "name": "소금",
+    "category": "salt",
+    "basePrice": 14,
+    "weight": 1,
+    "volume": 1,
+    "perishableDays": 0,
+    "legalRisk": 0,
+    "description": "서해·남해 항구에서 사서 내륙에 팔기 좋은 핵심 초반 상품.",
+    "tags": [
+      "salt",
+      "core_trade"
+    ],
+    "seasonal": {
+      "7": 1.1,
+      "8": 1.1,
+      "11": 1.15,
+      "12": 1.15
+    },
+    "iconAsset": "/assets/painted2d/goods/salt.png",
+    "volatility": 0.3,
+    "supplyLevel": 0.98,
+    "demandLevel": 1.08,
+    "originPorts": [
+      "ganghwa",
+      "gunsan",
+      "mokpo",
+      "yeosu",
+      "ulsan"
+    ],
+    "taxRate": 0.03,
+    "tier": 1,
+    "rarity": "common"
+  },
+  {
+    "id": "dried_fish",
+    "name": "건어물",
+    "category": "seafood",
+    "basePrice": 16,
+    "weight": 1,
+    "volume": 1,
+    "perishableDays": 0,
+    "legalRisk": 0,
+    "description": "부패하지 않아 초보자에게 좋은 해산물 상품.",
+    "tags": [
+      "seafood",
+      "stable"
+    ],
+    "seasonal": {
+      "1": 1.08,
+      "11": 1.12,
+      "12": 1.12
+    },
+    "iconAsset": "/assets/painted2d/goods/dried_fish.png",
+    "volatility": 0.34,
+    "supplyLevel": 1.04,
+    "demandLevel": 0.96,
+    "originPorts": [
+      "ganghwa",
+      "gunsan",
+      "mokpo",
+      "heuksando",
+      "yeosu",
+      "tongyeong",
+      "jinhae_jepo",
+      "busanpo",
+      "tsushima",
+      "ulsan",
+      "pohang",
+      "gangneung",
+      "jeju"
+    ],
+    "taxRate": 0.03,
+    "tier": 1,
+    "rarity": "common"
+  },
+  {
+    "id": "fresh_fish",
+    "name": "생선",
+    "category": "seafood",
+    "basePrice": 10,
+    "weight": 1,
+    "volume": 1,
+    "perishableDays": 4,
+    "legalRisk": 0,
+    "description": "수익은 괜찮지만 빨리 팔아야 한다. 어업 보상으로 자주 등장한다.",
+    "tags": [
+      "seafood",
+      "perishable"
+    ],
+    "seasonal": {
+      "4": 0.95,
+      "5": 0.95,
+      "8": 1.15
+    },
+    "iconAsset": "/assets/painted2d/goods/fresh_fish.png",
+    "volatility": 0.5,
+    "supplyLevel": 1.08,
+    "demandLevel": 0.82,
+    "originPorts": [
+      "kaesong",
+      "sinuiju"
+    ],
+    "taxRate": 0.03,
+    "tier": 1,
+    "rarity": "common"
+  },
+  {
+    "id": "skate",
+    "name": "홍어",
+    "category": "seafood",
+    "basePrice": 24,
+    "weight": 1,
+    "volume": 1,
+    "perishableDays": 6,
+    "legalRisk": 0,
+    "description": "흑산도·목포(목포진) 특산품. 특정 내륙 도시에서 높은 수요를 갖는다.",
+    "tags": [
+      "seafood",
+      "regional"
+    ],
+    "seasonal": {
+      "3": 1.1,
+      "4": 1.1
+    },
+    "iconAsset": "/assets/painted2d/goods/skate.png",
+    "volatility": 0.5,
+    "supplyLevel": 0.62,
+    "demandLevel": 1.02,
+    "originPorts": [
+      "mokpo",
+      "heuksando"
+    ],
+    "taxRate": 0.03,
+    "tier": 2,
+    "rarity": "regional"
+  },
+  {
+    "id": "seaweed",
+    "name": "미역",
+    "category": "seafood",
+    "basePrice": 13,
+    "weight": 1,
+    "volume": 1,
+    "perishableDays": 0,
+    "legalRisk": 0,
+    "description": "남해·제주에서 흔한 보조 교역품.",
+    "tags": [
+      "seafood"
+    ],
+    "seasonal": {
+      "2": 0.9,
+      "3": 0.9,
+      "7": 1.08
+    },
+    "iconAsset": "/assets/painted2d/goods/seaweed.png",
+    "volatility": 0.32,
+    "supplyLevel": 0.98,
+    "demandLevel": 0.84,
+    "originPorts": [
+      "mokpo",
+      "heuksando",
+      "yeosu",
+      "tongyeong",
+      "pohang",
+      "jeju"
+    ],
+    "taxRate": 0.03,
+    "tier": 1,
+    "rarity": "common"
+  },
+  {
+    "id": "cotton_cloth",
+    "name": "면포",
+    "category": "textile",
+    "basePrice": 30,
+    "weight": 1,
+    "volume": 1,
+    "perishableDays": 0,
+    "legalRisk": 0,
+    "description": "조선 교역의 대표 직물. 부산(부산포)·쓰시마(대마도) 루트의 초반 핵심 상품.",
+    "tags": [
+      "textile",
+      "core_trade"
+    ],
+    "seasonal": {
+      "1": 1.08,
+      "12": 1.08
+    },
+    "iconAsset": "/assets/painted2d/goods/cotton_cloth.png",
+    "volatility": 0.38,
+    "supplyLevel": 0.76,
+    "demandLevel": 1.05,
+    "originPorts": [
+      "busanpo"
+    ],
+    "taxRate": 0.035,
+    "tier": 2,
+    "rarity": "regional"
+  },
+  {
+    "id": "hemp_cloth",
+    "name": "삼베",
+    "category": "textile",
+    "basePrice": 22,
+    "weight": 1,
+    "volume": 1,
+    "perishableDays": 0,
+    "legalRisk": 0,
+    "description": "면포보다 저렴한 직물. 내륙과 섬 모두에 수요가 있다.",
+    "tags": [
+      "textile"
+    ],
+    "seasonal": {},
+    "iconAsset": "/assets/painted2d/goods/hemp_cloth.png",
+    "volatility": 0.34,
+    "supplyLevel": 0.78,
+    "demandLevel": 0.96,
+    "originPorts": [
+      "daegu"
+    ],
+    "taxRate": 0.035,
+    "tier": 1,
+    "rarity": "regional"
+  },
+  {
+    "id": "silk",
+    "name": "비단",
+    "category": "luxury",
+    "basePrice": 90,
+    "weight": 1,
+    "volume": 1,
+    "perishableDays": 0,
+    "legalRisk": 1,
+    "description": "청 방면 국경 장시와 서울(한양) 고급 시장에서 제한적으로 만나는 고급 직물.",
+    "tags": [
+      "luxury",
+      "rare"
+    ],
+    "seasonal": {
+      "1": 1.12,
+      "12": 1.12
+    },
+    "iconAsset": "/assets/painted2d/goods/silk.png",
+    "volatility": 0.72,
+    "supplyLevel": 0.34,
+    "demandLevel": 1.18,
+    "originPorts": [
+      "qing_yalu_market"
+    ],
+    "taxRate": 0.06,
+    "tier": 3,
+    "rarity": "luxury"
+  },
+  {
+    "id": "silk_thread",
+    "name": "명주실",
+    "category": "luxury",
+    "basePrice": 45,
+    "weight": 1,
+    "volume": 1,
+    "perishableDays": 0,
+    "legalRisk": 0,
+    "description": "비단보다 낮은 단계의 고급 직물 재료.",
+    "tags": [
+      "luxury",
+      "textile"
+    ],
+    "seasonal": {},
+    "iconAsset": "/assets/painted2d/goods/silk_thread.png",
+    "volatility": 0.58,
+    "supplyLevel": 0.5,
+    "demandLevel": 1,
+    "originPorts": [
+      "hanyang",
+      "qing_yalu_market"
+    ],
+    "taxRate": 0.055,
+    "tier": 2,
+    "rarity": "luxury"
+  },
+  {
+    "id": "paper",
+    "name": "한지",
+    "category": "craft",
+    "basePrice": 26,
+    "weight": 1,
+    "volume": 1,
+    "perishableDays": 0,
+    "legalRisk": 0,
+    "description": "전주·안동·서울(한양) 관련 루트에 적합한 문방 상품.",
+    "tags": [
+      "craft",
+      "books"
+    ],
+    "seasonal": {
+      "3": 1.08,
+      "9": 1.08
+    },
+    "iconAsset": "/assets/painted2d/goods/paper.png",
+    "volatility": 0.42,
+    "supplyLevel": 0.72,
+    "demandLevel": 0.92,
+    "originPorts": [
+      "hanyang",
+      "jeonju",
+      "andong"
+    ],
+    "taxRate": 0.035,
+    "tier": 1,
+    "rarity": "regional"
+  },
+  {
+    "id": "books",
+    "name": "서책",
+    "category": "craft",
+    "basePrice": 55,
+    "weight": 1,
+    "volume": 1,
+    "perishableDays": 0,
+    "legalRisk": 0,
+    "description": "서울(한양)과 안동에서 많이 거래되는 고급 지식 상품.",
+    "tags": [
+      "craft",
+      "luxury"
+    ],
+    "seasonal": {
+      "3": 1.1,
+      "9": 1.1
+    },
+    "iconAsset": "/assets/painted2d/goods/books.png",
+    "volatility": 0.42,
+    "supplyLevel": 0.72,
+    "demandLevel": 0.92,
+    "originPorts": [
+      "hanyang",
+      "andong"
+    ],
+    "taxRate": 0.035,
+    "tier": 2,
+    "rarity": "regional"
+  },
+  {
+    "id": "fan",
+    "name": "부채",
+    "category": "craft",
+    "basePrice": 32,
+    "weight": 1,
+    "volume": 1,
+    "perishableDays": 0,
+    "legalRisk": 0,
+    "description": "전주 특산 공예품. 여름에 수요가 오른다.",
+    "tags": [
+      "craft",
+      "seasonal"
+    ],
+    "seasonal": {
+      "6": 1.25,
+      "7": 1.3,
+      "8": 1.2
+    },
+    "iconAsset": "/assets/painted2d/goods/fan.png",
+    "volatility": 0.42,
+    "supplyLevel": 0.72,
+    "demandLevel": 0.92,
+    "originPorts": [
+      "jeonju"
+    ],
+    "taxRate": 0.035,
+    "tier": 1,
+    "rarity": "regional"
+  },
+  {
+    "id": "lumber",
+    "name": "목재",
+    "category": "resource",
+    "basePrice": 18,
+    "weight": 2,
+    "volume": 2,
+    "perishableDays": 0,
+    "legalRisk": 0,
+    "description": "선박 수리와 조선소 수요가 큰 자원 상품. 무겁지만 안정적이다.",
+    "tags": [
+      "resource",
+      "shipyard"
+    ],
+    "seasonal": {
+      "1": 1.1,
+      "11": 1.15,
+      "12": 1.15
+    },
+    "iconAsset": "/assets/painted2d/goods/lumber.png",
+    "volatility": 0.3,
+    "supplyLevel": 0.82,
+    "demandLevel": 0.9,
+    "originPorts": [
+      "chungju",
+      "yeosu",
+      "tongyeong",
+      "jinhae_jepo",
+      "ulsan",
+      "gangneung",
+      "sinuiju",
+      "chongjin",
+      "tumen_north_market"
+    ],
+    "taxRate": 0.03,
+    "tier": 1,
+    "rarity": "regional"
+  },
+  {
+    "id": "pine_lumber",
+    "name": "소나무 목재",
+    "category": "resource",
+    "basePrice": 28,
+    "weight": 2,
+    "volume": 2,
+    "perishableDays": 0,
+    "legalRisk": 0,
+    "description": "선박 개조에 쓰이는 고급 목재.",
+    "tags": [
+      "resource",
+      "shipyard",
+      "rare"
+    ],
+    "seasonal": {},
+    "iconAsset": "/assets/painted2d/goods/pine_lumber.png",
+    "volatility": 0.3,
+    "supplyLevel": 0.82,
+    "demandLevel": 0.9,
+    "originPorts": [],
+    "taxRate": 0.03,
+    "tier": 1,
+    "rarity": "regional"
+  },
+  {
+    "id": "iron",
+    "name": "철",
+    "category": "metal",
+    "basePrice": 40,
+    "weight": 2,
+    "volume": 1,
+    "perishableDays": 0,
+    "legalRisk": 0,
+    "description": "조선소와 수군영에서 수요가 높다. 무게가 있어 운송수단 선택이 중요하다.",
+    "tags": [
+      "metal",
+      "shipyard"
+    ],
+    "seasonal": {},
+    "iconAsset": "/assets/painted2d/goods/iron.png",
+    "volatility": 0.48,
+    "supplyLevel": 0.58,
+    "demandLevel": 1.02,
+    "originPorts": [
+      "ulsan",
+      "pohang",
+      "chongjin",
+      "tumen_north_market"
+    ],
+    "taxRate": 0.04,
+    "tier": 2,
+    "rarity": "regional"
+  },
+  {
+    "id": "silver",
+    "name": "은",
+    "category": "foreign",
+    "basePrice": 120,
+    "weight": 1,
+    "volume": 1,
+    "perishableDays": 0,
+    "legalRisk": 2,
+    "description": "쓰시마(대마도)에서 제한적으로 얻는 고가 상품. 검문 위험이 있다.",
+    "tags": [
+      "foreign",
+      "rare",
+      "high_value"
+    ],
+    "seasonal": {},
+    "iconAsset": "/assets/painted2d/goods/silver.png",
+    "volatility": 0.78,
+    "supplyLevel": 0.3,
+    "demandLevel": 1.15,
+    "originPorts": [
+      "tsushima"
+    ],
+    "taxRate": 0.075,
+    "tier": 4,
+    "rarity": "rare"
+  },
+  {
+    "id": "ginseng",
+    "name": "인삼",
+    "category": "medicine",
+    "basePrice": 85,
+    "weight": 1,
+    "volume": 1,
+    "perishableDays": 0,
+    "legalRisk": 1,
+    "description": "고수익 약재. 부산(부산포)·쓰시마(대마도) 루트에서 인기가 높다.",
+    "tags": [
+      "medicine",
+      "high_value"
+    ],
+    "seasonal": {
+      "11": 1.1,
+      "12": 1.1
+    },
+    "iconAsset": "/assets/painted2d/goods/ginseng.png",
+    "volatility": 0.64,
+    "supplyLevel": 0.42,
+    "demandLevel": 1.18,
+    "originPorts": [],
+    "taxRate": 0.055,
+    "tier": 3,
+    "rarity": "rare"
+  },
+  {
+    "id": "herbs",
+    "name": "약초",
+    "category": "medicine",
+    "basePrice": 24,
+    "weight": 1,
+    "volume": 1,
+    "perishableDays": 0,
+    "legalRisk": 0,
+    "description": "강릉·안동 산지에서 쉽게 구할 수 있는 약재.",
+    "tags": [
+      "medicine"
+    ],
+    "seasonal": {
+      "4": 0.9,
+      "5": 0.9,
+      "12": 1.1
+    },
+    "iconAsset": "/assets/painted2d/goods/herbs.png",
+    "volatility": 0.56,
+    "supplyLevel": 0.52,
+    "demandLevel": 1.08,
+    "originPorts": [
+      "gangneung",
+      "daegu",
+      "andong"
+    ],
+    "taxRate": 0.045,
+    "tier": 1,
+    "rarity": "rare"
+  },
+  {
+    "id": "horse",
+    "name": "말",
+    "category": "livestock",
+    "basePrice": 160,
+    "weight": 3,
+    "volume": 3,
+    "perishableDays": 0,
+    "legalRisk": 0,
+    "description": "제주 특산 고가 상품. 짐칸을 많이 차지하며 운송 위험이 있다.",
+    "tags": [
+      "livestock",
+      "jeju",
+      "high_value"
+    ],
+    "seasonal": {},
+    "iconAsset": "/assets/painted2d/goods/horse.png",
+    "volatility": 0.68,
+    "supplyLevel": 0.34,
+    "demandLevel": 1.12,
+    "originPorts": [
+      "jeju",
+      "chongjin",
+      "tumen_north_market"
+    ],
+    "taxRate": 0.05,
+    "tier": 4,
+    "rarity": "rare"
+  },
+  {
+    "id": "citrus",
+    "name": "감귤",
+    "category": "food",
+    "basePrice": 28,
+    "weight": 1,
+    "volume": 1,
+    "perishableDays": 5,
+    "legalRisk": 0,
+    "description": "제주 특산품. 서울(한양)·부산(부산포)에서 비싸게 팔 수 있다.",
+    "tags": [
+      "jeju",
+      "perishable",
+      "seasonal"
+    ],
+    "seasonal": {
+      "1": 1.15,
+      "11": 0.9,
+      "12": 0.9
+    },
+    "iconAsset": "/assets/painted2d/goods/citrus.png",
+    "volatility": 0.46,
+    "supplyLevel": 0.58,
+    "demandLevel": 0.94,
+    "originPorts": [
+      "jeju"
+    ],
+    "taxRate": 0.03,
+    "tier": 1,
+    "rarity": "regional"
+  },
+  {
+    "id": "japanese_paper",
+    "name": "일본 종이",
+    "category": "foreign",
+    "basePrice": 44,
+    "weight": 1,
+    "volume": 1,
+    "perishableDays": 0,
+    "legalRisk": 1,
+    "description": "쓰시마(대마도)에서 들여오는 외래 문방 상품.",
+    "tags": [
+      "foreign",
+      "craft"
+    ],
+    "seasonal": {},
+    "iconAsset": "/assets/painted2d/goods/japanese_paper.png",
+    "volatility": 0.72,
+    "supplyLevel": 0.42,
+    "demandLevel": 1.08,
+    "originPorts": [
+      "tsushima"
+    ],
+    "taxRate": 0.065,
+    "tier": 2,
+    "rarity": "rare"
+  },
+  {
+    "id": "lacquerware",
+    "name": "칠기",
+    "category": "foreign",
+    "basePrice": 70,
+    "weight": 1,
+    "volume": 1,
+    "perishableDays": 0,
+    "legalRisk": 1,
+    "description": "고급 공예품. 서울(한양)·부산(부산포) 수요가 높다.",
+    "tags": [
+      "foreign",
+      "luxury"
+    ],
+    "seasonal": {},
+    "iconAsset": "/assets/painted2d/goods/lacquerware.png",
+    "volatility": 0.66,
+    "supplyLevel": 0.38,
+    "demandLevel": 1.08,
+    "originPorts": [
+      "tsushima"
+    ],
+    "taxRate": 0.065,
+    "tier": 3,
+    "rarity": "luxury"
+  },
+  {
+    "id": "gunpowder",
+    "name": "화약",
+    "category": "restricted",
+    "basePrice": 75,
+    "weight": 1,
+    "volume": 1,
+    "perishableDays": 0,
+    "legalRisk": 3,
+    "description": "수군 의뢰 보상 또는 관아 허가가 필요한 제한 상품. 첫 버전에서는 전투 튜토리얼용.",
+    "tags": [
+      "restricted",
+      "combat"
+    ],
+    "seasonal": {},
+    "iconAsset": "/assets/painted2d/goods/gunpowder.png",
+    "volatility": 0.82,
+    "supplyLevel": 0.25,
+    "demandLevel": 1.16,
+    "originPorts": [],
+    "taxRate": 0.09,
+    "tier": 3,
+    "rarity": "restricted"
+  },
+  {
+    "id": "tea",
+    "name": "차",
+    "category": "foreign",
+    "basePrice": 60,
+    "weight": 1,
+    "volume": 1,
+    "perishableDays": 0,
+    "legalRisk": 1,
+    "description": "청 방면 국경 장시에서 제한적으로 들여오는 고급 차. 허가가 있어야 안정적으로 거래된다.",
+    "tags": [
+      "foreign",
+      "rare"
+    ],
+    "seasonal": {},
+    "iconAsset": "/assets/painted2d/goods/tea.png",
+    "volatility": 0.7,
+    "supplyLevel": 0.28,
+    "demandLevel": 1.05,
+    "originPorts": [
+      "qing_yalu_market"
+    ],
+    "taxRate": 0.065,
+    "tier": 3,
+    "rarity": "rare"
+  },
+  {
+    "id": "ceramics",
+    "name": "도자기",
+    "category": "craft",
+    "basePrice": 48,
+    "weight": 1,
+    "volume": 1,
+    "perishableDays": 0,
+    "legalRisk": 0,
+    "fragile": true,
+    "description": "파손 위험이 있지만 수익성이 좋은 공예품.",
+    "tags": [
+      "craft",
+      "fragile"
+    ],
+    "seasonal": {},
+    "iconAsset": "/assets/painted2d/goods/ceramics.png",
+    "volatility": 0.42,
+    "supplyLevel": 0.72,
+    "demandLevel": 0.92,
+    "originPorts": [
+      "qing_yalu_market"
+    ],
+    "taxRate": 0.035,
+    "tier": 2,
+    "rarity": "regional"
+  }
+]

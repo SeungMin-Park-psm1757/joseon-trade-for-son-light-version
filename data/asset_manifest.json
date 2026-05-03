@@ -1,0 +1,1112 @@
+[
+  {
+    "id": "goods.rice",
+    "path": "/assets/painted2d/goods/rice.png",
+    "type": "goodIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "market/cargo/ledger"
+  },
+  {
+    "id": "goods.barley",
+    "path": "/assets/painted2d/goods/barley.png",
+    "type": "goodIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "market/cargo/ledger"
+  },
+  {
+    "id": "goods.beans",
+    "path": "/assets/painted2d/goods/beans.png",
+    "type": "goodIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "market/cargo/ledger"
+  },
+  {
+    "id": "goods.salt",
+    "path": "/assets/painted2d/goods/salt.png",
+    "type": "goodIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "market/cargo/ledger"
+  },
+  {
+    "id": "goods.dried_fish",
+    "path": "/assets/painted2d/goods/dried_fish.png",
+    "type": "goodIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "market/cargo/ledger"
+  },
+  {
+    "id": "goods.fresh_fish",
+    "path": "/assets/painted2d/goods/fresh_fish.png",
+    "type": "goodIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "market/cargo/ledger"
+  },
+  {
+    "id": "goods.skate",
+    "path": "/assets/painted2d/goods/skate.png",
+    "type": "goodIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "market/cargo/ledger"
+  },
+  {
+    "id": "goods.seaweed",
+    "path": "/assets/painted2d/goods/seaweed.png",
+    "type": "goodIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "market/cargo/ledger"
+  },
+  {
+    "id": "goods.cotton_cloth",
+    "path": "/assets/painted2d/goods/cotton_cloth.png",
+    "type": "goodIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "market/cargo/ledger"
+  },
+  {
+    "id": "goods.hemp_cloth",
+    "path": "/assets/painted2d/goods/hemp_cloth.png",
+    "type": "goodIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "market/cargo/ledger"
+  },
+  {
+    "id": "goods.silk",
+    "path": "/assets/painted2d/goods/silk.png",
+    "type": "goodIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "market/cargo/ledger"
+  },
+  {
+    "id": "goods.silk_thread",
+    "path": "/assets/painted2d/goods/silk_thread.png",
+    "type": "goodIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "market/cargo/ledger"
+  },
+  {
+    "id": "goods.paper",
+    "path": "/assets/painted2d/goods/paper.png",
+    "type": "goodIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "market/cargo/ledger"
+  },
+  {
+    "id": "goods.books",
+    "path": "/assets/painted2d/goods/books.png",
+    "type": "goodIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "market/cargo/ledger"
+  },
+  {
+    "id": "goods.fan",
+    "path": "/assets/painted2d/goods/fan.png",
+    "type": "goodIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "market/cargo/ledger"
+  },
+  {
+    "id": "goods.lumber",
+    "path": "/assets/painted2d/goods/lumber.png",
+    "type": "goodIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "market/cargo/ledger"
+  },
+  {
+    "id": "goods.pine_lumber",
+    "path": "/assets/painted2d/goods/pine_lumber.png",
+    "type": "goodIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "market/cargo/ledger"
+  },
+  {
+    "id": "goods.iron",
+    "path": "/assets/painted2d/goods/iron.png",
+    "type": "goodIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "market/cargo/ledger"
+  },
+  {
+    "id": "goods.silver",
+    "path": "/assets/painted2d/goods/silver.png",
+    "type": "goodIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "market/cargo/ledger"
+  },
+  {
+    "id": "goods.ginseng",
+    "path": "/assets/painted2d/goods/ginseng.png",
+    "type": "goodIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "market/cargo/ledger"
+  },
+  {
+    "id": "goods.herbs",
+    "path": "/assets/painted2d/goods/herbs.png",
+    "type": "goodIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "market/cargo/ledger"
+  },
+  {
+    "id": "goods.horse",
+    "path": "/assets/painted2d/goods/horse.png",
+    "type": "goodIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "market/cargo/ledger"
+  },
+  {
+    "id": "goods.citrus",
+    "path": "/assets/painted2d/goods/citrus.png",
+    "type": "goodIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "market/cargo/ledger"
+  },
+  {
+    "id": "goods.japanese_paper",
+    "path": "/assets/painted2d/goods/japanese_paper.png",
+    "type": "goodIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "market/cargo/ledger"
+  },
+  {
+    "id": "goods.lacquerware",
+    "path": "/assets/painted2d/goods/lacquerware.png",
+    "type": "goodIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "market/cargo/ledger"
+  },
+  {
+    "id": "goods.gunpowder",
+    "path": "/assets/painted2d/goods/gunpowder.png",
+    "type": "goodIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "market/cargo/ledger"
+  },
+  {
+    "id": "goods.tea",
+    "path": "/assets/painted2d/goods/tea.png",
+    "type": "goodIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "market/cargo/ledger"
+  },
+  {
+    "id": "goods.ceramics",
+    "path": "/assets/painted2d/goods/ceramics.png",
+    "type": "goodIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "market/cargo/ledger"
+  },
+  {
+    "id": "ports.hanyang.scene",
+    "path": "/assets/painted2d/scenes/inland-city.webp",
+    "type": "sceneBackground",
+    "size": "1920x1080",
+    "style": "painted2d-rpg-4096",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "inland_city"
+  },
+  {
+    "id": "ports.ganghwa.scene",
+    "path": "/assets/painted2d/scenes/west-mudflat.webp",
+    "type": "sceneBackground",
+    "size": "1920x1080",
+    "style": "painted2d-rpg-4096",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "west_mudflat"
+  },
+  {
+    "id": "ports.chungju.scene",
+    "path": "/assets/painted2d/scenes/inland-city.webp",
+    "type": "sceneBackground",
+    "size": "1920x1080",
+    "style": "painted2d-rpg-4096",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "inland_city"
+  },
+  {
+    "id": "ports.jeonju.scene",
+    "path": "/assets/painted2d/scenes/inland-city.webp",
+    "type": "sceneBackground",
+    "size": "1920x1080",
+    "style": "painted2d-rpg-4096",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "inland_city"
+  },
+  {
+    "id": "ports.gunsan.scene",
+    "path": "/assets/painted2d/scenes/west-mudflat.webp",
+    "type": "sceneBackground",
+    "size": "1920x1080",
+    "style": "painted2d-rpg-4096",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "west_mudflat"
+  },
+  {
+    "id": "ports.mokpo.scene",
+    "path": "/assets/painted2d/scenes/west-mudflat.webp",
+    "type": "sceneBackground",
+    "size": "1920x1080",
+    "style": "painted2d-rpg-4096",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "west_mudflat"
+  },
+  {
+    "id": "ports.heuksando.scene",
+    "path": "/assets/painted2d/scenes/west-mudflat.webp",
+    "type": "sceneBackground",
+    "size": "1920x1080",
+    "style": "painted2d-rpg-4096",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "west_mudflat"
+  },
+  {
+    "id": "ports.yeosu.scene",
+    "path": "/assets/painted2d/scenes/south-port.webp",
+    "type": "sceneBackground",
+    "size": "1920x1080",
+    "style": "painted2d-rpg-4096",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "south_port"
+  },
+  {
+    "id": "ports.tongyeong.scene",
+    "path": "/assets/painted2d/scenes/south-port.webp",
+    "type": "sceneBackground",
+    "size": "1920x1080",
+    "style": "painted2d-rpg-4096",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "south_port"
+  },
+  {
+    "id": "ports.jinhae_jepo.scene",
+    "path": "/assets/painted2d/scenes/south-port.webp",
+    "type": "sceneBackground",
+    "size": "1920x1080",
+    "style": "painted2d-rpg-4096",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "south_port"
+  },
+  {
+    "id": "ports.busanpo.scene",
+    "path": "/assets/painted2d/scenes/south-port.webp",
+    "type": "sceneBackground",
+    "size": "1920x1080",
+    "style": "painted2d-rpg-4096",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "south_port"
+  },
+  {
+    "id": "ports.tsushima.scene",
+    "path": "/assets/painted2d/scenes/tsushima.webp",
+    "type": "sceneBackground",
+    "size": "1920x1080",
+    "style": "painted2d-rpg-4096",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "tsushima"
+  },
+  {
+    "id": "ports.ulsan.scene",
+    "path": "/assets/painted2d/scenes/east-port.webp",
+    "type": "sceneBackground",
+    "size": "1920x1080",
+    "style": "painted2d-rpg-4096",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "east_port"
+  },
+  {
+    "id": "ports.pohang.scene",
+    "path": "/assets/painted2d/scenes/east-port.webp",
+    "type": "sceneBackground",
+    "size": "1920x1080",
+    "style": "painted2d-rpg-4096",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "east_port"
+  },
+  {
+    "id": "ports.gangneung.scene",
+    "path": "/assets/painted2d/scenes/east-port.webp",
+    "type": "sceneBackground",
+    "size": "1920x1080",
+    "style": "painted2d-rpg-4096",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "east_port"
+  },
+  {
+    "id": "ports.daegu.scene",
+    "path": "/assets/painted2d/scenes/inland-city.webp",
+    "type": "sceneBackground",
+    "size": "1920x1080",
+    "style": "painted2d-rpg-4096",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "inland_city"
+  },
+  {
+    "id": "ports.andong.scene",
+    "path": "/assets/painted2d/scenes/inland-city.webp",
+    "type": "sceneBackground",
+    "size": "1920x1080",
+    "style": "painted2d-rpg-4096",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "inland_city"
+  },
+  {
+    "id": "ports.jeju.scene",
+    "path": "/assets/painted2d/scenes/jeju.webp",
+    "type": "sceneBackground",
+    "size": "1920x1080",
+    "style": "painted2d-rpg-4096",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "jeju"
+  },
+  {
+    "id": "ports.pyeongyang.scene",
+    "path": "/assets/painted2d/scenes/inland-city.webp",
+    "type": "sceneBackground",
+    "size": "1920x1080",
+    "style": "painted2d-rpg-4096",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "inland_city"
+  },
+  {
+    "id": "ports.nampo.scene",
+    "path": "/assets/painted2d/scenes/west-mudflat.webp",
+    "type": "sceneBackground",
+    "size": "1920x1080",
+    "style": "painted2d-rpg-4096",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "west_mudflat"
+  },
+  {
+    "id": "ports.sinuiju.scene",
+    "path": "/assets/painted2d/scenes/inland-city.webp",
+    "type": "sceneBackground",
+    "size": "1920x1080",
+    "style": "painted2d-rpg-4096",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "inland_city"
+  },
+  {
+    "id": "ports.wonsan.scene",
+    "path": "/assets/painted2d/scenes/east-port.webp",
+    "type": "sceneBackground",
+    "size": "1920x1080",
+    "style": "painted2d-rpg-4096",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "east_port"
+  },
+  {
+    "id": "ports.hamhung.scene",
+    "path": "/assets/painted2d/scenes/east-port.webp",
+    "type": "sceneBackground",
+    "size": "1920x1080",
+    "style": "painted2d-rpg-4096",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "east_port"
+  },
+  {
+    "id": "ports.chongjin.scene",
+    "path": "/assets/painted2d/scenes/east-port.webp",
+    "type": "sceneBackground",
+    "size": "1920x1080",
+    "style": "painted2d-rpg-4096",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "east_port"
+  },
+  {
+    "id": "ports.kaesong.scene",
+    "path": "/assets/painted2d/scenes/inland-city.webp",
+    "type": "sceneBackground",
+    "size": "1920x1080",
+    "style": "painted2d-rpg-4096",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "inland_city"
+  },
+  {
+    "id": "companions.naraon",
+    "path": "/assets/painted2d/companions/naraon.png",
+    "type": "companionPortrait",
+    "size": "512x512",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "dialogue/party UI"
+  },
+  {
+    "id": "companions.jo_yeonseo",
+    "path": "/assets/painted2d/companions/jo_yeonseo.png",
+    "type": "companionPortrait",
+    "size": "512x512",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "dialogue/party UI"
+  },
+  {
+    "id": "companions.lee_sihyeong",
+    "path": "/assets/painted2d/companions/lee_sihyeong.png",
+    "type": "companionPortrait",
+    "size": "512x512",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "dialogue/party UI"
+  },
+  {
+    "id": "companions.kim_sora",
+    "path": "/assets/painted2d/companions/kim_sora.png",
+    "type": "companionPortrait",
+    "size": "512x512",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "dialogue/party UI"
+  },
+  {
+    "id": "companions.lee_doyun",
+    "path": "/assets/painted2d/companions/lee_doyun.png",
+    "type": "companionPortrait",
+    "size": "512x512",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "dialogue/party UI"
+  },
+  {
+    "id": "companions.park_siwoo",
+    "path": "/assets/painted2d/companions/park_siwoo.png",
+    "type": "companionPortrait",
+    "size": "512x512",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "dialogue/party UI"
+  },
+  {
+    "id": "companions.park_seyeon",
+    "path": "/assets/painted2d/companions/park_seyeon.png",
+    "type": "companionPortrait",
+    "size": "512x512",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "dialogue/party UI"
+  },
+  {
+    "id": "companions.dad",
+    "path": "/assets/painted2d/companions/dad.png",
+    "type": "companionPortrait",
+    "size": "512x512",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "dialogue/party UI"
+  },
+  {
+    "id": "companions.mom",
+    "path": "/assets/painted2d/companions/mom.png",
+    "type": "companionPortrait",
+    "size": "512x512",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "dialogue/party UI"
+  },
+  {
+    "id": "discoveries.discovery_busan_waegwan_road",
+    "path": "/assets/painted2d/discoveries/discovery_busan_waegwan_road.png",
+    "type": "discoveryIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "discovery cards"
+  },
+  {
+    "id": "discoveries.discovery_tongyeong_naval_route",
+    "path": "/assets/painted2d/discoveries/discovery_tongyeong_naval_route.png",
+    "type": "discoveryIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "discovery cards"
+  },
+  {
+    "id": "discoveries.discovery_yeosu_fishing_ground",
+    "path": "/assets/painted2d/discoveries/discovery_yeosu_fishing_ground.png",
+    "type": "discoveryIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "discovery cards"
+  },
+  {
+    "id": "discoveries.discovery_mokpo_tide",
+    "path": "/assets/painted2d/discoveries/discovery_mokpo_tide.png",
+    "type": "discoveryIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "discovery cards"
+  },
+  {
+    "id": "discoveries.discovery_heuksando_reef",
+    "path": "/assets/painted2d/discoveries/discovery_heuksando_reef.png",
+    "type": "discoveryIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "discovery cards"
+  },
+  {
+    "id": "discoveries.discovery_ganghwa_mudflat",
+    "path": "/assets/painted2d/discoveries/discovery_ganghwa_mudflat.png",
+    "type": "discoveryIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "discovery cards"
+  },
+  {
+    "id": "discoveries.discovery_gunsan_grain_port",
+    "path": "/assets/painted2d/discoveries/discovery_gunsan_grain_port.png",
+    "type": "discoveryIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "discovery cards"
+  },
+  {
+    "id": "discoveries.discovery_hanyang_office_ledger",
+    "path": "/assets/painted2d/discoveries/discovery_hanyang_office_ledger.png",
+    "type": "discoveryIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "discovery cards"
+  },
+  {
+    "id": "discoveries.discovery_jeonju_paper_market",
+    "path": "/assets/painted2d/discoveries/discovery_jeonju_paper_market.png",
+    "type": "discoveryIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "discovery cards"
+  },
+  {
+    "id": "discoveries.discovery_daegu_medicine_market",
+    "path": "/assets/painted2d/discoveries/discovery_daegu_medicine_market.png",
+    "type": "discoveryIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "discovery cards"
+  },
+  {
+    "id": "discoveries.discovery_andong_scholar_road",
+    "path": "/assets/painted2d/discoveries/discovery_andong_scholar_road.png",
+    "type": "discoveryIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "discovery cards"
+  },
+  {
+    "id": "discoveries.discovery_chungju_river_dock",
+    "path": "/assets/painted2d/discoveries/discovery_chungju_river_dock.png",
+    "type": "discoveryIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "discovery cards"
+  },
+  {
+    "id": "discoveries.discovery_ulsan_timber_yard",
+    "path": "/assets/painted2d/discoveries/discovery_ulsan_timber_yard.png",
+    "type": "discoveryIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "discovery cards"
+  },
+  {
+    "id": "discoveries.discovery_pohang_east_waterway",
+    "path": "/assets/painted2d/discoveries/discovery_pohang_east_waterway.png",
+    "type": "discoveryIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "discovery cards"
+  },
+  {
+    "id": "discoveries.discovery_gangneung_mountain_pass",
+    "path": "/assets/painted2d/discoveries/discovery_gangneung_mountain_pass.png",
+    "type": "discoveryIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "discovery cards"
+  },
+  {
+    "id": "discoveries.discovery_jeju_horse_ranch",
+    "path": "/assets/painted2d/discoveries/discovery_jeju_horse_ranch.png",
+    "type": "discoveryIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "discovery cards"
+  },
+  {
+    "id": "discoveries.discovery_tsushima_foreign_dock",
+    "path": "/assets/painted2d/discoveries/discovery_tsushima_foreign_dock.png",
+    "type": "discoveryIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "discovery cards"
+  },
+  {
+    "id": "discoveries.discovery_jinhae_old_harbor",
+    "path": "/assets/painted2d/discoveries/discovery_jinhae_old_harbor.png",
+    "type": "discoveryIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "discovery cards"
+  },
+  {
+    "id": "discoveries.discovery_pyeongyang_daedong_ledger",
+    "path": "/assets/painted2d/discoveries/discovery_pyeongyang_daedong_ledger.png",
+    "type": "discoveryIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "discovery cards"
+  },
+  {
+    "id": "discoveries.discovery_nampo_west_gate",
+    "path": "/assets/painted2d/discoveries/discovery_nampo_west_gate.png",
+    "type": "discoveryIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "discovery cards"
+  },
+  {
+    "id": "discoveries.discovery_sinuiju_river_road",
+    "path": "/assets/painted2d/discoveries/discovery_sinuiju_river_road.png",
+    "type": "discoveryIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "discovery cards"
+  },
+  {
+    "id": "discoveries.discovery_wonsan_east_gate",
+    "path": "/assets/painted2d/discoveries/discovery_wonsan_east_gate.png",
+    "type": "discoveryIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "discovery cards"
+  },
+  {
+    "id": "discoveries.discovery_hamhung_mountain_goods",
+    "path": "/assets/painted2d/discoveries/discovery_hamhung_mountain_goods.png",
+    "type": "discoveryIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "discovery cards"
+  },
+  {
+    "id": "discoveries.discovery_chongjin_rough_port",
+    "path": "/assets/painted2d/discoveries/discovery_chongjin_rough_port.png",
+    "type": "discoveryIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "discovery cards"
+  },
+  {
+    "id": "discoveries.discovery_kaesong_trade_gate",
+    "path": "/assets/painted2d/discoveries/discovery_kaesong_trade_gate.png",
+    "type": "discoveryIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "discovery cards"
+  },
+  {
+    "id": "ledger_seals.seal_south_sea",
+    "path": "/assets/painted2d/seals/seal_south_sea.png",
+    "type": "ledgerSealIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "ledger rewards"
+  },
+  {
+    "id": "ledger_seals.seal_west_sea",
+    "path": "/assets/painted2d/seals/seal_west_sea.png",
+    "type": "ledgerSealIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "ledger rewards"
+  },
+  {
+    "id": "ledger_seals.seal_inland",
+    "path": "/assets/painted2d/seals/seal_inland.png",
+    "type": "ledgerSealIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "ledger rewards"
+  },
+  {
+    "id": "ledger_seals.seal_jeju",
+    "path": "/assets/painted2d/seals/seal_jeju.png",
+    "type": "ledgerSealIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "ledger rewards"
+  },
+  {
+    "id": "ledger_seals.seal_waegwan",
+    "path": "/assets/painted2d/seals/seal_waegwan.png",
+    "type": "ledgerSealIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "ledger rewards"
+  },
+  {
+    "id": "ledger_seals.seal_mountain_road",
+    "path": "/assets/painted2d/seals/seal_mountain_road.png",
+    "type": "ledgerSealIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "ledger rewards"
+  },
+  {
+    "id": "ledger_seals.seal_northern_roads",
+    "path": "/assets/painted2d/seals/seal_northern_roads.png",
+    "type": "ledgerSealIcon",
+    "size": "192x192",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "ledger rewards"
+  },
+  {
+    "id": "ui.hub-market",
+    "path": "/assets/painted2d/ui/hub-market.svg",
+    "type": "facilityIcon",
+    "size": "64x64",
+    "style": "ink-brass-teal-vector-pixel-readable",
+    "source": "codex-svg",
+    "license": "project-bound",
+    "notes": "runtime resolver"
+  },
+  {
+    "id": "ui.hub-office",
+    "path": "/assets/painted2d/ui/hub-office.svg",
+    "type": "facilityIcon",
+    "size": "64x64",
+    "style": "ink-brass-teal-vector-pixel-readable",
+    "source": "codex-svg",
+    "license": "project-bound",
+    "notes": "runtime resolver"
+  },
+  {
+    "id": "ui.hub-tavern",
+    "path": "/assets/painted2d/ui/hub-tavern.svg",
+    "type": "facilityIcon",
+    "size": "64x64",
+    "style": "ink-brass-teal-vector-pixel-readable",
+    "source": "codex-svg",
+    "license": "project-bound",
+    "notes": "runtime resolver"
+  },
+  {
+    "id": "ui.hub-shipyard",
+    "path": "/assets/painted2d/ui/hub-shipyard.svg",
+    "type": "facilityIcon",
+    "size": "64x64",
+    "style": "ink-brass-teal-vector-pixel-readable",
+    "source": "codex-svg",
+    "license": "project-bound",
+    "notes": "runtime resolver"
+  },
+  {
+    "id": "ui.hub-map",
+    "path": "/assets/painted2d/ui/hub-map.svg",
+    "type": "facilityIcon",
+    "size": "64x64",
+    "style": "ink-brass-teal-vector-pixel-readable",
+    "source": "codex-svg",
+    "license": "project-bound",
+    "notes": "runtime resolver"
+  },
+  {
+    "id": "ui.hub-fish",
+    "path": "/assets/painted2d/ui/hub-fish.svg",
+    "type": "facilityIcon",
+    "size": "64x64",
+    "style": "ink-brass-teal-vector-pixel-readable",
+    "source": "codex-svg",
+    "license": "project-bound",
+    "notes": "runtime resolver"
+  },
+  {
+    "id": "npc.market-merchant",
+    "path": "/assets/painted2d/npc/market-merchant.png",
+    "type": "npcSprite",
+    "size": "variable",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "runtime resolver"
+  },
+  {
+    "id": "npc.office-clerk",
+    "path": "/assets/painted2d/npc/office-clerk.png",
+    "type": "npcSprite",
+    "size": "variable",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "runtime resolver"
+  },
+  {
+    "id": "npc.tavern-keeper",
+    "path": "/assets/painted2d/npc/tavern-keeper.png",
+    "type": "npcSprite",
+    "size": "variable",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "runtime resolver"
+  },
+  {
+    "id": "npc.shipwright",
+    "path": "/assets/painted2d/npc/shipwright.png",
+    "type": "npcSprite",
+    "size": "variable",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "runtime resolver"
+  },
+  {
+    "id": "npc.protagonist",
+    "path": "/assets/painted2d/npc/protagonist.png",
+    "type": "npcSprite",
+    "size": "variable",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "runtime resolver"
+  },
+  {
+    "id": "npc.fallback",
+    "path": "/assets/painted2d/npc/fallback-npc.png",
+    "type": "npcSprite",
+    "size": "variable",
+    "style": "unified-pixel-painted-rpg-48color",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "runtime resolver"
+  },
+  {
+    "id": "map.korea",
+    "path": "/assets/painted2d/maps/korea-route-map.webp",
+    "type": "mapBackground",
+    "size": "variable",
+    "style": "painted2d-rpg-4096",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "runtime resolver"
+  },
+  {
+    "id": "scene.market",
+    "path": "/assets/painted2d/scenes/market-street.webp",
+    "type": "sceneBackground",
+    "size": "variable",
+    "style": "painted2d-rpg-4096",
+    "source": "imagegen-codex",
+    "license": "project-bound",
+    "notes": "runtime resolver"
+  },
+  {
+    "id": "companion.guide-spirit-default-svg",
+    "path": "/assets/painted2d/companions/guide-spirit-default.svg",
+    "type": "companionPortraitSet",
+    "size": "96x96",
+    "style": "ink-brass-teal-vector-pixel-readable",
+    "source": "codex-svg",
+    "license": "project-bound",
+    "notes": "tutorial guide default replacement"
+  },
+  {
+    "id": "companion.guide-spirit-happy-svg",
+    "path": "/assets/painted2d/companions/guide-spirit-happy.svg",
+    "type": "companionPortraitSet",
+    "size": "96x96",
+    "style": "ink-brass-teal-vector-pixel-readable",
+    "source": "codex-svg",
+    "license": "project-bound",
+    "notes": "tutorial guide happy replacement"
+  },
+  {
+    "id": "companion.guide-spirit-warning-svg",
+    "path": "/assets/painted2d/companions/guide-spirit-warning.svg",
+    "type": "companionPortraitSet",
+    "size": "96x96",
+    "style": "ink-brass-teal-vector-pixel-readable",
+    "source": "codex-svg",
+    "license": "project-bound",
+    "notes": "tutorial guide warning replacement"
+  }
+]

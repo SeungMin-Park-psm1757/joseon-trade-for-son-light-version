@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="office">
+  <path fill="#15363d" d="M11 27h42v26H11z"/>
+  <path fill="#f0cf82" stroke="#271b16" stroke-width="3" d="M6 27 32 10l26 17z"/>
+  <path fill="#894333" d="M13 28h38v6H13z"/>
+  <path fill="#f8edd0" d="M18 35h10v18H18zM36 35h10v18H36z"/>
+  <path fill="#234b54" d="M21 38h4v6h-4zM39 38h4v6h-4z"/>
+  <path fill="none" stroke="#f4c45f" stroke-width="3" d="M11 53h42M32 13v14"/>
+</svg>

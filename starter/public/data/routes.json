@@ -1,0 +1,589 @@
+[
+  {
+    "id": "hanyang-ganghwa",
+    "from": "hanyang",
+    "to": "ganghwa",
+    "mode": "land",
+    "days": 2,
+    "risk": 1,
+    "terrain": [
+      "road",
+      "river"
+    ],
+    "hazards": [
+      "tax_inspection"
+    ],
+    "description": "서울(한양)과 강화 포구를 잇는 관문 루트."
+  },
+  {
+    "id": "hanyang-chungju",
+    "from": "hanyang",
+    "to": "chungju",
+    "mode": "land",
+    "days": 3,
+    "risk": 2,
+    "terrain": [
+      "road",
+      "river"
+    ],
+    "hazards": [
+      "bandits",
+      "flood"
+    ],
+    "description": "서울(한양)에서 영남으로 내려가는 내륙 길."
+  },
+  {
+    "id": "chungju-daegu",
+    "from": "chungju",
+    "to": "daegu",
+    "mode": "land",
+    "days": 4,
+    "risk": 3,
+    "terrain": [
+      "mountain",
+      "road"
+    ],
+    "hazards": [
+      "bandits",
+      "tiger_clan",
+      "snow"
+    ],
+    "description": "소백산맥을 넘는 중위험 내륙 루트."
+  },
+  {
+    "id": "daegu-busanpo",
+    "from": "daegu",
+    "to": "busanpo",
+    "mode": "land",
+    "days": 3,
+    "risk": 2,
+    "terrain": [
+      "road",
+      "plain"
+    ],
+    "hazards": [
+      "bandits"
+    ],
+    "description": "영남 내륙과 부산(부산포)를 잇는 핵심 루트."
+  },
+  {
+    "id": "daegu-andong",
+    "from": "daegu",
+    "to": "andong",
+    "mode": "land",
+    "days": 2,
+    "risk": 2,
+    "terrain": [
+      "road",
+      "mountain"
+    ],
+    "hazards": [
+      "tiger",
+      "bandits"
+    ],
+    "description": "약재와 문방 상품을 잇는 산길."
+  },
+  {
+    "id": "andong-gangneung",
+    "from": "andong",
+    "to": "gangneung",
+    "mode": "land",
+    "days": 4,
+    "risk": 4,
+    "terrain": [
+      "mountain"
+    ],
+    "hazards": [
+      "tiger",
+      "snow",
+      "bandits"
+    ],
+    "description": "태백산맥을 넘는 험한 길."
+  },
+  {
+    "id": "jeonju-gunsan",
+    "from": "jeonju",
+    "to": "gunsan",
+    "mode": "land",
+    "days": 1,
+    "risk": 1,
+    "terrain": [
+      "plain",
+      "road"
+    ],
+    "hazards": [
+      "flood"
+    ],
+    "description": "곡물 산지와 항구를 잇는 초반 추천 루트."
+  },
+  {
+    "id": "jeonju-mokpo",
+    "from": "jeonju",
+    "to": "mokpo",
+    "mode": "land",
+    "days": 3,
+    "risk": 2,
+    "terrain": [
+      "plain",
+      "road"
+    ],
+    "hazards": [
+      "bandits",
+      "flood"
+    ],
+    "description": "호남 내륙과 서남해 항구를 잇는다."
+  },
+  {
+    "id": "jeonju-daegu",
+    "from": "jeonju",
+    "to": "daegu",
+    "mode": "land",
+    "days": 4,
+    "risk": 3,
+    "terrain": [
+      "mountain",
+      "road"
+    ],
+    "hazards": [
+      "bandits",
+      "tiger_clan"
+    ],
+    "description": "호남과 영남을 잇는 내륙 교역 루트."
+  },
+  {
+    "id": "ganghwa-gunsan",
+    "from": "ganghwa",
+    "to": "gunsan",
+    "mode": "sea",
+    "days": 3,
+    "risk": 3,
+    "sea": [
+      "west_sea",
+      "mudflat"
+    ],
+    "hazards": [
+      "mudflat",
+      "fog"
+    ],
+    "tideSensitive": true,
+    "description": "서해 연안 항로. 간조와 안개에 주의."
+  },
+  {
+    "id": "gunsan-mokpo",
+    "from": "gunsan",
+    "to": "mokpo",
+    "mode": "sea",
+    "days": 2,
+    "risk": 3,
+    "sea": [
+      "west_sea",
+      "mudflat"
+    ],
+    "hazards": [
+      "mudflat",
+      "fog",
+      "reef"
+    ],
+    "tideSensitive": true,
+    "description": "서남해 갯벌 항로."
+  },
+  {
+    "id": "mokpo-heuksando",
+    "from": "mokpo",
+    "to": "heuksando",
+    "mode": "sea",
+    "days": 2,
+    "risk": 4,
+    "sea": [
+      "open_sea",
+      "reef"
+    ],
+    "hazards": [
+      "reef",
+      "pirates",
+      "storm"
+    ],
+    "description": "흑산도 어장과 연결되는 위험 항로."
+  },
+  {
+    "id": "mokpo-jeju",
+    "from": "mokpo",
+    "to": "jeju",
+    "mode": "sea",
+    "days": 4,
+    "risk": 5,
+    "sea": [
+      "open_sea"
+    ],
+    "hazards": [
+      "storm",
+      "rough_sea",
+      "pirates"
+    ],
+    "description": "서남해에서 제주로 가는 장거리 항로."
+  },
+  {
+    "id": "heuksando-jeju",
+    "from": "heuksando",
+    "to": "jeju",
+    "mode": "sea",
+    "days": 3,
+    "risk": 5,
+    "sea": [
+      "open_sea",
+      "reef"
+    ],
+    "hazards": [
+      "storm",
+      "reef",
+      "pirates"
+    ],
+    "description": "험하지만 제주 진입을 빠르게 하는 항로."
+  },
+  {
+    "id": "mokpo-yeosu",
+    "from": "mokpo",
+    "to": "yeosu",
+    "mode": "sea",
+    "days": 3,
+    "risk": 4,
+    "sea": [
+      "south_west_sea",
+      "archipelago"
+    ],
+    "hazards": [
+      "reef",
+      "storm",
+      "pirates"
+    ],
+    "description": "남해 다도해를 지나는 섬길."
+  },
+  {
+    "id": "yeosu-tongyeong",
+    "from": "yeosu",
+    "to": "tongyeong",
+    "mode": "sea",
+    "days": 2,
+    "risk": 3,
+    "sea": [
+      "south_sea",
+      "archipelago"
+    ],
+    "hazards": [
+      "reef",
+      "pirates"
+    ],
+    "description": "남해 핵심 연안 항로."
+  },
+  {
+    "id": "tongyeong-jinhae_jepo",
+    "from": "tongyeong",
+    "to": "jinhae_jepo",
+    "mode": "sea",
+    "days": 1,
+    "risk": 2,
+    "sea": [
+      "south_sea"
+    ],
+    "hazards": [
+      "reef"
+    ],
+    "description": "짧은 연안 항로."
+  },
+  {
+    "id": "jinhae_jepo-busanpo",
+    "from": "jinhae_jepo",
+    "to": "busanpo",
+    "mode": "sea",
+    "days": 1,
+    "risk": 2,
+    "sea": [
+      "south_east_sea"
+    ],
+    "hazards": [
+      "pirates"
+    ],
+    "description": "진해(제포)와 부산(부산포)를 잇는 짧은 길."
+  },
+  {
+    "id": "busanpo-tsushima",
+    "from": "busanpo",
+    "to": "tsushima",
+    "mode": "sea",
+    "days": 2,
+    "risk": 4,
+    "sea": [
+      "open_sea",
+      "foreign_gate"
+    ],
+    "hazards": [
+      "pirates",
+      "storm",
+      "foreign_inspection"
+    ],
+    "permitRequired": "waegwan_pass",
+    "description": "첫 버전의 해외 목표 항로. 왜관 허가가 필요하다."
+  },
+  {
+    "id": "busanpo-ulsan",
+    "from": "busanpo",
+    "to": "ulsan",
+    "mode": "sea",
+    "days": 1,
+    "risk": 2,
+    "sea": [
+      "east_sea"
+    ],
+    "hazards": [
+      "storm"
+    ],
+    "description": "안정적인 동남해 연안 항로."
+  },
+  {
+    "id": "ulsan-pohang",
+    "from": "ulsan",
+    "to": "pohang",
+    "mode": "sea",
+    "days": 2,
+    "risk": 3,
+    "sea": [
+      "east_sea"
+    ],
+    "hazards": [
+      "rough_sea",
+      "storm"
+    ],
+    "description": "동해 풍랑을 배우는 항로."
+  },
+  {
+    "id": "pohang-gangneung",
+    "from": "pohang",
+    "to": "gangneung",
+    "mode": "sea",
+    "days": 3,
+    "risk": 4,
+    "sea": [
+      "east_sea"
+    ],
+    "hazards": [
+      "rough_sea",
+      "storm"
+    ],
+    "description": "동해안 장거리 항로."
+  },
+  {
+    "id": "jeju-yeosu",
+    "from": "jeju",
+    "to": "yeosu",
+    "mode": "sea",
+    "days": 4,
+    "risk": 5,
+    "sea": [
+      "open_sea",
+      "south_sea"
+    ],
+    "hazards": [
+      "storm",
+      "pirates",
+      "rough_sea"
+    ],
+    "description": "제주와 남해 중심부를 잇는 장거리 항로."
+  },
+  {
+    "id": "hanyang-kaesong",
+    "from": "hanyang",
+    "to": "kaesong",
+    "mode": "land",
+    "days": 2,
+    "risk": 2,
+    "terrain": [
+      "road",
+      "plain"
+    ],
+    "hazards": [
+      "tax_inspection",
+      "bandits"
+    ],
+    "description": "서울(한양)과 개성을 잇는 북상 관문 길."
+  },
+  {
+    "id": "kaesong-pyeongyang",
+    "from": "kaesong",
+    "to": "pyeongyang",
+    "mode": "land",
+    "days": 3,
+    "risk": 3,
+    "terrain": [
+      "road",
+      "plain"
+    ],
+    "hazards": [
+      "bandits",
+      "tax_inspection"
+    ],
+    "description": "개성에서 평양으로 오르는 북부 내륙 교역로."
+  },
+  {
+    "id": "pyeongyang-sinuiju",
+    "from": "pyeongyang",
+    "to": "sinuiju",
+    "mode": "land",
+    "days": 4,
+    "risk": 3,
+    "terrain": [
+      "road",
+      "river"
+    ],
+    "hazards": [
+      "bandits",
+      "fog"
+    ],
+    "description": "대동강 장터에서 신의주(의주) 압록강 변경으로 이어지는 장거리 수레길."
+  },
+  {
+    "id": "pyeongyang-nampo",
+    "from": "pyeongyang",
+    "to": "nampo",
+    "mode": "land",
+    "days": 1,
+    "risk": 1,
+    "terrain": [
+      "road",
+      "river"
+    ],
+    "hazards": [
+      "tax_inspection"
+    ],
+    "description": "평양과 남포 하구를 잇는 짧은 물류 길."
+  },
+  {
+    "id": "pyeongyang-wonsan",
+    "from": "pyeongyang",
+    "to": "wonsan",
+    "mode": "land",
+    "days": 4,
+    "risk": 4,
+    "terrain": [
+      "mountain",
+      "road"
+    ],
+    "hazards": [
+      "bandits",
+      "tiger",
+      "snow"
+    ],
+    "description": "평양에서 원산으로 산줄기를 넘는 험한 북부 횡단로."
+  },
+  {
+    "id": "nampo-ganghwa",
+    "from": "nampo",
+    "to": "ganghwa",
+    "mode": "sea",
+    "days": 3,
+    "risk": 3,
+    "sea": [
+      "west_sea",
+      "mudflat"
+    ],
+    "hazards": [
+      "mudflat",
+      "fog",
+      "tax_inspection"
+    ],
+    "tideSensitive": true,
+    "description": "남포와 강화 사이의 서해 연안 항로. 갯벌과 안개에 주의."
+  },
+  {
+    "id": "gangneung-wonsan",
+    "from": "gangneung",
+    "to": "wonsan",
+    "mode": "sea",
+    "days": 4,
+    "risk": 4,
+    "sea": [
+      "east_sea",
+      "rough_sea"
+    ],
+    "hazards": [
+      "rough_sea",
+      "storm"
+    ],
+    "description": "강릉에서 원산까지 북상하는 동해 장거리 항로."
+  },
+  {
+    "id": "wonsan-hamhung",
+    "from": "wonsan",
+    "to": "hamhung",
+    "mode": "sea",
+    "days": 2,
+    "risk": 3,
+    "sea": [
+      "east_sea"
+    ],
+    "hazards": [
+      "rough_sea",
+      "storm"
+    ],
+    "description": "원산과 함흥을 잇는 동해 북부 연안 항로."
+  },
+  {
+    "id": "hamhung-chongjin",
+    "from": "hamhung",
+    "to": "chongjin",
+    "mode": "land",
+    "days": 5,
+    "risk": 5,
+    "terrain": [
+      "mountain",
+      "frontier",
+      "tumen_border"
+    ],
+    "hazards": [
+      "bandits",
+      "snow",
+      "tax_inspection"
+    ],
+    "description": "함흥에서 청진(경흥) 두만강 변경으로 오르는 길고 험한 북방 수레길."
+  },
+  {
+    "id": "uiju-qing_yalu_market",
+    "from": "sinuiju",
+    "to": "qing_yalu_market",
+    "mode": "land",
+    "days": 1,
+    "risk": 4,
+    "terrain": [
+      "border_trade",
+      "river",
+      "yalu_border"
+    ],
+    "hazards": [
+      "tax_inspection",
+      "fog",
+      "bandits"
+    ],
+    "permitRequired": "qing_border_pass",
+    "description": "신의주(의주)에서 압록강 건너 청 상인을 만나는 국경 장시길. 허가 문서가 있어야 안전하다."
+  },
+  {
+    "id": "gyeongheung-tumen_north_market",
+    "from": "chongjin",
+    "to": "tumen_north_market",
+    "mode": "land",
+    "days": 1,
+    "risk": 5,
+    "terrain": [
+      "border_trade",
+      "river",
+      "tumen_border",
+      "frontier"
+    ],
+    "hazards": [
+      "tax_inspection",
+      "snow",
+      "bandits"
+    ],
+    "permitRequired": "tumen_trade_pass",
+    "description": "청진(경흥)에서 두만강 너머 북방 상인을 만나는 작은 국경 장시길."
+  }
+]

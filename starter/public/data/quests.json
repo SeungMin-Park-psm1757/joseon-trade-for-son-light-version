@@ -1,0 +1,321 @@
+[
+  {
+    "id": "tutorial_first_trade",
+    "name": "첫 장사",
+    "chapter": 1,
+    "giver": "부산(부산포) 객주",
+    "description": "부산(부산포)에서 면포를 사서 대구에 팔아 첫 이익을 남긴다.",
+    "objectives": [
+      {
+        "type": "buy",
+        "good": "cotton_cloth",
+        "amount": 2,
+        "at": "busanpo"
+      },
+      {
+        "type": "sell",
+        "good": "cotton_cloth",
+        "amount": 2,
+        "at": "daegu"
+      }
+    ],
+    "rewards": {
+      "money": 80,
+      "merchantRep": 2,
+      "xp": 5
+    }
+  },
+  {
+    "id": "salt_to_daegu",
+    "name": "소금은 산길을 넘고",
+    "chapter": 1,
+    "giver": "목포(목포진) 소금 상인",
+    "description": "목포(목포진) 또는 군산(군산포)의 소금을 대구에 팔아 내륙 수요를 배운다.",
+    "objectives": [
+      {
+        "type": "sell",
+        "good": "salt",
+        "amount": 5,
+        "at": "daegu"
+      }
+    ],
+    "rewards": {
+      "money": 120,
+      "merchantRep": 2,
+      "xp": 6
+    }
+  },
+  {
+    "id": "fish_for_inland",
+    "name": "건어물 장사",
+    "chapter": 1,
+    "giver": "통영(통제영) 어시장",
+    "description": "통영(통제영)의 건어물을 전주 또는 대구에 납품한다.",
+    "objectives": [
+      {
+        "type": "sell",
+        "good": "dried_fish",
+        "amount": 4,
+        "atAny": [
+          "jeonju",
+          "daegu"
+        ]
+      }
+    ],
+    "rewards": {
+      "money": 90,
+      "fisherRep": 1,
+      "xp": 5
+    }
+  },
+  {
+    "id": "buy_handcart",
+    "name": "손수레 장만",
+    "chapter": 1,
+    "giver": "서울(한양) 장부쟁이",
+    "description": "초반 수익을 모아 손수레를 구입하고 짐칸을 늘린다.",
+    "objectives": [
+      {
+        "type": "ownCart",
+        "cart": "handcart"
+      }
+    ],
+    "rewards": {
+      "money": 50,
+      "merchantRep": 1,
+      "xp": 4
+    }
+  },
+  {
+    "id": "south_sea_route",
+    "name": "남해 바닷길 열기",
+    "chapter": 2,
+    "giver": "통영(통제영) 수군 초소",
+    "description": "여수-통영(통제영)-부산(부산포) 바닷길을 모두 방문한다.",
+    "objectives": [
+      {
+        "type": "visit",
+        "ports": [
+          "yeosu",
+          "tongyeong",
+          "busanpo"
+        ]
+      }
+    ],
+    "rewards": {
+      "money": 180,
+      "navalRep": 2,
+      "xp": 8
+    }
+  },
+  {
+    "id": "repair_training",
+    "name": "응급 수리 훈련",
+    "chapter": 2,
+    "giver": "울산 조선공",
+    "description": "목재를 보유한 상태에서 선박 수리를 1회 완료한다.",
+    "objectives": [
+      {
+        "type": "repairShip",
+        "count": 1
+      }
+    ],
+    "rewards": {
+      "money": 70,
+      "navigationXp": 2,
+      "xp": 5
+    }
+  },
+  {
+    "id": "jeju_delivery",
+    "name": "제주로 가는 첫 짐",
+    "chapter": 2,
+    "giver": "목포(목포진) 객주",
+    "description": "쌀과 소금을 제주에 납품한다.",
+    "objectives": [
+      {
+        "type": "sell",
+        "good": "rice",
+        "amount": 5,
+        "at": "jeju"
+      },
+      {
+        "type": "sell",
+        "good": "salt",
+        "amount": 3,
+        "at": "jeju"
+      }
+    ],
+    "rewards": {
+      "money": 260,
+      "merchantRep": 3,
+      "xp": 12
+    }
+  },
+  {
+    "id": "jeju_horse_trade",
+    "name": "제주의 말",
+    "chapter": 3,
+    "giver": "제주 목장지기",
+    "description": "제주 말을 서울(한양) 또는 부산(부산포)에 팔아 고가 상품 운송을 배운다.",
+    "objectives": [
+      {
+        "type": "sell",
+        "good": "horse",
+        "amount": 1,
+        "atAny": [
+          "hanyang",
+          "busanpo"
+        ]
+      }
+    ],
+    "rewards": {
+      "money": 350,
+      "merchantRep": 4,
+      "xp": 14
+    }
+  },
+  {
+    "id": "waegwan_pass_intro",
+    "name": "왜관 허가장",
+    "chapter": 3,
+    "giver": "부산(부산포) 왜관 통역",
+    "description": "부산(부산포)에서 인삼 1개와 면포 3개를 준비해 쓰시마(대마도) 교역 허가를 받는다.",
+    "objectives": [
+      {
+        "type": "deliver",
+        "goods": {
+          "ginseng": 1,
+          "cotton_cloth": 3
+        },
+        "at": "busanpo"
+      }
+    ],
+    "rewards": {
+      "money": 120,
+      "permit": "waegwan_pass",
+      "foreignRep": 3,
+      "xp": 12
+    }
+  },
+  {
+    "id": "tsushima_first_trade",
+    "name": "쓰시마(대마도) 첫 교역",
+    "chapter": 4,
+    "giver": "쓰시마(대마도) 상인",
+    "description": "왜관 허가장을 이용해 쓰시마(대마도)에 도착하고 면포를 판매한다.",
+    "requires": {
+      "permit": "waegwan_pass"
+    },
+    "objectives": [
+      {
+        "type": "visit",
+        "ports": [
+          "tsushima"
+        ]
+      },
+      {
+        "type": "sell",
+        "good": "cotton_cloth",
+        "amount": 3,
+        "at": "tsushima"
+      }
+    ],
+    "rewards": {
+      "money": 300,
+      "foreignRep": 3,
+      "xp": 15
+    }
+  },
+  {
+    "id": "pirate_warning",
+    "name": "해적 경계",
+    "chapter": 4,
+    "giver": "통영(통제영) 수군 초소",
+    "description": "해적 조우에서 도주 또는 승리하여 생존한다.",
+    "objectives": [
+      {
+        "type": "surviveCombat",
+        "enemyTag": "pirate",
+        "count": 1
+      }
+    ],
+    "rewards": {
+      "money": 220,
+      "navalRep": 3,
+      "xp": 12
+    }
+  },
+  {
+    "id": "qing_border_pass_intro",
+    "name": "청 교역 허가",
+    "chapter": 5,
+    "giver": "신의주(의주) 관청 서리",
+    "description": "신의주(의주)에서 인삼과 한지를 준비해 압록강 단둥 방면(책문 장시)에 갈 허가를 받는다.",
+    "requires": {
+      "cart": "oxcart"
+    },
+    "objectives": [
+      {
+        "type": "deliver",
+        "goods": {
+          "ginseng": 1,
+          "paper": 3
+        },
+        "at": "sinuiju"
+      }
+    ],
+    "rewards": {
+      "money": 260,
+      "permit": "qing_border_pass",
+      "merchantRep": 3,
+      "officialRep": 2,
+      "xp": 18
+    }
+  },
+  {
+    "id": "tumen_trade_pass_intro",
+    "name": "두만강 통행 허가",
+    "chapter": 5,
+    "giver": "청진(경흥) 변경 군관",
+    "description": "청진(경흥)에서 쌀과 면포를 준비해 두만강 북방(북방장)에 갈 통행 허가를 받는다.",
+    "requires": {
+      "cart": "oxcart"
+    },
+    "objectives": [
+      {
+        "type": "deliver",
+        "goods": {
+          "rice": 5,
+          "cotton_cloth": 3
+        },
+        "at": "chongjin"
+      }
+    ],
+    "rewards": {
+      "money": 300,
+      "permit": "tumen_trade_pass",
+      "officialRep": 3,
+      "navalRep": 1,
+      "xp": 20
+    }
+  },
+  {
+    "id": "tiger_clan_hunt",
+    "name": "호랑이대의 길목",
+    "chapter": 4,
+    "giver": "대구 관아",
+    "description": "대구-전주 또는 대구-충주 산길의 호랑이대 이벤트를 해결한다.",
+    "objectives": [
+      {
+        "type": "resolveEvent",
+        "event": "tiger_clan"
+      }
+    ],
+    "rewards": {
+      "money": 280,
+      "officialRep": 4,
+      "xp": 15
+    }
+  }
+]

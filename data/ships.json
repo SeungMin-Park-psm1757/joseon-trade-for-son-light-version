@@ -1,0 +1,173 @@
+[
+  {
+    "id": "dugout_boat",
+    "name": "나룻배",
+    "price": 450,
+    "cargo": 3,
+    "speed": 2,
+    "durability": 20,
+    "draft": 0,
+    "crewMin": 1,
+    "crewMax": 2,
+    "cannonSlots": 0,
+    "combat": 0,
+    "fishingBonus": 0.1,
+    "monthlyUpkeep": 2,
+    "allowedWaters": [
+      "river",
+      "coastal"
+    ],
+    "description": "강과 가까운 바다만 조심히 다니는 작은 배. 비상용 목표."
+  },
+  {
+    "id": "small_sailboat",
+    "name": "작은 돛단배",
+    "price": 1200,
+    "cargo": 8,
+    "speed": 3,
+    "durability": 35,
+    "draft": 1,
+    "crewMin": 2,
+    "crewMax": 5,
+    "cannonSlots": 0,
+    "combat": 1,
+    "fishingBonus": 0.15,
+    "monthlyUpkeep": 5,
+    "allowedWaters": [
+      "coastal",
+      "south_sea",
+      "west_sea"
+    ],
+    "description": "정우가 처음 가진 시작 배. 가까운 바닷길 교역에 적합."
+  },
+  {
+    "id": "fishing_boat",
+    "name": "어선",
+    "price": 2600,
+    "cargo": 10,
+    "speed": 3,
+    "durability": 45,
+    "draft": 1,
+    "crewMin": 2,
+    "crewMax": 6,
+    "cannonSlots": 0,
+    "combat": 1,
+    "fishingBonus": 0.45,
+    "monthlyUpkeep": 8,
+    "allowedWaters": [
+      "coastal",
+      "south_sea",
+      "west_sea"
+    ],
+    "description": "어업으로 꾸준히 돈을 벌고 남해를 준비할 때 좋은 배."
+  },
+  {
+    "id": "coastal_merchant",
+    "name": "연안 상선",
+    "price": 6500,
+    "cargo": 20,
+    "speed": 4,
+    "durability": 75,
+    "draft": 2,
+    "crewMin": 4,
+    "crewMax": 10,
+    "cannonSlots": 1,
+    "combat": 2,
+    "fishingBonus": 0.05,
+    "monthlyUpkeep": 18,
+    "allowedWaters": [
+      "coastal",
+      "south_sea",
+      "west_sea",
+      "east_sea"
+    ],
+    "description": "큰 짐칸으로 남해와 동해 장사를 본격적으로 열어 주는 배."
+  },
+  {
+    "id": "swift_sloop",
+    "name": "쾌속선",
+    "price": 9500,
+    "cargo": 16,
+    "speed": 6,
+    "durability": 65,
+    "draft": 1,
+    "crewMin": 4,
+    "crewMax": 9,
+    "cannonSlots": 1,
+    "combat": 3,
+    "fishingBonus": 0.0,
+    "monthlyUpkeep": 24,
+    "allowedWaters": [
+      "coastal",
+      "open_sea",
+      "south_sea",
+      "east_sea"
+    ],
+    "description": "귀중품과 빠른 의뢰에 강하지만 짐칸은 조금 작다."
+  },
+  {
+    "id": "armed_merchant",
+    "name": "무장 상선",
+    "price": 18000,
+    "cargo": 26,
+    "speed": 4,
+    "durability": 120,
+    "draft": 2,
+    "crewMin": 8,
+    "crewMax": 18,
+    "cannonSlots": 2,
+    "combat": 5,
+    "fishingBonus": 0.0,
+    "monthlyUpkeep": 42,
+    "allowedWaters": [
+      "coastal",
+      "open_sea",
+      "south_sea",
+      "west_sea",
+      "east_sea"
+    ],
+    "description": "위험한 바닷길에서 상단을 지켜 주는 든든한 상선."
+  },
+  {
+    "id": "grain_transport",
+    "name": "조운선형 상선",
+    "price": 15000,
+    "cargo": 42,
+    "speed": 3,
+    "durability": 110,
+    "draft": 3,
+    "crewMin": 6,
+    "crewMax": 16,
+    "cannonSlots": 1,
+    "combat": 2,
+    "fishingBonus": 0.0,
+    "monthlyUpkeep": 36,
+    "allowedWaters": [
+      "coastal",
+      "west_sea",
+      "south_sea"
+    ],
+    "description": "쌀·소금 같은 무거운 짐을 크게 실을 수 있지만 물때를 살펴야 한다."
+  },
+  {
+    "id": "large_merchant",
+    "name": "대형 상선",
+    "price": 42000,
+    "cargo": 60,
+    "speed": 3,
+    "durability": 180,
+    "draft": 3,
+    "crewMin": 12,
+    "crewMax": 28,
+    "cannonSlots": 2,
+    "combat": 4,
+    "fishingBonus": 0.0,
+    "monthlyUpkeep": 80,
+    "allowedWaters": [
+      "open_sea",
+      "south_sea",
+      "east_sea"
+    ],
+    "description": "후반 큰 장사를 위한 꿈의 배. 오래 돈을 모아야 하는 장기 목표."
+  }
+]

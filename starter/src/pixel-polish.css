@@ -1,0 +1,554 @@
+/* Last-loaded casual 2D Joseon fantasy RPG art direction layer. */
+.port-scene-stage img,
+.route-destination-scene,
+.market-npc,
+.facility-npc,
+.ship-caller-npc,
+.hub-hotspot img,
+.pixel-vehicle {
+  image-rendering: auto;
+  shape-rendering: geometricPrecision;
+}
+
+.pixel-good-icon,
+.guide-spirit,
+.vehicle-token,
+.start-art,
+.start-portrait,
+.route-result-card img,
+.quest-step img,
+.quest-reward-mini img,
+.tutorial-step-icon img,
+.discovery-tile img,
+.ledger-seal-card img,
+.notice-avatar-wrap img,
+.equipment-notice-hero img {
+  image-rendering: auto !important;
+  shape-rendering: geometricPrecision !important;
+}
+
+.start-art {
+  filter: saturate(1.18) contrast(1.03);
+}
+
+.start-panel {
+  border: 3px solid rgba(255, 222, 132, 0.86);
+  background:
+    linear-gradient(180deg, rgba(19, 34, 53, 0.86), rgba(13, 24, 38, 0.78)),
+    radial-gradient(circle at 20% 0%, rgba(255, 220, 99, 0.24), transparent 36%);
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, 0.18),
+    0 18px 38px rgba(0, 0, 0, 0.3);
+}
+
+.start-portrait {
+  border-color: rgba(255, 222, 132, 0.96) !important;
+  border-radius: 22px !important;
+  background: #ffe8a3;
+  box-shadow: 0 8px 0 rgba(49, 69, 93, 0.28);
+}
+
+.tutorial-coach {
+  right: 14px !important;
+  left: auto !important;
+  bottom: 10px !important;
+  width: min(560px, calc(100vw - 24px)) !important;
+  max-width: none !important;
+  min-height: 56px !important;
+  grid-template-columns: 42px minmax(0, 1fr) 124px 92px !important;
+  gap: 8px !important;
+  padding: 7px 9px !important;
+  border: 3px solid rgba(255, 222, 132, 0.82) !important;
+  border-radius: 16px !important;
+  background:
+    linear-gradient(180deg, rgba(18, 34, 48, 0.94), rgba(8, 22, 32, 0.92)),
+    radial-gradient(circle at 12% 10%, rgba(255, 216, 91, 0.28), transparent 28%) !important;
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, 0.12),
+    0 9px 0 rgba(0, 0, 0, 0.2),
+    0 18px 34px rgba(0, 0, 0, 0.26) !important;
+}
+
+.tutorial-coach .tutorial-path {
+  position: static !important;
+  display: grid !important;
+  width: 124px !important;
+  max-width: 124px !important;
+  grid-template-columns: repeat(4, 28px) !important;
+  gap: 3px !important;
+  justify-content: end !important;
+  overflow: visible !important;
+}
+
+.tutorial-coach .tutorial-step-card {
+  width: 28px !important;
+  min-height: 38px !important;
+  padding: 2px !important;
+}
+
+.tutorial-coach .tutorial-step-icon,
+.tutorial-coach .tutorial-step-icon .good-icon,
+.tutorial-coach .tutorial-step-icon img {
+  width: 22px !important;
+  height: 22px !important;
+}
+
+.tutorial-coach .tutorial-step-card strong,
+.tutorial-coach .tutorial-step-card small {
+  display: none !important;
+}
+
+.tutorial-coach .coach-portrait.guide-spirit {
+  width: 42px !important;
+  height: 42px !important;
+}
+
+.tutorial-coach .eyebrow,
+.tutorial-coach strong,
+.tutorial-coach p {
+  color: #fff5df !important;
+}
+
+.tutorial-coach p {
+  display: -webkit-box !important;
+  overflow: hidden !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  font-size: 11px !important;
+  line-height: 1.25 !important;
+}
+
+.tutorial-coach .coach-action {
+  position: relative !important;
+  z-index: 2 !important;
+  min-width: 86px !important;
+  border-color: rgba(255, 222, 132, 0.88) !important;
+}
+
+.facility-scene,
+.market-scene-stage {
+  background-size: cover;
+  background-position: center;
+  background-color: #2d718f;
+}
+
+.facility-npc,
+.ship-caller-npc {
+  object-fit: contain;
+  filter: drop-shadow(4px 5px 0 rgba(44, 31, 20, 0.34));
+}
+
+.hub-hotspot {
+  border: 3px solid rgba(49, 69, 93, 0.82) !important;
+  border-radius: 14px;
+  background:
+    linear-gradient(180deg, #fff4c7, #f4c66b 56%, #c88035);
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, 0.42),
+    0 7px 0 rgba(49, 69, 93, 0.28),
+    0 14px 24px rgba(0, 0, 0, 0.18);
+  color: #26384d;
+}
+
+.hub-hotspot img {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 0 rgba(70, 50, 30, 0.25));
+}
+
+.hub-hotspot.active,
+.hub-hotspot:hover,
+.hub-hotspot:focus-visible {
+  background: linear-gradient(180deg, #fff8d8, #ffd75c 58%, #df7f38) !important;
+  border-color: rgba(255, 239, 157, 0.98) !important;
+  transform: translateY(-2px);
+}
+
+.pixel-good-icon {
+  overflow: visible;
+  filter: drop-shadow(0 3px 0 rgba(49, 69, 93, 0.18));
+}
+
+.good-stall-token .pixel-good-icon,
+.trade-popover-icon.pixel-good-icon {
+  border-radius: 13px;
+}
+
+.market-scene-stage::before {
+  background:
+    linear-gradient(90deg, rgba(12, 22, 26, 0.46) 0%, rgba(12, 22, 26, 0.12) 42%, rgba(12, 22, 26, 0.08) 100%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.14), rgba(255, 255, 255, 0.02) 55%);
+}
+
+.market-npc {
+  left: 14px !important;
+  bottom: 76px !important;
+  width: clamp(82px, 12vw, 128px) !important;
+  height: auto !important;
+  max-height: 72% !important;
+  object-fit: contain;
+  filter: drop-shadow(5px 6px 0 rgba(34, 25, 18, 0.34));
+}
+
+.market-stall-shelf,
+.market-stall-shelf.free-stall-shelf {
+  top: 64px !important;
+  left: 132px !important;
+  right: 12px !important;
+  bottom: 12px !important;
+  height: auto !important;
+  max-height: none !important;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(82px, 1fr));
+  grid-auto-rows: minmax(84px, auto);
+  gap: 8px;
+  overflow: auto;
+  align-content: start;
+}
+
+.market-stall-shelf.free-stall-shelf .good-stall-token {
+  position: relative !important;
+  left: auto !important;
+  top: auto !important;
+  width: auto !important;
+}
+
+.good-stall-token {
+  min-height: 84px;
+  grid-template-rows: auto minmax(34px, auto) auto auto;
+  padding: 6px 5px;
+  border-radius: 14px;
+  border: 3px solid rgba(49, 69, 93, 0.58);
+  background: linear-gradient(180deg, rgba(255, 248, 218, 0.98), rgba(248, 213, 123, 0.98));
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, 0.38),
+    0 6px 0 rgba(49, 69, 93, 0.14);
+}
+
+.good-stall-token strong {
+  line-height: 1.12;
+  white-space: normal;
+}
+
+.good-stall-token small,
+.good-stall-token em {
+  line-height: 1.05;
+  white-space: nowrap;
+}
+
+.market-scene-stage:has(.trade-popover) .market-stall-shelf {
+  right: 404px !important;
+  grid-template-columns: repeat(2, minmax(74px, 1fr));
+}
+
+.market-scene-stage:has(.trade-popover) .market-npc {
+  opacity: 0.74;
+  transform: translateZ(0) scale(0.92);
+}
+
+.trade-popover {
+  max-height: calc(100% - 70px);
+  overflow: auto;
+}
+
+.trade-popover-main strong,
+.trade-popover-main span,
+.fairy-trade-note span {
+  white-space: normal;
+}
+
+.pixel-vehicle {
+  background: #fff2c6;
+  border: 3px solid rgba(49, 69, 93, 0.38);
+  border-radius: 14px;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.36), 0 5px 0 rgba(49, 69, 93, 0.16);
+}
+
+.route-destination-scene {
+  object-fit: cover;
+  background: #2d718f;
+}
+
+.map-board {
+  background:
+    radial-gradient(circle at 45% 50%, rgba(255, 242, 158, 0.26), transparent 35%),
+    linear-gradient(90deg, #2ca9ca 0 31%, #80deea 31% 74%, #1f88b8 74% 100%) !important;
+  border-color: rgba(255, 221, 118, 0.72) !important;
+}
+
+.map-sea { fill: rgba(80, 155, 174, 0.42); }
+.map-sea.central-sea { fill: rgba(112, 191, 203, 0.2); }
+.map-sea.south-sea { fill: rgba(46, 122, 143, 0.18); }
+.korea-land-shadow { fill: rgba(34, 57, 42, 0.26); transform: translate(1px, 1px); }
+.korea-land-main,
+.korea-island {
+  fill: #74c763 !important;
+  stroke: #ffe59a !important;
+  stroke-width: 1.65 !important;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.korea-north-region { fill: #56a762 !important; opacity: 0.9; }
+.korea-coast-highlight {
+  fill: none;
+  stroke: rgba(255, 243, 181, 0.78);
+  stroke-width: 1.1;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+.korea-mountain {
+  fill: none;
+  stroke: rgba(49, 69, 93, 0.34) !important;
+  stroke-width: 2.4 !important;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.river-line {
+  fill: none;
+  stroke: rgba(96, 172, 184, 0.88) !important;
+  stroke-width: 1.35 !important;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+.dmz-line {
+  stroke: rgba(255, 245, 192, 0.72) !important;
+  stroke-width: 1.2 !important;
+  stroke-dasharray: 2 2;
+  vector-effect: non-scaling-stroke;
+}
+.southern-islets,
+.sea-route-hint {
+  fill: none;
+  stroke-linecap: square;
+  vector-effect: non-scaling-stroke;
+}
+.southern-islets {
+  stroke: rgba(255, 239, 171, 0.78) !important;
+  stroke-width: 1.7 !important;
+}
+.sea-route-hint {
+  stroke: rgba(116, 221, 220, 0.52) !important;
+  stroke-width: 1.1 !important;
+  stroke-dasharray: 2 2;
+}
+.sea-label {
+  fill: rgba(239, 255, 255, 0.56);
+  font-size: 6px;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+.island-label {
+  fill: rgba(239, 255, 255, 0.68);
+  font-size: 3px;
+}
+
+.port-dot {
+  width: 26px !important;
+  min-height: 24px !important;
+  height: 26px !important;
+  border-color: rgba(255, 235, 145, 0.92) !important;
+  box-shadow: 0 0 0 3px rgba(49, 69, 93, 0.34), 0 5px 0 rgba(49, 69, 93, 0.22) !important;
+}
+
+.port-dot::before {
+  inset: 7px !important;
+}
+
+.port-dot.current,
+.port-dot.selected-destination {
+  width: 32px !important;
+  height: 32px !important;
+  box-shadow: 0 0 0 4px rgba(255, 216, 91, 0.55), 0 0 18px rgba(255, 216, 91, 0.7) !important;
+}
+
+.port-dot span {
+  top: 23px;
+  max-width: 62px;
+  font-size: 8.5px;
+}
+
+@media (min-width: 1200px) {
+  .market-scene-stage:has(.trade-popover) .market-stall-shelf {
+    right: 414px !important;
+    grid-template-columns: repeat(3, minmax(78px, 1fr));
+  }
+}
+
+@media (max-width: 960px) {
+  .tutorial-coach {
+    width: min(560px, calc(100vw - 24px)) !important;
+    grid-template-columns: 42px minmax(0, 1fr) 124px 86px !important;
+  }
+
+  .facility-panel {
+    min-height: 136px;
+    grid-template-columns: 86px minmax(0, 1fr);
+  }
+
+  .facility-scene {
+    min-height: 118px;
+  }
+
+  .facility-npc {
+    height: 112px;
+    max-width: 72px;
+  }
+
+  .hub-hotspot {
+    width: 78px;
+    min-height: 62px;
+  }
+
+  .hub-hotspot img,
+  .hub-hotspot .good-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .market-npc {
+    left: 8px !important;
+    bottom: 68px !important;
+    width: 76px !important;
+    max-height: 62% !important;
+  }
+
+  .market-stall-shelf,
+  .market-stall-shelf.free-stall-shelf {
+    left: 90px !important;
+    top: 56px !important;
+    grid-template-columns: repeat(3, minmax(58px, 1fr));
+    grid-auto-rows: minmax(68px, auto);
+    gap: 6px;
+  }
+
+  .good-stall-token {
+    min-height: 68px;
+    padding: 4px;
+    border-width: 2px;
+  }
+
+  .good-stall-token .market-good-icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .market-scene-stage:has(.trade-popover) .market-stall-shelf {
+    display: grid !important;
+    right: 344px !important;
+    grid-template-columns: repeat(2, minmax(58px, 1fr));
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .market-scene-stage:has(.trade-popover) .market-npc {
+    opacity: 0.58;
+  }
+
+  .trade-popover {
+    left: auto !important;
+    right: 8px !important;
+    top: 50px !important;
+    width: min(326px, calc(100% - 112px)) !important;
+    max-height: min(214px, calc(100% - 68px));
+    grid-template-columns: 48px minmax(0, 1fr) !important;
+    gap: 5px !important;
+    padding: 6px !important;
+  }
+
+  .trade-popover-icon.pixel-good-icon,
+  .trade-popover-icon {
+    width: 48px !important;
+    height: 48px !important;
+  }
+
+  .trade-popover-main strong {
+    font-size: 16px !important;
+  }
+
+  .trade-popover-main > span {
+    font-size: 10px !important;
+    line-height: 1.15;
+  }
+
+  .trade-detail-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 4px;
+  }
+
+  .trade-detail-grid span {
+    min-height: 31px;
+    padding: 3px 4px;
+    font-size: 10px;
+    line-height: 1.1;
+  }
+
+  .trade-detail-grid b {
+    font-size: 8px;
+  }
+
+  .market-flags {
+    gap: 3px;
+  }
+
+  .market-flags span {
+    font-size: 9px;
+  }
+
+  .price-reason-line,
+  .fairy-trade-note,
+  .sell-destination-chip {
+    display: none !important;
+  }
+
+  .trade-popover-actions {
+    grid-column: 1 / -1 !important;
+    grid-row: auto !important;
+    align-self: start;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 6px;
+    margin-top: 4px;
+  }
+
+  .trade-popover-actions .trade-icon {
+    min-height: 52px !important;
+    padding: 4px !important;
+    font-size: 12px;
+  }
+
+  .port-dot {
+    width: 21px !important;
+    min-height: 21px !important;
+    height: 21px !important;
+  }
+
+  .port-dot::before {
+    inset: 6px !important;
+  }
+
+  .port-dot.current,
+  .port-dot.selected-destination {
+    width: 26px !important;
+    height: 26px !important;
+  }
+
+  .port-dot span {
+    top: 20px;
+    max-width: 48px;
+    font-size: 7.5px;
+    opacity: 0;
+    transform: translateX(-50%) translateY(-2px);
+    transition: opacity 120ms ease, transform 120ms ease;
+  }
+
+  .port-dot.current span,
+  .port-dot.selected-destination span,
+  .port-dot.sale-target span,
+  .port-dot:hover span,
+  .port-dot:focus-visible span {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}

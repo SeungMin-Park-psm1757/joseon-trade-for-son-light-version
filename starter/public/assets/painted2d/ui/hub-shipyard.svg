@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="shipyard">
+  <path fill="#78a8b2" d="M4 42h56v12H4z"/>
+  <path fill="#6e3d2a" stroke="#271b16" stroke-width="3" d="M9 37c7 10 32 12 46 0-3 10-9 16-23 16S13 47 9 37z"/>
+  <path fill="#e9ddb4" stroke="#271b16" stroke-width="3" d="M31 10v29M31 13l18 22H31z"/>
+  <path fill="none" stroke="#f1c865" stroke-width="3" d="M15 42h34"/>
+  <path fill="#244a54" d="M12 47h41v3H12z"/>
+</svg>

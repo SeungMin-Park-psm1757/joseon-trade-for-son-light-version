@@ -1,0 +1,89 @@
+[
+  {
+    "id": "backpack",
+    "name": "지게",
+    "price": 0,
+    "cargo": 2,
+    "speed": 1,
+    "durability": 999,
+    "terrain": [
+      "plain",
+      "mountain",
+      "forest"
+    ],
+    "monthlyUpkeep": 0,
+    "description": "시작용 운반 수단."
+  },
+  {
+    "id": "handcart",
+    "name": "손수레",
+    "price": 480,
+    "cargo": 5,
+    "speed": 2,
+    "durability": 30,
+    "terrain": [
+      "plain",
+      "road"
+    ],
+    "monthlyUpkeep": 1,
+    "description": "첫 장사를 여러 번 성공하면 노릴 수 있는 초반 큰 목표."
+  },
+  {
+    "id": "packhorse",
+    "name": "짐말",
+    "price": 1200,
+    "cargo": 8,
+    "speed": 3,
+    "durability": 40,
+    "terrain": [
+      "plain",
+      "road",
+      "mountain"
+    ],
+    "monthlyUpkeep": 4,
+    "description": "산길을 더 빠르고 안전하게 지나가기 좋은 동물 운반 수단."
+  },
+  {
+    "id": "ox_cart",
+    "name": "소달구지",
+    "price": 2800,
+    "cargo": 16,
+    "speed": 2,
+    "durability": 65,
+    "terrain": [
+      "plain",
+      "road"
+    ],
+    "monthlyUpkeep": 6,
+    "description": "느리지만 짐을 많이 싣는 중반 내륙 장사의 핵심."
+  },
+  {
+    "id": "merchant_wagon",
+    "name": "마차",
+    "price": 6200,
+    "cargo": 26,
+    "speed": 4,
+    "durability": 55,
+    "terrain": [
+      "road",
+      "plain"
+    ],
+    "monthlyUpkeep": 12,
+    "description": "길이 좋은 곳에서 빠르게 움직이는 중후반 목표."
+  },
+  {
+    "id": "escort_caravan",
+    "name": "호송 마차단",
+    "price": 18000,
+    "cargo": 70,
+    "speed": 3,
+    "durability": 120,
+    "terrain": [
+      "road",
+      "plain"
+    ],
+    "monthlyUpkeep": 35,
+    "combat": 3,
+    "description": "후반 대량 운송용. 도적을 피하고 큰 장사를 이어 가는 장기 목표."
+  }
+]

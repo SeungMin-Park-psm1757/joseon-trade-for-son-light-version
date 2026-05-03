@@ -1,0 +1,273 @@
+{
+  "abstractMapSize": {
+    "width": 100,
+    "height": 100
+  },
+  "zones": [
+    {
+      "id": "north_west_river_gate",
+      "name": "북서 강길권",
+      "polygon": [
+        [
+          28,
+          7
+        ],
+        [
+          43,
+          8
+        ],
+        [
+          43,
+          28
+        ],
+        [
+          32,
+          30
+        ],
+        [
+          29,
+          18
+        ]
+      ],
+      "tags": [
+        "north",
+        "river",
+        "frontier",
+        "fog"
+      ],
+      "description": "신의주(의주)·책문·평양 주변. 압록강 국경 장시와 긴 수레길, 검문을 함께 본다."
+    },
+    {
+      "id": "north_east_rough_sea",
+      "name": "북동 풍랑권",
+      "polygon": [
+        [
+          61,
+          6
+        ],
+        [
+          80,
+          7
+        ],
+        [
+          82,
+          31
+        ],
+        [
+          63,
+          32
+        ]
+      ],
+      "tags": [
+        "north",
+        "east_sea",
+        "rough_sea",
+        "storm"
+      ],
+      "description": "원산·함흥·청진(경흥) 주변. 동해 북부와 두만강 국경 장시가 이어지는 험한 길이다."
+    },
+    {
+      "id": "west_mudflats",
+      "name": "서해 갯벌권",
+      "polygon": [
+        [
+          31,
+          31
+        ],
+        [
+          43,
+          34
+        ],
+        [
+          40,
+          80
+        ],
+        [
+          24,
+          80
+        ],
+        [
+          29,
+          55
+        ]
+      ],
+      "tags": [
+        "mudflat",
+        "fog",
+        "tideSensitive"
+      ],
+      "description": "남포·강화·군산·목포(목포진) 주변. 간조에는 대형선 주의."
+    },
+    {
+      "id": "central_inland",
+      "name": "중부 내륙권",
+      "polygon": [
+        [
+          42,
+          36
+        ],
+        [
+          62,
+          42
+        ],
+        [
+          61,
+          66
+        ],
+        [
+          44,
+          67
+        ],
+        [
+          38,
+          52
+        ]
+      ],
+      "tags": [
+        "road",
+        "plain",
+        "tax_inspection"
+      ],
+      "description": "개성·서울(한양)·충주·대구로 이어지는 내륙 장사길."
+    },
+    {
+      "id": "south_archipelago",
+      "name": "남해 다도해권",
+      "polygon": [
+        [
+          44,
+          72
+        ],
+        [
+          72,
+          72
+        ],
+        [
+          69,
+          84
+        ],
+        [
+          36,
+          84
+        ]
+      ],
+      "tags": [
+        "reef",
+        "pirates",
+        "storm"
+      ],
+      "description": "여수·통영(통제영)·부산 사이. 암초와 해적 이벤트가 잦다."
+    },
+    {
+      "id": "east_rough_sea",
+      "name": "동해 풍랑권",
+      "polygon": [
+        [
+          64,
+          36
+        ],
+        [
+          84,
+          36
+        ],
+        [
+          84,
+          73
+        ],
+        [
+          70,
+          74
+        ]
+      ],
+      "tags": [
+        "rough_sea",
+        "storm"
+      ],
+      "description": "강릉·포항(영일만)·울산 주변. 빠르지만 거칠다."
+    },
+    {
+      "id": "jeju_open_sea",
+      "name": "제주 외해권",
+      "polygon": [
+        [
+          29,
+          84
+        ],
+        [
+          52,
+          84
+        ],
+        [
+          55,
+          96
+        ],
+        [
+          31,
+          97
+        ]
+      ],
+      "tags": [
+        "open_sea",
+        "storm",
+        "pirates"
+      ],
+      "description": "제주 장거리 항해 구역. 태풍 달에는 위험이 커진다."
+    }
+  ],
+  "id": "korea-normalized-v2",
+  "coordinateSystem": {
+    "units": "normalized-percent",
+    "origin": "top-left",
+    "xRange": [
+      0,
+      100
+    ],
+    "yRange": [
+      0,
+      100
+    ],
+    "aspectPolicy": "All map layers, route SVG, city markers, labels, sale popovers, and travel tokens use the same 0-100 viewport. The background is stretched to the same viewport instead of cover-cropping so marker positions do not drift across resolution changes.",
+    "projectionBasis": {
+      "method": "manual normalization from approximate modern lat/lon anchors",
+      "lonRangeApprox": [
+        124,
+        130.7
+      ],
+      "latRangeApprox": [
+        33,
+        42.5
+      ],
+      "notes": "The final x/y values are adjusted to the painted Korea map silhouette while preserving real north/south/east/west ordering for Hanyang, Pyongyang, Uiju, Wonsan, Hamhung, Gyeongheung, Jeju, Ulleungdo, Tsushima, and the two border-market anchors."
+    }
+  },
+  "islandAnchors": [
+    {
+      "id": "jeju",
+      "name": "Jeju",
+      "x": 39.7,
+      "y": 90.2
+    },
+    {
+      "id": "tsushima",
+      "name": "Tsushima",
+      "x": 81.2,
+      "y": 85.6
+    },
+    {
+      "id": "ulleungdo",
+      "name": "Ulleungdo",
+      "x": 83.8,
+      "y": 50.5
+    }
+  ],
+  "labelStrategy": {
+    "method": "data-driven side placement",
+    "values": [
+      "top",
+      "right",
+      "bottom",
+      "left"
+    ],
+    "notes": "Marker coordinates remain geographic; only label side changes to avoid dense south-coast and northwest overlaps."
+  }
+}

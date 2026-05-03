@@ -1,0 +1,641 @@
+[
+  {
+    "id": "mudflat_grounding",
+    "name": "갯벌 좌초",
+    "type": "hazard",
+    "trigger": {
+      "routeHazard": "mudflat",
+      "tide": "low",
+      "shipDraftMin": 2
+    },
+    "severity": 2,
+    "text": "간조가 되며 배가 갯벌에 걸렸다. 큰 배라면 선체가 상할 수 있다.",
+    "choices": [
+      {
+        "label": "만조까지 기다린다",
+        "effects": {
+          "days": 1,
+          "morale": -1
+        }
+      },
+      {
+        "label": "선원들이 배를 민다",
+        "effects": {
+          "crewFatigue": 8,
+          "durability": -3
+        }
+      },
+      {
+        "label": "목재로 받친다",
+        "requires": {
+          "lumber": 1
+        },
+        "effects": {
+          "cargo": {
+            "lumber": -1
+          },
+          "durability": 2
+        }
+      }
+    ]
+  },
+  {
+    "id": "sea_fog",
+    "name": "짙은 안개",
+    "type": "hazard",
+    "trigger": {
+      "routeHazard": "fog"
+    },
+    "severity": 1,
+    "text": "바다에 안개가 깔렸다. 암초와 길 잃음 위험이 커진다.",
+    "choices": [
+      {
+        "label": "천천히 항해한다",
+        "effects": {
+          "days": 1,
+          "riskNext": -1
+        }
+      },
+      {
+        "label": "그대로 간다",
+        "random": [
+          {
+            "chance": 0.35,
+            "effects": {
+              "durability": -6
+            },
+            "resultText": "작은 암초에 스쳤다."
+          },
+          {
+            "chance": 0.65,
+            "effects": {},
+            "resultText": "무사히 통과했다."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "reef_scrape",
+    "name": "암초 스침",
+    "type": "hazard",
+    "trigger": {
+      "routeHazard": "reef"
+    },
+    "severity": 2,
+    "text": "섬 사이 물길에서 암초가 나타났다.",
+    "choices": [
+      {
+        "label": "회피 기동",
+        "skillCheck": {
+          "skill": "navigation",
+          "target": 8
+        },
+        "success": {
+          "durability": 0,
+          "morale": 1
+        },
+        "failure": {
+          "durability": -10
+        }
+      },
+      {
+        "label": "속도를 줄인다",
+        "effects": {
+          "days": 1,
+          "durability": -2
+        }
+      }
+    ]
+  },
+  {
+    "id": "storm_warning",
+    "name": "태풍 조짐",
+    "type": "hazard",
+    "trigger": {
+      "routeHazard": "storm",
+      "months": [
+        7,
+        8,
+        9
+      ]
+    },
+    "severity": 3,
+    "text": "남쪽 바다에서 먹구름이 몰려온다.",
+    "choices": [
+      {
+        "label": "가까운 항구로 피항",
+        "effects": {
+          "days": 1,
+          "morale": 1
+        }
+      },
+      {
+        "label": "강행한다",
+        "random": [
+          {
+            "chance": 0.45,
+            "effects": {
+              "durability": -25,
+              "crewFatigue": 10
+            },
+            "resultText": "큰 파도에 선체가 상했다."
+          },
+          {
+            "chance": 0.55,
+            "effects": {
+              "morale": 1
+            },
+            "resultText": "위험했지만 빠르게 통과했다."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "pirate_sighting",
+    "name": "해적선 출현",
+    "type": "combat",
+    "trigger": {
+      "routeHazard": "pirates"
+    },
+    "severity": 3,
+    "text": "수평선 너머 수상한 배가 다가온다.",
+    "enemy": {
+      "name": "남해 해적선",
+      "durability": 45,
+      "attack": 8,
+      "morale": 6,
+      "lootPotential": 80
+    },
+    "choices": [
+      {
+        "label": "도주한다",
+        "skillCheck": {
+          "skill": "navigation",
+          "target": 7
+        },
+        "success": {
+          "morale": 0
+        },
+        "failure": {
+          "durability": -12,
+          "money": -20
+        }
+      },
+      {
+        "label": "맞서 싸운다",
+        "startCombat": true
+      },
+      {
+        "label": "통행세를 준다",
+        "effects": {
+          "money": -45,
+          "morale": -1
+        }
+      }
+    ]
+  },
+  {
+    "id": "bandit_ambush",
+    "name": "도적대 습격",
+    "type": "combat",
+    "trigger": {
+      "routeHazard": "bandits"
+    },
+    "severity": 2,
+    "text": "산길에서 도적대가 길을 막았다.",
+    "enemy": {
+      "name": "산도적",
+      "durability": 35,
+      "attack": 6,
+      "morale": 5,
+      "lootPotential": 50
+    },
+    "choices": [
+      {
+        "label": "호위와 맞선다",
+        "startCombat": true
+      },
+      {
+        "label": "짐 일부를 내준다",
+        "effects": {
+          "randomCargoLoss": 2,
+          "morale": -1
+        }
+      },
+      {
+        "label": "우회한다",
+        "effects": {
+          "days": 1,
+          "riskNext": -1
+        }
+      }
+    ]
+  },
+  {
+    "id": "tiger_clan",
+    "name": "호랑이대의 표식",
+    "type": "hazard",
+    "trigger": {
+      "routeHazard": "tiger_clan"
+    },
+    "severity": 3,
+    "text": "나무에 호랑이 발톱 모양 표식이 새겨져 있다. 악명 높은 산적단의 영역이다.",
+    "choices": [
+      {
+        "label": "조용히 우회",
+        "effects": {
+          "days": 1,
+          "morale": -1
+        }
+      },
+      {
+        "label": "관아 토벌 의뢰를 받는다",
+        "effects": {
+          "questHint": "tiger_clan_hunt"
+        }
+      },
+      {
+        "label": "강행",
+        "random": [
+          {
+            "chance": 0.4,
+            "effects": {
+              "durability": -10,
+              "randomCargoLoss": 2
+            },
+            "resultText": "기습을 당했다."
+          },
+          {
+            "chance": 0.6,
+            "effects": {
+              "morale": 1
+            },
+            "resultText": "기세로 통과했다."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "wild_tiger",
+    "name": "호랑이 울음",
+    "type": "hazard",
+    "trigger": {
+      "routeHazard": "tiger"
+    },
+    "severity": 2,
+    "text": "밤 산길에서 호랑이 울음소리가 들린다.",
+    "choices": [
+      {
+        "label": "불을 피우고 쉰다",
+        "effects": {
+          "days": 1,
+          "morale": 1
+        }
+      },
+      {
+        "label": "서둘러 이동",
+        "random": [
+          {
+            "chance": 0.25,
+            "effects": {
+              "crewFatigue": 6,
+              "money": -10
+            },
+            "resultText": "말이 놀라 장비가 망가졌다."
+          },
+          {
+            "chance": 0.75,
+            "effects": {},
+            "resultText": "무사히 통과했다."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "flooded_road",
+    "name": "불어난 강물",
+    "type": "hazard",
+    "trigger": {
+      "routeHazard": "flood"
+    },
+    "severity": 2,
+    "text": "비가 내려 나루터 물살이 거세졌다.",
+    "choices": [
+      {
+        "label": "물길이 잦아들 때까지 기다린다",
+        "effects": {
+          "days": 1
+        }
+      },
+      {
+        "label": "돈을 내고 사공을 고용한다",
+        "effects": {
+          "money": -20
+        }
+      },
+      {
+        "label": "무리해서 건넌다",
+        "random": [
+          {
+            "chance": 0.3,
+            "effects": {
+              "randomCargoLoss": 1,
+              "durability": -5
+            },
+            "resultText": "짐 일부가 젖었다."
+          },
+          {
+            "chance": 0.7,
+            "effects": {},
+            "resultText": "무사히 건넜다."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "tax_inspection",
+    "name": "관아 검문",
+    "type": "inspection",
+    "trigger": {
+      "routeHazard": "tax_inspection"
+    },
+    "severity": 1,
+    "text": "관아 관리가 장부와 실은 짐을 확인한다.",
+    "choices": [
+      {
+        "label": "세금을 낸다",
+        "effects": {
+          "moneyPercent": -0.03,
+          "officialRep": 1
+        }
+      },
+      {
+        "label": "흥정한다",
+        "skillCheck": {
+          "skill": "trade",
+          "target": 7
+        },
+        "success": {
+          "moneyPercent": -0.01
+        },
+        "failure": {
+          "moneyPercent": -0.05,
+          "officialRep": -1
+        }
+      }
+    ]
+  },
+  {
+    "id": "foreign_inspection",
+    "name": "왜관 허가 확인",
+    "type": "inspection",
+    "trigger": {
+      "routeHazard": "foreign_inspection"
+    },
+    "severity": 2,
+    "text": "쓰시마(대마도) 항로에서 교역 허가를 확인한다.",
+    "choices": [
+      {
+        "label": "허가장을 제시한다",
+        "requiresPermit": "waegwan_pass",
+        "effects": {
+          "foreignRep": 1
+        }
+      },
+      {
+        "label": "돌아간다",
+        "effects": {
+          "days": 1
+        }
+      },
+      {
+        "label": "몰래 통과를 시도한다",
+        "random": [
+          {
+            "chance": 0.2,
+            "effects": {
+              "foreignRep": -2,
+              "money": -120
+            },
+            "resultText": "적발되어 벌금을 냈다."
+          },
+          {
+            "chance": 0.8,
+            "effects": {
+              "foreignRep": -1
+            },
+            "resultText": "간신히 통과했지만 평판이 나빠졌다."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "good_wind",
+    "name": "순풍",
+    "type": "positive",
+    "trigger": {
+      "mode": "sea"
+    },
+    "severity": 0,
+    "text": "돛에 바람이 잘 들어 항해가 빨라진다.",
+    "choices": [
+      {
+        "label": "바람을 탄다",
+        "effects": {
+          "days": -1,
+          "morale": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "market_rumor",
+    "name": "장터 소문",
+    "type": "info",
+    "trigger": {
+      "facility": "inn"
+    },
+    "severity": 0,
+    "text": "주막에서 다음 달 상품 수요에 대한 소문을 들었다.",
+    "choices": [
+      {
+        "label": "소문을 기록한다",
+        "effects": {
+          "rumor": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "ship_leak",
+    "name": "선체 누수",
+    "type": "maintenance",
+    "trigger": {
+      "mode": "sea",
+      "durabilityBelow": 35
+    },
+    "severity": 2,
+    "text": "낡은 배 바닥에서 물이 스민다.",
+    "choices": [
+      {
+        "label": "응급 수리",
+        "requires": {
+          "lumber": 1
+        },
+        "effects": {
+          "cargo": {
+            "lumber": -1
+          },
+          "durability": 12,
+          "days": 1
+        }
+      },
+      {
+        "label": "가까운 항구까지 버틴다",
+        "effects": {
+          "durability": -8,
+          "morale": -1
+        }
+      }
+    ]
+  },
+  {
+    "id": "wagon_breakdown",
+    "name": "마차 바퀴 파손",
+    "type": "maintenance",
+    "trigger": {
+      "mode": "land",
+      "cartDurabilityBelow": 35
+    },
+    "severity": 2,
+    "text": "마차 바퀴가 진흙길에 빠져 망가졌다.",
+    "choices": [
+      {
+        "label": "수리한다",
+        "effects": {
+          "money": -25,
+          "days": 1
+        }
+      },
+      {
+        "label": "짐을 줄인다",
+        "effects": {
+          "randomCargoLoss": 1,
+          "days": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": "fishing_good_spot",
+    "name": "물고기 떼 발견",
+    "type": "fishing",
+    "trigger": {
+      "facility": "fish_market"
+    },
+    "severity": 0,
+    "text": "어부가 가까운 어장의 좋은 물때를 알려주었다.",
+    "choices": [
+      {
+        "label": "어업을 시도한다",
+        "effects": {
+          "fishingBonus": 1.25,
+          "days": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "crew_sick",
+    "name": "선원 감기",
+    "type": "maintenance",
+    "trigger": {
+      "crewFatigueAbove": 20
+    },
+    "severity": 1,
+    "text": "무리한 이동으로 선원이 감기에 걸렸다.",
+    "choices": [
+      {
+        "label": "하루 쉰다",
+        "effects": {
+          "days": 1,
+          "crewFatigue": -10
+        }
+      },
+      {
+        "label": "약초를 쓴다",
+        "requires": {
+          "herbs": 1
+        },
+        "effects": {
+          "cargo": {
+            "herbs": -1
+          },
+          "crewFatigue": -15
+        }
+      }
+    ]
+  },
+  {
+    "id": "rare_buyer",
+    "name": "희귀품 구매상",
+    "type": "trade",
+    "trigger": {
+      "facility": "market"
+    },
+    "severity": 0,
+    "text": "한 상인이 특정 물품을 시세보다 비싸게 사겠다고 한다.",
+    "choices": [
+      {
+        "label": "거래 기회를 확인한다",
+        "effects": {
+          "temporaryDemand": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "waegwan_contact",
+    "name": "왜관 통역의 제안",
+    "type": "story",
+    "trigger": {
+      "port": "busanpo",
+      "merchantRepMin": 5
+    },
+    "severity": 0,
+    "text": "부산(부산포) 왜관 통역이 쓰시마(대마도) 교역 허가를 얻는 방법을 알려준다.",
+    "choices": [
+      {
+        "label": "허가 의뢰를 받는다",
+        "effects": {
+          "questHint": "waegwan_pass_intro"
+        }
+      }
+    ]
+  },
+  {
+    "id": "jeju_storm_memory",
+    "name": "제주 바람 이야기",
+    "type": "story",
+    "trigger": {
+      "port": "jeju"
+    },
+    "severity": 0,
+    "text": "제주 어부들이 바람 읽는 법을 들려준다.",
+    "choices": [
+      {
+        "label": "배운다",
+        "effects": {
+          "navigationXp": 2,
+          "morale": 1
+        }
+      }
+    ]
+  }
+]

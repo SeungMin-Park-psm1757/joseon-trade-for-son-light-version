@@ -1,0 +1,125 @@
+[
+  {
+    "id": "short_sword",
+    "name": "호신도",
+    "kind": "guard",
+    "price": 45,
+    "description": "육로에서 도적을 만났을 때 마음이 든든해지는 짧은 칼.",
+    "stats": {
+      "guard": 1
+    },
+    "tier": 1
+  },
+  {
+    "id": "fishing_net",
+    "name": "촘촘한 그물",
+    "kind": "fishing",
+    "price": 55,
+    "description": "항구 어업에서 물고기를 조금 더 잘 건질 수 있는 그물.",
+    "stats": {
+      "fishing": 1
+    },
+    "tier": 1
+  },
+  {
+    "id": "survey_tools",
+    "name": "측량도구",
+    "kind": "navigation",
+    "price": 70,
+    "description": "길과 바람을 살펴 이동 준비를 더 빠르게 돕는 도구.",
+    "stats": {
+      "navigation": 1
+    },
+    "tier": 1
+  },
+  {
+    "id": "trade_abacus",
+    "name": "장사용 산가지",
+    "kind": "trade",
+    "price": 40,
+    "description": "물건 값을 계산하기 쉬워지는 작은 장사용 도구.",
+    "stats": {
+      "trade": 1
+    },
+    "tier": 1
+  },
+  {
+    "id": "language_notes",
+    "name": "통역 수첩",
+    "kind": "language",
+    "price": 85,
+    "description": "훗날 왜관과 먼 나라 상인을 만날 때 도움이 되는 말 수첩.",
+    "stats": {
+      "japanese": 1,
+      "chinese": 1
+    },
+    "tier": 1
+  },
+  {
+    "id": "sturdy_sword",
+    "name": "호신 장검",
+    "kind": "guard",
+    "price": 120,
+    "description": "산길에서 상단을 지키기 좋은 단단한 장검.",
+    "stats": {
+      "guard": 3
+    },
+    "tier": 2,
+    "requiresTool": "short_sword",
+    "hint": "도적과 호랑이 소문에 더 침착해져요."
+  },
+  {
+    "id": "brass_compass",
+    "name": "나침반",
+    "kind": "navigation",
+    "price": 160,
+    "description": "바람과 방향을 읽어 길 잃을 위험을 줄이는 항해 도구.",
+    "stats": {
+      "navigation": 3
+    },
+    "tier": 2,
+    "requiresTool": "survey_tools",
+    "hint": "먼 바닷길과 안개 길에서 도움이 돼요."
+  },
+  {
+    "id": "merchant_ledger",
+    "name": "상단 장부",
+    "kind": "trade",
+    "price": 120,
+    "description": "사는 값과 파는 값을 또렷하게 비교하는 거래 장부.",
+    "stats": {
+      "trade": 3
+    },
+    "tier": 2,
+    "requiresTool": "trade_abacus",
+    "hint": "살 때 조금 싸게, 팔 때 조금 유리해져요."
+  },
+  {
+    "id": "strong_fishing_net",
+    "name": "튼튼한 어망",
+    "kind": "fishing",
+    "price": 130,
+    "description": "남해와 제주 물목에서 어획을 늘리는 촘촘한 어망.",
+    "stats": {
+      "fishing": 3
+    },
+    "tier": 2,
+    "requiresTool": "fishing_net",
+    "hint": "어업 보상이 더 좋아져요."
+  },
+  {
+    "id": "interpreter_notebook",
+    "name": "통역 장책",
+    "kind": "language",
+    "price": 180,
+    "description": "왜어와 한문 거래 표현을 정리한 두꺼운 장책.",
+    "stats": {
+      "japanese": 2,
+      "chinese": 2,
+      "trade": 1
+    },
+    "tier": 2,
+    "requiresTool": "language_notes",
+    "hint": "쓰시마(대마도)와 먼 교역 준비에 좋아요."
+  }
+]

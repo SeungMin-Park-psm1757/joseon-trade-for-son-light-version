@@ -1,0 +1,81 @@
+[
+  {
+    "rank": 1,
+    "id": "commoner",
+    "name": "평민",
+    "requirements": {
+      "money": 0
+    },
+    "unlocks": [
+      "basic_market",
+      "small_ship",
+      "basic_fishing"
+    ]
+  },
+  {
+    "rank": 2,
+    "id": "peddler",
+    "name": "행상 견습",
+    "requirements": {
+      "money": 500,
+      "questsCompleted": 2
+    },
+    "unlocks": [
+      "handcart",
+      "rumor_log"
+    ]
+  },
+  {
+    "rank": 3,
+    "id": "bobusang",
+    "name": "보부상",
+    "requirements": {
+      "money": 1200,
+      "visitedPorts": 5
+    },
+    "unlocks": [
+      "cart_yard",
+      "warehouse_basic"
+    ]
+  },
+  {
+    "rank": 4,
+    "id": "small_shipowner",
+    "name": "소선주",
+    "requirements": {
+      "money": 3000,
+      "shipTierMin": 2
+    },
+    "unlocks": [
+      "coastal_merchant",
+      "crew_management"
+    ]
+  },
+  {
+    "rank": 5,
+    "id": "merchant_leader",
+    "name": "상단주",
+    "requirements": {
+      "money": 8000,
+      "questsCompleted": 8,
+      "merchantRep": 10
+    },
+    "unlocks": [
+      "waegwan_pass_quest",
+      "armed_merchant"
+    ]
+  },
+  {
+    "rank": 6,
+    "id": "great_merchant",
+    "name": "거상 후보",
+    "requirements": {
+      "money": 20000,
+      "foreignRep": 5
+    },
+    "unlocks": [
+      "tsushima_trade_bonus",
+      "future_expansion_hooks"
+    ]
+  }
+]

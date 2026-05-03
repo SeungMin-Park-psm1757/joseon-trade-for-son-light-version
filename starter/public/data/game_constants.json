@@ -1,0 +1,88 @@
+{
+  "title": "팔도상단: 조선의 바람",
+  "version": "0.1.0-codex-pack",
+  "targetPlatform": "mobile_web",
+  "startingState": {
+    "portId": "busanpo",
+    "money": 300,
+    "month": 3,
+    "day": 1,
+    "shipId": "small_sailboat",
+    "cartId": "backpack",
+    "permits": [],
+    "cargo": {},
+    "reputation": {
+      "merchant": 0,
+      "official": 0,
+      "naval": 0,
+      "fisher": 0,
+      "foreign": 0
+    },
+    "skills": {
+      "trade": 3,
+      "navigation": 3,
+      "combat": 2,
+      "fishing": 2
+    },
+    "crew": {
+      "count": 3,
+      "morale": 5,
+      "fatigue": 0
+    },
+    "tutorialQuestId": "tutorial_first_trade",
+    "currentPortId": "busanpo"
+  },
+  "calendar": {
+    "daysPerMonth": 30,
+    "monthsPerYear": 12,
+    "priceRefresh": "monthly"
+  },
+  "tideCycle": [
+    "middle",
+    "low",
+    "high",
+    "middle"
+  ],
+  "economy": {
+    "minPriceMultiplier": 0.45,
+    "maxPriceMultiplier": 2.45,
+    "monthlyNoiseRange": [
+      -0.07,
+      0.07
+    ],
+    "rumorAccuracy": {
+      "inn": 0.55,
+      "market": 0.7,
+      "guild": 0.9
+    },
+    "taxRateDefault": 0.03
+  },
+  "risk": {
+    "baseEventChancePerTravelDay": 0.12,
+    "riskLevelMultiplier": 0.07,
+    "safeModeForChild": true,
+    "hardLossEnabled": true,
+    "hardLossProtection": "ship_or_cart_can_be_lost_only_if_player_has_recovery_path"
+  },
+  "combat": {
+    "mode": "simple_auto_or_choice",
+    "roundLimit": 6,
+    "actions": [
+      "attack",
+      "evade",
+      "repair",
+      "flee"
+    ],
+    "defeatRule": "lose_some_cargo_and_may_damage_or_lose_vehicle_if_uninsured"
+  },
+  "save": {
+    "storage": "localStorage",
+    "key": "joseon_trade_save_v1",
+    "autosaveOn": [
+      "travel_complete",
+      "market_transaction",
+      "month_change",
+      "quest_complete"
+    ]
+  }
+}

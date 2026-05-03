@@ -1,0 +1,304 @@
+[
+  {
+    "month": 1,
+    "name": "겨울 한파",
+    "summary": "내륙과 산길이 얼어붙고 식량·목재 수요가 오른다.",
+    "priceModifiers": {
+      "rice": 1.08,
+      "lumber": 1.15,
+      "dried_fish": 1.08,
+      "fresh_fish": 1.12
+    },
+    "hazardModifiers": {
+      "snow": 1.5,
+      "storm": 0.8
+    },
+    "trendGoods": [
+      "rice",
+      "lumber",
+      "dried_fish"
+    ],
+    "officialDemandGoods": [
+      "lumber"
+    ],
+    "riskTags": [
+      "snow"
+    ]
+  },
+  {
+    "month": 2,
+    "name": "봄맞이 준비",
+    "summary": "한지·서책·약재 수요가 조금 오른다.",
+    "priceModifiers": {
+      "paper": 1.08,
+      "books": 1.08,
+      "herbs": 1.05
+    },
+    "hazardModifiers": {
+      "snow": 1.2
+    },
+    "trendGoods": [
+      "paper",
+      "books",
+      "herbs"
+    ],
+    "officialDemandGoods": [
+      "paper"
+    ],
+    "riskTags": [
+      "snow"
+    ]
+  },
+  {
+    "month": 3,
+    "name": "봄 장터",
+    "summary": "도시 장터가 활발해지고 문방·공예품 거래가 좋아진다.",
+    "priceModifiers": {
+      "paper": 1.12,
+      "books": 1.1,
+      "fan": 1.06
+    },
+    "hazardModifiers": {
+      "bandits": 1.1
+    },
+    "trendGoods": [
+      "paper",
+      "books",
+      "fan"
+    ],
+    "officialDemandGoods": [
+      "books"
+    ],
+    "riskTags": [
+      "bandits"
+    ]
+  },
+  {
+    "month": 4,
+    "name": "봄 어장",
+    "summary": "근해 어업 효율이 오른다.",
+    "priceModifiers": {
+      "fresh_fish": 0.95,
+      "herbs": 0.95
+    },
+    "hazardModifiers": {
+      "fog": 1.1
+    },
+    "fishingBonus": 1.15,
+    "trendGoods": [
+      "fresh_fish",
+      "herbs"
+    ],
+    "officialDemandGoods": [
+      "dried_fish"
+    ],
+    "riskTags": [
+      "fog"
+    ]
+  },
+  {
+    "month": 5,
+    "name": "모내기철",
+    "summary": "농촌 물자 수요가 늘고 내륙 교역이 활발하다.",
+    "priceModifiers": {
+      "salt": 1.08,
+      "iron": 1.05,
+      "beans": 1.05
+    },
+    "hazardModifiers": {
+      "flood": 1.1
+    },
+    "trendGoods": [
+      "salt",
+      "iron",
+      "beans"
+    ],
+    "officialDemandGoods": [
+      "iron"
+    ],
+    "riskTags": [
+      "flood"
+    ]
+  },
+  {
+    "month": 6,
+    "name": "초여름 장마",
+    "summary": "홍수 위험이 오르고 부채 수요가 증가한다.",
+    "priceModifiers": {
+      "fan": 1.25,
+      "fresh_fish": 1.05
+    },
+    "hazardModifiers": {
+      "flood": 1.5,
+      "mudflat": 1.1
+    },
+    "trendGoods": [
+      "fan",
+      "fresh_fish"
+    ],
+    "officialDemandGoods": [
+      "rice"
+    ],
+    "riskTags": [
+      "flood",
+      "mudflat"
+    ]
+  },
+  {
+    "month": 7,
+    "name": "태풍 조짐",
+    "summary": "남해·제주 항로 위험이 크게 오른다.",
+    "priceModifiers": {
+      "salt": 1.1,
+      "fresh_fish": 1.15
+    },
+    "hazardModifiers": {
+      "storm": 1.6,
+      "rough_sea": 1.4
+    },
+    "trendGoods": [
+      "salt",
+      "fresh_fish",
+      "dried_fish"
+    ],
+    "officialDemandGoods": [
+      "lumber"
+    ],
+    "riskTags": [
+      "storm",
+      "rough_sea"
+    ]
+  },
+  {
+    "month": 8,
+    "name": "큰바람의 달",
+    "summary": "태풍과 풍랑이 가장 무섭다. 장거리 항해는 신중히 결정해야 한다.",
+    "priceModifiers": {
+      "fresh_fish": 1.18,
+      "seaweed": 1.08
+    },
+    "hazardModifiers": {
+      "storm": 1.8,
+      "pirates": 1.1,
+      "rough_sea": 1.5
+    },
+    "trendGoods": [
+      "fresh_fish",
+      "seaweed",
+      "salt"
+    ],
+    "officialDemandGoods": [
+      "lumber"
+    ],
+    "riskTags": [
+      "storm",
+      "pirates",
+      "rough_sea"
+    ]
+  },
+  {
+    "month": 9,
+    "name": "추수 시작",
+    "summary": "쌀값은 내려가고 곡물 운송 의뢰가 늘어난다.",
+    "priceModifiers": {
+      "rice": 0.82,
+      "barley": 0.92,
+      "paper": 1.05
+    },
+    "hazardModifiers": {
+      "bandits": 1.2
+    },
+    "trendGoods": [
+      "rice",
+      "barley",
+      "paper"
+    ],
+    "officialDemandGoods": [
+      "rice"
+    ],
+    "riskTags": [
+      "bandits"
+    ]
+  },
+  {
+    "month": 10,
+    "name": "풍년 장터",
+    "summary": "곡물이 싸고 도시 소비가 활발하다.",
+    "priceModifiers": {
+      "rice": 0.88,
+      "beans": 0.95,
+      "cotton_cloth": 1.05
+    },
+    "hazardModifiers": {
+      "bandits": 1.15
+    },
+    "trendGoods": [
+      "rice",
+      "beans",
+      "cotton_cloth"
+    ],
+    "officialDemandGoods": [
+      "cotton_cloth"
+    ],
+    "riskTags": [
+      "bandits"
+    ]
+  },
+  {
+    "month": 11,
+    "name": "겨울 준비",
+    "summary": "소금, 건어물, 목재 수요가 오른다.",
+    "priceModifiers": {
+      "salt": 1.15,
+      "dried_fish": 1.12,
+      "lumber": 1.15,
+      "ginseng": 1.08,
+      "citrus": 0.9
+    },
+    "hazardModifiers": {
+      "snow": 1.1
+    },
+    "trendGoods": [
+      "salt",
+      "dried_fish",
+      "lumber",
+      "ginseng"
+    ],
+    "officialDemandGoods": [
+      "salt",
+      "lumber"
+    ],
+    "riskTags": [
+      "snow"
+    ]
+  },
+  {
+    "month": 12,
+    "name": "세밑 장사",
+    "summary": "서울(한양)과 부산(부산포)의 고급품 수요가 오른다.",
+    "priceModifiers": {
+      "cotton_cloth": 1.08,
+      "silk": 1.12,
+      "ginseng": 1.1,
+      "lumber": 1.15,
+      "citrus": 0.9
+    },
+    "hazardModifiers": {
+      "snow": 1.4,
+      "storm": 0.9
+    },
+    "trendGoods": [
+      "cotton_cloth",
+      "silk",
+      "ginseng",
+      "lumber"
+    ],
+    "officialDemandGoods": [
+      "ginseng"
+    ],
+    "riskTags": [
+      "snow",
+      "storm"
+    ]
+  }
+]

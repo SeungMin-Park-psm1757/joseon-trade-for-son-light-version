@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="tavern">
+  <path fill="#173942" d="M13 24h38v29H13z"/>
+  <path fill="#8f3f2e" stroke="#271b16" stroke-width="3" d="M9 24 32 10l23 14z"/>
+  <path fill="#f4cc67" d="M20 36h24v15H20z"/>
+  <circle cx="26" cy="43" r="5" fill="#fff0b9"/>
+  <circle cx="38" cy="43" r="5" fill="#fff0b9"/>
+  <path fill="#6f3b26" d="M19 31h26v6H19z"/>
+  <path fill="none" stroke="#271b16" stroke-width="3" d="M13 53h38M9 24h46"/>
+</svg>

@@ -1,0 +1,155 @@
+[
+  {
+    "id": "naraon",
+    "name": "나라온",
+    "role": "바람 읽는 항해 동료",
+    "kind": "crew",
+    "recruitCost": 30,
+    "line": "바람이 바뀌기 전에 돛을 먼저 볼게.",
+    "stats": {
+      "navigation": 2,
+      "trade": 0,
+      "fishing": 0,
+      "guard": 0,
+      "japanese": 0,
+      "chinese": 0
+    },
+    "portraitAsset": "/assets/painted2d/companions/naraon.png"
+  },
+  {
+    "id": "jo_yeonseo",
+    "name": "조연서",
+    "role": "값을 잘 살피는 상단 동료",
+    "kind": "crew",
+    "recruitCost": 30,
+    "line": "같은 면포라도 팔 곳을 고르면 값이 달라져.",
+    "stats": {
+      "navigation": 0,
+      "trade": 2,
+      "fishing": 0,
+      "guard": 0,
+      "japanese": 0,
+      "chinese": 0
+    },
+    "portraitAsset": "/assets/painted2d/companions/jo_yeonseo.png"
+  },
+  {
+    "id": "lee_sihyeong",
+    "name": "이시형",
+    "role": "길눈 밝은 측량 동료",
+    "kind": "crew",
+    "recruitCost": 35,
+    "line": "지름길보다 안전한 길을 먼저 보자.",
+    "stats": {
+      "navigation": 1,
+      "trade": 0,
+      "fishing": 0,
+      "guard": 1,
+      "japanese": 0,
+      "chinese": 0
+    },
+    "portraitAsset": "/assets/painted2d/companions/lee_sihyeong.png"
+  },
+  {
+    "id": "kim_sora",
+    "name": "김소라",
+    "role": "어장과 소문을 아는 동료",
+    "kind": "crew",
+    "recruitCost": 35,
+    "line": "오늘 물때면 건어물 값도 같이 봐야 해.",
+    "stats": {
+      "navigation": 0,
+      "trade": 1,
+      "fishing": 2,
+      "guard": 0,
+      "japanese": 0,
+      "chinese": 0
+    },
+    "portraitAsset": "/assets/painted2d/companions/kim_sora.png"
+  },
+  {
+    "id": "lee_doyun",
+    "name": "이도윤",
+    "role": "왜관 말을 배우는 동료",
+    "kind": "crew",
+    "recruitCost": 45,
+    "line": "쓰시마(대마도)에 가려면 말과 예법도 준비해야 해.",
+    "stats": {
+      "navigation": 0,
+      "trade": 1,
+      "fishing": 0,
+      "guard": 0,
+      "japanese": 2,
+      "chinese": 0
+    },
+    "portraitAsset": "/assets/painted2d/companions/lee_doyun.png"
+  },
+  {
+    "id": "park_siwoo",
+    "name": "박시우",
+    "role": "짐과 배를 챙기는 동료",
+    "kind": "crew",
+    "recruitCost": 40,
+    "line": "짐이 흔들리지 않게 묶어둘게.",
+    "stats": {
+      "navigation": 1,
+      "trade": 0,
+      "fishing": 0,
+      "guard": 2,
+      "japanese": 0,
+      "chinese": 0
+    },
+    "portraitAsset": "/assets/painted2d/companions/park_siwoo.png"
+  },
+  {
+    "id": "park_seyeon",
+    "name": "박세연",
+    "role": "동생의 응원",
+    "kind": "family",
+    "recruitCost": 0,
+    "line": "정우 오빠, 오늘도 장사 성공해!",
+    "stats": {
+      "navigation": 0,
+      "trade": 1,
+      "fishing": 0,
+      "guard": 0,
+      "japanese": 0,
+      "chinese": 0
+    },
+    "portraitAsset": "/assets/painted2d/companions/park_seyeon.png"
+  },
+  {
+    "id": "dad",
+    "name": "아빠",
+    "role": "가끔 길을 짚어주는 도움",
+    "kind": "family",
+    "recruitCost": 0,
+    "line": "멀리 가기 전에는 배와 수레 상태부터 확인하자.",
+    "stats": {
+      "navigation": 1,
+      "trade": 0,
+      "fishing": 0,
+      "guard": 1,
+      "japanese": 0,
+      "chinese": 0
+    },
+    "portraitAsset": "/assets/painted2d/companions/dad.png"
+  },
+  {
+    "id": "mom",
+    "name": "엄마",
+    "role": "상단 살림을 챙기는 도움",
+    "kind": "family",
+    "recruitCost": 0,
+    "line": "급하게 팔기보다 어디서 값이 좋은지 먼저 보자.",
+    "stats": {
+      "navigation": 0,
+      "trade": 1,
+      "fishing": 0,
+      "guard": 0,
+      "japanese": 0,
+      "chinese": 1
+    },
+    "portraitAsset": "/assets/painted2d/companions/mom.png"
+  }
+]

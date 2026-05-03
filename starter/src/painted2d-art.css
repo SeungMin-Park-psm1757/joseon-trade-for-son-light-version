@@ -1,0 +1,2339 @@
+/* Commercial casual 2D Joseon fantasy RPG art pass.
+   This file intentionally overrides the previous hard pixel/SVG treatment. */
+:root {
+  --rpg-ink: #172438;
+  --rpg-panel: #fff2cf;
+  --rpg-panel-strong: #ffe4a8;
+  --rpg-gold: #d99a2b;
+  --rpg-gold-hi: #ffd76d;
+  --rpg-teal: #178ea2;
+  --rpg-teal-dark: #0d4f68;
+  --rpg-leaf: #3f9d64;
+  --rpg-red: #d75f4c;
+}
+
+/* 2026-05-03 narrative/tutorial pass: the fairy now speaks in a paused story dialog,
+   while the old coach becomes a compact next-action strip instead of a bottom widget. */
+.game-shell.game-paused .content-surface,
+.game-shell.game-paused .bottom-tabs,
+.game-shell.game-paused .status-bar {
+  filter: saturate(0.72) brightness(0.72);
+}
+
+.tutorial-story-backdrop {
+  background:
+    radial-gradient(circle at 22% 52%, rgba(247, 206, 96, 0.22), transparent 32%),
+    rgba(8, 16, 24, 0.66);
+  backdrop-filter: blur(3px);
+  z-index: 90;
+}
+
+.tutorial-story-modal {
+  width: min(760px, calc(100vw - 44px));
+  min-height: 260px;
+  display: grid;
+  grid-template-columns: 155px minmax(0, 1fr) 150px;
+  gap: 18px;
+  align-items: stretch;
+  padding: 18px;
+  border: 3px solid rgba(245, 189, 72, 0.92);
+  border-radius: 18px;
+  color: #f9efd4;
+  background:
+    linear-gradient(135deg, rgba(20, 48, 60, 0.98), rgba(22, 30, 44, 0.98)),
+    var(--paint-ink);
+  box-shadow: 0 24px 72px rgba(0, 0, 0, 0.45), inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+}
+
+.tutorial-story-portrait {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 8px;
+  border-radius: 14px;
+  border: 1px solid rgba(245, 189, 72, 0.46);
+  background:
+    radial-gradient(circle at 50% 28%, rgba(250, 224, 130, 0.28), transparent 42%),
+    rgba(255, 255, 255, 0.08);
+}
+
+.tutorial-story-portrait .guide-spirit,
+.tutorial-story-fairy {
+  width: 92px;
+  height: 92px;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 9px 10px rgba(0, 0, 0, 0.32));
+}
+
+.tutorial-story-portrait span {
+  color: #ffe7a5;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.tutorial-story-copy {
+  min-width: 0;
+  display: grid;
+  align-content: center;
+  gap: 9px;
+}
+
+.tutorial-story-copy .eyebrow {
+  color: #8ee2dd;
+  font-weight: 900;
+}
+
+.tutorial-story-copy h2 {
+  margin: 0;
+  font-size: clamp(1.45rem, 3.2vw, 2.15rem);
+  line-height: 1.12;
+  letter-spacing: 0;
+  color: #fff3c8;
+}
+
+.tutorial-story-copy p {
+  margin: 0;
+  font-size: clamp(1rem, 1.65vw, 1.16rem);
+  line-height: 1.55;
+  color: rgba(255, 247, 223, 0.94);
+}
+
+.tutorial-story-target {
+  width: fit-content;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 229, 156, 0.4);
+  background: rgba(255, 246, 215, 0.11);
+}
+
+.tutorial-story-icon {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: rgba(255, 239, 190, 0.16);
+}
+
+.tutorial-story-icon img,
+.tutorial-story-icon .good-icon,
+.tutorial-story-icon .pixel-good-icon {
+  max-width: 40px;
+  max-height: 40px;
+  image-rendering: pixelated;
+}
+
+.tutorial-story-target small,
+.tutorial-story-target strong {
+  display: block;
+}
+
+.tutorial-story-target small {
+  color: rgba(255, 246, 215, 0.7);
+  font-weight: 800;
+}
+
+.tutorial-story-target strong {
+  color: #ffe39d;
+  font-size: 1.05rem;
+}
+
+.tutorial-story-continue {
+  align-self: end;
+  min-height: 70px;
+  border-radius: 16px;
+  font-size: 1.08rem;
+  box-shadow: 0 12px 0 rgba(92, 60, 18, 0.52), 0 18px 28px rgba(0, 0, 0, 0.24);
+}
+
+.tutorial-coach {
+  left: max(8px, calc((100vw - min(100vw, 1365px)) / 2 + 8px));
+  right: auto;
+  bottom: 8px;
+  width: min(470px, 56vw);
+  min-height: 42px;
+  grid-template-columns: minmax(0, 0.55fr) minmax(0, 1.45fr) auto;
+  padding: 7px 8px;
+  border-color: rgba(245, 189, 72, 0.45);
+  background: rgba(20, 38, 48, 0.9);
+  color: #fff4d4;
+}
+
+.tutorial-coach .fairy-companion-frame {
+  display: none;
+}
+
+.tutorial-coach .tutorial-path-copy .eyebrow {
+  color: #8ee2dd;
+}
+
+.tutorial-coach .tutorial-path-copy strong {
+  font-size: 0.92rem;
+  color: #ffe39d;
+}
+
+.tutorial-coach .tutorial-path-copy p {
+  max-width: 24ch;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: rgba(255, 247, 223, 0.86);
+}
+
+.tutorial-coach .tutorial-path {
+  display: flex;
+  gap: 5px;
+  overflow: hidden;
+}
+
+.tutorial-coach .tutorial-step-card {
+  width: 58px;
+  min-width: 58px;
+  padding: 4px;
+  background: rgba(255, 249, 231, 0.12);
+  color: #fff3cf;
+}
+
+.tutorial-coach .tutorial-step-card strong {
+  max-width: 100%;
+  font-size: 0.66rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.tutorial-coach .tutorial-step-card small {
+  font-size: 0.62rem;
+}
+
+.tutorial-coach .tutorial-step-icon,
+.tutorial-coach .tutorial-step-icon img,
+.tutorial-coach .tutorial-step-icon .good-icon,
+.tutorial-coach .tutorial-step-icon .pixel-good-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.tutorial-coach .coach-action {
+  min-height: 42px;
+  white-space: nowrap;
+}
+
+@media (max-width: 940px) and (orientation: landscape) {
+  .tutorial-story-modal {
+    width: calc(100vw - 36px);
+    min-height: 228px;
+    grid-template-columns: 110px minmax(0, 1fr) 126px;
+    gap: 12px;
+    padding: 14px;
+  }
+
+  .tutorial-story-portrait .guide-spirit,
+  .tutorial-story-fairy {
+    width: 74px;
+    height: 74px;
+  }
+
+  .tutorial-story-copy h2 {
+    font-size: 1.32rem;
+  }
+
+  .tutorial-story-copy p {
+    font-size: 0.94rem;
+    line-height: 1.43;
+  }
+
+  .tutorial-story-continue {
+    min-height: 58px;
+    font-size: 0.94rem;
+  }
+
+  .tutorial-coach {
+    width: min(430px, 52vw);
+    grid-template-columns: 112px minmax(0, 1fr) 84px;
+    bottom: 6px;
+  }
+
+  .tutorial-coach .tutorial-step-card:nth-child(n + 5) {
+    display: none;
+  }
+}
+
+.start-art,
+.start-portrait,
+.port-scene-stage img,
+.route-destination-scene,
+.market-npc,
+.facility-npc,
+.ship-caller-npc,
+.hub-hotspot img,
+.pixel-vehicle,
+.pixel-good-icon,
+.guide-spirit,
+.vehicle-token,
+.discovery-tile img,
+.ledger-seal-card img,
+.quest-step img,
+.quest-reward-mini img,
+.companion-avatar img,
+.notice-avatar-wrap img,
+.equipment-notice-hero img {
+  image-rendering: auto !important;
+  shape-rendering: auto !important;
+}
+
+.app-shell {
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255, 232, 168, .48), transparent 28%),
+    linear-gradient(180deg, #d9f4fb 0%, #f8e8c5 62%, #dfc08b 100%) !important;
+}
+
+.status-bar,
+.bottom-tabs {
+  border: 1px solid rgba(255, 236, 183, .34) !important;
+  border-radius: 12px !important;
+  background: linear-gradient(180deg, rgba(31, 51, 70, .98), rgba(17, 29, 42, .98)) !important;
+  box-shadow: 0 10px 24px rgba(13, 24, 34, .26), inset 0 1px 0 rgba(255,255,255,.12) !important;
+}
+
+.status-pill {
+  border-radius: 10px !important;
+  background: rgba(255,255,255,.07) !important;
+}
+
+.bottom-tabs button,
+.primary,
+.route-action-row button,
+.coach-action {
+  border: 1px solid rgba(83, 50, 13, .32) !important;
+  border-radius: 9px !important;
+  background: linear-gradient(180deg, var(--rpg-gold-hi), var(--rpg-gold)) !important;
+  color: #fff !important;
+  text-shadow: 0 2px 0 rgba(72, 39, 10, .45) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.36), 0 5px 0 rgba(103, 62, 18, .42), 0 12px 20px rgba(31, 20, 12, .16) !important;
+}
+
+.bottom-tabs button.active,
+.hub-hotspot.active,
+.hub-hotspot:hover,
+.primary:hover,
+.route-action-row button:hover {
+  background: linear-gradient(180deg, #28b8cb, var(--rpg-teal)) !important;
+  transform: translateY(-1px);
+}
+
+.panel,
+.side-panel > section,
+.event-modal,
+.trade-popover,
+.market-card,
+.market-row,
+.route-card,
+.hint-card,
+.growth-card,
+.shop-row,
+.quest-row,
+.ledger-entry {
+  border: 1px solid rgba(92, 58, 22, .2) !important;
+  border-radius: 12px !important;
+  background:
+    linear-gradient(180deg, rgba(255, 248, 227, .96), rgba(255, 232, 184, .92)) !important;
+  box-shadow: 0 12px 28px rgba(63, 43, 22, .16), inset 0 1px 0 rgba(255,255,255,.58) !important;
+}
+
+.port-scene-stage,
+.market-scene-stage,
+.facility-scene,
+.map-board {
+  border: 2px solid rgba(23, 36, 56, .78) !important;
+  border-radius: 14px !important;
+  background-color: #70cde5 !important;
+  box-shadow: 0 16px 36px rgba(16, 29, 42, .22), inset 0 0 0 1px rgba(255,255,255,.16) !important;
+}
+
+.port-scene-stage img,
+.market-scene-stage,
+.facility-scene,
+.route-destination-scene {
+  filter: saturate(1.08) contrast(1.02);
+}
+
+.port-scene-stage::after,
+.market-scene-stage::before {
+  background: linear-gradient(90deg, rgba(8, 19, 29, .76), rgba(8, 19, 29, .22) 42%, transparent 72%) !important;
+}
+
+.scene-copy {
+  max-width: min(420px, 54%) !important;
+  border: 1px solid rgba(255, 216, 109, .72) !important;
+  border-radius: 12px !important;
+  background: linear-gradient(180deg, rgba(13, 27, 40, .86), rgba(13, 27, 40, .72)) !important;
+  box-shadow: 0 12px 28px rgba(0,0,0,.26) !important;
+}
+
+.scene-copy h2,
+.scene-copy p,
+.scene-copy .eyebrow {
+  text-shadow: 0 2px 2px rgba(0,0,0,.44) !important;
+}
+
+.hub-hotspot {
+  width: 104px !important;
+  min-height: 84px !important;
+  padding: 8px 7px !important;
+  border: 1px solid rgba(94, 59, 16, .26) !important;
+  border-radius: 13px !important;
+  background: linear-gradient(180deg, rgba(255, 242, 203, .96), rgba(245, 196, 89, .94)) !important;
+  color: #3d2914 !important;
+  text-shadow: 0 1px 0 rgba(255,255,255,.55) !important;
+  box-shadow: 0 8px 18px rgba(43, 28, 14, .22), inset 0 1px 0 rgba(255,255,255,.56) !important;
+}
+
+.hub-hotspot img,
+.trade-icon,
+.quest-giver-icon img,
+.next-goal-icon img {
+  object-fit: contain !important;
+}
+
+.hub-hotspot img {
+  width: 42px !important;
+  height: 42px !important;
+}
+
+.good-stall-token,
+.advice-card,
+.route-profit-box,
+.cargo-sale-chip,
+.tool-card,
+.ship-card,
+.cart-card {
+  border: 1px solid rgba(70, 46, 20, .2) !important;
+  border-radius: 12px !important;
+  background: linear-gradient(180deg, rgba(255, 245, 218, .94), rgba(244, 221, 174, .88)) !important;
+  box-shadow: 0 8px 18px rgba(51, 33, 18, .14), inset 0 1px 0 rgba(255,255,255,.5) !important;
+}
+
+.pixel-good-icon {
+  border: 0 !important;
+  border-radius: 12px !important;
+  background: radial-gradient(circle at 40% 28%, #fff8e0, #f5d68a 68%, #c4872c) !important;
+  box-shadow: 0 5px 12px rgba(42, 28, 14, .18) !important;
+}
+
+.market-good-icon.pixel-good-icon,
+.trade-popover-icon.pixel-good-icon {
+  width: 62px !important;
+  height: 62px !important;
+}
+
+.market-npc,
+.facility-npc,
+.ship-caller-npc {
+  filter: drop-shadow(0 10px 10px rgba(18, 22, 28, .35)) !important;
+}
+
+.market-npc {
+  width: 116px !important;
+  max-height: 50% !important;
+}
+
+.tutorial-coach {
+  position: fixed !important;
+  left: 16px !important;
+  right: auto !important;
+  bottom: 14px !important;
+  z-index: 20 !important;
+  width: min(440px, calc(100vw - 32px)) !important;
+  min-height: 66px !important;
+  grid-template-columns: 46px minmax(0, 1fr) 44px 92px !important;
+  gap: 8px !important;
+  padding: 8px 10px !important;
+  border: 1px solid rgba(255, 218, 118, .58) !important;
+  border-radius: 13px !important;
+  background: linear-gradient(180deg, rgba(20, 39, 55, .93), rgba(8, 20, 31, .9)) !important;
+  color: #fff6df !important;
+  box-shadow: 0 12px 30px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.14) !important;
+  backdrop-filter: blur(8px);
+}
+
+.tutorial-coach .coach-portrait.guide-spirit {
+  width: 46px !important;
+  height: 46px !important;
+}
+
+.tutorial-coach .eyebrow,
+.tutorial-coach strong,
+.tutorial-coach p {
+  color: #fff6df !important;
+}
+
+.tutorial-coach p {
+  display: -webkit-box !important;
+  overflow: hidden !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  font-size: 11px !important;
+  line-height: 1.24 !important;
+}
+
+.tutorial-coach .tutorial-path {
+  width: 44px !important;
+  max-width: 44px !important;
+  grid-template-columns: 38px !important;
+  overflow: visible !important;
+}
+
+.tutorial-coach .tutorial-step-card {
+  display: none !important;
+}
+
+.tutorial-coach .tutorial-step-card.active {
+  display: grid !important;
+  min-height: 42px !important;
+  padding: 3px !important;
+  border-radius: 9px !important;
+  background: rgba(255, 244, 211, .96) !important;
+}
+
+.tutorial-coach .tutorial-step-card strong,
+.tutorial-coach .tutorial-step-card small {
+  display: none !important;
+}
+
+.tutorial-coach .tutorial-step-icon,
+.tutorial-coach .tutorial-step-icon .good-icon,
+.tutorial-coach .tutorial-step-icon img {
+  width: 32px !important;
+  height: 32px !important;
+}
+
+.tutorial-coach .coach-action {
+  min-width: 86px !important;
+  min-height: 42px !important;
+}
+
+.map-board {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.08)),
+    url("/assets/painted2d/maps/korea-route-map.webp") center / cover no-repeat !important;
+}
+
+.korea-map-layer {
+  opacity: 0 !important;
+}
+
+.map-route-lines {
+  z-index: 1 !important;
+}
+
+.map-route-line.sea {
+  stroke: rgba(255, 237, 166, .74) !important;
+  stroke-dasharray: 1 3;
+}
+
+.map-route-line.land {
+  stroke: rgba(91, 63, 28, .58) !important;
+}
+
+.map-route-line.selected,
+.map-route-line.sale-guide-line {
+  stroke-width: 3.6 !important;
+  filter: drop-shadow(0 0 4px rgba(255, 216, 87, .86)) !important;
+}
+
+.port-dot {
+  z-index: 3 !important;
+  border: 2px solid #fff3ba !important;
+  border-radius: 999px !important;
+  background: radial-gradient(circle, #fff6c4 0 32%, #176a78 34% 100%) !important;
+  box-shadow: 0 4px 10px rgba(0,0,0,.28) !important;
+}
+
+.port-dot span {
+  top: 20px !important;
+  padding: 2px 5px !important;
+  border-radius: 6px !important;
+  background: rgba(19, 33, 45, .78) !important;
+  color: #fff8df !important;
+  text-shadow: 0 1px 0 rgba(0,0,0,.4);
+}
+
+.port-dot.current,
+.port-dot.selected-destination {
+  box-shadow: 0 0 0 5px rgba(255, 211, 83, .48), 0 6px 16px rgba(0,0,0,.32) !important;
+}
+
+.map-sale-guide-pop {
+  z-index: 4 !important;
+  border-radius: 11px !important;
+  background: rgba(255, 246, 213, .96) !important;
+  box-shadow: 0 10px 22px rgba(0,0,0,.22) !important;
+}
+
+@media (max-width: 960px) {
+  .hub-hotspot {
+    width: 82px !important;
+    min-height: 66px !important;
+    padding: 5px !important;
+  }
+
+  .port-scene-stage .scene-copy {
+    top: 12px !important;
+    bottom: auto !important;
+    max-width: 42% !important;
+    padding: 9px 10px !important;
+  }
+
+  .port-scene-stage .scene-copy h2 {
+    margin-bottom: 6px !important;
+    font-size: 24px !important;
+  }
+
+  .port-scene-stage .scene-copy .eyebrow,
+  .port-scene-stage .scene-copy p:not(.eyebrow) {
+    display: none !important;
+  }
+
+  .port-hero-ctas {
+    gap: 6px !important;
+  }
+
+  .port-hero-ctas button {
+    min-height: 35px !important;
+    padding-inline: 10px !important;
+  }
+
+  .hub-hotspot img {
+    width: 34px !important;
+    height: 34px !important;
+  }
+
+  .market-good-icon.pixel-good-icon,
+  .trade-popover-icon.pixel-good-icon {
+    width: 46px !important;
+    height: 46px !important;
+  }
+
+  .market-npc {
+    left: 8px !important;
+    bottom: 58px !important;
+    width: 84px !important;
+  }
+
+  .trade-popover {
+    top: 12px !important;
+    bottom: 12px !important;
+    max-height: calc(100% - 24px) !important;
+    overflow: auto !important;
+  }
+
+  .trade-popover-actions .trade-icon {
+    min-height: 38px !important;
+  }
+
+  .tutorial-coach {
+    width: min(330px, calc(100vw - 24px)) !important;
+    left: 12px !important;
+    bottom: 10px !important;
+    grid-template-columns: 38px minmax(0, 1fr) 38px 68px !important;
+    min-height: 54px !important;
+    padding: 6px 8px !important;
+  }
+
+  .tutorial-coach .coach-portrait.guide-spirit {
+    width: 38px !important;
+    height: 38px !important;
+  }
+
+  .tutorial-coach .eyebrow,
+  .tutorial-coach strong {
+    font-size: 10px !important;
+  }
+
+  .tutorial-coach p {
+    -webkit-line-clamp: 1 !important;
+    font-size: 10px !important;
+  }
+
+  .tutorial-coach .coach-action {
+    min-width: 64px !important;
+    min-height: 36px !important;
+    padding-inline: 6px !important;
+    font-size: 11px !important;
+  }
+}
+
+@media (orientation: landscape) and (min-width: 761px) {
+  .content-surface {
+    box-sizing: border-box !important;
+    padding-top: 44px !important;
+  }
+
+  .landscape-layout {
+    height: calc(100% - 44px) !important;
+  }
+
+  .bottom-tabs {
+    top: 74px !important;
+  }
+}
+
+/* Red-team QA locks: this file loads after styles.css, so scene-critical exceptions
+   must live here to avoid broad art-direction panel rules flattening the UI. */
+.map-board.landscape-map-board {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.08)),
+    url("/assets/painted2d/maps/korea-route-map.webp") center / 100% 100% no-repeat !important;
+}
+
+.normalized-map-layer,
+.korea-map-layer,
+.map-route-lines {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.map-route-lines {
+  z-index: 4 !important;
+}
+
+.map-route-line {
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.map-route-line.sea {
+  stroke: rgba(91, 230, 227, .78) !important;
+  stroke-dasharray: 3 3 !important;
+}
+
+.map-route-line.land {
+  stroke: rgba(126, 76, 38, .86) !important;
+  stroke-dasharray: 1 2 !important;
+}
+
+.map-route-line.border-trade {
+  stroke: rgba(193, 139, 255, .95) !important;
+  stroke-dasharray: 5 2 1 2 !important;
+  stroke-width: 3.2 !important;
+}
+
+.map-route-line.available { stroke-width: 2.7 !important; }
+.map-route-line.selected { stroke: #f4cd73 !important; stroke-width: 4.5 !important; }
+.map-route-line.sale-guide-line { stroke: #8ae382 !important; stroke-width: 4.8 !important; }
+
+.port-dot.label-bottom span {
+  top: calc(100% + 5px) !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: translateX(-50%) !important;
+  text-align: center !important;
+}
+
+.port-dot.label-top span {
+  top: auto !important;
+  bottom: calc(100% + 5px) !important;
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-50%) !important;
+  text-align: center !important;
+}
+
+.port-dot.label-right span {
+  top: 50% !important;
+  left: calc(100% + 6px) !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: translateY(-50%) !important;
+  text-align: left !important;
+}
+
+.port-dot.label-left span {
+  top: 50% !important;
+  left: auto !important;
+  right: calc(100% + 6px) !important;
+  bottom: auto !important;
+  transform: translateY(-50%) !important;
+  text-align: right !important;
+}
+
+.quest-current-goal {
+  border: 2px solid rgba(215, 166, 77, .5) !important;
+  background:
+    linear-gradient(135deg, rgba(10, 22, 28, .94), rgba(28, 64, 76, .86)),
+    radial-gradient(circle at 12% 16%, rgba(215, 166, 77, .26), transparent 32%) !important;
+  color: #fff6df !important;
+  box-shadow: 0 16px 32px rgba(10, 18, 22, .28) !important;
+}
+
+.quest-current-goal h2,
+.quest-current-goal strong,
+.quest-current-goal .eyebrow {
+  color: #fff9e8 !important;
+}
+
+.quest-current-goal p,
+.quest-current-goal small {
+  color: rgba(255, 246, 223, .9) !important;
+}
+
+.quest-current-steps span {
+  color: #fff6df !important;
+  background: rgba(255, 246, 223, .14) !important;
+}
+
+.quest-current-steps span.done {
+  background: rgba(91, 198, 124, .2) !important;
+}
+
+.quest-current-steps span.active {
+  background: rgba(245, 190, 86, .26) !important;
+}
+
+.scene-equipment-layout .equipment-panel,
+.scene-equipment-layout .equipment-current,
+.scene-equipment-layout .current-vehicle-card,
+.scene-equipment-layout .equipment-next-focus,
+.scene-equipment-layout .visual-shop-row {
+  color: #2d2619 !important;
+}
+
+.scene-equipment-layout .equipment-panel p,
+.scene-equipment-layout .equipment-panel small,
+.scene-equipment-layout .current-vehicle-card small,
+.scene-equipment-layout .visual-shop-row small {
+  color: #5f4f34 !important;
+}
+
+.scene-equipment-layout .equipment-panel strong,
+.scene-equipment-layout .equipment-panel h2,
+.scene-equipment-layout .visual-shop-row strong {
+  color: #1f2e22 !important;
+}
+
+/* 2026-05-01 QA 25 visual pass: final responsive locks from actual 844x390,
+   932x430, 1366x768 screenshots. These reduce fragile absolute overlap while
+   keeping map nodes and route layers on one normalized coordinate plane. */
+.content-surface {
+  isolation: isolate;
+}
+
+.achievement-hero {
+  border-color: rgba(215, 166, 77, .42) !important;
+  background:
+    linear-gradient(135deg, rgba(14, 32, 40, .92), rgba(34, 76, 84, .78)),
+    radial-gradient(circle at 12% 12%, rgba(215, 166, 77, .26), transparent 34%) !important;
+  color: #fff6df !important;
+}
+
+.achievement-hero h2,
+.achievement-hero strong,
+.achievement-hero .eyebrow {
+  color: #fff9e8 !important;
+}
+
+.achievement-hero p,
+.achievement-hero small {
+  color: rgba(255, 246, 223, .9) !important;
+}
+
+.achievement-stamp-grid span {
+  background: rgba(255, 246, 223, .12) !important;
+  border-color: rgba(255, 224, 138, .28) !important;
+}
+
+.port-dot span {
+  pointer-events: none;
+}
+
+.market-stall-shelf {
+  scrollbar-gutter: stable;
+}
+
+.good-stall-token {
+  touch-action: manipulation;
+}
+
+.hub-hotspot,
+.hub-hotspot.active,
+.hub-hotspot:hover,
+.hub-hotspot:focus-visible {
+  transform: translate(-50%, -50%) !important;
+}
+
+.hub-hotspot.active,
+.hub-hotspot:hover,
+.hub-hotspot:focus-visible {
+  transform: translate(-50%, -50%) translateY(-2px) !important;
+}
+
+@media (orientation: landscape) and (max-width: 960px) {
+  .game-shell {
+    padding: 6px !important;
+  }
+
+  .status-bar {
+    top: 6px !important;
+    grid-template-columns: minmax(104px, 1fr) 70px 74px 56px minmax(128px, 142px) 44px !important;
+    gap: 4px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 4px !important;
+    border-radius: 10px !important;
+  }
+
+  .status-bar > div {
+    min-height: 36px !important;
+    padding: 4px 6px !important;
+  }
+
+  .status-bar > div:nth-child(4),
+  .status-bar .autosave {
+    display: none !important;
+  }
+
+  .status-bar .fame-status-strip {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 3px !important;
+    min-height: 36px !important;
+    padding: 3px !important;
+  }
+
+  .status-bar .fame-status-strip span {
+    min-width: 0 !important;
+    padding: 4px 3px !important;
+    font-size: 9px !important;
+    line-height: 1 !important;
+    overflow: hidden !important;
+    text-overflow: clip !important;
+    white-space: nowrap !important;
+  }
+
+  .status-bar .label {
+    font-size: 9px !important;
+  }
+
+  .status-bar strong {
+    font-size: 11px !important;
+  }
+
+  .audio-controls {
+    display: grid !important;
+    grid-template-columns: 34px !important;
+    gap: 3px !important;
+    width: 44px !important;
+    min-width: 0 !important;
+    padding: 3px !important;
+  }
+
+  .audio-controls button {
+    min-width: 0 !important;
+    min-height: 30px !important;
+    padding: 0 3px !important;
+    font-size: 10px !important;
+  }
+
+  .audio-controls button:not(.audio-prime) {
+    display: none !important;
+  }
+
+  .audio-controls input {
+    display: none !important;
+  }
+
+  .toast {
+    top: 56px !important;
+    left: 10px !important;
+    max-width: 220px !important;
+    padding: 7px 10px !important;
+    font-size: 13px !important;
+    z-index: 18 !important;
+  }
+
+  .bottom-tabs {
+    top: 58px !important;
+    right: 8px !important;
+    width: min(520px, calc(100vw - 150px)) !important;
+    grid-template-columns: repeat(7, minmax(42px, 1fr)) !important;
+    gap: 4px !important;
+    padding: 4px !important;
+    border-radius: 12px !important;
+  }
+
+  .bottom-tabs button {
+    min-height: 30px !important;
+    padding: 2px 4px !important;
+    font-size: 10px !important;
+    border-radius: 8px !important;
+  }
+
+  .content-surface {
+    height: calc(100vh - 74px - var(--safe-bottom)) !important;
+    margin-top: 4px !important;
+    padding-top: 36px !important;
+    overflow: hidden !important;
+  }
+
+  .landscape-layout {
+    height: calc(100% - 36px) !important;
+    gap: 8px !important;
+    grid-template-columns: minmax(0, 1.18fr) minmax(300px, .88fr) !important;
+  }
+
+  .main-panel,
+  .side-panel {
+    min-height: 0 !important;
+  }
+
+  .side-panel {
+    gap: 7px !important;
+    padding-right: 3px !important;
+    padding-bottom: 48px !important;
+    overflow-y: auto !important;
+  }
+
+  .side-panel > .panel,
+  .side-panel > .facility-panel,
+  .side-panel > .ship-berth-panel {
+    border-radius: 10px !important;
+  }
+
+  .port-scene-stage .scene-copy {
+    top: auto !important;
+    left: 10px !important;
+    bottom: 10px !important;
+    max-width: 146px !important;
+    padding: 10px !important;
+  }
+
+  .port-scene-stage .scene-copy h2 {
+    font-size: 23px !important;
+    line-height: 1.04 !important;
+  }
+
+  .port-hero-ctas {
+    grid-template-columns: 1fr !important;
+    gap: 5px !important;
+  }
+
+  .port-hero-ctas button {
+    min-height: 32px !important;
+    padding-inline: 8px !important;
+    font-size: 11px !important;
+  }
+
+  .hub-hotspot {
+    width: 74px !important;
+    min-height: 58px !important;
+    padding: 4px !important;
+    border-radius: 9px !important;
+  }
+
+  .hub-hotspot img {
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  .hub-hotspot strong {
+    font-size: 10.5px !important;
+    line-height: 1.05 !important;
+  }
+
+  .hub-hotspot span {
+    font-size: 9px !important;
+    line-height: 1.05 !important;
+  }
+
+  .hub-hotspot.hotspot-market { left: 33% !important; top: 27% !important; }
+  .hub-hotspot.hotspot-tavern { left: 47% !important; top: 27% !important; }
+  .hub-hotspot.hotspot-office { left: 61% !important; top: 27% !important; }
+  .hub-hotspot.hotspot-routes { left: 78% !important; top: 44% !important; }
+  .hub-hotspot.hotspot-shipyard { left: 78% !important; top: 73% !important; }
+  .hub-hotspot.hotspot-fish { left: 60% !important; top: 78% !important; }
+
+  .visual-market-layout {
+    grid-template-columns: 1fr !important;
+  }
+
+  .visual-market-layout .market-quick-panel {
+    display: none !important;
+  }
+
+  .market-scene-main,
+  .market-scene-stage {
+    width: 100% !important;
+  }
+
+  .market-scene-sign {
+    left: 10px !important;
+    top: 10px !important;
+    width: 106px !important;
+    padding: 8px !important;
+  }
+
+  .market-scene-sign h2 {
+    font-size: 21px !important;
+  }
+
+  .market-scene-sign span {
+    font-size: 10px !important;
+    line-height: 1.2 !important;
+  }
+
+  .market-npc {
+    left: 12px !important;
+    bottom: 46px !important;
+    width: 72px !important;
+    max-height: 58% !important;
+  }
+
+  .market-stall-shelf,
+  .market-stall-shelf.free-stall-shelf {
+    top: 48px !important;
+    left: 104px !important;
+    right: 10px !important;
+    bottom: 10px !important;
+    height: auto !important;
+    max-height: none !important;
+    grid-template-columns: repeat(4, minmax(58px, 1fr)) !important;
+    grid-auto-rows: minmax(70px, 1fr) !important;
+    gap: 6px !important;
+    align-content: stretch !important;
+  }
+
+  .good-stall-token {
+    min-height: 70px !important;
+    padding: 4px !important;
+  }
+
+  .good-stall-token .market-good-icon {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  .good-stall-token strong {
+    font-size: 10px !important;
+  }
+
+  .good-stall-token em,
+  .good-stall-token .price-label {
+    font-size: 9px !important;
+  }
+
+  .stall-badge-row {
+    min-height: 13px !important;
+    gap: 2px !important;
+  }
+
+  .stall-badge-row small,
+  .stall-badge-row b {
+    max-width: 34px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 8px !important;
+  }
+
+  .market-scene-stage:has(.trade-popover) .market-stall-shelf {
+    display: grid !important;
+    left: 104px !important;
+    right: auto !important;
+    width: 118px !important;
+    grid-template-columns: 1fr !important;
+    grid-auto-rows: minmax(66px, auto) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  .trade-popover {
+    left: 230px !important;
+    right: 8px !important;
+    top: 10px !important;
+    bottom: auto !important;
+    width: auto !important;
+    max-height: none !important;
+    grid-template-columns: 46px minmax(0, 1fr) 94px !important;
+    gap: 6px !important;
+    padding: 6px !important;
+  }
+
+  .trade-popover-icon.pixel-good-icon,
+  .trade-popover-icon {
+    width: 46px !important;
+    height: 46px !important;
+  }
+
+  .trade-popover-main strong {
+    font-size: 15px !important;
+  }
+
+  .trade-popover-main > span {
+    font-size: 10px !important;
+    line-height: 1.15 !important;
+  }
+
+  .trade-detail-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 4px !important;
+  }
+
+  .trade-detail-grid span {
+    min-height: 28px !important;
+    padding: 3px !important;
+    font-size: 9px !important;
+  }
+
+  .trade-detail-grid b {
+    font-size: 7.5px !important;
+  }
+
+  .market-flags {
+    gap: 3px !important;
+  }
+
+  .market-flags span {
+    font-size: 8.5px !important;
+  }
+
+  .price-reason-line,
+  .sell-destination-chip {
+    display: none !important;
+  }
+
+  .fairy-trade-note {
+    grid-template-columns: 24px minmax(0, 1fr) !important;
+    padding: 3px 4px !important;
+    font-size: 9px !important;
+  }
+
+  .fairy-trade-note .guide-spirit {
+    width: 24px !important;
+    height: 24px !important;
+  }
+
+  .trade-popover-actions {
+    grid-column: 3 !important;
+    grid-row: 1 / span 3 !important;
+    align-self: stretch !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 6px !important;
+    margin-top: 26px !important;
+  }
+
+  .trade-popover-actions .trade-icon {
+    min-height: 50px !important;
+    padding: 5px !important;
+    font-size: 12px !important;
+  }
+
+  .map-board {
+    min-height: 100% !important;
+  }
+
+  .map-sale-guide-pop {
+    transform: translate(-50%, calc(-100% - 8px)) scale(.86) !important;
+    transform-origin: center bottom !important;
+  }
+
+  .route-destination-scene {
+    height: 48px !important;
+    object-fit: cover !important;
+  }
+
+  .route-preview .cargo-slot-strip,
+  .route-preview .route-profit-box {
+    margin-top: 5px !important;
+  }
+
+  .route-overview-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 4px !important;
+  }
+
+  .route-overview-grid span,
+  .route-prep-board span {
+    min-height: 34px !important;
+    padding: 5px !important;
+    font-size: 10px !important;
+  }
+
+  .quest-layout .main-panel,
+  .scene-equipment-layout .main-panel {
+    overflow-y: auto !important;
+    padding-bottom: 46px !important;
+  }
+
+  .quest-current-goal {
+    min-height: 118px !important;
+    padding: 10px 12px !important;
+  }
+
+  .quest-current-goal h2 {
+    font-size: 20px !important;
+  }
+
+  .quest-current-steps {
+    gap: 6px !important;
+  }
+
+  .quest-current-steps span {
+    min-width: 54px !important;
+    padding: 5px !important;
+  }
+
+  .scene-equipment-layout .current-vehicle-card,
+  .scene-equipment-layout .visual-shop-row {
+    min-width: 0 !important;
+  }
+
+  .scene-equipment-layout .current-vehicle-card strong,
+  .scene-equipment-layout .visual-shop-row strong {
+    white-space: normal !important;
+    line-height: 1.1 !important;
+  }
+
+  .scene-equipment-layout .pixel-vehicle {
+    width: 52px !important;
+    height: 52px !important;
+    object-fit: contain !important;
+  }
+
+  .achievement-hero {
+    min-height: 94px !important;
+    padding: 12px !important;
+  }
+
+  .achievement-hero h2 {
+    font-size: 20px !important;
+  }
+
+  .achievement-stamp-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+  }
+
+  .achievement-stamp-grid span {
+    min-height: 44px !important;
+    padding: 5px !important;
+  }
+
+  .achievement-stamp-grid strong {
+    font-size: 13px !important;
+  }
+
+  .achievement-stamp-grid small {
+    font-size: 8.5px !important;
+  }
+
+  .tab-cargo .content-surface,
+  .tab-ledger .content-surface {
+    overflow-y: auto !important;
+  }
+
+  .tab-cargo .content-surface > div,
+  .tab-ledger .content-surface > div {
+    padding-bottom: 54px !important;
+  }
+
+  .tab-map .tutorial-coach,
+  .tab-quests .tutorial-coach,
+  .tab-vehicles .tutorial-coach,
+  .tab-cargo .tutorial-coach,
+  .tab-ledger .tutorial-coach {
+    display: none !important;
+  }
+
+  .tutorial-coach {
+    left: 8px !important;
+    right: auto !important;
+    bottom: 6px !important;
+    width: min(292px, calc(100vw - 16px)) !important;
+    min-height: 46px !important;
+    max-height: 46px !important;
+    grid-template-columns: 34px minmax(0, 1fr) 64px !important;
+    gap: 6px !important;
+    padding: 5px 7px !important;
+    opacity: .96 !important;
+  }
+
+  .tutorial-coach .fairy-companion-frame {
+    width: 34px !important;
+    height: 34px !important;
+  }
+
+  .tutorial-coach .coach-portrait.guide-spirit {
+    width: 34px !important;
+    height: 34px !important;
+  }
+
+  .tutorial-coach .fairy-companion-frame span,
+  .tutorial-coach p {
+    display: none !important;
+  }
+
+  .tutorial-coach .tutorial-path {
+    display: grid !important;
+    width: 34px !important;
+    max-width: 34px !important;
+    grid-template-columns: 34px !important;
+    overflow: visible !important;
+  }
+
+  .tutorial-coach .tutorial-step-card {
+    display: none !important;
+  }
+
+  .tutorial-coach .tutorial-step-card.active {
+    display: grid !important;
+    width: 34px !important;
+    min-height: 34px !important;
+    padding: 2px !important;
+  }
+
+  .tutorial-coach .tutorial-step-card strong,
+  .tutorial-coach .tutorial-step-card small {
+    display: none !important;
+  }
+
+  .tutorial-coach .tutorial-step-icon,
+  .tutorial-coach .tutorial-step-icon .good-icon,
+  .tutorial-coach .tutorial-step-icon img {
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  .tutorial-coach .eyebrow {
+    margin-bottom: 1px !important;
+    font-size: 8.5px !important;
+  }
+
+  .tutorial-coach strong {
+    font-size: 11px !important;
+    line-height: 1.1 !important;
+  }
+
+  .tutorial-coach .coach-action {
+    min-width: 0 !important;
+    min-height: 34px !important;
+    padding: 0 6px !important;
+    font-size: 10px !important;
+  }
+}
+
+@media (orientation: landscape) and (max-width: 960px) {
+  .hub-hotspot.hotspot-market { left: 40% !important; top: 15% !important; }
+  .hub-hotspot.hotspot-tavern { left: 58% !important; top: 15% !important; }
+  .hub-hotspot.hotspot-office { left: 76% !important; top: 15% !important; }
+
+  .equipment-hero-vehicles span {
+    grid-template-columns: 52px minmax(0, 1fr) !important;
+    gap: 5px !important;
+    min-width: 0 !important;
+  }
+
+  .equipment-hero-vehicles {
+    grid-template-columns: 1fr !important;
+  }
+
+  .equipment-hero-vehicles img,
+  .equipment-hero-vehicles .pixel-vehicle {
+    width: 52px !important;
+    height: 42px !important;
+  }
+
+  .equipment-hero-vehicles b,
+  .equipment-hero-vehicles small {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    line-height: 1.08 !important;
+  }
+
+  .scene-equipment-layout .equipment-next-focus {
+    min-height: 120px !important;
+    padding: 10px !important;
+  }
+}
+
+@media (orientation: landscape) and (min-width: 961px) and (max-width: 1400px) {
+  .market-stall-shelf,
+  .market-stall-shelf.free-stall-shelf {
+    grid-template-columns: repeat(4, minmax(96px, 1fr)) !important;
+    grid-auto-rows: minmax(96px, 1fr) !important;
+    align-content: stretch !important;
+  }
+
+  .market-scene-stage:has(.trade-popover) .market-stall-shelf {
+    grid-template-columns: repeat(2, minmax(82px, 1fr)) !important;
+  }
+
+  .tutorial-coach {
+    width: min(430px, calc(100vw - 40px)) !important;
+  }
+}
+
+/* 2026-05-03 visual QA pass 3: unify the scene art, remove overlap, and make controls read as game UI. */
+:root {
+  --qa-ink: #17252b;
+  --qa-ink-2: #203940;
+  --qa-teal: #1e7888;
+  --qa-teal-soft: #8bc8c4;
+  --qa-brass: #f0c767;
+  --qa-brass-dark: #9f6a2e;
+  --qa-hanji: #fbf0cf;
+  --qa-hanji-2: #efe0b8;
+  --qa-wood: #7b432f;
+  --qa-panel-dark: rgba(18, 34, 39, .86);
+  --qa-panel-paper: rgba(255, 246, 221, .94);
+  --qa-stroke: rgba(44, 33, 24, .34);
+  --qa-shadow: 0 14px 34px rgba(20, 13, 5, .24);
+}
+
+.app-shell,
+.landscape-game {
+  background:
+    radial-gradient(circle at 20% 0%, rgba(240, 199, 103, .18), transparent 30%),
+    linear-gradient(135deg, #e7dcc0 0%, #eef3ea 48%, #e4d3ad 100%) !important;
+}
+
+.app-shell {
+  max-width: min(1680px, calc(100vw - 24px)) !important;
+}
+
+.landscape-layout {
+  gap: 10px !important;
+  min-height: 0 !important;
+}
+
+.content-surface {
+  height: calc(100vh - 188px - var(--safe-bottom, 0px)) !important;
+  min-height: 420px !important;
+  border: 2px solid rgba(80, 62, 37, .32) !important;
+  box-shadow: var(--qa-shadow) !important;
+  background: rgba(255, 249, 232, .72) !important;
+}
+
+.game-topbar,
+.primary-nav,
+.tutorial-coach,
+.content-surface {
+  width: 100% !important;
+}
+
+.toast {
+  top: 76px !important;
+  left: calc(50% - min(840px, calc(50vw - 12px)) + 14px) !important;
+  right: auto !important;
+  transform: none !important;
+  max-width: 360px !important;
+  border: 2px solid rgba(240, 199, 103, .7) !important;
+  background: rgba(22, 40, 47, .9) !important;
+  color: #fff6d8 !important;
+}
+
+.primary-nav button,
+.topbar-sound-toggle,
+.sound-volume input {
+  border-color: rgba(72, 57, 35, .32) !important;
+}
+
+.primary-nav button.active {
+  color: #10333c !important;
+  border-color: rgba(240, 199, 103, .9) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 240, 183, .96), rgba(237, 195, 93, .84)) !important;
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,.22), 0 4px 0 rgba(116, 82, 40, .28) !important;
+}
+
+.tutorial-coach {
+  position: relative !important;
+  inset: auto !important;
+  z-index: 6 !important;
+  display: grid !important;
+  grid-template-columns: 60px minmax(190px, .68fr) minmax(360px, 1.25fr) 126px !important;
+  align-items: center !important;
+  gap: 10px !important;
+  min-height: 64px !important;
+  width: min(720px, calc(100% - 690px)) !important;
+  margin: 6px auto 8px 0 !important;
+  padding: 8px 10px !important;
+  overflow: hidden !important;
+  border: 2px solid rgba(240, 199, 103, .66) !important;
+  border-radius: 14px !important;
+  background:
+    linear-gradient(90deg, rgba(19, 41, 47, .94), rgba(29, 86, 96, .9) 58%, rgba(98, 69, 33, .9)) !important;
+  box-shadow: 0 10px 24px rgba(11, 20, 24, .22) !important;
+  color: #fff5d2 !important;
+}
+
+.tutorial-coach::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  pointer-events: none;
+  border: 1px solid rgba(255, 235, 165, .34);
+  border-radius: 10px;
+}
+
+.tutorial-coach .fairy-companion-frame {
+  width: 54px !important;
+  height: 54px !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 2px solid rgba(240, 199, 103, .8) !important;
+  border-radius: 14px !important;
+  background: radial-gradient(circle at 50% 30%, rgba(255, 244, 182, .42), rgba(30, 120, 136, .18) 60%, rgba(10, 29, 35, .32)) !important;
+}
+
+.tutorial-coach .coach-portrait.guide-spirit,
+.tutorial-coach .fairy-companion-frame .guide-spirit {
+  width: 46px !important;
+  height: 46px !important;
+  filter: drop-shadow(0 3px 0 rgba(0,0,0,.22)) !important;
+}
+
+.tutorial-coach .fairy-companion-frame span {
+  position: absolute !important;
+  left: -9999px !important;
+}
+
+.tutorial-coach .tutorial-path-copy {
+  min-width: 0 !important;
+}
+
+.tutorial-coach .tutorial-path-copy .eyebrow,
+.tutorial-coach .tutorial-path-copy p {
+  color: rgba(255, 245, 210, .78) !important;
+}
+
+.tutorial-coach .tutorial-path-copy strong {
+  color: #fff8dc !important;
+  font-size: clamp(14px, 1.05vw, 17px) !important;
+}
+
+.tutorial-coach .tutorial-path-copy p {
+  margin: 2px 0 0 !important;
+  display: block !important;
+  font-size: clamp(11px, .78vw, 13px) !important;
+}
+
+.tutorial-coach .tutorial-path,
+.tutorial-coach .first-30-path {
+  display: grid !important;
+  width: 100% !important;
+  max-width: none !important;
+  grid-template-columns: repeat(7, minmax(44px, 1fr)) !important;
+  gap: 6px !important;
+  overflow: hidden !important;
+}
+
+.tutorial-coach .tutorial-step-card {
+  display: grid !important;
+  grid-template-columns: 28px minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: 4px !important;
+  min-height: 44px !important;
+  padding: 4px 5px !important;
+  border: 1px solid rgba(240, 199, 103, .36) !important;
+  border-radius: 10px !important;
+  background: rgba(255, 248, 222, .12) !important;
+  color: #fff2c8 !important;
+}
+
+.tutorial-coach .tutorial-step-card.active {
+  border-color: rgba(255, 224, 118, .95) !important;
+  background: rgba(255, 214, 99, .22) !important;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.18) !important;
+}
+
+.tutorial-coach .tutorial-step-card.done {
+  opacity: .9 !important;
+}
+
+.tutorial-coach .tutorial-step-card strong {
+  font-size: 10px !important;
+  line-height: 1.08 !important;
+  color: inherit !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+}
+
+.tutorial-coach .tutorial-step-card small {
+  display: none !important;
+}
+
+.tutorial-coach .tutorial-step-icon,
+.tutorial-coach .tutorial-step-icon .good-icon,
+.tutorial-coach .tutorial-step-icon img {
+  width: 28px !important;
+  height: 28px !important;
+}
+
+.tutorial-coach .coach-action {
+  position: relative !important;
+  z-index: 2 !important;
+  min-height: 46px !important;
+  min-width: 116px !important;
+  padding: 0 12px !important;
+  border: 2px solid rgba(255, 238, 164, .8) !important;
+  background: linear-gradient(180deg, #2aa0a8, #0d6273) !important;
+  color: #fff8dc !important;
+  box-shadow: 0 4px 0 rgba(10, 42, 48, .55) !important;
+}
+
+.scene-panel,
+.side-panel > section,
+.side-panel > div,
+.port-flavor-panel,
+.facility-panel,
+.month-news,
+.recommendation-panel,
+.ship-berth-panel,
+.route-prep-panel,
+.map-target-panel {
+  border: 2px solid rgba(92, 70, 40, .32) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 246, 221, .96), rgba(239, 224, 184, .9)) !important;
+  box-shadow: 0 8px 20px rgba(44, 28, 13, .1) !important;
+}
+
+.side-panel {
+  gap: 10px !important;
+  padding-right: 4px !important;
+  scrollbar-width: thin !important;
+}
+
+.side-panel .panel-title,
+.side-panel h2,
+.side-panel h3 {
+  color: #17252b !important;
+  letter-spacing: 0 !important;
+}
+
+.port-scene-card,
+.market-scene-card,
+.map-scene-card {
+  border: 2px solid rgba(240, 199, 103, .52) !important;
+  box-shadow: 0 16px 34px rgba(13, 24, 27, .26) !important;
+}
+
+.hub-hotspot {
+  width: clamp(86px, 7.4vw, 112px) !important;
+  min-height: clamp(78px, 7.1vw, 96px) !important;
+  padding: 8px 7px !important;
+  gap: 4px !important;
+  border: 2px solid rgba(241, 205, 111, .68) !important;
+  border-radius: 14px !important;
+  background:
+    linear-gradient(180deg, rgba(21, 54, 61, .9), rgba(35, 80, 80, .82)),
+    linear-gradient(90deg, rgba(255,255,255,.08), transparent) !important;
+  color: #fff4cd !important;
+  box-shadow: 0 9px 0 rgba(44, 29, 17, .32), 0 14px 24px rgba(0,0,0,.18) !important;
+  text-shadow: 0 2px 0 rgba(0,0,0,.28) !important;
+}
+
+.hub-hotspot::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  pointer-events: none;
+  border: 1px solid rgba(255, 235, 164, .24);
+  border-radius: 10px;
+}
+
+.hub-hotspot img {
+  width: 42px !important;
+  height: 42px !important;
+  padding: 5px !important;
+  border: 2px solid rgba(255, 225, 139, .58) !important;
+  border-radius: 12px !important;
+  background: rgba(255, 245, 213, .18) !important;
+  object-fit: contain !important;
+  image-rendering: auto !important;
+  filter: drop-shadow(0 2px 0 rgba(0,0,0,.32)) !important;
+}
+
+.hub-hotspot strong {
+  color: #fff8df !important;
+  font-size: clamp(13px, .95vw, 16px) !important;
+  line-height: 1.05 !important;
+}
+
+.hub-hotspot span {
+  max-width: 100% !important;
+  padding: 2px 5px !important;
+  border-radius: 999px !important;
+  background: rgba(9, 25, 30, .34) !important;
+  color: rgba(255, 242, 203, .86) !important;
+  font-size: clamp(9px, .7vw, 11px) !important;
+  line-height: 1.1 !important;
+  white-space: nowrap !important;
+}
+
+.hub-hotspot.active,
+.hub-hotspot:hover,
+.hub-hotspot:focus-visible {
+  transform: translateY(-2px) !important;
+  border-color: rgba(255, 232, 139, .95) !important;
+  background:
+    linear-gradient(180deg, rgba(34, 126, 137, .95), rgba(15, 82, 96, .95)) !important;
+  box-shadow: 0 8px 0 rgba(44, 29, 17, .38), 0 16px 26px rgba(0,0,0,.22), 0 0 0 4px rgba(240, 199, 103, .16) !important;
+}
+
+.port-hero-ctas .primary,
+.market-cta,
+.route-action-primary,
+.start-travel-button,
+.trade-action.buy {
+  border: 2px solid rgba(255, 232, 139, .86) !important;
+  background: linear-gradient(180deg, #2ca7ad, #0e6273) !important;
+  color: #fff8df !important;
+  box-shadow: 0 5px 0 rgba(14, 65, 74, .55) !important;
+}
+
+.port-hero-ctas .secondary,
+.trade-action.sell {
+  border: 2px solid rgba(141, 97, 48, .35) !important;
+  background: linear-gradient(180deg, #fff3d0, #e8cf96) !important;
+  color: #17252b !important;
+}
+
+.market-scene-stage {
+  background:
+    linear-gradient(90deg, rgba(18, 34, 39, .62), rgba(255,255,255,0) 36%),
+    var(--scene-image, none) center / cover no-repeat !important;
+}
+
+.market-stall-shelf,
+.market-stall-shelf.free-stall-shelf {
+  top: 70px !important;
+  left: 146px !important;
+  right: 14px !important;
+  bottom: 16px !important;
+  height: auto !important;
+  max-height: none !important;
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(112px, 1fr)) !important;
+  grid-auto-rows: 118px !important;
+  align-content: start !important;
+  justify-content: stretch !important;
+  gap: 10px !important;
+  padding: 12px !important;
+  overflow: auto !important;
+  border: 2px solid rgba(240, 199, 103, .42) !important;
+  border-radius: 18px !important;
+  background:
+    linear-gradient(180deg, rgba(20, 37, 42, .66), rgba(12, 26, 31, .42)),
+    repeating-linear-gradient(0deg, rgba(126, 74, 41, .42) 0 8px, rgba(83, 48, 31, .42) 8px 16px) !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 240, 188, .14), 0 18px 36px rgba(0,0,0,.2) !important;
+}
+
+.good-stall-token {
+  position: relative !important;
+  min-height: 0 !important;
+  height: 118px !important;
+  display: grid !important;
+  grid-template-rows: 50px auto auto !important;
+  place-items: center !important;
+  gap: 3px !important;
+  padding: 8px 7px 7px !important;
+  border: 2px solid rgba(83, 55, 33, .42) !important;
+  border-radius: 14px !important;
+  background:
+    radial-gradient(circle at 50% 24%, rgba(255,255,255,.42), transparent 38%),
+    linear-gradient(180deg, rgba(255, 247, 220, .96), rgba(223, 193, 135, .94)) !important;
+  box-shadow: 0 6px 0 rgba(83, 49, 28, .28), inset 0 0 0 1px rgba(255,255,255,.35) !important;
+}
+
+.good-stall-token.selected,
+.good-stall-token:focus-visible {
+  border-color: rgba(255, 220, 95, .95) !important;
+  box-shadow: 0 7px 0 rgba(83, 49, 28, .3), 0 0 0 4px rgba(240, 199, 103, .22), inset 0 0 0 2px rgba(255,255,255,.3) !important;
+}
+
+.good-stall-token .good-icon,
+.good-stall-token .market-good-icon,
+.good-stall-token img {
+  width: 50px !important;
+  height: 50px !important;
+  object-fit: contain !important;
+  image-rendering: pixelated !important;
+  filter: drop-shadow(0 3px 0 rgba(80, 45, 20, .2)) !important;
+}
+
+.good-stall-token strong {
+  max-width: 100% !important;
+  color: #17252b !important;
+  font-size: 13px !important;
+  line-height: 1.05 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.good-stall-token small {
+  color: #24464b !important;
+  font-size: 10px !important;
+  line-height: 1.05 !important;
+}
+
+.stall-badge-row {
+  top: 5px !important;
+  left: 6px !important;
+  right: 6px !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  gap: 3px !important;
+}
+
+.stall-badge-row .badge,
+.good-stall-token .badge {
+  padding: 1px 5px !important;
+  border: 1px solid rgba(82, 55, 31, .22) !important;
+  border-radius: 999px !important;
+  font-size: 9px !important;
+  line-height: 1.2 !important;
+  box-shadow: 0 1px 0 rgba(255,255,255,.35) !important;
+}
+
+.market-scene-stage:has(.trade-popover) .market-stall-shelf {
+  right: 414px !important;
+  grid-template-columns: repeat(2, minmax(108px, 1fr)) !important;
+  grid-auto-rows: 112px !important;
+}
+
+.market-scene-stage:has(.trade-popover) .good-stall-token {
+  height: 112px !important;
+}
+
+.trade-popover {
+  width: min(392px, 35vw) !important;
+  max-height: calc(100% - 28px) !important;
+  overflow: auto !important;
+  border: 2px solid rgba(240, 199, 103, .68) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 247, 220, .97), rgba(235, 215, 167, .96)) !important;
+  box-shadow: 0 18px 40px rgba(14, 24, 29, .35) !important;
+}
+
+.market-npc {
+  bottom: 16px !important;
+  left: 22px !important;
+  width: clamp(92px, 9.5vw, 126px) !important;
+  filter: drop-shadow(0 8px 0 rgba(24, 18, 10, .22)) !important;
+}
+
+.market-npc .guide-spirit {
+  width: 44px !important;
+  height: 44px !important;
+}
+
+.port-dot {
+  width: 30px !important;
+  height: 30px !important;
+  border: 3px solid rgba(244, 206, 103, .96) !important;
+  background: radial-gradient(circle, #e8fff4 0 28%, #2aa0a8 32% 58%, #14363f 62% 100%) !important;
+  box-shadow: 0 0 0 3px rgba(20, 38, 43, .34), 0 7px 12px rgba(0,0,0,.2) !important;
+}
+
+.port-dot.current,
+.port-dot.selected {
+  width: 36px !important;
+  height: 36px !important;
+  border-color: #ffe589 !important;
+  background: radial-gradient(circle, #fff8d4 0 26%, #f0c767 30% 54%, #7b432f 58% 100%) !important;
+  box-shadow: 0 0 0 5px rgba(240, 199, 103, .22), 0 0 20px rgba(255, 224, 126, .5) !important;
+}
+
+.port-dot span {
+  top: calc(100% + 5px) !important;
+  padding: 3px 7px !important;
+  border: 1px solid rgba(240, 199, 103, .5) !important;
+  border-radius: 999px !important;
+  background: rgba(18, 34, 39, .82) !important;
+  color: #fff2c5 !important;
+  font-size: 10.5px !important;
+  line-height: 1.05 !important;
+  box-shadow: 0 3px 8px rgba(0,0,0,.18) !important;
+}
+
+.map-route-line,
+.map-route-line-svg {
+  filter: drop-shadow(0 2px 0 rgba(12, 20, 22, .2)) !important;
+}
+
+.route-danger-chip,
+.event-result-chip,
+.fame-chip,
+.trust-chip,
+.chip,
+.badge {
+  border-radius: 999px !important;
+  border: 1px solid rgba(87, 61, 32, .28) !important;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.22) !important;
+}
+
+.modal-backdrop {
+  background:
+    radial-gradient(circle at 50% 42%, rgba(23, 37, 43, .36), rgba(11, 16, 18, .76)),
+    rgba(18, 22, 20, .54) !important;
+  backdrop-filter: blur(5px) saturate(.9) !important;
+}
+
+.event-modal,
+.quest-complete-modal,
+.discovery-modal,
+.tutorial-story-modal,
+.equipment-notice-modal,
+.cargo-alert-modal {
+  max-height: min(86vh, 760px) !important;
+  overflow: auto !important;
+  border: 2px solid rgba(240, 199, 103, .72) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 247, 220, .98), rgba(234, 214, 167, .96)) !important;
+  box-shadow: 0 22px 54px rgba(0,0,0,.38) !important;
+}
+
+.event-modal h2,
+.quest-complete-modal h2,
+.discovery-modal h2,
+.tutorial-story-modal h2 {
+  color: #17252b !important;
+}
+
+.vehicle-card img,
+.vehicle-card .pixel-vehicle,
+.equipment-hero-vehicles img,
+.route-vehicle-icon,
+.ship-berth-panel img {
+  object-fit: contain !important;
+  image-rendering: auto !important;
+}
+
+.tutorial-story-actions {
+  display: grid;
+  align-self: end;
+  gap: 10px;
+}
+
+.tutorial-story-actions .tutorial-story-continue {
+  width: 100%;
+}
+
+.tutorial-story-skip {
+  min-height: 44px;
+  border: 1px solid rgba(91, 70, 36, .36);
+  border-radius: 14px;
+  color: #2a2f2e;
+  background: rgba(255, 250, 228, .78);
+  font-weight: 900;
+}
+
+.tutorial-story-modal .tutorial-story-copy p,
+.tutorial-story-modal .tutorial-story-target small,
+.tutorial-story-modal .tutorial-story-target strong {
+  color: #1e2b2e !important;
+}
+
+.tutorial-story-modal .tutorial-story-copy .eyebrow {
+  color: #0f6f78 !important;
+}
+
+.tutorial-story-modal .tutorial-story-portrait {
+  background:
+    radial-gradient(circle at 50% 24%, rgba(255, 230, 139, .55), transparent 45%),
+    rgba(43, 111, 118, .12) !important;
+}
+
+.tutorial-story-modal .tutorial-story-portrait span {
+  color: #513d1d !important;
+}
+
+.protagonist-portrait {
+  border-radius: 14px;
+  object-fit: cover;
+}
+
+.tutorial-highlight {
+  position: relative;
+  z-index: 3;
+  outline: 3px solid #ffd76a !important;
+  box-shadow:
+    0 0 0 5px rgba(32, 150, 161, .32),
+    0 0 24px rgba(255, 215, 106, .92) !important;
+}
+
+@media (max-width: 960px) {
+  .tutorial-story-modal {
+    grid-template-columns: 100px minmax(0, 1fr) 112px !important;
+  }
+
+  .tutorial-story-actions {
+    gap: 6px;
+  }
+}
+
+.side-panel .empty-state,
+.empty-state {
+  border: 1px dashed rgba(80, 62, 37, .36) !important;
+  background: rgba(255, 249, 229, .72) !important;
+  color: #3b3a2e !important;
+}
+
+@media (min-width: 1500px) {
+  .app-shell {
+    max-width: min(1740px, calc(100vw - 32px)) !important;
+  }
+
+  .content-surface {
+    height: calc(100vh - 196px - var(--safe-bottom, 0px)) !important;
+  }
+
+  .tutorial-coach {
+    width: min(760px, calc(100% - 720px)) !important;
+    grid-template-columns: 64px minmax(210px, .72fr) minmax(280px, 1.1fr) 132px !important;
+  }
+
+  .tutorial-coach .tutorial-step-card strong {
+    font-size: 11px !important;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 820px) {
+  .content-surface {
+    height: calc(100vh - 176px - var(--safe-bottom, 0px)) !important;
+    min-height: 0 !important;
+  }
+
+  .tutorial-coach {
+    grid-template-columns: 54px minmax(170px, .64fr) minmax(280px, 1.1fr) 110px !important;
+    min-height: 54px !important;
+    margin-top: 4px !important;
+    margin-bottom: 6px !important;
+    padding: 6px 8px !important;
+  }
+
+  .tutorial-coach .fairy-companion-frame {
+    width: 46px !important;
+    height: 46px !important;
+  }
+
+  .tutorial-coach .coach-portrait.guide-spirit,
+  .tutorial-coach .fairy-companion-frame .guide-spirit {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .tutorial-coach .tutorial-step-card {
+    min-height: 38px !important;
+    grid-template-columns: 24px minmax(0, 1fr) !important;
+  }
+
+  .tutorial-coach .tutorial-step-icon,
+  .tutorial-coach .tutorial-step-icon .good-icon,
+  .tutorial-coach .tutorial-step-icon img {
+    width: 24px !important;
+    height: 24px !important;
+  }
+
+  .tutorial-coach .coach-action {
+    min-height: 40px !important;
+    min-width: 100px !important;
+    padding: 0 9px !important;
+  }
+}
+
+@media (orientation: landscape) and (max-width: 1400px) {
+  .app-shell {
+    max-width: min(1328px, calc(100vw - 20px)) !important;
+  }
+
+  .content-surface {
+    grid-template-columns: minmax(0, 1.48fr) minmax(306px, .82fr) !important;
+  }
+
+  .tutorial-coach {
+    width: min(650px, calc(100% - 670px)) !important;
+    grid-template-columns: 50px minmax(158px, .64fr) minmax(230px, 1fr) 104px !important;
+    gap: 7px !important;
+  }
+
+  .tutorial-coach .tutorial-path {
+    grid-template-columns: repeat(5, minmax(40px, 1fr)) !important;
+  }
+
+  .tutorial-coach .tutorial-step-card:nth-child(n+6) {
+    display: none !important;
+  }
+
+  .market-stall-shelf,
+  .market-stall-shelf.free-stall-shelf {
+    grid-template-columns: repeat(4, minmax(96px, 1fr)) !important;
+    grid-auto-rows: 104px !important;
+    left: 128px !important;
+  }
+
+  .good-stall-token {
+    height: 104px !important;
+    grid-template-rows: 44px auto auto !important;
+  }
+
+  .good-stall-token .good-icon,
+  .good-stall-token .market-good-icon,
+  .good-stall-token img {
+    width: 44px !important;
+    height: 44px !important;
+  }
+
+  .market-scene-stage:has(.trade-popover) .market-stall-shelf {
+    right: 352px !important;
+    grid-template-columns: repeat(2, minmax(88px, 1fr)) !important;
+  }
+
+  .trade-popover {
+    width: 336px !important;
+  }
+}
+
+@media (orientation: landscape) and (max-width: 1100px) {
+  .bottom-tabs {
+    position: static !important;
+    inset: auto !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 4px 0 0 !important;
+    grid-template-columns: repeat(7, minmax(44px, 1fr)) !important;
+    z-index: 8 !important;
+  }
+
+  .bottom-tabs button {
+    min-height: 30px !important;
+    padding: 2px 4px !important;
+    font-size: 10px !important;
+  }
+
+  .content-surface {
+    height: calc(100vh - 152px - var(--safe-bottom, 0px)) !important;
+    margin-top: 6px !important;
+  }
+
+  .tutorial-coach {
+    width: 100% !important;
+    margin: 4px 0 6px !important;
+    grid-template-columns: 42px minmax(0, 1fr) 44px 90px !important;
+    min-height: 42px !important;
+    padding: 4px 6px !important;
+    z-index: 12 !important;
+  }
+
+  .tutorial-coach .fairy-companion-frame {
+    width: 38px !important;
+    height: 38px !important;
+  }
+
+  .tutorial-coach .coach-portrait.guide-spirit,
+  .tutorial-coach .fairy-companion-frame .guide-spirit {
+    width: 34px !important;
+    height: 34px !important;
+  }
+
+  .tutorial-coach .tutorial-path-copy strong {
+    font-size: 12px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .tutorial-coach .tutorial-path-copy p {
+    display: none !important;
+  }
+
+  .tutorial-coach .tutorial-path {
+    display: grid !important;
+    width: 48px !important;
+    max-width: 48px !important;
+    grid-template-columns: 48px !important;
+    overflow: visible !important;
+  }
+
+  .tutorial-coach .tutorial-step-card {
+    display: none !important;
+  }
+
+  .tutorial-coach .tutorial-step-card.active {
+    display: grid !important;
+    width: 44px !important;
+    min-height: 38px !important;
+    grid-template-columns: 28px !important;
+    justify-content: center !important;
+    padding: 4px !important;
+  }
+
+  .tutorial-coach .tutorial-step-card.active strong,
+  .tutorial-coach .tutorial-step-card.active small {
+    display: none !important;
+  }
+
+  .hub-hotspot {
+    width: 78px !important;
+    min-height: 70px !important;
+  }
+
+  .hub-hotspot img {
+    width: 34px !important;
+    height: 34px !important;
+  }
+
+  .market-stall-shelf,
+  .market-stall-shelf.free-stall-shelf {
+    top: 46px !important;
+    left: 92px !important;
+    right: 8px !important;
+    bottom: 8px !important;
+    grid-template-columns: repeat(4, minmax(78px, 1fr)) !important;
+    grid-auto-rows: 80px !important;
+    gap: 6px !important;
+    padding: 8px !important;
+  }
+
+  .good-stall-token,
+  .market-scene-stage:has(.trade-popover) .good-stall-token {
+    height: 80px !important;
+    grid-template-rows: 34px auto auto !important;
+    padding: 5px !important;
+  }
+
+  .good-stall-token .good-icon,
+  .good-stall-token .market-good-icon,
+  .good-stall-token img {
+    width: 34px !important;
+    height: 34px !important;
+  }
+
+  .good-stall-token strong {
+    font-size: 10.5px !important;
+  }
+
+  .good-stall-token small {
+    font-size: 8.5px !important;
+  }
+
+  .market-npc {
+    width: 70px !important;
+    left: 18px !important;
+    bottom: 8px !important;
+  }
+}

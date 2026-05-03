@@ -1,0 +1,1601 @@
+[
+  {
+    "id": "hanyang",
+    "name": "서울(한양)",
+    "kind": "inland_city",
+    "tier": "S",
+    "region": "경기",
+    "map": {
+      "x": 45,
+      "y": 42,
+      "labelSide": "right",
+      "role": "capital"
+    },
+    "description": "조선의 정치·소비 중심지. 고급품과 곡물 수요가 크며 관아 의뢰가 많다.",
+    "facilities": [
+      "market",
+      "inn",
+      "office",
+      "warehouse",
+      "guild",
+      "bank"
+    ],
+    "shipyardLevel": 0,
+    "cartYardLevel": 3,
+    "tideSensitive": false,
+    "terrainTags": [
+      "capital",
+      "river",
+      "plain"
+    ],
+    "hazards": [
+      "tax_inspection",
+      "contract_penalty"
+    ],
+    "produces": [
+      "paper",
+      "books",
+      "silk_thread"
+    ],
+    "demands": [
+      "rice",
+      "salt",
+      "silk",
+      "ginseng",
+      "dried_fish",
+      "horse"
+    ],
+    "marketBias": {
+      "luxury": 1.25,
+      "grain": 1.1,
+      "seafood": 1.15,
+      "medicine": 1.3
+    },
+    "startAvailable": false,
+    "visualType": "inland_city",
+    "sceneAsset": "/assets/painted2d/scenes/inland-city.webp",
+    "geo": {
+      "lat": 37.5665,
+      "lon": 126.978,
+      "source": "approximate modern lat/lon; normalized manually to project map canvas"
+    }
+  },
+  {
+    "id": "ganghwa",
+    "name": "강화",
+    "kind": "port",
+    "tier": "A",
+    "region": "경기",
+    "map": {
+      "x": 39.6,
+      "y": 40.8,
+      "labelSide": "left",
+      "role": "port"
+    },
+    "description": "서해와 서울(한양)을 잇는 관문. 갯벌과 조수의 영향을 크게 받는다.",
+    "facilities": [
+      "market",
+      "inn",
+      "office",
+      "warehouse",
+      "small_shipyard",
+      "fish_market"
+    ],
+    "shipyardLevel": 1,
+    "cartYardLevel": 2,
+    "tideSensitive": true,
+    "draftLimitAtLowTide": 1,
+    "terrainTags": [
+      "west_sea",
+      "mudflat",
+      "river_mouth"
+    ],
+    "hazards": [
+      "mudflat",
+      "fog",
+      "tax_inspection"
+    ],
+    "produces": [
+      "salt",
+      "dried_fish",
+      "rice"
+    ],
+    "demands": [
+      "paper",
+      "books",
+      "ginseng",
+      "lumber"
+    ],
+    "marketBias": {
+      "grain": 1.05,
+      "seafood": 0.9,
+      "luxury": 1.1
+    },
+    "startAvailable": true,
+    "visualType": "west_mudflat",
+    "sceneAsset": "/assets/painted2d/scenes/west-mudflat.webp",
+    "geo": {
+      "lat": 37.746,
+      "lon": 126.487,
+      "source": "approximate modern lat/lon; normalized manually to project map canvas"
+    }
+  },
+  {
+    "id": "chungju",
+    "name": "충주",
+    "kind": "inland_city",
+    "tier": "B",
+    "region": "충청",
+    "map": {
+      "x": 49,
+      "y": 52,
+      "labelSide": "right",
+      "role": "inland"
+    },
+    "description": "남한강 물류 거점. 서울(한양)·영남을 잇는 내륙 길목이다.",
+    "facilities": [
+      "market",
+      "inn",
+      "cart_yard",
+      "warehouse"
+    ],
+    "shipyardLevel": 0,
+    "cartYardLevel": 2,
+    "tideSensitive": false,
+    "terrainTags": [
+      "river",
+      "inland_route"
+    ],
+    "hazards": [
+      "bandits",
+      "flood"
+    ],
+    "produces": [
+      "lumber",
+      "rice",
+      "beans"
+    ],
+    "demands": [
+      "salt",
+      "dried_fish",
+      "cotton_cloth"
+    ],
+    "marketBias": {
+      "grain": 0.95,
+      "seafood": 1.25,
+      "salt": 1.25
+    },
+    "startAvailable": false,
+    "visualType": "inland_city",
+    "sceneAsset": "/assets/painted2d/scenes/inland-city.webp",
+    "geo": {
+      "lat": 36.991,
+      "lon": 127.926,
+      "source": "approximate modern lat/lon; normalized manually to project map canvas"
+    }
+  },
+  {
+    "id": "jeonju",
+    "name": "전주",
+    "kind": "inland_city",
+    "tier": "A",
+    "region": "전라",
+    "map": {
+      "x": 43.6,
+      "y": 66.4,
+      "labelSide": "left",
+      "role": "trade"
+    },
+    "description": "호남 곡창과 한지의 중심지. 안정적인 초반 교역 거점이다.",
+    "facilities": [
+      "market",
+      "inn",
+      "office",
+      "warehouse",
+      "cart_yard"
+    ],
+    "shipyardLevel": 0,
+    "cartYardLevel": 2,
+    "tideSensitive": false,
+    "terrainTags": [
+      "plain",
+      "grain_belt"
+    ],
+    "hazards": [
+      "flood",
+      "bandits"
+    ],
+    "produces": [
+      "rice",
+      "paper",
+      "fan",
+      "beans"
+    ],
+    "demands": [
+      "salt",
+      "dried_fish",
+      "iron",
+      "books"
+    ],
+    "marketBias": {
+      "grain": 0.85,
+      "salt": 1.25,
+      "seafood": 1.2
+    },
+    "startAvailable": false,
+    "visualType": "inland_city",
+    "sceneAsset": "/assets/painted2d/scenes/inland-city.webp",
+    "geo": {
+      "lat": 35.8242,
+      "lon": 127.148,
+      "source": "approximate modern lat/lon; normalized manually to project map canvas"
+    }
+  },
+  {
+    "id": "gunsan",
+    "name": "군산(군산포)",
+    "kind": "port",
+    "tier": "B",
+    "region": "전라",
+    "map": {
+      "x": 39.4,
+      "y": 61.6,
+      "labelSide": "left",
+      "role": "port"
+    },
+    "description": "금강 하구의 곡물 출항지. 안개와 간조에 주의해야 한다.",
+    "facilities": [
+      "market",
+      "inn",
+      "warehouse",
+      "small_shipyard",
+      "fish_market"
+    ],
+    "shipyardLevel": 1,
+    "cartYardLevel": 1,
+    "tideSensitive": true,
+    "draftLimitAtLowTide": 1,
+    "terrainTags": [
+      "west_sea",
+      "mudflat",
+      "river_mouth",
+      "grain_port"
+    ],
+    "hazards": [
+      "mudflat",
+      "fog",
+      "flood"
+    ],
+    "produces": [
+      "rice",
+      "barley",
+      "salt",
+      "dried_fish"
+    ],
+    "demands": [
+      "paper",
+      "cotton_cloth",
+      "lumber"
+    ],
+    "marketBias": {
+      "grain": 0.8,
+      "salt": 0.95,
+      "luxury": 1.15
+    },
+    "startAvailable": false,
+    "visualType": "west_mudflat",
+    "sceneAsset": "/assets/painted2d/scenes/west-mudflat.webp",
+    "geo": {
+      "lat": 35.9677,
+      "lon": 126.7366,
+      "source": "approximate modern lat/lon; normalized manually to project map canvas"
+    }
+  },
+  {
+    "id": "mokpo",
+    "name": "목포(목포진)",
+    "kind": "port",
+    "tier": "A",
+    "region": "전라",
+    "map": {
+      "x": 35.7,
+      "y": 79.8,
+      "labelSide": "left",
+      "role": "port"
+    },
+    "description": "서남해의 항로 중심. 갯벌, 조류, 섬길이 얽혀 있지만 수익 기회가 많다.",
+    "facilities": [
+      "market",
+      "inn",
+      "warehouse",
+      "medium_shipyard",
+      "fish_market",
+      "office"
+    ],
+    "shipyardLevel": 2,
+    "cartYardLevel": 1,
+    "tideSensitive": true,
+    "draftLimitAtLowTide": 1,
+    "terrainTags": [
+      "south_west_sea",
+      "mudflat",
+      "archipelago"
+    ],
+    "hazards": [
+      "mudflat",
+      "reef",
+      "fog",
+      "pirates"
+    ],
+    "produces": [
+      "salt",
+      "dried_fish",
+      "skate",
+      "seaweed"
+    ],
+    "demands": [
+      "rice",
+      "paper",
+      "ginseng",
+      "lumber"
+    ],
+    "marketBias": {
+      "seafood": 0.85,
+      "salt": 0.9,
+      "medicine": 1.15
+    },
+    "startAvailable": true,
+    "visualType": "west_mudflat",
+    "sceneAsset": "/assets/painted2d/scenes/west-mudflat.webp",
+    "geo": {
+      "lat": 34.8118,
+      "lon": 126.3922,
+      "source": "approximate modern lat/lon; normalized manually to project map canvas"
+    }
+  },
+  {
+    "id": "heuksando",
+    "name": "흑산도",
+    "kind": "island_port",
+    "tier": "C",
+    "region": "전라",
+    "map": {
+      "x": 24.6,
+      "y": 78.4,
+      "labelSide": "left",
+      "role": "island"
+    },
+    "description": "험한 바다의 작은 섬. 보급과 어업은 가능하지만 암초와 해적 위험이 높다.",
+    "facilities": [
+      "small_market",
+      "fish_market",
+      "repair_hut",
+      "inn"
+    ],
+    "shipyardLevel": 0,
+    "cartYardLevel": 0,
+    "tideSensitive": false,
+    "terrainTags": [
+      "island",
+      "open_sea",
+      "reef"
+    ],
+    "hazards": [
+      "reef",
+      "storm",
+      "pirates"
+    ],
+    "produces": [
+      "skate",
+      "dried_fish",
+      "seaweed"
+    ],
+    "demands": [
+      "rice",
+      "salt",
+      "lumber"
+    ],
+    "marketBias": {
+      "seafood": 0.75,
+      "grain": 1.35,
+      "lumber": 1.3
+    },
+    "startAvailable": false,
+    "visualType": "west_mudflat",
+    "sceneAsset": "/assets/painted2d/scenes/west-mudflat.webp",
+    "geo": {
+      "lat": 34.6835,
+      "lon": 125.43,
+      "source": "approximate modern lat/lon; normalized manually to project map canvas"
+    }
+  },
+  {
+    "id": "yeosu",
+    "name": "여수",
+    "kind": "port",
+    "tier": "A",
+    "region": "전라",
+    "map": {
+      "x": 52.8,
+      "y": 81,
+      "labelSide": "left",
+      "role": "port"
+    },
+    "description": "남해 항로와 어업의 거점. 섬이 많아 암초 판정이 잦다.",
+    "facilities": [
+      "market",
+      "inn",
+      "warehouse",
+      "medium_shipyard",
+      "fish_market",
+      "naval_post"
+    ],
+    "shipyardLevel": 2,
+    "cartYardLevel": 1,
+    "tideSensitive": false,
+    "terrainTags": [
+      "south_sea",
+      "archipelago",
+      "fishing_ground"
+    ],
+    "hazards": [
+      "reef",
+      "storm",
+      "pirates"
+    ],
+    "produces": [
+      "dried_fish",
+      "seaweed",
+      "salt",
+      "lumber"
+    ],
+    "demands": [
+      "rice",
+      "cotton_cloth",
+      "iron"
+    ],
+    "marketBias": {
+      "seafood": 0.8,
+      "grain": 1.1,
+      "metal": 1.1
+    },
+    "startAvailable": false,
+    "visualType": "south_port",
+    "sceneAsset": "/assets/painted2d/scenes/south-port.webp",
+    "geo": {
+      "lat": 34.7604,
+      "lon": 127.6622,
+      "source": "approximate modern lat/lon; normalized manually to project map canvas"
+    }
+  },
+  {
+    "id": "tongyeong",
+    "name": "통영(통제영)",
+    "kind": "port",
+    "tier": "A",
+    "region": "경상",
+    "map": {
+      "x": 59.2,
+      "y": 81.6,
+      "labelSide": "bottom",
+      "role": "port"
+    },
+    "description": "남해 수군과 조선 수리의 요충지. 호위·해적 토벌 의뢰가 많다.",
+    "facilities": [
+      "market",
+      "inn",
+      "warehouse",
+      "medium_shipyard",
+      "fish_market",
+      "naval_post"
+    ],
+    "shipyardLevel": 2,
+    "cartYardLevel": 1,
+    "tideSensitive": false,
+    "terrainTags": [
+      "south_sea",
+      "archipelago",
+      "naval"
+    ],
+    "hazards": [
+      "reef",
+      "pirates",
+      "storm"
+    ],
+    "produces": [
+      "lumber",
+      "dried_fish",
+      "seaweed"
+    ],
+    "demands": [
+      "iron",
+      "rice",
+      "gunpowder"
+    ],
+    "marketBias": {
+      "lumber": 0.9,
+      "metal": 1.2,
+      "seafood": 0.9
+    },
+    "startAvailable": false,
+    "visualType": "south_port",
+    "sceneAsset": "/assets/painted2d/scenes/south-port.webp",
+    "geo": {
+      "lat": 34.8544,
+      "lon": 128.4332,
+      "source": "approximate modern lat/lon; normalized manually to project map canvas"
+    }
+  },
+  {
+    "id": "jinhae_jepo",
+    "name": "진해(제포)",
+    "kind": "port",
+    "tier": "B",
+    "region": "경상",
+    "map": {
+      "x": 63.5,
+      "y": 77.8,
+      "labelSide": "top",
+      "role": "port"
+    },
+    "description": "삼포 왜관의 기억이 남은 남해 포구. 부산(부산포)와 통영(통제영) 사이의 짧은 항로 거점이다.",
+    "facilities": [
+      "market",
+      "inn",
+      "small_shipyard",
+      "fish_market"
+    ],
+    "shipyardLevel": 1,
+    "cartYardLevel": 1,
+    "tideSensitive": false,
+    "terrainTags": [
+      "south_sea",
+      "coastal"
+    ],
+    "hazards": [
+      "pirates",
+      "reef"
+    ],
+    "produces": [
+      "dried_fish",
+      "lumber"
+    ],
+    "demands": [
+      "rice",
+      "cotton_cloth",
+      "salt"
+    ],
+    "marketBias": {
+      "seafood": 0.9,
+      "grain": 1.05
+    },
+    "startAvailable": false,
+    "visualType": "south_port",
+    "sceneAsset": "/assets/painted2d/scenes/south-port.webp",
+    "geo": {
+      "lat": 35.1491,
+      "lon": 128.6591,
+      "source": "approximate modern lat/lon; normalized manually to project map canvas"
+    }
+  },
+  {
+    "id": "busanpo",
+    "name": "부산(부산포)",
+    "kind": "port",
+    "tier": "S",
+    "region": "경상",
+    "map": {
+      "x": 68.9,
+      "y": 78.8,
+      "labelSide": "right",
+      "role": "port"
+    },
+    "description": "쓰시마(대마도)와 이어지는 조선 남동해의 핵심 항구. 첫 버전의 대표 시작지다.",
+    "facilities": [
+      "market",
+      "inn",
+      "office",
+      "warehouse",
+      "large_shipyard",
+      "fish_market",
+      "waegwan"
+    ],
+    "shipyardLevel": 3,
+    "cartYardLevel": 2,
+    "tideSensitive": false,
+    "terrainTags": [
+      "south_east_sea",
+      "foreign_gate",
+      "large_port"
+    ],
+    "hazards": [
+      "pirates",
+      "storm",
+      "tax_inspection"
+    ],
+    "produces": [
+      "cotton_cloth",
+      "dried_fish",
+      "rice"
+    ],
+    "demands": [
+      "ginseng",
+      "silk",
+      "silver",
+      "books",
+      "paper"
+    ],
+    "marketBias": {
+      "foreign": 1.2,
+      "medicine": 1.25,
+      "luxury": 1.2
+    },
+    "startAvailable": true,
+    "visualType": "south_port",
+    "sceneAsset": "/assets/painted2d/scenes/south-port.webp",
+    "geo": {
+      "lat": 35.1796,
+      "lon": 129.0756,
+      "source": "approximate modern lat/lon; normalized manually to project map canvas"
+    }
+  },
+  {
+    "id": "tsushima",
+    "name": "쓰시마(대마도)",
+    "kind": "foreign_island_port",
+    "tier": "B",
+    "region": "일본",
+    "map": {
+      "x": 81.2,
+      "y": 85.6,
+      "labelSide": "right",
+      "role": "foreign"
+    },
+    "description": "첫 버전에서 구현되는 유일한 해외 거점. 정식 교역에는 왜관 허가가 필요하다.",
+    "facilities": [
+      "foreign_market",
+      "inn",
+      "repair_hut",
+      "fish_market"
+    ],
+    "shipyardLevel": 0,
+    "cartYardLevel": 0,
+    "tideSensitive": false,
+    "terrainTags": [
+      "foreign",
+      "island",
+      "open_sea"
+    ],
+    "hazards": [
+      "pirates",
+      "storm",
+      "foreign_inspection"
+    ],
+    "produces": [
+      "silver",
+      "japanese_paper",
+      "dried_fish",
+      "lacquerware"
+    ],
+    "demands": [
+      "ginseng",
+      "cotton_cloth",
+      "rice",
+      "salt"
+    ],
+    "marketBias": {
+      "foreign": 1.25,
+      "medicine": 1.35,
+      "grain": 1.15
+    },
+    "permitRequired": "waegwan_pass",
+    "startAvailable": false,
+    "visualType": "tsushima",
+    "sceneAsset": "/assets/painted2d/scenes/tsushima.webp",
+    "geo": {
+      "lat": 34.2027,
+      "lon": 129.2876,
+      "source": "approximate modern lat/lon; normalized manually to project map canvas"
+    }
+  },
+  {
+    "id": "ulsan",
+    "name": "울산",
+    "kind": "port",
+    "tier": "A",
+    "region": "경상",
+    "map": {
+      "x": 71.1,
+      "y": 70.4,
+      "labelSide": "right",
+      "role": "production"
+    },
+    "description": "동남해 목재·철·소금의 항구. 부산(부산포)와 가까운 안정적 항로다.",
+    "facilities": [
+      "market",
+      "inn",
+      "warehouse",
+      "medium_shipyard",
+      "fish_market"
+    ],
+    "shipyardLevel": 2,
+    "cartYardLevel": 1,
+    "tideSensitive": false,
+    "terrainTags": [
+      "east_sea",
+      "coastal",
+      "industrial"
+    ],
+    "hazards": [
+      "storm",
+      "pirates"
+    ],
+    "produces": [
+      "iron",
+      "salt",
+      "lumber",
+      "dried_fish"
+    ],
+    "demands": [
+      "rice",
+      "cotton_cloth",
+      "paper"
+    ],
+    "marketBias": {
+      "metal": 0.9,
+      "lumber": 0.95,
+      "grain": 1.1
+    },
+    "startAvailable": false,
+    "visualType": "east_port",
+    "sceneAsset": "/assets/painted2d/scenes/east-port.webp",
+    "geo": {
+      "lat": 35.5384,
+      "lon": 129.3114,
+      "source": "approximate modern lat/lon; normalized manually to project map canvas"
+    }
+  },
+  {
+    "id": "pohang",
+    "name": "포항(영일만)",
+    "kind": "port",
+    "tier": "B",
+    "region": "경상",
+    "map": {
+      "x": 69.5,
+      "y": 62.2,
+      "labelSide": "right",
+      "role": "port"
+    },
+    "description": "동해안의 철·해산물 항구. 강릉으로 가는 해안 항로의 중간지다.",
+    "facilities": [
+      "market",
+      "inn",
+      "small_shipyard",
+      "fish_market"
+    ],
+    "shipyardLevel": 1,
+    "cartYardLevel": 1,
+    "tideSensitive": false,
+    "terrainTags": [
+      "east_sea",
+      "coastal"
+    ],
+    "hazards": [
+      "storm",
+      "rough_sea"
+    ],
+    "produces": [
+      "iron",
+      "dried_fish",
+      "seaweed"
+    ],
+    "demands": [
+      "rice",
+      "salt",
+      "cotton_cloth"
+    ],
+    "marketBias": {
+      "metal": 0.9,
+      "seafood": 0.9
+    },
+    "startAvailable": false,
+    "visualType": "east_port",
+    "sceneAsset": "/assets/painted2d/scenes/east-port.webp",
+    "geo": {
+      "lat": 36.019,
+      "lon": 129.3435,
+      "source": "approximate modern lat/lon; normalized manually to project map canvas"
+    }
+  },
+  {
+    "id": "gangneung",
+    "name": "강릉",
+    "kind": "port",
+    "tier": "B",
+    "region": "강원",
+    "map": {
+      "x": 64,
+      "y": 43,
+      "labelSide": "right",
+      "role": "port"
+    },
+    "description": "동해와 태백산맥이 만나는 거점. 산길은 험하지만 약재와 목재가 좋다.",
+    "facilities": [
+      "market",
+      "inn",
+      "small_shipyard",
+      "fish_market"
+    ],
+    "shipyardLevel": 1,
+    "cartYardLevel": 1,
+    "tideSensitive": false,
+    "terrainTags": [
+      "east_sea",
+      "mountain_gate"
+    ],
+    "hazards": [
+      "rough_sea",
+      "tiger",
+      "snow"
+    ],
+    "produces": [
+      "lumber",
+      "herbs",
+      "dried_fish"
+    ],
+    "demands": [
+      "salt",
+      "rice",
+      "cotton_cloth"
+    ],
+    "marketBias": {
+      "medicine": 0.9,
+      "lumber": 0.9,
+      "grain": 1.2
+    },
+    "startAvailable": false,
+    "visualType": "east_port",
+    "sceneAsset": "/assets/painted2d/scenes/east-port.webp",
+    "geo": {
+      "lat": 37.7519,
+      "lon": 128.8761,
+      "source": "approximate modern lat/lon; normalized manually to project map canvas"
+    }
+  },
+  {
+    "id": "daegu",
+    "name": "대구",
+    "kind": "inland_city",
+    "tier": "A",
+    "region": "경상",
+    "map": {
+      "x": 60.6,
+      "y": 65.9,
+      "labelSide": "top",
+      "role": "trade"
+    },
+    "description": "영남 내륙 상업의 중심. 바닷가 소금과 건어물, 부산(부산포) 면포를 비싸게 사들이는 큰 장터다.",
+    "facilities": [
+      "market",
+      "inn",
+      "cart_yard",
+      "warehouse",
+      "office"
+    ],
+    "shipyardLevel": 0,
+    "cartYardLevel": 2,
+    "tideSensitive": false,
+    "terrainTags": [
+      "inland",
+      "plain",
+      "trade_hub"
+    ],
+    "hazards": [
+      "bandits",
+      "tiger_clan"
+    ],
+    "produces": [
+      "herbs",
+      "hemp_cloth",
+      "beans"
+    ],
+    "demands": [
+      "salt",
+      "dried_fish",
+      "seaweed",
+      "iron",
+      "cotton_cloth"
+    ],
+    "marketBias": {
+      "salt": 1.35,
+      "seafood": 1.35,
+      "grain": 1,
+      "textile": 1.18,
+      "cotton_cloth": 1.18
+    },
+    "startAvailable": false,
+    "visualType": "inland_city",
+    "sceneAsset": "/assets/painted2d/scenes/inland-city.webp",
+    "geo": {
+      "lat": 35.8714,
+      "lon": 128.6014,
+      "source": "approximate modern lat/lon; normalized manually to project map canvas"
+    }
+  },
+  {
+    "id": "andong",
+    "name": "안동",
+    "kind": "inland_city",
+    "tier": "B",
+    "region": "경상",
+    "map": {
+      "x": 57.8,
+      "y": 57.2,
+      "labelSide": "top",
+      "role": "inland"
+    },
+    "description": "산과 학문의 고장. 서책·한지·약재 거래가 어울린다.",
+    "facilities": [
+      "market",
+      "inn",
+      "warehouse"
+    ],
+    "shipyardLevel": 0,
+    "cartYardLevel": 1,
+    "tideSensitive": false,
+    "terrainTags": [
+      "mountain",
+      "scholar"
+    ],
+    "hazards": [
+      "bandits",
+      "tiger",
+      "snow"
+    ],
+    "produces": [
+      "herbs",
+      "paper",
+      "books"
+    ],
+    "demands": [
+      "salt",
+      "dried_fish",
+      "rice"
+    ],
+    "marketBias": {
+      "medicine": 0.95,
+      "books": 0.9,
+      "salt": 1.3
+    },
+    "startAvailable": false,
+    "visualType": "inland_city",
+    "sceneAsset": "/assets/painted2d/scenes/inland-city.webp",
+    "geo": {
+      "lat": 36.5684,
+      "lon": 128.7294,
+      "source": "approximate modern lat/lon; normalized manually to project map canvas"
+    }
+  },
+  {
+    "id": "jeju",
+    "name": "제주",
+    "kind": "island_port",
+    "tier": "B",
+    "region": "제주",
+    "map": {
+      "x": 39.7,
+      "y": 90.2,
+      "labelSide": "bottom",
+      "role": "island"
+    },
+    "description": "말과 감귤, 해산물의 섬. 태풍과 장거리 항해 위험이 큰 초반 목표지다.",
+    "facilities": [
+      "market",
+      "inn",
+      "fish_market",
+      "repair_hut",
+      "ranch"
+    ],
+    "shipyardLevel": 0,
+    "cartYardLevel": 0,
+    "tideSensitive": false,
+    "terrainTags": [
+      "island",
+      "open_sea",
+      "ranch"
+    ],
+    "hazards": [
+      "storm",
+      "rough_sea",
+      "pirates"
+    ],
+    "produces": [
+      "horse",
+      "citrus",
+      "dried_fish",
+      "seaweed"
+    ],
+    "demands": [
+      "rice",
+      "salt",
+      "cotton_cloth",
+      "lumber"
+    ],
+    "marketBias": {
+      "horse": 0.8,
+      "grain": 1.35,
+      "salt": 1.25,
+      "seafood": 0.9
+    },
+    "startAvailable": false,
+    "visualType": "jeju",
+    "sceneAsset": "/assets/painted2d/scenes/jeju.webp",
+    "geo": {
+      "lat": 33.4996,
+      "lon": 126.5312,
+      "source": "approximate modern lat/lon; normalized manually to project map canvas"
+    }
+  },
+  {
+    "id": "pyeongyang",
+    "name": "평양",
+    "kind": "inland_city",
+    "tier": "S",
+    "region": "평안",
+    "map": {
+      "x": 38.4,
+      "y": 25.8,
+      "labelSide": "right",
+      "role": "capital"
+    },
+    "description": "대동강을 끼고 북방 물산과 관청 장부가 모이는 큰 도시. 서해와 내륙을 잇는 북부 교역 중심지다.",
+    "facilities": [
+      "market",
+      "inn",
+      "office",
+      "warehouse",
+      "guild",
+      "cart_yard"
+    ],
+    "shipyardLevel": 0,
+    "cartYardLevel": 3,
+    "tideSensitive": false,
+    "terrainTags": [
+      "north",
+      "river",
+      "capital_region",
+      "plain"
+    ],
+    "hazards": [
+      "tax_inspection",
+      "bandits"
+    ],
+    "produces": [
+      "rice",
+      "paper",
+      "books",
+      "beans"
+    ],
+    "demands": [
+      "salt",
+      "silk",
+      "dried_fish",
+      "ginseng",
+      "iron"
+    ],
+    "marketBias": {
+      "grain": 1.05,
+      "craft": 1.08,
+      "luxury": 1.2,
+      "seafood": 1.22,
+      "salt": 1.24
+    },
+    "startAvailable": false,
+    "visualType": "inland_city",
+    "sceneAsset": "/assets/painted2d/scenes/inland-city.webp",
+    "geo": {
+      "lat": 39.0392,
+      "lon": 125.7625,
+      "source": "approximate modern lat/lon; normalized manually to project map canvas"
+    }
+  },
+  {
+    "id": "nampo",
+    "name": "남포",
+    "kind": "port",
+    "tier": "A",
+    "region": "평안",
+    "map": {
+      "x": 34.9,
+      "y": 29,
+      "labelSide": "left",
+      "role": "port"
+    },
+    "description": "대동강 하구의 서해 포구. 평양으로 들어가는 바닷길과 갯벌 물길을 함께 살펴야 한다.",
+    "facilities": [
+      "market",
+      "inn",
+      "warehouse",
+      "small_shipyard",
+      "fish_market"
+    ],
+    "shipyardLevel": 1,
+    "cartYardLevel": 1,
+    "tideSensitive": true,
+    "draftLimitAtLowTide": 1,
+    "terrainTags": [
+      "north",
+      "west_sea",
+      "river_mouth",
+      "mudflat"
+    ],
+    "hazards": [
+      "mudflat",
+      "fog",
+      "tax_inspection"
+    ],
+    "produces": [
+      "salt",
+      "dried_fish",
+      "rice"
+    ],
+    "demands": [
+      "paper",
+      "books",
+      "lumber",
+      "cotton_cloth"
+    ],
+    "marketBias": {
+      "salt": 0.92,
+      "seafood": 0.92,
+      "grain": 0.96,
+      "craft": 1.08
+    },
+    "startAvailable": false,
+    "visualType": "west_mudflat",
+    "sceneAsset": "/assets/painted2d/scenes/west-mudflat.webp",
+    "geo": {
+      "lat": 38.7376,
+      "lon": 125.4078,
+      "source": "approximate modern lat/lon; normalized manually to project map canvas"
+    }
+  },
+  {
+    "id": "sinuiju",
+    "name": "신의주(의주)",
+    "kind": "border_city",
+    "tier": "B",
+    "region": "평안",
+    "map": {
+      "x": 29.4,
+      "y": 15.4,
+      "labelSide": "left",
+      "role": "trade"
+    },
+    "description": "압록강 길목의 서북 변경 장시. 청 상인과 이어지는 길이라 인삼, 약초, 목재와 허가 장부가 중요하다.",
+    "facilities": [
+      "market",
+      "inn",
+      "office",
+      "warehouse",
+      "cart_yard"
+    ],
+    "shipyardLevel": 0,
+    "cartYardLevel": 2,
+    "tideSensitive": false,
+    "terrainTags": [
+      "north",
+      "river",
+      "frontier",
+      "inland_route",
+      "yalu_border",
+      "qing_trade_gate"
+    ],
+    "hazards": [
+      "bandits",
+      "fog",
+      "tax_inspection"
+    ],
+    "produces": [
+      "herbs",
+      "ginseng",
+      "lumber"
+    ],
+    "demands": [
+      "salt",
+      "cotton_cloth",
+      "paper",
+      "silk",
+      "tea"
+    ],
+    "marketBias": {
+      "resource": 0.92,
+      "medicine": 0.92,
+      "salt": 1.28,
+      "textile": 1.14,
+      "luxury": 1.22,
+      "foreign": 1.18
+    },
+    "startAvailable": false,
+    "visualType": "inland_city",
+    "sceneAsset": "/assets/painted2d/scenes/inland-city.webp",
+    "geo": {
+      "lat": 40.199,
+      "lon": 124.532,
+      "source": "approximate Uiju lat/lon; normalized manually to project map canvas"
+    }
+  },
+  {
+    "id": "wonsan",
+    "name": "원산",
+    "kind": "port",
+    "tier": "A",
+    "region": "함경",
+    "map": {
+      "x": 61,
+      "y": 28,
+      "labelSide": "right",
+      "role": "port"
+    },
+    "description": "동해로 열린 북부 항구. 산길과 바닷길이 만나는 곳이라 풍랑과 산적 위험을 함께 본다.",
+    "facilities": [
+      "market",
+      "inn",
+      "warehouse",
+      "medium_shipyard",
+      "fish_market",
+      "office"
+    ],
+    "shipyardLevel": 2,
+    "cartYardLevel": 1,
+    "tideSensitive": false,
+    "terrainTags": [
+      "north",
+      "east_sea",
+      "coastal",
+      "mountain_gate"
+    ],
+    "hazards": [
+      "rough_sea",
+      "storm",
+      "bandits"
+    ],
+    "produces": [
+      "dried_fish",
+      "seaweed",
+      "lumber"
+    ],
+    "demands": [
+      "rice",
+      "salt",
+      "cotton_cloth",
+      "paper"
+    ],
+    "marketBias": {
+      "seafood": 0.88,
+      "resource": 0.95,
+      "grain": 1.18,
+      "textile": 1.14
+    },
+    "startAvailable": false,
+    "visualType": "east_port",
+    "sceneAsset": "/assets/painted2d/scenes/east-port.webp",
+    "geo": {
+      "lat": 39.1539,
+      "lon": 127.446,
+      "source": "approximate modern lat/lon; normalized manually to project map canvas"
+    }
+  },
+  {
+    "id": "hamhung",
+    "name": "함흥",
+    "kind": "port",
+    "tier": "B",
+    "region": "함경",
+    "map": {
+      "x": 64.2,
+      "y": 20.6,
+      "labelSide": "right",
+      "role": "port"
+    },
+    "description": "동북 산물과 동해 어물이 만나는 함경 큰 장. 약초와 목재가 좋지만 겨울길이 험하다.",
+    "facilities": [
+      "market",
+      "inn",
+      "warehouse",
+      "small_shipyard",
+      "fish_market"
+    ],
+    "shipyardLevel": 1,
+    "cartYardLevel": 1,
+    "tideSensitive": false,
+    "terrainTags": [
+      "north",
+      "east_sea",
+      "mountain",
+      "coastal"
+    ],
+    "hazards": [
+      "rough_sea",
+      "storm",
+      "snow"
+    ],
+    "produces": [
+      "herbs",
+      "lumber",
+      "dried_fish"
+    ],
+    "demands": [
+      "salt",
+      "rice",
+      "paper",
+      "cotton_cloth"
+    ],
+    "marketBias": {
+      "medicine": 0.9,
+      "resource": 0.9,
+      "seafood": 0.92,
+      "grain": 1.22,
+      "salt": 1.22
+    },
+    "startAvailable": false,
+    "visualType": "east_port",
+    "sceneAsset": "/assets/painted2d/scenes/east-port.webp",
+    "geo": {
+      "lat": 39.9184,
+      "lon": 127.5364,
+      "source": "approximate modern lat/lon; normalized manually to project map canvas"
+    }
+  },
+  {
+    "id": "chongjin",
+    "name": "청진(경흥)",
+    "kind": "border_city",
+    "tier": "B",
+    "region": "함경",
+    "map": {
+      "x": 76.2,
+      "y": 9.4,
+      "labelSide": "right",
+      "role": "trade"
+    },
+    "description": "두만강 가까운 동북 변경 장시. 북방 말, 철, 목재가 모이고 산길과 국경 검문을 함께 살핀다.",
+    "facilities": [
+      "market",
+      "inn",
+      "office",
+      "warehouse",
+      "cart_yard"
+    ],
+    "shipyardLevel": 0,
+    "cartYardLevel": 2,
+    "tideSensitive": false,
+    "terrainTags": [
+      "north",
+      "frontier",
+      "river",
+      "tumen_border",
+      "border_trade",
+      "mountain_pass"
+    ],
+    "hazards": [
+      "bandits",
+      "snow",
+      "tax_inspection"
+    ],
+    "produces": [
+      "iron",
+      "horse",
+      "lumber"
+    ],
+    "demands": [
+      "rice",
+      "salt",
+      "cotton_cloth",
+      "paper",
+      "tea"
+    ],
+    "marketBias": {
+      "metal": 0.9,
+      "livestock": 0.9,
+      "resource": 0.92,
+      "grain": 1.28,
+      "textile": 1.16,
+      "foreign": 1.18
+    },
+    "startAvailable": false,
+    "visualType": "inland_city",
+    "sceneAsset": "/assets/painted2d/scenes/inland-city.webp",
+    "geo": {
+      "lat": 42.319,
+      "lon": 130.399,
+      "source": "approximate Gyeongheung lat/lon; normalized manually to project map canvas"
+    }
+  },
+  {
+    "id": "qing_yalu_market",
+    "name": "단둥 방면(책문 장시)",
+    "kind": "foreign_border_market",
+    "tier": "B",
+    "region": "청",
+    "map": {
+      "x": 24.2,
+      "y": 14.8,
+      "labelSide": "left",
+      "role": "foreign"
+    },
+    "description": "압록강 너머 청 상인과 만나는 국경 장시. 비단, 차, 도자기 같은 고급품은 허가와 큰 짐칸이 필요하다.",
+    "facilities": [
+      "market",
+      "office",
+      "warehouse"
+    ],
+    "shipyardLevel": 0,
+    "cartYardLevel": 1,
+    "tideSensitive": false,
+    "terrainTags": [
+      "foreign",
+      "qing",
+      "yalu_border",
+      "border_trade",
+      "river"
+    ],
+    "hazards": [
+      "tax_inspection",
+      "fog",
+      "bandits"
+    ],
+    "produces": [
+      "silk",
+      "tea",
+      "ceramics",
+      "silk_thread"
+    ],
+    "demands": [
+      "ginseng",
+      "cotton_cloth",
+      "paper",
+      "silver"
+    ],
+    "marketBias": {
+      "luxury": 0.86,
+      "foreign": 0.88,
+      "craft": 0.92,
+      "medicine": 1.26,
+      "textile": 1.12
+    },
+    "startAvailable": false,
+    "visualType": "inland_city",
+    "sceneAsset": "/assets/painted2d/scenes/inland-city.webp",
+    "geo": {
+      "lat": 40.45,
+      "lon": 124.95,
+      "source": "approximate Yalu border market coordinate; normalized manually to project map canvas"
+    },
+    "permitRequired": "qing_border_pass"
+  },
+  {
+    "id": "tumen_north_market",
+    "name": "두만강 북방(북방장)",
+    "kind": "foreign_border_market",
+    "tier": "B",
+    "region": "두만강 북방",
+    "map": {
+      "x": 82.6,
+      "y": 8.4,
+      "labelSide": "right",
+      "role": "foreign"
+    },
+    "description": "두만강 건너 북방 상인이 드나드는 작은 장시. 말, 철, 목재가 귀하지만 국경 허가와 긴 육로 준비가 필요하다.",
+    "facilities": [
+      "market",
+      "office",
+      "warehouse"
+    ],
+    "shipyardLevel": 0,
+    "cartYardLevel": 1,
+    "tideSensitive": false,
+    "terrainTags": [
+      "foreign",
+      "russian_direction",
+      "tumen_border",
+      "border_trade",
+      "frontier"
+    ],
+    "hazards": [
+      "tax_inspection",
+      "snow",
+      "bandits"
+    ],
+    "produces": [
+      "horse",
+      "iron",
+      "silver",
+      "lumber"
+    ],
+    "demands": [
+      "rice",
+      "salt",
+      "cotton_cloth",
+      "tea"
+    ],
+    "marketBias": {
+      "livestock": 0.88,
+      "metal": 0.9,
+      "resource": 0.92,
+      "grain": 1.28,
+      "textile": 1.18,
+      "foreign": 1.1
+    },
+    "startAvailable": false,
+    "visualType": "inland_city",
+    "sceneAsset": "/assets/painted2d/scenes/inland-city.webp",
+    "geo": {
+      "lat": 42.42,
+      "lon": 130.65,
+      "source": "approximate Tumen border market coordinate; normalized manually to project map canvas"
+    },
+    "permitRequired": "tumen_trade_pass"
+  },
+  {
+    "id": "kaesong",
+    "name": "개성",
+    "kind": "inland_city",
+    "tier": "A",
+    "region": "경기",
+    "map": {
+      "x": 42.3,
+      "y": 36.4,
+      "labelSide": "top",
+      "role": "trade"
+    },
+    "description": "서울(한양)과 평양 사이의 오래된 상업 도시. 인삼과 문방 물건, 관문 교역이 강하다.",
+    "facilities": [
+      "market",
+      "inn",
+      "office",
+      "warehouse",
+      "cart_yard"
+    ],
+    "shipyardLevel": 0,
+    "cartYardLevel": 2,
+    "tideSensitive": false,
+    "terrainTags": [
+      "north",
+      "inland",
+      "trade_hub",
+      "plain"
+    ],
+    "hazards": [
+      "tax_inspection",
+      "bandits"
+    ],
+    "produces": [
+      "ginseng",
+      "paper",
+      "books"
+    ],
+    "demands": [
+      "salt",
+      "silk",
+      "rice",
+      "dried_fish"
+    ],
+    "marketBias": {
+      "medicine": 0.92,
+      "craft": 0.96,
+      "luxury": 1.16,
+      "salt": 1.22,
+      "seafood": 1.18
+    },
+    "startAvailable": false,
+    "visualType": "inland_city",
+    "sceneAsset": "/assets/painted2d/scenes/inland-city.webp",
+    "geo": {
+      "lat": 37.9382,
+      "lon": 126.5878,
+      "source": "approximate modern lat/lon; normalized manually to project map canvas"
+    }
+  }
+]

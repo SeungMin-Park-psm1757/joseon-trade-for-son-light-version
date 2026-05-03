@@ -1,0 +1,29 @@
+{
+  "facilityHints": {
+    "tavern": [
+      {
+        "condition": { "routeHazard": "storm" },
+        "speaker": "tavern_keeper",
+        "text": "남해 바람이 거세다더군요. 제주로 가려면 배를 살피세요."
+      },
+      {
+        "condition": { "trustMin": 3 },
+        "speaker": "tavern_keeper",
+        "text": "이 항구 사람들도 이제 정우상단 이름을 알아봅니다."
+      }
+    ],
+    "office": [
+      {
+        "condition": { "officialDemand": true },
+        "speaker": "office_clerk",
+        "text": "이번 달 관청이 찾는 물건은 장부에 따로 표시해 두었습니다."
+      }
+    ]
+  },
+  "discoveryHints": [
+    {
+      "speaker": "fairy",
+      "text": "처음 온 항구는 장부에 발견 카드로 남겨요."
+    }
+  ]
+}

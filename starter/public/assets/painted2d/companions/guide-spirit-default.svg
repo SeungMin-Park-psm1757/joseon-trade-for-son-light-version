@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="guide spirit">
+  <defs><radialGradient id="a" cx="50%" cy="35%" r="60%"><stop stop-color="#fff7c8"/><stop offset=".7" stop-color="#7ec7b0"/><stop offset="1" stop-color="#246b74"/></radialGradient></defs>
+  <path fill="#f2c860" opacity=".55" d="M48 5 57 29 83 26 63 43 73 68 48 54 23 68 33 43 13 26 39 29z"/>
+  <circle cx="48" cy="45" r="29" fill="url(#a)" stroke="#1f2e34" stroke-width="4"/>
+  <path fill="#1f2e34" d="M34 42h8v6h-8zM54 42h8v6h-8z"/>
+  <path fill="none" stroke="#1f2e34" stroke-width="4" stroke-linecap="round" d="M39 58c5 5 13 5 18 0"/>
+  <path fill="#fff3b2" stroke="#1f2e34" stroke-width="3" d="M25 23c6-10 17-16 28-13 9 2 14 7 18 14-9-5-18-4-25 2-8-5-14-6-21-3z"/>
+</svg>

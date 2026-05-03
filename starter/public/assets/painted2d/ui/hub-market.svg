@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="market">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffe5a3"/><stop offset="1" stop-color="#d8923b"/></linearGradient></defs>
+  <path fill="#15363d" d="M8 22h48v31H8z"/>
+  <path fill="#f7d06a" d="M7 19 14 9h36l7 10z"/>
+  <path fill="#8f3a2f" d="M14 9h8l-5 10H7zM34 9h8l6 10H39z"/>
+  <path fill="#f3f0d8" d="M23 9h11l5 10H18z"/>
+  <path fill="#254e4a" stroke="#f7d06a" stroke-width="3" d="M16 29h32v22H16z"/>
+  <circle cx="24" cy="41" r="6" fill="url(#g)" stroke="#41291d" stroke-width="2"/>
+  <circle cx="38" cy="41" r="6" fill="#75b884" stroke="#41291d" stroke-width="2"/>
+  <path fill="none" stroke="#271b16" stroke-width="3" d="M7 19h50M10 53h44"/>
+</svg>

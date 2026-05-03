@@ -1,0 +1,266 @@
+[
+  {
+    "id": "seal_south_sea",
+    "name": "남해 장부",
+    "iconAsset": "/assets/painted2d/seals/seal_south_sea.png",
+    "requirements": [
+      {
+        "type": "visit",
+        "portIds": [
+          "busanpo",
+          "tongyeong",
+          "yeosu"
+        ]
+      },
+      {
+        "type": "sell",
+        "goodIds": [
+          "dried_fish",
+          "seaweed"
+        ],
+        "quantity": 3
+      },
+      {
+        "type": "resolveEvent",
+        "eventTags": [
+          "pirate",
+          "storm"
+        ],
+        "count": 1
+      }
+    ],
+    "reward": {
+      "merchantFame": 3,
+      "explorationFame": 3,
+      "guardFame": 1,
+      "money": 150
+    },
+    "nextHint": "제주 항로를 준비해보세요."
+  },
+  {
+    "id": "seal_west_sea",
+    "name": "서해 장부",
+    "iconAsset": "/assets/painted2d/seals/seal_west_sea.png",
+    "requirements": [
+      {
+        "type": "visit",
+        "portIds": [
+          "ganghwa",
+          "gunsan",
+          "mokpo",
+          "heuksando"
+        ]
+      },
+      {
+        "type": "sell",
+        "goodIds": [
+          "salt",
+          "skate"
+        ],
+        "quantity": 4
+      },
+      {
+        "type": "resolveEvent",
+        "eventTags": [
+          "mudflat",
+          "reef"
+        ],
+        "count": 1
+      }
+    ],
+    "reward": {
+      "merchantFame": 3,
+      "explorationFame": 4,
+      "guardFame": 1,
+      "money": 180
+    },
+    "nextHint": "갯벌과 암초를 피해 제주 준비로 이어가세요."
+  },
+  {
+    "id": "seal_inland",
+    "name": "내륙 장부",
+    "iconAsset": "/assets/painted2d/seals/seal_inland.png",
+    "requirements": [
+      {
+        "type": "visit",
+        "portIds": [
+          "hanyang",
+          "jeonju",
+          "daegu",
+          "andong",
+          "chungju"
+        ]
+      },
+      {
+        "type": "sell",
+        "goodIds": [
+          "cotton_cloth",
+          "paper",
+          "herbs"
+        ],
+        "quantity": 5
+      },
+      {
+        "type": "ownTool",
+        "toolId": "trade_abacus"
+      }
+    ],
+    "reward": {
+      "merchantFame": 4,
+      "explorationFame": 3,
+      "money": 220
+    },
+    "nextHint": "큰 수레와 장부 도구로 내륙 장사를 키우세요."
+  },
+  {
+    "id": "seal_jeju",
+    "name": "제주 장부",
+    "iconAsset": "/assets/painted2d/seals/seal_jeju.png",
+    "requirements": [
+      {
+        "type": "visit",
+        "portIds": [
+          "jeju"
+        ]
+      },
+      {
+        "type": "sell",
+        "goodIds": [
+          "horse",
+          "citrus"
+        ],
+        "quantity": 1
+      },
+      {
+        "type": "ownShip",
+        "shipId": "coastal_merchant"
+      }
+    ],
+    "reward": {
+      "merchantFame": 4,
+      "explorationFame": 4,
+      "guardFame": 1,
+      "money": 300
+    },
+    "nextHint": "제주에서 얻은 말과 감귤을 큰 도시로 옮겨보세요."
+  },
+  {
+    "id": "seal_waegwan",
+    "name": "왜관 장부",
+    "iconAsset": "/assets/painted2d/seals/seal_waegwan.png",
+    "requirements": [
+      {
+        "type": "portTrust",
+        "portIds": [
+          "busanpo"
+        ],
+        "minTrust": 3
+      },
+      {
+        "type": "ownTool",
+        "toolId": "language_notes"
+      },
+      {
+        "type": "visit",
+        "portIds": [
+          "tsushima"
+        ]
+      },
+      {
+        "type": "permit",
+        "permit": "waegwan_pass"
+      }
+    ],
+    "reward": {
+      "merchantFame": 4,
+      "explorationFame": 4,
+      "money": 260
+    },
+    "nextHint": "쓰시마(대마도)는 허가와 통역 준비가 핵심입니다."
+  },
+  {
+    "id": "seal_mountain_road",
+    "name": "산길 장부",
+    "iconAsset": "/assets/painted2d/seals/seal_mountain_road.png",
+    "requirements": [
+      {
+        "type": "visit",
+        "portIds": [
+          "gangneung",
+          "andong",
+          "daegu"
+        ]
+      },
+      {
+        "type": "resolveEvent",
+        "eventTags": [
+          "bandits",
+          "tiger"
+        ],
+        "count": 1
+      },
+      {
+        "type": "ownTool",
+        "toolId": "short_sword"
+      }
+    ],
+    "reward": {
+      "explorationFame": 2,
+      "guardFame": 4,
+      "money": 180
+    },
+    "nextHint": "호위 장비와 동료를 챙기면 산길 장사가 안정됩니다."
+  },
+  {
+    "id": "seal_northern_roads",
+    "name": "북방 장부",
+    "iconAsset": "/assets/painted2d/seals/seal_northern_roads.png",
+    "requirements": [
+      {
+        "type": "visit",
+        "portIds": [
+          "kaesong",
+          "pyeongyang",
+          "nampo",
+          "wonsan",
+          "sinuiju",
+          "chongjin"
+        ]
+      },
+      {
+        "type": "sell",
+        "goodIds": [
+          "salt",
+          "dried_fish",
+          "herbs",
+          "ginseng",
+          "iron"
+        ],
+        "quantity": 5
+      },
+      {
+        "type": "permit",
+        "permit": "qing_border_pass"
+      },
+      {
+        "type": "permit",
+        "permit": "tumen_trade_pass"
+      },
+      {
+        "type": "resolveEvent",
+        "eventTags": [
+          "bandits",
+          "storm"
+        ],
+        "count": 1
+      }
+    ],
+    "reward": {
+      "merchantFame": 4,
+      "explorationFame": 4,
+      "guardFame": 2,
+      "money": 260
+    },
+    "nextHint": "신의주(의주)와 청진(경흥)에서 허가를 챙기고 두 국경 장시에 도전하세요."
+  }
+]

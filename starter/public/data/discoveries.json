@@ -1,0 +1,408 @@
+[
+  {
+    "id": "discovery_busan_waegwan_road",
+    "portId": "busanpo",
+    "name": "왜관으로 이어지는 장사길",
+    "category": "trade_route",
+    "iconAsset": "/assets/painted2d/discoveries/discovery_busan_waegwan_road.png",
+    "description": "부산(부산포)에서 쓰시마(대마도) 상인들이 오가는 길목을 알게 되었습니다.",
+    "reward": {
+      "explorationFame": 2,
+      "merchantFame": 1,
+      "money": 20,
+      "portTrust": 1
+    },
+    "hint": "쓰시마(대마도) 교역을 준비하려면 부산(부산포) 신뢰가 중요합니다."
+  },
+  {
+    "id": "discovery_tongyeong_naval_route",
+    "portId": "tongyeong",
+    "name": "수군 항로",
+    "category": "sea_route",
+    "iconAsset": "/assets/painted2d/discoveries/discovery_tongyeong_naval_route.png",
+    "description": "통영(통제영) 앞바다의 수군 길과 조선소 물길을 장부에 그렸습니다.",
+    "reward": {
+      "explorationFame": 2,
+      "guardFame": 1,
+      "money": 20,
+      "portTrust": 1
+    },
+    "hint": "남해 장부를 채우려면 통영(통제영)과 여수를 함께 살펴보세요."
+  },
+  {
+    "id": "discovery_yeosu_fishing_ground",
+    "portId": "yeosu",
+    "name": "남해 어장",
+    "category": "fishing_ground",
+    "iconAsset": "/assets/painted2d/discoveries/discovery_yeosu_fishing_ground.png",
+    "description": "섬 사이 바람과 물고기 떼가 지나는 어장 위치를 알게 되었습니다.",
+    "reward": {
+      "explorationFame": 2,
+      "merchantFame": 1,
+      "money": 20,
+      "portTrust": 1
+    },
+    "hint": "건어물과 미역은 내륙 도시에서 더 좋은 값을 받을 수 있습니다."
+  },
+  {
+    "id": "discovery_mokpo_tide",
+    "portId": "mokpo",
+    "name": "서남해 조류",
+    "category": "sea_route",
+    "iconAsset": "/assets/painted2d/discoveries/discovery_mokpo_tide.png",
+    "description": "목포(목포진) 앞바다의 조류와 갯벌 사이 안전한 물길을 표시했습니다.",
+    "reward": {
+      "explorationFame": 2,
+      "guardFame": 1,
+      "money": 20,
+      "portTrust": 1
+    },
+    "hint": "제주를 준비하려면 목포(목포진)에서 배 상태와 식량을 확인하세요."
+  },
+  {
+    "id": "discovery_heuksando_reef",
+    "portId": "heuksando",
+    "name": "암초 해역",
+    "category": "danger_zone",
+    "iconAsset": "/assets/painted2d/discoveries/discovery_heuksando_reef.png",
+    "description": "흑산도 주변의 암초와 돌아가는 길을 장부에 남겼습니다.",
+    "reward": {
+      "explorationFame": 2,
+      "guardFame": 1,
+      "money": 15,
+      "portTrust": 1
+    },
+    "hint": "홍어는 값이 좋지만 암초와 해적 위험을 같이 보세요."
+  },
+  {
+    "id": "discovery_ganghwa_mudflat",
+    "portId": "ganghwa",
+    "name": "갯벌 나루",
+    "category": "dock",
+    "iconAsset": "/assets/painted2d/discoveries/discovery_ganghwa_mudflat.png",
+    "description": "강화 갯벌을 건너 서울(한양)으로 물건을 올리는 나루를 알게 되었습니다.",
+    "reward": {
+      "explorationFame": 2,
+      "merchantFame": 1,
+      "money": 15,
+      "portTrust": 1
+    },
+    "hint": "강화 소금은 서울(한양)과 충주 길에서 꾸준한 수요가 있습니다."
+  },
+  {
+    "id": "discovery_gunsan_grain_port",
+    "portId": "gunsan",
+    "name": "곡창 포구",
+    "category": "trade_port",
+    "iconAsset": "/assets/painted2d/discoveries/discovery_gunsan_grain_port.png",
+    "description": "금강 하구에 쌀과 보리가 모이는 창고 포구를 확인했습니다.",
+    "reward": {
+      "explorationFame": 1,
+      "merchantFame": 2,
+      "money": 15,
+      "portTrust": 1
+    },
+    "hint": "곡물은 싸게 사서 섬과 도시로 옮길 때 안정적입니다."
+  },
+  {
+    "id": "discovery_hanyang_office_ledger",
+    "portId": "hanyang",
+    "name": "관청 장부",
+    "category": "office_record",
+    "iconAsset": "/assets/painted2d/discoveries/discovery_hanyang_office_ledger.png",
+    "description": "서울(한양) 관청에서 납품과 허가가 기록되는 큰 장부를 보았습니다.",
+    "reward": {
+      "explorationFame": 2,
+      "guardFame": 1,
+      "money": 25,
+      "portTrust": 1
+    },
+    "hint": "서울(한양)은 고급품과 약재를 팔기에 좋은 목표지입니다."
+  },
+  {
+    "id": "discovery_jeonju_paper_market",
+    "portId": "jeonju",
+    "name": "한지 장터",
+    "category": "market",
+    "iconAsset": "/assets/painted2d/discoveries/discovery_jeonju_paper_market.png",
+    "description": "전주의 한지와 부채가 쌓인 공예 장터를 발견했습니다.",
+    "reward": {
+      "explorationFame": 1,
+      "merchantFame": 2,
+      "money": 15,
+      "portTrust": 1
+    },
+    "hint": "한지는 서울(한양)과 안동 길에서 다음 장사 후보가 됩니다."
+  },
+  {
+    "id": "discovery_daegu_medicine_market",
+    "portId": "daegu",
+    "name": "약령시",
+    "category": "market",
+    "iconAsset": "/assets/painted2d/discoveries/discovery_daegu_medicine_market.png",
+    "description": "약재와 바닷가 물건을 함께 찾는 대구 큰 장을 살폈습니다.",
+    "reward": {
+      "explorationFame": 1,
+      "merchantFame": 2,
+      "money": 20,
+      "portTrust": 1
+    },
+    "hint": "대구는 소금, 건어물, 미역을 팔기 좋은 초반 핵심 도시입니다."
+  },
+  {
+    "id": "discovery_andong_scholar_road",
+    "portId": "andong",
+    "name": "선비길",
+    "category": "land_route",
+    "iconAsset": "/assets/painted2d/discoveries/discovery_andong_scholar_road.png",
+    "description": "서책과 약초가 오가는 안동 산길의 장터를 기록했습니다.",
+    "reward": {
+      "explorationFame": 2,
+      "merchantFame": 1,
+      "money": 15,
+      "portTrust": 1
+    },
+    "hint": "산길은 느리지만 약초와 문방 물건의 기회가 있습니다."
+  },
+  {
+    "id": "discovery_chungju_river_dock",
+    "portId": "chungju",
+    "name": "남한강 나루",
+    "category": "river_dock",
+    "iconAsset": "/assets/painted2d/discoveries/discovery_chungju_river_dock.png",
+    "description": "서울(한양)과 영남을 잇는 강길 나루와 수레길을 확인했습니다.",
+    "reward": {
+      "explorationFame": 2,
+      "merchantFame": 1,
+      "money": 15,
+      "portTrust": 1
+    },
+    "hint": "충주는 목재와 곡물이 싸고 바닷가 물건을 반깁니다."
+  },
+  {
+    "id": "discovery_ulsan_timber_yard",
+    "portId": "ulsan",
+    "name": "선박 목재장",
+    "category": "shipyard",
+    "iconAsset": "/assets/painted2d/discoveries/discovery_ulsan_timber_yard.png",
+    "description": "배를 고치는 목재와 철이 드나드는 울산 목재장을 보았습니다.",
+    "reward": {
+      "explorationFame": 1,
+      "merchantFame": 1,
+      "guardFame": 1,
+      "money": 15,
+      "portTrust": 1
+    },
+    "hint": "동해와 남해를 오가기 전 목재와 수리비를 챙기세요."
+  },
+  {
+    "id": "discovery_pohang_east_waterway",
+    "portId": "pohang",
+    "name": "동해 물길",
+    "category": "sea_route",
+    "iconAsset": "/assets/painted2d/discoveries/discovery_pohang_east_waterway.png",
+    "description": "동해안 중간 포구에서 거친 물살과 쉬어 가는 길을 기록했습니다.",
+    "reward": {
+      "explorationFame": 2,
+      "guardFame": 1,
+      "money": 15,
+      "portTrust": 1
+    },
+    "hint": "동해 항로는 풍랑 위험을 보고 출발하는 것이 좋습니다."
+  },
+  {
+    "id": "discovery_gangneung_mountain_pass",
+    "portId": "gangneung",
+    "name": "대관령 고갯길",
+    "category": "mountain_pass",
+    "iconAsset": "/assets/painted2d/discoveries/discovery_gangneung_mountain_pass.png",
+    "description": "바다와 산을 잇는 고갯길과 눈길 위험을 장부에 남겼습니다.",
+    "reward": {
+      "explorationFame": 2,
+      "guardFame": 1,
+      "money": 15,
+      "portTrust": 1
+    },
+    "hint": "강릉 약초와 목재는 내륙 도시로 옮기면 의미가 커집니다."
+  },
+  {
+    "id": "discovery_jeju_horse_ranch",
+    "portId": "jeju",
+    "name": "말 목장",
+    "category": "ranch",
+    "iconAsset": "/assets/painted2d/discoveries/discovery_jeju_horse_ranch.png",
+    "description": "제주 바람 속에서 말과 감귤이 나는 목장을 확인했습니다.",
+    "reward": {
+      "explorationFame": 3,
+      "merchantFame": 1,
+      "money": 30,
+      "portTrust": 1
+    },
+    "hint": "제주 말은 비싸지만 배와 짐칸 준비가 필요합니다."
+  },
+  {
+    "id": "discovery_tsushima_foreign_dock",
+    "portId": "tsushima",
+    "name": "외국 상인 나루",
+    "category": "foreign_dock",
+    "iconAsset": "/assets/painted2d/discoveries/discovery_tsushima_foreign_dock.png",
+    "description": "쓰시마(대마도) 나루에서 외국 상인과 허가 문서의 중요성을 배웠습니다.",
+    "reward": {
+      "explorationFame": 3,
+      "merchantFame": 1,
+      "money": 30,
+      "portTrust": 1
+    },
+    "hint": "왜관 장부를 완성하려면 부산(부산포) 신뢰와 통역 장비가 필요합니다."
+  },
+  {
+    "id": "discovery_jinhae_old_harbor",
+    "portId": "jinhae_jepo",
+    "name": "옛 포구길",
+    "category": "coastal_road",
+    "iconAsset": "/assets/painted2d/discoveries/discovery_jinhae_old_harbor.png",
+    "description": "부산(부산포)와 통영(통제영) 사이 조용한 포구길을 발견했습니다.",
+    "reward": {
+      "explorationFame": 1,
+      "merchantFame": 1,
+      "money": 15,
+      "portTrust": 1
+    },
+    "hint": "진해(제포)는 남해 초반 항로를 쉬어 가는 작은 거점입니다."
+  },
+  {
+    "id": "discovery_pyeongyang_daedong_ledger",
+    "portId": "pyeongyang",
+    "name": "대동강 장부",
+    "category": "office_record",
+    "iconAsset": "/assets/painted2d/discoveries/discovery_pyeongyang_daedong_ledger.png",
+    "description": "평양 대동강 장터와 북부 관문 장부를 확인했습니다.",
+    "reward": {
+      "explorationFame": 2,
+      "merchantFame": 2,
+      "money": 25,
+      "portTrust": 1
+    },
+    "hint": "평양은 남포 소금과 동해 해산물을 팔기 좋은 북부 수요지입니다."
+  },
+  {
+    "id": "discovery_nampo_west_gate",
+    "portId": "nampo",
+    "name": "대동강 하구 물길",
+    "category": "dock",
+    "iconAsset": "/assets/painted2d/discoveries/discovery_nampo_west_gate.png",
+    "description": "남포 하구의 갯벌과 평양으로 이어지는 포구 길을 표시했습니다.",
+    "reward": {
+      "explorationFame": 2,
+      "guardFame": 1,
+      "money": 20,
+      "portTrust": 1
+    },
+    "hint": "남포와 강화 사이 서해 항로는 조수와 안개를 함께 봐야 합니다."
+  },
+  {
+    "id": "discovery_sinuiju_river_road",
+    "portId": "sinuiju",
+    "name": "신의주(의주) 압록강 수레길",
+    "category": "trade_route",
+    "iconAsset": "/assets/painted2d/discoveries/discovery_sinuiju_river_road.png",
+    "description": "신의주(의주) 압록강 길목에서 청 상인 소문과 인삼 장사길을 장부에 남겼습니다.",
+    "reward": {
+      "explorationFame": 2,
+      "merchantFame": 1,
+      "money": 20,
+      "portTrust": 1
+    },
+    "hint": "단둥 방면(책문 장시)를 준비하려면 청 교역 허가와 큰 수레가 필요합니다."
+  },
+  {
+    "id": "discovery_wonsan_east_gate",
+    "portId": "wonsan",
+    "name": "원산 동해 관문",
+    "category": "sea_route",
+    "iconAsset": "/assets/painted2d/discoveries/discovery_wonsan_east_gate.png",
+    "description": "원산 앞 동해 물길과 평양으로 넘는 산길을 함께 기록했습니다.",
+    "reward": {
+      "explorationFame": 2,
+      "guardFame": 1,
+      "money": 20,
+      "portTrust": 1
+    },
+    "hint": "원산 해산물은 평양과 개성에서 수요가 큽니다."
+  },
+  {
+    "id": "discovery_hamhung_mountain_goods",
+    "portId": "hamhung",
+    "name": "함경 산물길",
+    "category": "mountain_pass",
+    "iconAsset": "/assets/painted2d/discoveries/discovery_hamhung_mountain_goods.png",
+    "description": "함흥에서 내려오는 약초와 목재 길을 확인했습니다.",
+    "reward": {
+      "explorationFame": 2,
+      "merchantFame": 1,
+      "money": 20,
+      "portTrust": 1
+    },
+    "hint": "함흥 약초와 목재는 남쪽 도시로 옮기면 차익 후보가 됩니다."
+  },
+  {
+    "id": "discovery_chongjin_rough_port",
+    "portId": "chongjin",
+    "name": "청진(경흥) 두만강 길목",
+    "category": "danger_zone",
+    "iconAsset": "/assets/painted2d/discoveries/discovery_chongjin_rough_port.png",
+    "description": "청진(경흥) 가까운 두만강 길목과 북방 장시로 이어지는 산길을 표시했습니다.",
+    "reward": {
+      "explorationFame": 2,
+      "guardFame": 2,
+      "money": 20,
+      "portTrust": 1
+    },
+    "hint": "북방 장시를 준비하려면 두만강 통행 허가와 수레 짐칸이 필요합니다."
+  },
+  {
+    "id": "discovery_qing_yalu_market_gate",
+    "portId": "qing_yalu_market",
+    "name": "책문으로 이어지는 청 장시",
+    "category": "foreign_market",
+    "iconAsset": "/assets/painted2d/discoveries/discovery_sinuiju_river_road.png",
+    "description": "압록강 너머 청 상인의 비단, 차, 도자기 장부를 처음 확인했습니다.",
+    "reward": {
+      "explorationFame": 3,
+      "merchantFame": 2,
+      "money": 40,
+      "portTrust": 1
+    },
+    "hint": "청 물건은 고급품이라 서울(한양)과 부산(부산포) 판매처를 먼저 살피세요."
+  },
+  {
+    "id": "discovery_tumen_north_market_frontier",
+    "portId": "tumen_north_market",
+    "name": "두만강 북방(북방장)",
+    "category": "foreign_market",
+    "iconAsset": "/assets/painted2d/discoveries/discovery_chongjin_rough_port.png",
+    "description": "두만강 너머 북방 상인이 가져오는 말, 철, 목재 길을 장부에 남겼습니다.",
+    "reward": {
+      "explorationFame": 3,
+      "guardFame": 2,
+      "money": 40,
+      "portTrust": 1
+    },
+    "hint": "북방 장시는 멀고 위험하니 호위 명성과 수레 내구를 먼저 키우세요."
+  },
+  {
+    "id": "discovery_kaesong_trade_gate",
+    "portId": "kaesong",
+    "name": "개성 상업 관문",
+    "category": "market",
+    "iconAsset": "/assets/painted2d/discoveries/discovery_kaesong_trade_gate.png",
+    "description": "개성의 인삼과 문방 물건 장터, 서울(한양)과 평양 사이 관문을 살폈습니다.",
+    "reward": {
+      "explorationFame": 1,
+      "merchantFame": 2,
+      "money": 20,
+      "portTrust": 1
+    },
+    "hint": "개성은 서울(한양)과 평양 양쪽 가격을 비교하기 좋은 중간 거점입니다."
+  }
+]
