@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 72" role="img" aria-label="summer harbor">
+  <defs>
+    <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#577489"/><stop offset=".52" stop-color="#83c3d6"/><stop offset=".54" stop-color="#1f7082"/><stop offset="1" stop-color="#155160"/></linearGradient>
+    <linearGradient id="sail" x1="0" x2="1"><stop stop-color="#fff4d1"/><stop offset="1" stop-color="#e0b765"/></linearGradient>
+  </defs>
+  <rect width="96" height="72" rx="10" fill="url(#sky)"/>
+  <path fill="#f6d66a" d="M71 7a8 8 0 1 0 0 16 8 8 0 0 0 0-16z"/>
+  <path stroke="#bce5eb" stroke-width="3" stroke-linecap="round" d="M4 55c10-5 18-5 28 0s18 5 28 0 20-5 32 0" fill="none"/>
+  <path fill="#5d3822" d="M23 49h44l-8 12H31z"/>
+  <path fill="#1f2d33" d="M28 48h34l-5 7H33z"/>
+  <path stroke="#2c2d2a" stroke-width="4" stroke-linecap="round" d="M46 18v33"/>
+  <path fill="url(#sail)" stroke="#463422" stroke-width="2" d="M49 18c10 5 15 14 18 25H49zM43 22c-8 4-13 11-15 22h15z"/>
+  <path fill="#e8c86d" d="M17 34h13v8H17zM68 36h13v7H68z"/>
+  <path stroke="#ffefae" stroke-width="2" d="M12 21l5 3 5-3M7 30l5 3 5-3" fill="none"/>
+</svg>

@@ -2086,6 +2086,147 @@
   }
 }
 
+/* Red-team art/layout polish: keep story portraits and small panel art from
+   collapsing into temporary-looking vector blobs on landscape phones. */
+.tutorial-story-modal {
+  overflow: visible !important;
+}
+
+.tutorial-story-portrait {
+  min-height: 184px !important;
+  overflow: visible !important;
+  padding: 10px !important;
+}
+
+.tutorial-story-portrait .guide-spirit,
+.tutorial-story-fairy {
+  width: 118px !important;
+  height: 118px !important;
+  object-fit: contain !important;
+  image-rendering: auto !important;
+  filter:
+    drop-shadow(0 10px 14px rgba(41, 35, 24, .24))
+    saturate(1.05)
+    contrast(1.02) !important;
+}
+
+.tutorial-story-target .guide-spirit {
+  width: 34px !important;
+  height: 34px !important;
+  object-fit: contain !important;
+  image-rendering: auto !important;
+  filter: drop-shadow(0 3px 4px rgba(41, 35, 24, .2)) !important;
+}
+
+.month-news .season-art,
+.season-art {
+  width: 66px !important;
+  height: 52px !important;
+  object-fit: cover !important;
+  image-rendering: auto !important;
+  border: 2px solid rgba(91, 70, 36, .28) !important;
+  border-radius: 9px !important;
+  background: #d9edf0 !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, .38),
+    0 5px 10px rgba(43, 31, 20, .12) !important;
+}
+
+.ship-caller-panel {
+  grid-template-columns: 54px minmax(0, 1fr) minmax(96px, 112px) !important;
+  align-items: start !important;
+}
+
+.berth-mini-map {
+  min-height: 78px !important;
+  padding: 6px !important;
+  overflow: visible !important;
+  background:
+    linear-gradient(180deg, rgba(179, 224, 231, .92), rgba(236, 248, 239, .96) 54%, rgba(217, 198, 146, .72)) !important;
+}
+
+.berth-mini-map img {
+  width: 76px !important;
+  height: 54px !important;
+  object-fit: contain !important;
+  image-rendering: auto !important;
+  filter: drop-shadow(0 5px 6px rgba(30, 33, 31, .22)) !important;
+}
+
+.berth-mini-map span {
+  max-width: 96px !important;
+  color: #244047 !important;
+  font-size: 10px !important;
+  line-height: 1.08 !important;
+}
+
+.cargo-slot-head {
+  grid-template-columns: 50px minmax(0, 1fr) auto !important;
+  min-height: 42px !important;
+}
+
+.cargo-slot-head .route-token {
+  width: 46px !important;
+  height: 36px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  object-fit: contain !important;
+  image-rendering: auto !important;
+  filter: drop-shadow(0 4px 5px rgba(38, 31, 22, .2)) !important;
+}
+
+@media (max-width: 940px) and (orientation: landscape) {
+  .tutorial-story-modal {
+    width: calc(100vw - 24px) !important;
+    grid-template-columns: 126px minmax(0, 1fr) 118px !important;
+    gap: 12px !important;
+    padding: 12px !important;
+  }
+
+  .tutorial-story-portrait {
+    min-height: 188px !important;
+  }
+
+  .tutorial-story-portrait .guide-spirit,
+  .tutorial-story-fairy {
+    width: 104px !important;
+    height: 104px !important;
+  }
+
+  .tutorial-story-copy p {
+    line-height: 1.46 !important;
+  }
+
+  .ship-caller-panel {
+    grid-template-columns: 46px minmax(0, 1fr) 92px !important;
+  }
+
+  .berth-mini-map {
+    min-height: 72px !important;
+  }
+
+  .berth-mini-map img {
+    width: 68px !important;
+    height: 48px !important;
+  }
+
+  .cargo-slot-head {
+    grid-template-columns: 46px minmax(0, 1fr) auto !important;
+  }
+
+  .cargo-slot-head .route-token {
+    width: 42px !important;
+    height: 34px !important;
+  }
+
+  .month-news .season-art,
+  .season-art {
+    width: 62px !important;
+    height: 50px !important;
+  }
+}
+
 .side-panel .empty-state,
 .empty-state {
   border: 1px dashed rgba(80, 62, 37, .36) !important;

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 72" role="img" aria-label="spring market">
+  <defs>
+    <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#9fd8f1"/><stop offset=".58" stop-color="#dff3da"/><stop offset="1" stop-color="#91c66e"/></linearGradient>
+    <linearGradient id="cloth" x1="0" x2="1"><stop stop-color="#fff1bf"/><stop offset=".5" stop-color="#f8c76a"/><stop offset="1" stop-color="#c97b36"/></linearGradient>
+  </defs>
+  <rect width="96" height="72" rx="10" fill="url(#sky)"/>
+  <path fill="#6ca95d" d="M0 51c12-9 22-10 34-4 13 6 24 2 34-5 11-8 20-7 28-1v31H0z"/>
+  <path fill="#2d5963" opacity=".16" d="M0 55c20-7 35-5 50 0 19 6 29 1 46-6v23H0z"/>
+  <path fill="#7d5830" d="M16 34h52v23H16z"/>
+  <path fill="url(#cloth)" d="M12 28h60l-5 13H17z"/>
+  <path fill="#fff6d1" d="M17 29h10l-4 11H13zM33 29h12l-3 11H29zM52 29h13l2 11H50z"/>
+  <path fill="#3e2e20" d="M22 41h7v16h-7zM54 41h7v16h-7z"/>
+  <rect x="29" y="45" width="23" height="7" rx="2" fill="#f4d889"/>
+  <path fill="#78491d" d="M64 53h18v6H64z"/>
+  <circle cx="68" cy="60" r="4" fill="#263238"/><circle cx="80" cy="60" r="4" fill="#263238"/>
+  <path fill="#f6b5ca" d="M18 16c4-5 10-5 13 0 3-6 10-6 14 0-5 5-9 9-14 13-5-4-9-8-13-13z"/>
+  <circle cx="76" cy="17" r="5" fill="#fff1f5"/><circle cx="83" cy="18" r="4" fill="#f5acc3"/>
+</svg>

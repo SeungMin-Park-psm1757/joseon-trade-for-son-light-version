@@ -39,6 +39,7 @@ import {
   npcAsset,
   resultIconAsset,
   sceneAssetForVisualType,
+  seasonArtAsset,
   shipAssetForTier
 } from './artDirection';
 
@@ -1163,8 +1164,11 @@ function VehiclePixelToken({
   );
 }
 
-function RouteToken({ data: _data, state: _state, mode }: { data: GameData; state: GameState; mode: Route['mode'] }) {
-  return <VehiclePixelToken mode={mode} className={`route-token ${mode}`} />;
+function RouteToken({ data, state, mode }: { data: GameData; state: GameState; mode: Route['mode'] }) {
+  const asset = mode === 'sea'
+    ? shipArtFor(data, data.shipById[state.shipId])
+    : cartArtFor(data, data.cartById[state.cartId]);
+  return <img className={`vehicle-token route-token ${mode}`} src={asset} alt="" aria-hidden="true" />;
 }
 
 type GuideMood = 'default' | 'happy' | 'warning';
@@ -3452,7 +3456,7 @@ function MonthNewsCard({ data, monthly }: { data: GameData; monthly?: MonthlyEve
   const hazards = (monthly.riskTags ?? Object.keys(monthly.hazardModifiers ?? {}).slice(0, 3)).join(', ');
   return (
     <section className={`panel month-news signboard season-${seasonKind(monthly.month)}`}>
-      <div className="season-art" aria-hidden="true"><span /></div>
+      <img className="season-art" src={seasonArtAsset(monthly.month)} alt="" aria-hidden="true" />
       <div>
         <p className="eyebrow">{monthly.month}월 시장 소식</p>
         <h2>{monthly.name}</h2>
@@ -5656,7 +5660,7 @@ function TutorialStoryModal({
           <p>{dialog.text}</p>
           <div className="tutorial-story-target">
             <span className="tutorial-story-icon">
-              {relatedGood ? <GoodIcon good={relatedGood} /> : <img src={dialog.portraitAsset ?? HUB_ICON.map} alt="" />}
+              {relatedGood ? <GoodIcon good={relatedGood} /> : dialog.speaker === 'fairy' ? <GuideSpirit mood={mood} /> : <img src={dialog.portraitAsset ?? HUB_ICON.map} alt="" />}
             </span>
             <span>
               <small>다음에 할 일</small>

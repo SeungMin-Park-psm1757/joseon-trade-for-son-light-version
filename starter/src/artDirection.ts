@@ -43,7 +43,15 @@ export function goodIconAsset(goodId?: string) {
 }
 
 export function guideSpiritAsset(mood: 'default' | 'happy' | 'warning' = 'default') {
-  return `${ART_DIRECTION.root}/companions/guide-spirit-${mood}.svg`;
+  return `${ART_DIRECTION.root}/companions/guide-spirit-${mood}.png`;
+}
+
+export function seasonArtAsset(month: number) {
+  const kind = month >= 3 && month <= 5 ? 'spring'
+    : month >= 6 && month <= 8 ? 'summer'
+      : month >= 9 && month <= 11 ? 'autumn'
+        : 'winter';
+  return `${ART_DIRECTION.root}/ui/season-${kind}.svg`;
 }
 
 export const TITLE_HARBOR_ASSET = `${ART_DIRECTION.root}/scenes/south-port.webp`;

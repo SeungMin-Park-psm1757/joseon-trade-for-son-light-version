@@ -11,6 +11,7 @@ starter/dist/
 starter/test-results/
 starter/output/
 starter/.logs/
+starter/.logs/**
 starter/tsconfig.tsbuildinfo
 
 output/

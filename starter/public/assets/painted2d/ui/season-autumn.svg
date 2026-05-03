@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 72" role="img" aria-label="autumn storehouse">
+  <defs>
+    <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#9cc7de"/><stop offset=".56" stop-color="#ead184"/><stop offset="1" stop-color="#b98232"/></linearGradient>
+  </defs>
+  <rect width="96" height="72" rx="10" fill="url(#sky)"/>
+  <path fill="#92622f" d="M0 52c20-10 38-8 53-3 18 6 28 0 43-8v31H0z"/>
+  <path fill="#473223" d="M18 33h45v27H18z"/>
+  <path fill="#7a4b22" d="M14 28h54l-7 10H20z"/>
+  <path fill="#e5b75a" d="M23 39h13v21H23zM42 39h13v21H42z"/>
+  <path fill="#f4d67f" d="M68 48h15v11H68z"/>
+  <path stroke="#70451f" stroke-width="3" d="M75 44v16"/>
+  <circle cx="74" cy="35" r="4" fill="#c94f2e"/><circle cx="82" cy="38" r="4" fill="#e39029"/><circle cx="78" cy="29" r="4" fill="#d66b2a"/>
+  <path fill="#f1c456" d="M7 57h14v5H7zM5 50h17v5H5z"/>
+  <path fill="#fff0b4" opacity=".75" d="M8 18c8-6 18-7 30-2 8 4 19 3 31-3-10 12-25 15-41 10-8-2-15-3-20-5z"/>
+</svg>
