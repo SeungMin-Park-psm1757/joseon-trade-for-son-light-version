@@ -1,4 +1,4 @@
-import type { JuniorBoat, JuniorCity, JuniorEvent, JuniorGood, JuniorGoodId, JuniorReward, JuniorRoute, JuniorSave, JuniorVehicle } from './juniorTypes';
+import type { JuniorBoat, JuniorCity, JuniorCityId, JuniorEvent, JuniorGood, JuniorGoodId, JuniorReward, JuniorRoute, JuniorSave, JuniorVehicle } from './juniorTypes';
 
 export const JUNIOR_SAVE_KEY = 'joseon_trade_junior_save_v1';
 export const FULL_MODE_URL = '../starter/';
@@ -10,14 +10,14 @@ export function publicAsset(path: string) {
 }
 
 export const JUNIOR_GOODS: JuniorGood[] = [
-  { id: 'cotton_cloth', name: '면포', image: '/assets/goods/cotton_cloth.png', baseBuyCoins: 10, baseSellCoins: 16 },
-  { id: 'dried_fish', name: '건어물', image: '/assets/goods/dried_fish.png', baseBuyCoins: 9, baseSellCoins: 15 },
-  { id: 'salt', name: '소금', image: '/assets/goods/salt.png', baseBuyCoins: 8, baseSellCoins: 14 },
-  { id: 'paper', name: '한지', image: '/assets/goods/paper.png', baseBuyCoins: 11, baseSellCoins: 18 },
-  { id: 'citrus', name: '귤', image: '/assets/goods/citrus.png', baseBuyCoins: 12, baseSellCoins: 20 },
-  { id: 'fresh_fish', name: '생선', image: '/assets/goods/fresh_fish.png', baseBuyCoins: 9, baseSellCoins: 16 },
-  { id: 'herbs', name: '약초', image: '/assets/goods/herbs.png', baseBuyCoins: 12, baseSellCoins: 20 },
-  { id: 'rice', name: '쌀', image: '/assets/goods/rice.png', baseBuyCoins: 10, baseSellCoins: 17 }
+  { id: 'cotton_cloth', name: '면포', image: publicAsset('/assets/goods-v2/cotton_cloth.svg'), baseBuyCoins: 10, baseSellCoins: 16 },
+  { id: 'dried_fish', name: '건어물', image: publicAsset('/assets/goods-v2/dried_fish.svg'), baseBuyCoins: 9, baseSellCoins: 15 },
+  { id: 'salt', name: '소금', image: publicAsset('/assets/goods-v2/salt.svg'), baseBuyCoins: 8, baseSellCoins: 14 },
+  { id: 'paper', name: '한지', image: publicAsset('/assets/goods-v2/paper.svg'), baseBuyCoins: 11, baseSellCoins: 18 },
+  { id: 'citrus', name: '귤', image: publicAsset('/assets/goods-v2/citrus.svg'), baseBuyCoins: 12, baseSellCoins: 20 },
+  { id: 'fresh_fish', name: '생선', image: publicAsset('/assets/goods-v2/fresh_fish.svg'), baseBuyCoins: 9, baseSellCoins: 16 },
+  { id: 'herbs', name: '약초', image: publicAsset('/assets/goods-v2/herbs.svg'), baseBuyCoins: 12, baseSellCoins: 20 },
+  { id: 'rice', name: '쌀', image: publicAsset('/assets/goods-v2/rice.svg'), baseBuyCoins: 10, baseSellCoins: 17 }
 ];
 
 export const JUNIOR_CITIES: JuniorCity[] = [
@@ -325,26 +325,47 @@ export const JUNIOR_ROUTES: JuniorRoute[] = [
 ];
 
 export const JUNIOR_VEHICLES: JuniorVehicle[] = [
-  { id: 'bundle', name: '보따리 수레', cost: 0, cargoLimit: 2, text: '처음 쓰는 작은 수레', image: '/assets/vehicles/junior-cart-bundle.png' },
-  { id: 'handcart', name: '손수레', cost: 100, cargoLimit: 3, text: '짐을 하나 더 실어', image: '/assets/vehicles/junior-cart-handcart.png' },
-  { id: 'big_cart', name: '큰 수레', cost: 190, cargoLimit: 4, text: '짐을 더 많이 실어', image: '/assets/vehicles/junior-cart-large.png' },
-  { id: 'merchant_cart', name: '장사 수레', cost: 300, cargoLimit: 5, text: '먼 길도 든든해', image: '/assets/vehicles/junior-cart-merchant.png' }
+  { id: 'bundle', name: '보따리 수레', cost: 0, cargoLimit: 2, text: '처음 쓰는 작은 수레', image: publicAsset('/assets/vehicles/junior-cart-bundle.png') },
+  { id: 'handcart', name: '손수레', cost: 100, cargoLimit: 3, text: '짐을 하나 더 실어', image: publicAsset('/assets/vehicles/junior-cart-handcart.png') },
+  { id: 'big_cart', name: '큰 수레', cost: 190, cargoLimit: 4, text: '짐을 더 많이 실어', image: publicAsset('/assets/vehicles/junior-cart-large.png') },
+  { id: 'merchant_cart', name: '장사 수레', cost: 300, cargoLimit: 5, text: '먼 길도 든든해', image: publicAsset('/assets/vehicles/junior-cart-merchant.png') }
 ];
 
 export const JUNIOR_BOATS: JuniorBoat[] = [
-  { id: 'none', name: '배 없음', cost: 0, text: '아직 바닷길은 어려워' },
-  { id: 'small_ferry', name: '작은 나룻배', cost: 200, text: '바닷길을 건널 때 좋아' },
-  { id: 'sailboat', name: '작은 돛배', cost: 360, text: '먼 바닷길도 든든해' }
+  { id: 'none', name: '배 없음', cost: 0, text: '아직 바닷길은 어려워', image: publicAsset('/assets/boats/no_boat.svg') },
+  { id: 'small_ferry', name: '작은 나룻배', cost: 200, text: '바닷길을 건널 때 좋아', image: publicAsset('/assets/boats/small_ferry.svg') },
+  { id: 'sailboat', name: '작은 돛배', cost: 360, text: '먼 바닷길도 든든해', image: publicAsset('/assets/boats/sailboat.svg') },
+  { id: 'sturdy_sailboat', name: '튼튼한 돛배', cost: 520, text: '큰 파도에도 든든해', image: publicAsset('/assets/boats/sturdy_sailboat.svg') },
+  { id: 'merchant_ship', name: '장사배', cost: 720, text: '멀리 장사 가기 좋아', image: publicAsset('/assets/boats/merchant_ship.svg') }
 ];
 
-JUNIOR_GOODS.forEach((good) => {
-  good.image = publicAsset(good.image);
-});
+export const CITY_BACKGROUND_ASSETS: Record<JuniorCityId, string> = {
+  seoul: publicAsset('/assets/cities/seoul.svg'),
+  gaeseong: publicAsset('/assets/cities/gaeseong.svg'),
+  pyongyang: publicAsset('/assets/cities/pyongyang.svg'),
+  sinuiju: publicAsset('/assets/cities/sinuiju.svg'),
+  chuncheon: publicAsset('/assets/cities/chuncheon.svg'),
+  gangneung: publicAsset('/assets/cities/gangneung.svg'),
+  wonsan: publicAsset('/assets/cities/wonsan.svg'),
+  hamheung: publicAsset('/assets/cities/hamheung.svg'),
+  cheongjin: publicAsset('/assets/cities/cheongjin.svg'),
+  andong: publicAsset('/assets/cities/andong.svg'),
+  daegu: publicAsset('/assets/cities/daegu.svg'),
+  ulsan: publicAsset('/assets/cities/ulsan.svg'),
+  busan: publicAsset('/assets/cities/busan.svg'),
+  jinju: publicAsset('/assets/cities/jinju.svg'),
+  tongyeong: publicAsset('/assets/cities/tongyeong.svg'),
+  jeonju: publicAsset('/assets/cities/jeonju.svg'),
+  gwangju: publicAsset('/assets/cities/gwangju.svg'),
+  suncheon: publicAsset('/assets/cities/suncheon.svg'),
+  yeosu: publicAsset('/assets/cities/yeosu.svg'),
+  mokpo: publicAsset('/assets/cities/mokpo.svg'),
+  jeju: publicAsset('/assets/cities/jeju.svg')
+};
+
 JUNIOR_CITIES.forEach((city) => {
-  city.scene = publicAsset(city.scene);
-});
-JUNIOR_VEHICLES.forEach((vehicle) => {
-  vehicle.image = publicAsset(vehicle.image);
+  city.backgroundAsset = CITY_BACKGROUND_ASSETS[city.id];
+  city.scene = city.backgroundAsset;
 });
 
 function spellingEvent(
@@ -414,10 +435,10 @@ export const JUNIOR_EVENTS: JuniorEvent[] = [
   spellingEvent('weather_spelling_1', 'quiz_weather', 'land', '비 오는 길', 'rain', '비가 와도 차분히 골라보자.', ['우산', '우싼', '우산느'], '우산', '정답! 비를 잘 피했어.', '비를 피해 조금 쉬었어.'),
   spellingEvent('weather_spelling_2', 'quiz_weather', 'sea', '센 바람', 'wind', '바람 속에서 바른 말을 찾아봐.', ['바람', '바람므', '바람이이'], '바람', '정답! 바람이 도와줬어.', '돛을 잠깐 접었어.'),
   spellingEvent('weather_spelling_3', 'quiz_weather', 'any', '햇살 좋은 날', 'sun', '좋은 날에도 바른 말을 골라봐.', ['햇살', '해살', '햇쌀'], '햇살', '정답! 장터가 환해졌어.', '잠깐 쉬었다 갔어.', { coins: 5 }, { coins: -5 }),
-  spellingEvent('folktale_rice_cake_1', 'quiz_folktale', 'land', '떡 고개 이야기', 'folktale', '떡을 나누면 고개 길이 환해져.', ['떡', '덕', '떡ㄱ'], '떡', '정답! 고개 길이 열렸어.', '괜찮아. 떡을 다시 싸 보자.', { storyClues: 1 }, { coins: -5 }, 'rice_cake_pass', 1),
-  spellingEvent('folktale_rice_cake_2', 'quiz_folktale', 'land', '떡 바구니', 'folktale', '바구니 글자를 바르게 골라봐.', ['바구니', '바구니이', '바군이'], '바구니', '정답! 떡 향기가 길을 알려줬어.', '조금 쉬었다 가자.', { stars: 1 }, { coins: -5 }, 'rice_cake_pass', 2),
-  spellingEvent('folktale_fairy_cloth_1', 'quiz_folktale', 'any', '선녀의 옷감', 'folktale', '잃어버린 옷감을 찾아주자.', ['옷감', '옫감', '옷깜'], '옷감', '정답! 선녀가 고마워했어.', '괜찮아. 다시 찾아보자.', { storyClues: 1 }, { coins: -5 }, 'fairy_cloth', 1),
-  spellingEvent('folktale_fairy_cloth_2', 'quiz_folktale', 'any', '하늘빛 실', 'folktale', '하늘빛 실 이름을 골라봐.', ['하늘', '하눌', '하늘르'], '하늘', '정답! 장부가 반짝였어.', '실이 엉켜 잠깐 쉬었어.', { storyClues: 1 }, { coins: -5 }, 'fairy_cloth', 2),
+  spellingEvent('folktale_rice_cake_1', 'quiz_folktale', 'land', '떡 고개 이야기', 'rice_cake', '떡을 나누면 고개 길이 환해져.', ['떡', '덕', '떡ㄱ'], '떡', '정답! 고개 길이 열렸어.', '괜찮아. 떡을 다시 싸 보자.', { storyClues: 1 }, { coins: -5 }, 'rice_cake_pass', 1),
+  spellingEvent('folktale_rice_cake_2', 'quiz_folktale', 'land', '떡 바구니', 'rice_cake', '바구니 글자를 바르게 골라봐.', ['바구니', '바구니이', '바군이'], '바구니', '정답! 떡 향기가 길을 알려줬어.', '조금 쉬었다 가자.', { stars: 1 }, { coins: -5 }, 'rice_cake_pass', 2),
+  spellingEvent('folktale_fairy_cloth_1', 'quiz_folktale', 'any', '선녀의 옷감', 'fairy_cloth', '잃어버린 옷감을 찾아주자.', ['옷감', '옫감', '옷깜'], '옷감', '정답! 선녀가 고마워했어.', '괜찮아. 다시 찾아보자.', { storyClues: 1 }, { coins: -5 }, 'fairy_cloth', 1),
+  spellingEvent('folktale_fairy_cloth_2', 'quiz_folktale', 'any', '하늘빛 실', 'fairy_cloth', '하늘빛 실 이름을 골라봐.', ['하늘', '하눌', '하늘르'], '하늘', '정답! 장부가 반짝였어.', '실이 엉켜 잠깐 쉬었어.', { storyClues: 1 }, { coins: -5 }, 'fairy_cloth', 2),
   { id: 'book_glow', type: 'story', mood: 'story', chancePercent: 1, routeKind: 'any', title: '장부가 반짝', scene: 'book', fairyText: '장부가 살짝 빛났어.', reward: { storyClues: 1 } },
   { id: 'cart_goal', type: 'growth', mood: 'talk', chancePercent: 1, routeKind: 'any', title: '새 수레 생각', scene: 'cart', fairyText: '돈을 모으면 더 큰 수레를 장만할 수 있어.' },
   { id: 'home_hint', type: 'ending', mood: 'story', chancePercent: 1, routeKind: 'any', title: '집으로 가는 빛', scene: 'home', fairyText: '300냥을 모으면 장부가 문처럼 열려.' }

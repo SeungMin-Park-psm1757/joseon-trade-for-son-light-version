@@ -82,6 +82,7 @@ export interface JuniorCity {
   buyGoodIds: JuniorGoodId[];
   sellGoodIds: JuniorGoodId[];
   scene: string;
+  backgroundAsset?: string;
   note: string;
   introLines: string[];
 }
@@ -112,10 +113,11 @@ export interface JuniorVehicle {
 }
 
 export interface JuniorBoat {
-  id: 'none' | 'small_ferry' | 'sailboat';
+  id: 'none' | 'small_ferry' | 'sailboat' | 'sturdy_sailboat' | 'merchant_ship';
   name: string;
   cost: number;
   text: string;
+  image: string;
 }
 
 export interface JuniorReward {

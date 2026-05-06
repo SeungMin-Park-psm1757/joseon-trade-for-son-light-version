@@ -40,23 +40,25 @@ import { playJuniorSuccessSound } from './juniorAudio';
 import type { JuniorBoat, JuniorCargoItem, JuniorCity, JuniorCityId, JuniorEvent, JuniorGood, JuniorGoodId, JuniorSave, JuniorVehicle } from './juniorTypes';
 
 const eventSceneImages: Record<string, string> = {
-  bandit: publicAsset('/assets/scenes/inland-city.webp'),
-  pirate: publicAsset('/assets/scenes/south-port.webp'),
-  animal: publicAsset('/assets/scenes/inland-city.webp'),
-  merchant: publicAsset('/assets/scenes/market-street.webp'),
-  folktale: publicAsset('/assets/scenes/inland-city.webp'),
-  rain: publicAsset('/assets/scenes/east-port.webp'),
-  dog: publicAsset('/assets/scenes/inland-city.webp'),
-  cat: publicAsset('/assets/scenes/market-street.webp'),
-  child: publicAsset('/assets/scenes/market-street.webp'),
-  wind: publicAsset('/assets/scenes/busan-port.webp'),
-  book: publicAsset('/assets/ui/result-safe.png'),
-  map: publicAsset('/assets/scenes/inland-city.webp'),
-  market: publicAsset('/assets/scenes/market-street.webp'),
-  home: publicAsset('/assets/ui/success-stamp.png'),
-  sun: publicAsset('/assets/scenes/busan-port.webp'),
-  cart: publicAsset('/assets/vehicles/junior-cart-merchant.png'),
-  boat: publicAsset('/assets/ui/result-ship.png')
+  bandit: publicAsset('/assets/events/bandit.svg'),
+  pirate: publicAsset('/assets/events/pirate.svg'),
+  animal: publicAsset('/assets/events/animal.svg'),
+  merchant: publicAsset('/assets/events/merchant.svg'),
+  folktale: publicAsset('/assets/events/rice_cake.svg'),
+  rain: publicAsset('/assets/events/rain.svg'),
+  dog: publicAsset('/assets/events/animal.svg'),
+  cat: publicAsset('/assets/events/animal.svg'),
+  child: publicAsset('/assets/events/merchant.svg'),
+  wind: publicAsset('/assets/events/wind.svg'),
+  book: publicAsset('/assets/events/book.svg'),
+  map: publicAsset('/assets/events/book.svg'),
+  market: publicAsset('/assets/events/merchant.svg'),
+  home: publicAsset('/assets/events/ending_door.svg'),
+  sun: publicAsset('/assets/events/wind.svg'),
+  cart: publicAsset('/assets/events/merchant.svg'),
+  boat: publicAsset('/assets/events/pirate.svg'),
+  fairy_cloth: publicAsset('/assets/events/fairy_cloth.svg'),
+  rice_cake: publicAsset('/assets/events/rice_cake.svg')
 };
 
 function useJuniorSave() {
@@ -169,7 +171,7 @@ function IntroScreen({ onStart }: { onStart: () => void }) {
           <small>도시를 돌며 물건을 사고팔아요.</small>
         </div>
         <img src={publicAsset('/assets/jeongwoo/jeongwoo.png')} alt="" />
-        <img className="junior-book-art" src={publicAsset('/assets/ui/result-safe.png')} alt="" />
+        <img className="junior-book-art" src={publicAsset('/assets/events/book.svg')} alt="" />
       </div>
       <button className="junior-button junior-primary" data-testid="start-play" onClick={onStart}>시작하기</button>
     </section>
@@ -466,7 +468,7 @@ function TravelScreen({ save, onDone }: { save: JuniorSave; onDone: () => void }
         <span className="junior-route-progress" />
         <span className="junior-dust one" />
         <span className="junior-dust two" />
-        <img className="junior-moving-cart" src={isSea ? publicAsset('/assets/ui/result-ship.png') : getVehicle(save).image} alt="" />
+        <img className="junior-moving-cart" src={isSea ? getBoat(save).image : getVehicle(save).image} alt="" />
         <span className="junior-vehicle-shadow" />
         <span className="junior-town end">{destination.name}</span>
         <div className="junior-travel-arrive-card">
@@ -551,7 +553,7 @@ function MarketScreen({ save, onBuy, onSell, onBack, onMap }: { save: JuniorSave
   return (
     <section className="junior-screen junior-market" data-testid="screen-market">
       <div className="junior-market-hero">
-        <img src={publicAsset('/assets/scenes/market-street.webp')} alt="" />
+        <img src={city.backgroundAsset ?? city.scene} alt="" />
         <div>
           <strong>{city.name} 장터</strong>
           <span>{city.note}</span>
@@ -580,7 +582,7 @@ function MarketScreen({ save, onBuy, onSell, onBack, onMap }: { save: JuniorSave
 }
 
 function EventIllustration({ event }: { event: JuniorEvent }) {
-  const sceneSrc = eventSceneImages[event.scene] ?? publicAsset('/assets/scenes/inland-city.webp');
+  const sceneSrc = eventSceneImages[event.scene] ?? publicAsset('/assets/events/book.svg');
   return (
     <div className={`junior-event-visual mood-${event.type.includes('quiz') ? 'quiz' : event.type}`}>
       <img className="junior-event-bg" src={sceneSrc} alt="" />
@@ -681,7 +683,7 @@ function ShopScreen({ save, onVehicle, onBoat, onBack }: { save: JuniorSave; onV
           const canBuy = save.coins >= item.cost;
           return (
           <button className={`junior-shop-card boat ${owned ? 'owned' : ''} ${canBuy ? 'affordable' : ''}`} data-testid={`buy-boat-${item.id}`} key={item.id} onClick={() => onBoat(item.id)}>
-            <img src={publicAsset('/assets/ui/result-ship.png')} alt="" />
+            <img src={item.image} alt="" />
             <strong>{item.name}</strong>
             <small>{item.text}</small>
             <b>돈 {item.cost}</b>
@@ -700,7 +702,7 @@ function EndingChoiceScreen({ onHome, onMore }: { onHome: () => void; onMore: ()
     <section className="junior-screen junior-ending-choice" data-testid="screen-ending-choice">
       <div className="junior-book-scene glow">
         <img src={publicAsset('/assets/jeongwoo/jeongwoo.png')} alt="" />
-        <img className="junior-book-art" src={publicAsset('/assets/ui/result-safe.png')} alt="" />
+        <img className="junior-book-art" src={publicAsset('/assets/events/ending_door.svg')} alt="" />
       </div>
       <div className="junior-action-row">
         <button className="junior-button junior-primary" data-testid="go-home" onClick={onHome}>집으로 가기</button>
@@ -714,6 +716,7 @@ function EndingScreen({ onAgain, onMore }: { onAgain: () => void; onMore: () => 
   return (
     <section className="junior-screen junior-ending" data-testid="screen-ending">
       <div className="junior-success-party">
+        <img className="junior-ending-art" src={publicAsset('/assets/events/ending_door.svg')} alt="" />
         <img className="junior-success-jeongwoo" src={publicAsset('/assets/jeongwoo/jeongwoo.png')} alt="" />
         <img className="junior-success-fairy" src={publicAsset('/assets/fairy/fairy-happy.png')} alt="" />
         <img className="junior-money-bag" src={publicAsset('/assets/ui/money-bag.png')} alt="" />
