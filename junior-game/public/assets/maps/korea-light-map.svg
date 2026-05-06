@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1500" role="img" aria-label="한국 전도형 장사 지도">
+  <defs>
+    <linearGradient id="sea" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#76d2e4"/>
+      <stop offset="0.52" stop-color="#55bed8"/>
+      <stop offset="1" stop-color="#3fa8c8"/>
+    </linearGradient>
+    <linearGradient id="land" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#d9efa1"/>
+      <stop offset="0.45" stop-color="#a9dc7a"/>
+      <stop offset="1" stop-color="#76c46f"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="8" flood-color="#1c6a74" flood-opacity=".22"/>
+    </filter>
+    <pattern id="waves" width="96" height="42" patternUnits="userSpaceOnUse">
+      <path d="M0 22 C20 10 36 10 56 22 C72 31 84 31 96 22" fill="none" stroke="#dffbff" stroke-width="5" stroke-linecap="round" opacity=".34"/>
+    </pattern>
+    <pattern id="fields" width="80" height="80" patternUnits="userSpaceOnUse">
+      <path d="M0 70 C22 58 42 60 80 48" fill="none" stroke="#e8f5a7" stroke-width="5" opacity=".35"/>
+    </pattern>
+  </defs>
+
+  <rect width="1000" height="1500" fill="url(#sea)"/>
+  <rect width="1000" height="1500" fill="url(#waves)" opacity=".8"/>
+
+  <text x="108" y="730" fill="#e8fbff" font-size="46" font-weight="800" opacity=".68">서해</text>
+  <text x="800" y="655" fill="#e8fbff" font-size="46" font-weight="800" opacity=".68">동해</text>
+  <text x="548" y="1320" fill="#e8fbff" font-size="44" font-weight="800" opacity=".68">남해</text>
+
+  <path d="M318 86 C426 28 605 52 721 156 C806 232 810 360 758 458 C735 501 736 560 769 612 C815 688 788 790 724 838 C680 871 681 920 732 980 C794 1053 738 1135 646 1169 C558 1201 482 1170 408 1191 C300 1222 200 1169 199 1060 C198 971 251 923 232 845 C205 734 237 655 252 567 C272 449 214 362 244 255 C263 185 269 125 318 86 Z"
+        fill="url(#land)" stroke="#f6ffd0" stroke-width="20" filter="url(#softShadow)"/>
+  <path d="M318 86 C426 28 605 52 721 156 C806 232 810 360 758 458 C735 501 736 560 769 612 C815 688 788 790 724 838 C680 871 681 920 732 980 C794 1053 738 1135 646 1169 C558 1201 482 1170 408 1191 C300 1222 200 1169 199 1060 C198 971 251 923 232 845 C205 734 237 655 252 567 C272 449 214 362 244 255 C263 185 269 125 318 86 Z"
+        fill="url(#fields)" opacity=".55"/>
+
+  <ellipse cx="430" cy="1412" rx="90" ry="48" fill="#98d57b" stroke="#f6ffd0" stroke-width="14" filter="url(#softShadow)"/>
+  <ellipse cx="434" cy="1410" rx="54" ry="22" fill="#efc25c" opacity=".38"/>
+
+  <path d="M435 108 C496 208 448 300 504 399 C564 504 522 581 578 691 C635 802 620 912 666 1052"
+        fill="none" stroke="#7d9658" stroke-width="48" stroke-linecap="round" stroke-linejoin="round" opacity=".52"/>
+  <path d="M612 156 C660 245 632 336 684 416 C724 478 693 544 733 619"
+        fill="none" stroke="#8da15f" stroke-width="34" stroke-linecap="round" opacity=".45"/>
+  <path d="M342 312 C384 410 344 520 380 632 C415 745 358 874 326 1020"
+        fill="none" stroke="#8e7241" stroke-width="28" stroke-linecap="round" opacity=".36"/>
+
+  <path d="M345 115 C390 118 430 106 474 88" fill="none" stroke="#58acd1" stroke-width="9" stroke-dasharray="18 16" opacity=".68"/>
+  <path d="M650 136 C690 144 725 164 760 198" fill="none" stroke="#58acd1" stroke-width="9" stroke-dasharray="18 16" opacity=".68"/>
+  <path d="M302 150 C342 202 386 234 428 260" fill="none" stroke="#54a9cf" stroke-width="10" stroke-linecap="round" opacity=".7"/>
+  <path d="M456 548 C405 610 368 680 330 760" fill="none" stroke="#47abd1" stroke-width="12" stroke-linecap="round" opacity=".62"/>
+  <path d="M571 844 C524 924 470 985 406 1050" fill="none" stroke="#47abd1" stroke-width="11" stroke-linecap="round" opacity=".6"/>
+
+  <g opacity=".88">
+    <path d="M218 1056 C266 1040 314 1050 360 1080" fill="none" stroke="#d7c789" stroke-width="14" stroke-linecap="round"/>
+    <path d="M440 1188 C500 1160 574 1162 646 1190" fill="none" stroke="#d7c789" stroke-width="14" stroke-linecap="round"/>
+    <path d="M716 860 C762 846 806 850 846 876" fill="none" stroke="#d7c789" stroke-width="12" stroke-linecap="round"/>
+  </g>
+
+  <g font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-weight="900" text-anchor="middle">
+    <text x="363" y="126" fill="#5c7444" font-size="31" opacity=".65">압록강</text>
+    <text x="707" y="185" fill="#5c7444" font-size="31" opacity=".65">두만강</text>
+    <text x="560" y="470" fill="#506b35" font-size="34" opacity=".48">태백산맥</text>
+    <text x="322" y="660" fill="#506b35" font-size="30" opacity=".42">서쪽 들길</text>
+    <text x="535" y="1046" fill="#506b35" font-size="30" opacity=".42">남쪽 바닷길</text>
+  </g>
+</svg>

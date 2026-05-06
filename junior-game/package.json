@@ -1,0 +1,23 @@
+{
+  "name": "joseon-trade-junior-game",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node ./node_modules/vite/bin/vite.js --host 0.0.0.0",
+    "build": "node ./node_modules/typescript/bin/tsc -b && node ./node_modules/vite/bin/vite.js build",
+    "test": "node ./node_modules/@playwright/test/cli.js test"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "5.1.1",
+    "vite": "7.2.7",
+    "typescript": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "@playwright/test": "latest"
+  }
+}

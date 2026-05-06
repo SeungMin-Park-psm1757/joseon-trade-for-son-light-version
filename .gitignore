@@ -13,6 +13,7 @@ starter/output/
 starter/.logs/
 starter/.logs/**
 starter/tsconfig.tsbuildinfo
+*.tsbuildinfo
 
 output/
 
