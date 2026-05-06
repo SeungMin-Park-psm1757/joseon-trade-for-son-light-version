@@ -4,6 +4,11 @@ export const JUNIOR_SAVE_KEY = 'joseon_trade_junior_save_v1';
 export const FULL_MODE_URL = '../starter/';
 export const ENDING_COINS = 300;
 
+export function publicAsset(path: string) {
+  if (!path.startsWith('/assets/')) return path;
+  return `${import.meta.env.BASE_URL}${path.slice(1)}`;
+}
+
 export const JUNIOR_GOODS: JuniorGood[] = [
   { id: 'cotton_cloth', name: '면포', image: '/assets/goods/cotton_cloth.png', baseBuyCoins: 10, baseSellCoins: 16 },
   { id: 'dried_fish', name: '건어물', image: '/assets/goods/dried_fish.png', baseBuyCoins: 9, baseSellCoins: 15 },
@@ -331,6 +336,16 @@ export const JUNIOR_BOATS: JuniorBoat[] = [
   { id: 'small_ferry', name: '작은 나룻배', cost: 200, text: '바닷길을 건널 때 좋아' },
   { id: 'sailboat', name: '작은 돛배', cost: 360, text: '먼 바닷길도 든든해' }
 ];
+
+JUNIOR_GOODS.forEach((good) => {
+  good.image = publicAsset(good.image);
+});
+JUNIOR_CITIES.forEach((city) => {
+  city.scene = publicAsset(city.scene);
+});
+JUNIOR_VEHICLES.forEach((vehicle) => {
+  vehicle.image = publicAsset(vehicle.image);
+});
 
 function spellingEvent(
   id: string,

@@ -6,6 +6,10 @@
 
 ## 실행 링크
 
+GitHub Pages 배포 링크:
+
+[https://seungmin-park-psm1757.github.io/joseon-trade-for-son-light-version/](https://seungmin-park-psm1757.github.io/joseon-trade-for-son-light-version/)
+
 로컬 실행 후 브라우저에서 아래 링크로 접속합니다.
 
 [http://127.0.0.1:4390/](http://127.0.0.1:4390/)
