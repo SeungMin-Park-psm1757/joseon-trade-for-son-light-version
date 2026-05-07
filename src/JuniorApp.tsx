@@ -40,28 +40,28 @@ import { playJuniorSuccessSound } from './juniorAudio';
 import type { JuniorBoat, JuniorCargoItem, JuniorCity, JuniorCityId, JuniorEvent, JuniorGood, JuniorGoodId, JuniorSave, JuniorVehicle } from './juniorTypes';
 
 const eventSceneImages: Record<string, string> = {
-  bandit: publicAsset('/assets/events/bandit.svg'),
-  pirate: publicAsset('/assets/events/pirate.svg'),
-  animal: publicAsset('/assets/events/animal.svg'),
-  merchant: publicAsset('/assets/events/merchant.svg'),
-  folktale: publicAsset('/assets/events/rice_cake.svg'),
-  rain: publicAsset('/assets/events/rain.svg'),
-  dog: publicAsset('/assets/events/animal.svg'),
-  cat: publicAsset('/assets/events/animal.svg'),
-  child: publicAsset('/assets/events/merchant.svg'),
-  wind: publicAsset('/assets/events/wind.svg'),
+  bandit: publicAsset('/assets/scenes/inland-city.webp'),
+  pirate: publicAsset('/assets/scenes/south-port.webp'),
+  animal: publicAsset('/assets/scenes/east-port.webp'),
+  merchant: publicAsset('/assets/scenes/market-street.webp'),
+  folktale: publicAsset('/assets/scenes/market-street.webp'),
+  rain: publicAsset('/assets/scenes/west-mudflat.webp'),
+  dog: publicAsset('/assets/scenes/east-port.webp'),
+  cat: publicAsset('/assets/scenes/east-port.webp'),
+  child: publicAsset('/assets/scenes/market-street.webp'),
+  wind: publicAsset('/assets/scenes/south-port.webp'),
   book: publicAsset('/assets/events/book.svg'),
   map: publicAsset('/assets/events/book.svg'),
-  market: publicAsset('/assets/events/merchant.svg'),
+  market: publicAsset('/assets/scenes/market-street.webp'),
   home: publicAsset('/assets/events/ending_door.svg'),
-  sun: publicAsset('/assets/events/wind.svg'),
-  cart: publicAsset('/assets/events/merchant.svg'),
-  boat: publicAsset('/assets/events/pirate.svg'),
-  fairy_cloth: publicAsset('/assets/events/fairy_cloth.svg'),
-  rice_cake: publicAsset('/assets/events/rice_cake.svg'),
-  tiger: publicAsset('/assets/events/tiger.svg'),
-  sea_dragon: publicAsset('/assets/events/sea_dragon.svg'),
-  north_merchant: publicAsset('/assets/events/north_merchant.svg')
+  sun: publicAsset('/assets/scenes/south-port.webp'),
+  cart: publicAsset('/assets/scenes/market-street.webp'),
+  boat: publicAsset('/assets/scenes/south-port.webp'),
+  fairy_cloth: publicAsset('/assets/scenes/west-mudflat.webp'),
+  rice_cake: publicAsset('/assets/scenes/inland-city.webp'),
+  tiger: publicAsset('/assets/scenes/east-port.webp'),
+  sea_dragon: publicAsset('/assets/scenes/jeju.webp'),
+  north_merchant: publicAsset('/assets/scenes/west-mudflat.webp')
 };
 
 function useJuniorSave() {
@@ -360,7 +360,6 @@ function CityScreen({ save, onMarket, onMap, onShop, onEnding }: { save: JuniorS
   return (
     <section className={`junior-screen junior-city-main junior-city-${city.id}`} data-testid="screen-city">
       <img className="junior-city-hero-img" src={city.scene} alt="" loading="lazy" onError={handleImageFallback} />
-      <CityMotif city={city} />
       <div className="junior-city-shade" />
       <div className="junior-city-title">
         <strong>{city.name}</strong>
@@ -395,7 +394,7 @@ function KoreaMap({ save, selectedCityId, onCity }: { save: JuniorSave; selected
   const connected = getConnectedCityIds(save);
   return (
     <div className="junior-map-board" data-testid="korea-map">
-      <img className="junior-map-bg" src={publicAsset('/assets/maps/korea-light-map.svg')} alt="" aria-hidden="true" loading="lazy" onError={handleImageFallback} />
+      <img className="junior-map-bg" src={publicAsset('/assets/maps/korea-approved-map.webp')} alt="" aria-hidden="true" loading="lazy" onError={handleImageFallback} />
       <svg className="junior-map-svg" viewBox="0 0 100 100" aria-hidden="true">
         {JUNIOR_ROUTES.map((route) => {
           const from = getCity(route.from);

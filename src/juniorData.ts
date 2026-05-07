@@ -11,14 +11,14 @@ export function publicAsset(path: string) {
 }
 
 export const JUNIOR_GOODS: JuniorGood[] = [
-  { id: 'cotton_cloth', name: '면포', image: publicAsset('/assets/goods-v2/cotton_cloth.svg'), baseBuyCoins: 10, baseSellCoins: 16 },
-  { id: 'dried_fish', name: '건어물', image: publicAsset('/assets/goods-v2/dried_fish.svg'), baseBuyCoins: 9, baseSellCoins: 15 },
-  { id: 'salt', name: '소금', image: publicAsset('/assets/goods-v2/salt.svg'), baseBuyCoins: 8, baseSellCoins: 14 },
-  { id: 'paper', name: '한지', image: publicAsset('/assets/goods-v2/paper.svg'), baseBuyCoins: 11, baseSellCoins: 18 },
-  { id: 'citrus', name: '귤', image: publicAsset('/assets/goods-v2/citrus.svg'), baseBuyCoins: 12, baseSellCoins: 20 },
-  { id: 'fresh_fish', name: '생선', image: publicAsset('/assets/goods-v2/fresh_fish.svg'), baseBuyCoins: 9, baseSellCoins: 16 },
-  { id: 'herbs', name: '약초', image: publicAsset('/assets/goods-v2/herbs.svg'), baseBuyCoins: 12, baseSellCoins: 20 },
-  { id: 'rice', name: '쌀', image: publicAsset('/assets/goods-v2/rice.svg'), baseBuyCoins: 10, baseSellCoins: 17 }
+  { id: 'cotton_cloth', name: '면포', image: publicAsset('/assets/goods/cotton_cloth.png'), baseBuyCoins: 10, baseSellCoins: 16 },
+  { id: 'dried_fish', name: '건어물', image: publicAsset('/assets/goods/dried_fish.png'), baseBuyCoins: 9, baseSellCoins: 15 },
+  { id: 'salt', name: '소금', image: publicAsset('/assets/goods/salt.png'), baseBuyCoins: 8, baseSellCoins: 14 },
+  { id: 'paper', name: '한지', image: publicAsset('/assets/goods/paper.png'), baseBuyCoins: 11, baseSellCoins: 18 },
+  { id: 'citrus', name: '귤', image: publicAsset('/assets/goods/citrus.png'), baseBuyCoins: 12, baseSellCoins: 20 },
+  { id: 'fresh_fish', name: '생선', image: publicAsset('/assets/goods/fresh_fish.png'), baseBuyCoins: 9, baseSellCoins: 16 },
+  { id: 'herbs', name: '약초', image: publicAsset('/assets/goods/herbs.png'), baseBuyCoins: 12, baseSellCoins: 20 },
+  { id: 'rice', name: '쌀', image: publicAsset('/assets/goods/rice.png'), baseBuyCoins: 10, baseSellCoins: 17 }
 ];
 
 export const JUNIOR_CITIES: JuniorCity[] = [
@@ -298,16 +298,16 @@ export const JUNIOR_CITIES: JuniorCity[] = [
 ];
 
 const ROUTE_SCENE_ASSETS = {
-  busanDaegu: publicAsset('/assets/routes/busan-daegu.png'),
-  daeguJeonju: publicAsset('/assets/routes/daegu-jeonju.png'),
-  jeonjuMokpo: publicAsset('/assets/routes/jeonju-mokpo.png'),
-  mokpoJeju: publicAsset('/assets/routes/mokpo-jeju.png'),
-  busanTongyeong: publicAsset('/assets/routes/busan-tongyeong.png'),
-  tongyeongJeju: publicAsset('/assets/routes/tongyeong-jeju.png'),
-  seoulGangneung: publicAsset('/assets/routes/seoul-gangneung.png'),
-  seoulPyongyang: publicAsset('/assets/routes/seoul-pyongyang.png'),
-  pyongyangSinuiju: publicAsset('/assets/routes/pyongyang-sinuiju.png'),
-  wonsanHamheung: publicAsset('/assets/routes/wonsan-hamheung.png')
+  busanDaegu: publicAsset('/assets/scenes/daegu-town.webp'),
+  daeguJeonju: publicAsset('/assets/scenes/market-street.webp'),
+  jeonjuMokpo: publicAsset('/assets/scenes/west-mudflat.webp'),
+  mokpoJeju: publicAsset('/assets/scenes/jeju.webp'),
+  busanTongyeong: publicAsset('/assets/scenes/south-port.webp'),
+  tongyeongJeju: publicAsset('/assets/scenes/jeju.webp'),
+  seoulGangneung: publicAsset('/assets/scenes/east-port.webp'),
+  seoulPyongyang: publicAsset('/assets/scenes/inland-city.webp'),
+  pyongyangSinuiju: publicAsset('/assets/scenes/west-mudflat.webp'),
+  wonsanHamheung: publicAsset('/assets/scenes/east-port.webp')
 };
 
 function routeMeta(routeType: string, travelSceneAsset: string, terrain: string, eventCategories: string[], fairyText: string, arrivalHint: string, storyArcIds: string[] = []) {
@@ -353,41 +353,41 @@ export const JUNIOR_VEHICLES: JuniorVehicle[] = [
 ];
 
 export const JUNIOR_BOATS: JuniorBoat[] = [
-  { id: 'none', name: '배 없음', cost: 0, text: '아직 바닷길은 어려워', image: publicAsset('/assets/boats/no_boat.svg') },
-  { id: 'small_ferry', name: '작은 나룻배', cost: 200, text: '바닷길을 건널 때 좋아', image: publicAsset('/assets/boats/small_ferry.svg') },
-  { id: 'sailboat', name: '작은 돛배', cost: 360, text: '먼 바닷길도 든든해', image: publicAsset('/assets/boats/sailboat.svg') },
-  { id: 'sturdy_sailboat', name: '튼튼한 돛배', cost: 520, text: '큰 파도에도 든든해', image: publicAsset('/assets/boats/sturdy_sailboat.svg') },
-  { id: 'merchant_ship', name: '장사배', cost: 720, text: '멀리 장사 가기 좋아', image: publicAsset('/assets/boats/merchant_ship.svg') }
+  { id: 'none', name: '배 없음', cost: 0, text: '아직 바닷길은 어려워', image: publicAsset('/assets/ui/result-ship.png') },
+  { id: 'small_ferry', name: '작은 나룻배', cost: 200, text: '바닷길을 건널 때 좋아', image: publicAsset('/assets/boats/small_ferry.png') },
+  { id: 'sailboat', name: '작은 돛배', cost: 360, text: '먼 바닷길도 든든해', image: publicAsset('/assets/boats/sailboat.png') },
+  { id: 'sturdy_sailboat', name: '튼튼한 돛배', cost: 520, text: '큰 파도에도 든든해', image: publicAsset('/assets/boats/sturdy_sailboat.png') },
+  { id: 'merchant_ship', name: '장사배', cost: 720, text: '멀리 장사 가기 좋아', image: publicAsset('/assets/boats/merchant_ship.png') }
 ];
 
 export const CITY_BACKGROUND_ASSETS: Record<JuniorCityId, string> = {
-  seoul: publicAsset('/assets/cities/seoul.svg'),
-  gaeseong: publicAsset('/assets/cities/gaeseong.svg'),
-  pyongyang: publicAsset('/assets/cities/pyongyang.svg'),
-  sinuiju: publicAsset('/assets/cities/sinuiju.svg'),
-  chuncheon: publicAsset('/assets/cities/chuncheon.svg'),
-  gangneung: publicAsset('/assets/cities/gangneung.svg'),
-  wonsan: publicAsset('/assets/cities/wonsan.svg'),
-  hamheung: publicAsset('/assets/cities/hamheung.svg'),
-  cheongjin: publicAsset('/assets/cities/cheongjin.svg'),
-  andong: publicAsset('/assets/cities/andong.svg'),
-  daegu: publicAsset('/assets/cities/daegu.svg'),
-  ulsan: publicAsset('/assets/cities/ulsan.svg'),
-  busan: publicAsset('/assets/cities/busan.svg'),
-  jinju: publicAsset('/assets/cities/jinju.svg'),
-  tongyeong: publicAsset('/assets/cities/tongyeong.svg'),
-  jeonju: publicAsset('/assets/cities/jeonju.svg'),
-  gwangju: publicAsset('/assets/cities/gwangju.svg'),
-  suncheon: publicAsset('/assets/cities/suncheon.svg'),
-  yeosu: publicAsset('/assets/cities/yeosu.svg'),
-  mokpo: publicAsset('/assets/cities/mokpo.svg'),
-  jeju: publicAsset('/assets/cities/jeju.svg')
+  seoul: publicAsset('/assets/scenes/inland-city.webp'),
+  gaeseong: publicAsset('/assets/scenes/market-street.webp'),
+  pyongyang: publicAsset('/assets/scenes/inland-city.webp'),
+  sinuiju: publicAsset('/assets/scenes/west-mudflat.webp'),
+  chuncheon: publicAsset('/assets/scenes/inland-city.webp'),
+  gangneung: publicAsset('/assets/scenes/east-port.webp'),
+  wonsan: publicAsset('/assets/scenes/east-port.webp'),
+  hamheung: publicAsset('/assets/scenes/east-port.webp'),
+  cheongjin: publicAsset('/assets/scenes/east-port.webp'),
+  andong: publicAsset('/assets/scenes/inland-city.webp'),
+  daegu: publicAsset('/assets/scenes/daegu-town.webp'),
+  ulsan: publicAsset('/assets/scenes/south-port.webp'),
+  busan: publicAsset('/assets/scenes/busan-port.webp'),
+  jinju: publicAsset('/assets/scenes/inland-city.webp'),
+  tongyeong: publicAsset('/assets/scenes/south-port.webp'),
+  jeonju: publicAsset('/assets/scenes/market-street.webp'),
+  gwangju: publicAsset('/assets/scenes/inland-city.webp'),
+  suncheon: publicAsset('/assets/scenes/west-mudflat.webp'),
+  yeosu: publicAsset('/assets/scenes/south-port.webp'),
+  mokpo: publicAsset('/assets/scenes/west-mudflat.webp'),
+  jeju: publicAsset('/assets/scenes/jeju.webp')
 };
 
 JUNIOR_CITIES.forEach((city) => {
   city.backgroundAsset = CITY_BACKGROUND_ASSETS[city.id];
-  city.scene = city.backgroundAsset;
 });
+
 
 function spellingEvent(
   id: string,

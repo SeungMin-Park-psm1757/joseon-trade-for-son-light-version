@@ -145,7 +145,7 @@ test('city-map-market-flow: expanded map and market stay simple', async ({ page 
 
   await page.getByTestId('open-map').click();
   await expect(page.getByTestId('screen-map')).toBeVisible();
-  await expect(page.locator('.junior-map-bg')).toHaveAttribute('src', '/assets/maps/korea-light-map.svg');
+  await expect(page.locator('.junior-map-bg')).toHaveAttribute('src', '/assets/maps/korea-approved-map.webp');
   await expect(page.locator('.junior-city-dot')).toHaveCount(21);
   await expect(page.getByTestId('city-daegu')).toBeEnabled();
   await expect(page.getByTestId('city-jeju')).toBeDisabled();
@@ -262,7 +262,7 @@ test('route-cutscenes: key routes have art and story hooks', async ({ page }) =>
     const routes = module.JUNIOR_ROUTES.filter((route) => requiredRouteTypes.includes(route.routeType));
     return {
       routeCount: routes.length,
-      withAssets: routes.filter((route) => route.travelSceneAsset?.includes('/assets/routes/')).length,
+      withAssets: routes.filter((route) => route.travelSceneAsset?.includes('/assets/scenes/')).length,
       withStoryHooks: routes.filter((route) => route.storyArcIds?.length).length,
       storyEvents: module.JUNIOR_EVENTS.filter((event) => ['rice_cake_pass', 'fairy_cloth', 'sea_dragon', 'north_merchant'].includes(event.storyArcId)).length,
       maxChance: Math.max(...module.JUNIOR_EVENTS.map((event) => event.chancePercent))
