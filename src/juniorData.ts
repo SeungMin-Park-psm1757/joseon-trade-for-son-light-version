@@ -346,10 +346,10 @@ export const JUNIOR_ROUTES: JuniorRoute[] = [
 ];
 
 export const JUNIOR_VEHICLES: JuniorVehicle[] = [
-  { id: 'bundle', name: '보따리 수레', cost: 0, cargoLimit: 2, text: '처음 쓰는 작은 수레', image: publicAsset('/assets/vehicles/junior-cart-bundle.png') },
-  { id: 'handcart', name: '손수레', cost: 100, cargoLimit: 3, text: '짐을 하나 더 실어', image: publicAsset('/assets/vehicles/junior-cart-handcart.png') },
-  { id: 'big_cart', name: '큰 수레', cost: 190, cargoLimit: 4, text: '짐을 더 많이 실어', image: publicAsset('/assets/vehicles/junior-cart-large.png') },
-  { id: 'merchant_cart', name: '장사 수레', cost: 300, cargoLimit: 5, text: '먼 길도 든든해', image: publicAsset('/assets/vehicles/junior-cart-merchant.png') }
+  { id: 'bundle', name: '보따리 수레', cost: 0, cargoLimit: 2, text: '처음 쓰는 작은 수레', image: publicAsset('/assets/vehicles/polished-cart-bundle.png') },
+  { id: 'handcart', name: '손수레', cost: 100, cargoLimit: 3, text: '짐을 하나 더 실어', image: publicAsset('/assets/vehicles/polished-cart-handcart.png') },
+  { id: 'big_cart', name: '큰 수레', cost: 190, cargoLimit: 4, text: '짐을 더 많이 실어', image: publicAsset('/assets/vehicles/polished-cart-large.png') },
+  { id: 'merchant_cart', name: '장사 수레', cost: 300, cargoLimit: 5, text: '먼 길도 든든해', image: publicAsset('/assets/vehicles/polished-cart-merchant.png') }
 ];
 
 export const JUNIOR_BOATS: JuniorBoat[] = [

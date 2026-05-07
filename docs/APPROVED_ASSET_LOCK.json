@@ -39,7 +39,27 @@
       "junior-game/public/assets/vehicles/junior-cart-bundle.png",
       "junior-game/public/assets/vehicles/junior-cart-handcart.png",
       "junior-game/public/assets/vehicles/junior-cart-large.png",
-      "junior-game/public/assets/vehicles/junior-cart-merchant.png"
+      "junior-game/public/assets/vehicles/junior-cart-merchant.png",
+      {
+        "runtimePath": "junior-game/public/assets/vehicles/polished-cart-bundle.png",
+        "sourcePath": "junior-game/public/assets/vehicles/junior-cart-bundle.png",
+        "reason": "Approved cart art with white edge/background removed, cropped larger, and soft object shadow added for runtime UI readability."
+      },
+      {
+        "runtimePath": "junior-game/public/assets/vehicles/polished-cart-handcart.png",
+        "sourcePath": "junior-game/public/assets/vehicles/junior-cart-handcart.png",
+        "reason": "Approved handcart art preserved and promoted to a larger transparent runtime icon."
+      },
+      {
+        "runtimePath": "junior-game/public/assets/vehicles/polished-cart-large.png",
+        "sourcePath": "junior-game/public/assets/vehicles/junior-cart-large.png",
+        "reason": "Approved large cart art preserved and promoted to a larger transparent runtime icon."
+      },
+      {
+        "runtimePath": "junior-game/public/assets/vehicles/polished-cart-merchant.png",
+        "sourcePath": "junior-game/public/assets/vehicles/junior-cart-merchant.png",
+        "reason": "Approved merchant cart art preserved and promoted to a larger transparent runtime icon."
+      }
     ],
     "boats": [
       {

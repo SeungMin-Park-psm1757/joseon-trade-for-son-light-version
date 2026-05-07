@@ -71,3 +71,13 @@
 - 배: SVG 제거, full mode 승인 선박 PNG 복구.
 - 이동: generated route PNG 제거, 승인 scene WEBP를 primary travel art로 사용.
 - 장터: 상품 아이콘 크기 확대, 빈 짐칸 점선 제거.
+
+## 2026-05-07 Required Rework Pass
+
+| asset or screen | action | reason | status |
+|---|---|---|---|
+| `junior-game/public/assets/maps/korea-approved-map.webp` | keep locked | 단순 blob/SVG 지도는 계속 rejected 상태다. 런타임 지도는 승인된 painted Korea map만 쓴다. | keep |
+| `junior-game/public/assets/vehicles/polished-cart-*.png` | new runtime replacements | 기존 승인 수레 그림은 보존하고, 런타임용은 흰 배경 제거, 실루엣 확대, 부드러운 그림자 추가로 카드/이동 화면에서 작고 허접해 보이는 문제를 줄였다. | replace_bad_runtime |
+| `junior-game/src/juniorStyles.css` market cards | reworked | 상품 그림을 키우고, 가격/추천 표시를 pill 형태로 정리해 장터 카드가 비어 보이지 않게 했다. | fixed |
+| `junior-game/src/juniorStyles.css` shop cards | reworked | 수레/배 그림을 크게 보여 장비 장만 화면이 게임 보상처럼 보이게 했다. | fixed |
+| `junior-game/src/juniorStyles.css` travel scene | reworked | 승인 scene art를 primary background로 유지하면서 길/바다 레이어, 탈것 위치, 목적지 힌트, 그림자를 보강했다. | fixed |
