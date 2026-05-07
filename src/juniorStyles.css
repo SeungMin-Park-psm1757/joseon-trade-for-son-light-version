@@ -590,6 +590,13 @@ button:disabled {
   background: rgba(82, 123, 88, 0.14);
 }
 
+.junior-cargo-slot em {
+  font-style: normal;
+  color: rgba(52, 84, 58, .72);
+  font-size: .72rem;
+  font-weight: 1000;
+}
+
 .junior-city-actions {
   position: absolute;
   z-index: 3;
@@ -614,6 +621,143 @@ button:disabled {
 .junior-action-button:nth-child(1) {
   background: linear-gradient(180deg, #ffe777, #f3a342);
   color: #3c2810;
+}
+
+.junior-city-dashboard {
+  grid-template-rows: auto auto auto auto;
+  align-content: start;
+  justify-items: stretch;
+  gap: 10px;
+  overflow: hidden auto;
+}
+
+.junior-city-header-card,
+.junior-city-panel,
+.junior-city-dashboard .junior-progress-card,
+.junior-city-dashboard .junior-city-cargo {
+  border: 3px solid rgba(62, 129, 94, .2);
+  border-radius: 22px;
+  background: rgba(255, 251, 229, .96);
+  box-shadow: 0 8px 18px rgba(45, 79, 52, .1);
+}
+
+.junior-city-header-card {
+  min-height: 124px;
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+}
+
+.junior-city-header-card img {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 17px;
+  box-shadow: inset 0 0 0 2px rgba(255, 246, 210, .4);
+}
+
+.junior-city-header-card div {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.junior-city-header-card span {
+  width: fit-content;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(71, 163, 117, .16);
+  color: #326b4b;
+  font-size: .78rem;
+  font-weight: 1000;
+}
+
+.junior-city-header-card strong {
+  font-size: clamp(1.36rem, 5.6vw, 1.72rem);
+  font-weight: 1000;
+  line-height: 1.05;
+}
+
+.junior-city-header-card small {
+  font-size: .94rem;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.junior-city-info-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.junior-city-panel {
+  display: grid;
+  gap: 8px;
+  padding: 11px 12px;
+}
+
+.junior-city-panel b {
+  color: #235f59;
+  font-size: .98rem;
+  font-weight: 1000;
+}
+
+.junior-city-specialties div {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.junior-city-specialties span,
+.junior-market-cargo-summary span {
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 7px 8px;
+  border-radius: 16px;
+  background: #fff4c2;
+  color: #56370d;
+  font-size: .86rem;
+  font-weight: 1000;
+  white-space: nowrap;
+}
+
+.junior-city-specialties img,
+.junior-market-cargo-summary img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+}
+
+.junior-city-recommend span {
+  font-weight: 1000;
+}
+
+.junior-city-dashboard .junior-city-actions,
+.junior-city-dashboard .junior-progress-card,
+.junior-city-dashboard .junior-city-cargo {
+  position: static;
+  left: auto;
+  right: auto;
+  bottom: auto;
+}
+
+.junior-city-dashboard .junior-city-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.junior-city-dashboard .junior-progress-card {
+  padding: 10px 12px;
+}
+
+.junior-city-dashboard .junior-city-cargo {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
 }
 
 .junior-map-screen {
@@ -697,8 +841,8 @@ button:disabled {
 .junior-city-dot {
   position: absolute;
   z-index: 2;
-  width: 50px;
-  min-height: 43px;
+  width: 44px;
+  min-height: 39px;
   display: grid;
   grid-template-rows: 15px auto;
   place-items: center;
@@ -714,16 +858,16 @@ button:disabled {
 
 .junior-city-dot span {
   display: block;
-  max-width: 42px;
+  max-width: 36px;
   overflow: hidden;
   color: rgba(43, 74, 47, .78);
-  font-size: 0.56rem;
+  font-size: 0.52rem;
   line-height: 1;
   white-space: nowrap;
 }
 
 .junior-city-dot strong {
-  font-size: 0.72rem;
+  font-size: 0.66rem;
   line-height: 1;
 }
 
@@ -1439,6 +1583,42 @@ button:disabled {
   font-weight: 900;
 }
 
+.junior-market-cargo-summary {
+  width: 100%;
+  min-height: 54px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 3px solid rgba(62, 129, 94, .2);
+  border-radius: 20px;
+  background: rgba(255, 251, 229, .94);
+  box-shadow: 0 7px 16px rgba(45, 79, 52, .08);
+}
+
+.junior-market-cargo-summary.pulse {
+  animation: junior-bounce 420ms ease;
+}
+
+.junior-market-cargo-summary strong {
+  color: #235f59;
+  font-size: .9rem;
+  font-weight: 1000;
+  white-space: nowrap;
+}
+
+.junior-market-cargo-summary div {
+  min-width: 0;
+  display: flex;
+  gap: 6px;
+  overflow: hidden;
+}
+
+.junior-market-cargo-summary span {
+  background: rgba(255, 244, 194, .82);
+}
+
 .junior-market-list {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   min-height: 0;
@@ -1459,7 +1639,7 @@ button:disabled {
   border: 4px solid rgba(59, 125, 93, 0.24);
   border-radius: 22px;
   background:
-    radial-gradient(circle at 50% 30%, rgba(255, 255, 246, .94) 0 36px, transparent 37px),
+    linear-gradient(135deg, rgba(255,255,255,.22) 0 22%, transparent 23% 100%),
     linear-gradient(180deg, rgba(255, 254, 231, 0.98), rgba(255, 232, 162, 0.96));
   color: #2c351d;
   text-align: center;
@@ -1487,13 +1667,13 @@ button:disabled {
 .junior-market-card.good-buy {
   border-color: rgba(236, 165, 50, .48);
   background:
-    radial-gradient(circle at 50% 30%, rgba(255, 255, 246, .96) 0 38px, transparent 39px),
+    linear-gradient(135deg, rgba(255,255,255,.24) 0 22%, transparent 23% 100%),
     linear-gradient(180deg, rgba(255, 254, 231, 0.98), rgba(255, 226, 134, 0.98));
 }
 
 .junior-market-card.sell {
   background:
-    radial-gradient(circle at 50% 30%, rgba(255, 255, 246, .95) 0 38px, transparent 39px),
+    linear-gradient(135deg, rgba(255,255,255,.22) 0 22%, transparent 23% 100%),
     linear-gradient(180deg, #efffe0, #c5f2a6);
 }
 

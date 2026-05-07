@@ -206,7 +206,7 @@ function CargoSlots({ save, pulse = false }: { save: JuniorSave; pulse?: boolean
         const good = item ? getGood(item.goodId) : undefined;
         return (
           <span className={`junior-cargo-slot ${good ? 'filled' : ''}`} key={index}>
-            {good ? <img src={good.image} alt={good.name} /> : <b />}
+            {good ? <img src={good.image} alt={good.name} /> : <em>빈칸</em>}
           </span>
         );
       })}
@@ -292,7 +292,7 @@ function BuyScreen({ save, onBuy }: { save: JuniorSave; onBuy: () => void }) {
   );
 }
 
-const cityMotifs: Record<JuniorCityId, { color: string; accent: string; motif: 'palace' | 'gate' | 'river' | 'mountain' | 'port' | 'market' | 'paper' | 'field' | 'citrus' | 'fish' | 'salt' | 'herb'; label: string }> = {
+const cityMotifs: Partial<Record<JuniorCityId, { color: string; accent: string; motif: 'palace' | 'gate' | 'river' | 'mountain' | 'port' | 'market' | 'paper' | 'field' | 'citrus' | 'fish' | 'salt' | 'herb'; label: string }>> = {
   seoul: { color: '#e9bf74', accent: '#9b3f34', motif: 'palace', label: '궁' },
   gaeseong: { color: '#c99568', accent: '#6d4a28', motif: 'market', label: '상' },
   pyongyang: { color: '#d7b07a', accent: '#596b8e', motif: 'gate', label: '성' },
@@ -317,7 +317,7 @@ const cityMotifs: Record<JuniorCityId, { color: string; accent: string; motif: '
 };
 
 function CityMotif({ city }: { city: JuniorCity }) {
-  const theme = cityMotifs[city.id];
+  const theme = cityMotifs[city.id] ?? cityMotifs.busan!;
   const common = { stroke: 'rgba(65,46,26,.28)', strokeWidth: 2.2, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const };
   return (
     <svg className="junior-city-illustration" viewBox="0 0 100 100" aria-hidden="true">
@@ -346,9 +346,30 @@ function CityMotif({ city }: { city: JuniorCity }) {
   );
 }
 
+function cityKindLabel(city: JuniorCity) {
+  const labels: Record<NonNullable<JuniorCity['kind']>, string> = {
+    inland_market: '내륙 장터',
+    east_port: '동해 항구',
+    south_port: '남해 항구',
+    west_port: '서해 항구',
+    north_trade_port: '북방 장터',
+    island: '섬 거점'
+  };
+  return city.kind ? labels[city.kind] : '장터 도시';
+}
+
+function marketHintForCity(city?: JuniorCity) {
+  if (!city) return '다음 장터에서 잘 팔려';
+  if (city.kind === 'west_port' || city.kind === 'east_port' || city.kind === 'south_port') return `${city.name} 항구에서 인기 많아`;
+  if (city.kind === 'north_trade_port') return `${city.name}에서 찾는 사람이 많아`;
+  if (city.kind === 'island') return `${city.name} 섬 장터에서 값이 좋아`;
+  return `${city.name} 장터에서 값이 좋아`;
+}
+
 function CityScreen({ save, onMarket, onMap, onShop, onEnding }: { save: JuniorSave; onMarket: () => void; onMap: () => void; onShop: () => void; onEnding: () => void }) {
   const [showCargo, setShowCargo] = useState(false);
   const city = getCity(save.currentCityId);
+  const cityGoods = city.buyGoodIds.slice(0, 3).map(getGood);
   const tutorial = !save.completedTutorial && save.tutorialStage <= 1;
   const nextGoal = save.coins >= ENDING_COINS
     ? '집으로 갈 수 있어!'
@@ -358,17 +379,31 @@ function CityScreen({ save, onMarket, onMap, onShop, onEnding }: { save: JuniorS
         ? '배를 장만해 보자.'
         : `${ENDING_COINS}냥까지 조금씩 모으자.`;
   return (
-    <section className={`junior-screen junior-city-main junior-city-${city.id}`} data-testid="screen-city">
-      <img className="junior-city-hero-img" src={city.scene} alt="" loading="lazy" onError={handleImageFallback} />
-      <div className="junior-city-shade" />
-      <div className="junior-city-title">
-        <strong>{city.name}</strong>
-        <span>{city.note}</span>
+    <section className={`junior-screen junior-city-dashboard junior-city-${city.id}`} data-testid="screen-city">
+      <div className="junior-city-header-card">
+        <img src={city.backgroundAsset ?? city.scene} alt="" loading="lazy" onError={handleImageFallback} />
+        <div>
+          <span>{cityKindLabel(city)}</span>
+          <strong>{city.name} 장터</strong>
+          <small>{city.note}</small>
+        </div>
       </div>
-      <div className="junior-progress-card" data-testid="junior-progress-card">
-        <b>도시 도장 {save.visitedCityIds.length}/21</b>
-        <span>{nextGoal}</span>
-        {save.badges.length > 0 && <small>{save.badges.slice(-2).join(' · ')}</small>}
+      <div className="junior-city-info-grid">
+        <section className="junior-city-panel junior-city-specialties">
+          <b>이곳 특산품</b>
+          <div>
+            {cityGoods.map((good) => (
+              <span key={good.id}>
+                <img src={good.image} alt="" />
+                {good.name}
+              </span>
+            ))}
+          </div>
+        </section>
+        <section className="junior-city-panel junior-city-recommend">
+          <b>추천 행동</b>
+          <span>{save.cargo.length ? '잘 팔리는 장터를 찾아보자.' : '먼저 장터에서 물건을 골라보자.'}</span>
+        </section>
       </div>
       {showCargo && (
         <div className="junior-city-cargo" data-testid="cargo-panel">
@@ -385,6 +420,11 @@ function CityScreen({ save, onMarket, onMap, onShop, onEnding }: { save: JuniorS
           <button className="junior-action-button" data-testid="open-cargo" onClick={() => setShowCargo((value) => !value)}>짐 보기</button>
         )}
         <button className="junior-action-button" data-testid="open-shop" onClick={onShop}>탈것 장만</button>
+      </div>
+      <div className="junior-progress-card" data-testid="junior-progress-card">
+        <b>도시 도장 {save.visitedCityIds.length}/{JUNIOR_CITIES.length}</b>
+        <span>{nextGoal}</span>
+        {save.badges.length > 0 && <small>{save.badges.slice(-2).join(' · ')}</small>}
       </div>
     </section>
   );
@@ -444,7 +484,7 @@ function MapScreen({ save, onDepart, onBack }: { save: JuniorSave; onDepart: (ci
         {selectedCity && good ? (
           <>
             <div className="junior-map-pick">
-              <span className="junior-map-region">{selectedCity.region}</span>
+              <span className="junior-map-region">{selectedCity.region} · {cityKindLabel(selectedCity)}</span>
               <strong>{selectedCity.name}</strong>
               <span>{selectedCity.note}</span>
               <div className="junior-map-goods" aria-label="대표 물건">
@@ -578,7 +618,7 @@ function MarketGoodCard({ save, good, city, onBuy }: { save: JuniorSave; good: J
       <span>{priceLabel(local, 'buy')}</span>
       <b>사는 값 {price}냥</b>
       <small>짐에 {countInCargo}개</small>
-      <small>{buyCount > 0 ? '값이 조금 올랐어' : bestCity ? `${bestCity.name}에 팔아봐` : '다른 도시로 가보자'}</small>
+      <small>{buyCount > 0 ? '값이 조금 올랐어' : marketHintForCity(bestCity)}</small>
       <em>사기</em>
     </button>
   );
@@ -639,7 +679,15 @@ function MarketScreen({ save, onBuy, onSell, onBack, onMap }: { save: JuniorSave
         </div>
         <img className="junior-market-cart" src={vehicle.image} alt="" />
       </div>
-      <CargoSlots save={save} pulse={cargoPulse || save.cargo.length >= save.cargoLimit} />
+      <div className={`junior-market-cargo-summary ${cargoPulse || save.cargo.length >= save.cargoLimit ? 'pulse' : ''}`} data-testid="market-cargo-summary">
+        <strong>내 짐 {save.cargo.length}/{save.cargoLimit}</strong>
+        <div>
+          {save.cargo.length ? save.cargo.slice(0, save.cargoLimit).map((item) => {
+            const cargoGood = getGood(item.goodId);
+            return <span key={item.id}><img src={cargoGood.image} alt="" />{cargoGood.name}</span>;
+          }) : <span>짐칸이 비었어</span>}
+        </div>
+      </div>
       {flyingGood && <img className="junior-flying-good" src={flyingGood.image} alt="" />}
       {flyingGood && <span className="junior-cargo-sparkle" aria-hidden="true" />}
       {sellingGood && <img className="junior-selling-good" src={sellingGood.image} alt="" />}

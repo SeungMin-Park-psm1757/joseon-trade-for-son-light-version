@@ -264,7 +264,7 @@ export function buyGood(save: JuniorSave, goodId: JuniorGoodId): JuniorSave {
       ...save.marketPressure,
       buy: { ...save.marketPressure.buy, [key]: (save.marketPressure.buy[key] ?? 0) + 1 }
     },
-    message: bestCity ? `${good.name}을 샀어. ${bestCity.name}에 가면 잘 팔려.` : `${good.name}을 짐에 실었어.`
+    message: bestCity ? `${good.name}을 샀어. ${bestCity.name}에서 인기 많아.` : `${good.name}을 짐에 실었어.`
   };
 }
 
@@ -541,7 +541,7 @@ export function applyMilestones(save: JuniorSave): JuniorSave {
   if (next.visitedCityIds.length >= 3 && !next.badges.includes('도시 도장 3개')) next = { ...next, badges: [...next.badges, '도시 도장 3개'] };
   if (next.visitedCityIds.length >= 7 && !next.badges.includes('도시 도장 7개')) next = { ...next, badges: [...next.badges, '도시 도장 7개'] };
   if (next.visitedCityIds.length >= 14 && !next.badges.includes('도시 도장 14개')) next = { ...next, badges: [...next.badges, '도시 도장 14개'] };
-  if (next.visitedCityIds.length >= 21 && !next.badges.includes('팔도 도장')) next = { ...next, badges: [...next.badges, '팔도 도장'] };
+  if (next.visitedCityIds.length >= JUNIOR_CITIES.length && !next.badges.includes('팔도 도장')) next = { ...next, badges: [...next.badges, '팔도 도장'] };
   if (next.visitedCityIds.includes('jeju') && !next.badges.includes('제주까지 다녀왔어요')) next = { ...next, badges: [...next.badges, '제주까지 다녀왔어요'] };
   if (next.stars >= 5 && !next.badges.includes('착한 일 배지')) next = { ...next, badges: [...next.badges, '착한 일 배지'] };
   if (next.stars >= 10 && !next.badges.includes('퀴즈 달인')) next = { ...next, badges: [...next.badges, '퀴즈 달인'] };

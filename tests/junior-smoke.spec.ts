@@ -2,9 +2,10 @@ import { expect, test } from '@playwright/test';
 
 const saveKey = 'joseon_trade_junior_save_v1';
 const allCities = [
-  'seoul', 'gaeseong', 'pyongyang', 'sinuiju', 'chuncheon', 'gangneung', 'wonsan',
+  'seoul', 'incheon', 'gaeseong', 'pyongyang', 'nampo', 'sinuiju', 'chuncheon', 'gangneung', 'wonsan',
   'hamheung', 'cheongjin', 'andong', 'daegu', 'jeonju', 'gwangju', 'mokpo',
-  'yeosu', 'suncheon', 'jinju', 'tongyeong', 'busan', 'ulsan', 'jeju'
+  'yeosu', 'suncheon', 'jinju', 'tongyeong', 'busan', 'ulsan', 'jeju',
+  'tsushima', 'china_port', 'north_port'
 ];
 
 function baseSave(overrides = {}) {
@@ -106,7 +107,8 @@ test('tutorial-flow: buy, spelling event, first visit intro, sell', async ({ pag
 
   await page.getByTestId('buy-cotton_cloth').click();
   await expect(page.getByTestId('screen-market')).toBeVisible();
-  await expect(page.locator('.junior-cargo-slot.filled')).toHaveCount(1);
+  await expect(page.getByTestId('market-cargo-summary')).toContainText('내 짐 1/');
+  await expect(page.getByTestId('market-cargo-summary')).toContainText('면포');
 
   await page.getByTestId('market-map').click();
   await expect(page.getByTestId('screen-map')).toBeVisible();
@@ -146,7 +148,7 @@ test('city-map-market-flow: expanded map and market stay simple', async ({ page 
   await page.getByTestId('open-map').click();
   await expect(page.getByTestId('screen-map')).toBeVisible();
   await expect(page.locator('.junior-map-bg')).toHaveAttribute('src', '/assets/maps/korea-approved-map.webp');
-  await expect(page.locator('.junior-city-dot')).toHaveCount(21);
+  await expect(page.locator('.junior-city-dot')).toHaveCount(26);
   await expect(page.getByTestId('city-daegu')).toBeEnabled();
   await expect(page.getByTestId('city-jeju')).toBeDisabled();
   await page.getByTestId('city-daegu').click();
@@ -165,7 +167,8 @@ test('market-flow: buying changes price and keeps market open', async ({ page })
   const priceBefore = await page.getByTestId('buy-cotton_cloth').locator('b').innerText();
   await page.getByTestId('buy-cotton_cloth').click();
   await expect(page.getByTestId('screen-market')).toBeVisible();
-  await expect(page.locator('.junior-cargo-slot.filled')).toHaveCount(1);
+  await expect(page.getByTestId('market-cargo-summary')).toContainText('내 짐 1/');
+  await expect(page.getByTestId('market-cargo-summary')).toContainText('면포');
   const priceAfter = await page.getByTestId('buy-cotton_cloth').locator('b').innerText();
   expect(priceAfter).not.toBe(priceBefore);
 });
