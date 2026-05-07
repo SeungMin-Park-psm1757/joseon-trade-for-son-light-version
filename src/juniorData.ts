@@ -1,6 +1,7 @@
 import type { JuniorBoat, JuniorCity, JuniorCityId, JuniorEvent, JuniorGood, JuniorGoodId, JuniorReward, JuniorRoute, JuniorSave, JuniorVehicle } from './juniorTypes';
 
 export const JUNIOR_SAVE_KEY = 'joseon_trade_junior_save_v1';
+export const JUNIOR_SAVE_VERSION = 2;
 export const FULL_MODE_URL = '../starter/';
 export const ENDING_COINS = 300;
 
@@ -296,32 +297,52 @@ export const JUNIOR_CITIES: JuniorCity[] = [
   }
 ];
 
+const ROUTE_SCENE_ASSETS = {
+  busanDaegu: publicAsset('/assets/routes/busan-daegu.png'),
+  daeguJeonju: publicAsset('/assets/routes/daegu-jeonju.png'),
+  jeonjuMokpo: publicAsset('/assets/routes/jeonju-mokpo.png'),
+  mokpoJeju: publicAsset('/assets/routes/mokpo-jeju.png'),
+  busanTongyeong: publicAsset('/assets/routes/busan-tongyeong.png'),
+  tongyeongJeju: publicAsset('/assets/routes/tongyeong-jeju.png'),
+  seoulGangneung: publicAsset('/assets/routes/seoul-gangneung.png'),
+  seoulPyongyang: publicAsset('/assets/routes/seoul-pyongyang.png'),
+  pyongyangSinuiju: publicAsset('/assets/routes/pyongyang-sinuiju.png'),
+  wonsanHamheung: publicAsset('/assets/routes/wonsan-hamheung.png')
+};
+
+function routeMeta(routeType: string, travelSceneAsset: string, terrain: string, eventCategories: string[], fairyText: string, arrivalHint: string, storyArcIds: string[] = []) {
+  return { routeType, travelSceneAsset, terrain, eventCategories, fairyText, arrivalHint, storyArcIds };
+}
+
 export const JUNIOR_ROUTES: JuniorRoute[] = [
-  { from: 'sinuiju', to: 'pyongyang', kind: 'land', scenery: 'north', distance: 2 },
+  { from: 'sinuiju', to: 'pyongyang', kind: 'land', scenery: 'north', distance: 2, ...routeMeta('border_river_road', ROUTE_SCENE_ASSETS.pyongyangSinuiju, '압록강 물길과 북방 장터', ['merchant', 'weather', 'north_story'], '강을 따라 북쪽 장사길을 지나가.', '신의주는 강가 물건이 모여.', ['north_merchant']) },
   { from: 'pyongyang', to: 'gaeseong', kind: 'land', scenery: 'plain', distance: 2 },
   { from: 'gaeseong', to: 'seoul', kind: 'land', scenery: 'marketRoad', distance: 1 },
   { from: 'seoul', to: 'chuncheon', kind: 'land', scenery: 'river', distance: 1 },
+  { from: 'seoul', to: 'gangneung', kind: 'land', scenery: 'mountain', distance: 2, ...routeMeta('east_mountain_road', ROUTE_SCENE_ASSETS.seoulGangneung, '한양을 떠나 산을 넘는 동쪽 길', ['animal', 'folktale', 'weather'], '높은 고개를 넘으면 동해 바람이 와.', '강릉은 바다와 솔숲이 가까워.', ['rice_cake_pass']) },
+  { from: 'seoul', to: 'pyongyang', kind: 'land', scenery: 'north', distance: 3, ...routeMeta('north_capital_road', ROUTE_SCENE_ASSETS.seoulPyongyang, '성문과 강을 지나는 북방 큰길', ['merchant', 'weather', 'north_story'], '한양을 떠나 북쪽 큰길로 가 보자.', '평양은 큰 강과 장터가 있어.', ['north_merchant']) },
   { from: 'chuncheon', to: 'gangneung', kind: 'land', scenery: 'mountain', distance: 1 },
   { from: 'gangneung', to: 'wonsan', kind: 'sea', scenery: 'coast', distance: 2, needsBoat: true },
-  { from: 'wonsan', to: 'hamheung', kind: 'land', scenery: 'coast', distance: 1 },
-  { from: 'hamheung', to: 'cheongjin', kind: 'land', scenery: 'north', distance: 2 },
+  { from: 'wonsan', to: 'hamheung', kind: 'land', scenery: 'coast', distance: 1, ...routeMeta('northeast_coast_road', ROUTE_SCENE_ASSETS.wonsanHamheung, '동북 바닷가와 산길', ['weather', 'merchant', 'animal'], '바다와 산이 나란히 따라오는 길이야.', '함흥은 산과 약초가 가까워.', ['north_merchant']) },
+  { from: 'hamheung', to: 'cheongjin', kind: 'land', scenery: 'north', distance: 2, ...routeMeta('northeast_cold_road', ROUTE_SCENE_ASSETS.wonsanHamheung, '차가운 북쪽 바닷길', ['weather', 'animal', 'merchant'], '차가운 바람이 불어도 천천히 가자.', '청진은 북쪽 바다 물건이 모여.', ['north_merchant']) },
   { from: 'seoul', to: 'jeonju', kind: 'land', scenery: 'plain', distance: 2 },
   { from: 'jeonju', to: 'gwangju', kind: 'land', scenery: 'plain', distance: 1 },
+  { from: 'jeonju', to: 'mokpo', kind: 'land', scenery: 'river', distance: 2, ...routeMeta('west_river_salt_road', ROUTE_SCENE_ASSETS.jeonjuMokpo, '전주 들길에서 목포 갯벌로 가는 길', ['weather', 'merchant', 'folktale'], '종이 냄새가 소금 바람으로 바뀌고 있어.', '목포는 소금과 바닷길이 좋아.', ['fairy_cloth']) },
   { from: 'gwangju', to: 'mokpo', kind: 'land', scenery: 'river', distance: 1 },
   { from: 'gwangju', to: 'suncheon', kind: 'land', scenery: 'plain', distance: 1 },
   { from: 'suncheon', to: 'yeosu', kind: 'land', scenery: 'coast', distance: 1 },
   { from: 'yeosu', to: 'tongyeong', kind: 'sea', scenery: 'sea', distance: 1 },
-  { from: 'tongyeong', to: 'busan', kind: 'land', scenery: 'coast', distance: 1 },
+  { from: 'tongyeong', to: 'busan', kind: 'land', scenery: 'coast', distance: 1, ...routeMeta('south_coast_market_road', ROUTE_SCENE_ASSETS.busanTongyeong, '남해 포구와 장터길', ['merchant', 'weather', 'animal'], '포구마다 생선 냄새가 가득해.', '통영은 생선과 건어물이 많아.', ['fairy_cloth']) },
   { from: 'busan', to: 'ulsan', kind: 'land', scenery: 'coast', distance: 1 },
   { from: 'ulsan', to: 'daegu', kind: 'land', scenery: 'mountain', distance: 1 },
-  { from: 'busan', to: 'daegu', kind: 'land', scenery: 'mountain', distance: 1 },
+  { from: 'busan', to: 'daegu', kind: 'land', scenery: 'mountain', distance: 1, ...routeMeta('inland_market_road', ROUTE_SCENE_ASSETS.busanDaegu, '바닷가에서 내륙 장터로 들어가는 길', ['merchant', 'bandit', 'guide'], '바다 냄새가 점점 장터 냄새로 바뀌고 있어.', '대구는 약초를 사기 좋아.', ['rice_cake_pass']) },
   { from: 'daegu', to: 'andong', kind: 'land', scenery: 'river', distance: 1 },
   { from: 'daegu', to: 'jinju', kind: 'land', scenery: 'plain', distance: 1 },
   { from: 'jinju', to: 'tongyeong', kind: 'land', scenery: 'coast', distance: 1 },
-  { from: 'jeonju', to: 'daegu', kind: 'land', scenery: 'mountain', distance: 2 },
-  { from: 'mokpo', to: 'jeju', kind: 'sea', scenery: 'sea', distance: 2, needsBoat: true },
-  { from: 'tongyeong', to: 'jeju', kind: 'sea', scenery: 'sea', distance: 2, needsBoat: true },
-  { from: 'busan', to: 'jeju', kind: 'sea', scenery: 'sea', distance: 3, needsBoat: true }
+  { from: 'jeonju', to: 'daegu', kind: 'land', scenery: 'mountain', distance: 2, ...routeMeta('mountain_paper_road', ROUTE_SCENE_ASSETS.daeguJeonju, '한지 고을과 약초 장터 사이 산길', ['bandit', 'animal', 'folktale'], '고개를 넘으면 약초 장터가 가까워져.', '전주는 한지와 쌀이 좋아.', ['rice_cake_pass']) },
+  { from: 'mokpo', to: 'jeju', kind: 'sea', scenery: 'sea', distance: 2, needsBoat: true, ...routeMeta('jeju_sea_route', ROUTE_SCENE_ASSETS.mokpoJeju, '넓은 바다와 멀리 보이는 섬', ['pirate', 'weather', 'sea_dragon'], '바람이 세지만 제주가 가까워지고 있어.', '제주는 귤이 유명해.', ['sea_dragon']) },
+  { from: 'tongyeong', to: 'jeju', kind: 'sea', scenery: 'sea', distance: 2, needsBoat: true, ...routeMeta('island_sea_route', ROUTE_SCENE_ASSETS.tongyeongJeju, '남해 섬 사이를 지나는 뱃길', ['pirate', 'weather', 'sea_dragon'], '섬 사이로 배가 천천히 지나가.', '제주에 가면 귤을 볼 수 있어.', ['sea_dragon']) },
+  { from: 'busan', to: 'jeju', kind: 'sea', scenery: 'sea', distance: 3, needsBoat: true, ...routeMeta('long_jeju_sea_route', ROUTE_SCENE_ASSETS.mokpoJeju, '부산에서 제주로 가는 먼 바닷길', ['pirate', 'weather', 'sea_dragon'], '먼 바닷길이야. 바람을 잘 보자.', '제주는 바람과 귤이 기다려.', ['sea_dragon']) }
 ];
 
 export const JUNIOR_VEHICLES: JuniorVehicle[] = [
@@ -382,7 +403,8 @@ function spellingEvent(
   reward: JuniorReward = { stars: 1 },
   wrongReward: JuniorReward = { coins: -5 },
   storyArcId?: string,
-  storyStage?: number
+  storyStage?: number,
+  routeTypes?: string[]
 ): JuniorEvent {
   const mood: JuniorEvent['mood'] = type === 'quiz_bandit' || type === 'quiz_pirate' || type === 'quiz_animal' ? 'bad' : type === 'quiz_merchant' ? 'good' : type === 'quiz_folktale' ? 'story' : 'talk';
   const chancePercent: JuniorEvent['chancePercent'] = mood === 'bad' ? 3 : mood === 'good' ? 2 : 1;
@@ -392,6 +414,7 @@ function spellingEvent(
     mood,
     chancePercent,
     routeKind,
+    routeTypes,
     storyArcId,
     storyStage,
     title,
@@ -410,6 +433,19 @@ function spellingEvent(
 }
 
 export const JUNIOR_EVENTS: JuniorEvent[] = [
+  spellingEvent('tutorial_spelling_1', 'quiz_merchant', 'land', '첫 말놀이', 'merchant', '물건 이름을 바르게 골라보자.', ['소금', '소굼'], '소금', '정답! 아주 잘했어.', '괜찮아. 소금은 이렇게 써.', { stars: 1 }, { coins: -1 }),
+  spellingEvent('folktale_tiger_3', 'quiz_folktale', 'land', '호랑이 그림자', 'tiger', '정우야, 바른 말을 고르면 고개를 지나갈 수 있어.', ['떡', '덕', '떧'], '떡', '정답! 호랑이가 얌전히 물러났어.', '괜찮아. 떡을 다시 싸 보자.', { stars: 1, storyClues: 1 }, { coins: -5 }, 'rice_cake_pass', 3, ['inland_market_road', 'mountain_paper_road', 'east_mountain_road']),
+  spellingEvent('folktale_tiger_4', 'quiz_folktale', 'land', '산길 배지', 'tiger', '마지막으로 고개 이름을 바르게 골라봐.', ['고개', '고게', '고걔'], '고개', '정답! 산길 배지를 받았어.', '괜찮아. 천천히 다시 읽어보자.', { badge: '산길 배지', stars: 1 }, { coins: -5 }, 'rice_cake_pass', 4, ['inland_market_road', 'mountain_paper_road', 'east_mountain_road']),
+  spellingEvent('fairy_cloth_3', 'quiz_folktale', 'land', '반짝이는 옷감', 'fairy_cloth', '강가에서 옷감이 반짝여. 바른 말을 골라 돌려주자.', ['돌려줘', '돌려조', '돌려줘요요'], '돌려줘', '정답! 옷감이 하늘빛으로 빛났어.', '괜찮아. 조심히 다시 접어보자.', { storyClues: 1 }, { coins: -5 }, 'fairy_cloth', 3, ['west_river_salt_road', 'south_coast_market_road']),
+  spellingEvent('fairy_cloth_4', 'quiz_folktale', 'land', '선녀의 고마움', 'fairy_cloth', '선녀가 고마운 마음을 전하고 있어.', ['고마워', '고마오', '고마워어'], '고마워', '정답! 별빛을 받았어.', '괜찮아. 바람이가 도와줄게.', { stars: 1, storyClues: 1 }, { coins: -5 }, 'fairy_cloth', 4, ['west_river_salt_road', 'south_coast_market_road']),
+  spellingEvent('sea_dragon_1', 'quiz_folktale', 'sea', '용왕의 물결', 'sea_dragon', '파도가 높아졌어. 바른 말을 고르면 길이 열려.', ['물결', '물껼', '물결르'], '물결', '정답! 물결이 잔잔해졌어.', '괜찮아. 배를 천천히 돌리자.', { stars: 1 }, { coins: -5 }, 'sea_dragon', 1, ['jeju_sea_route', 'island_sea_route', 'long_jeju_sea_route']),
+  spellingEvent('sea_dragon_2', 'quiz_folktale', 'sea', '바다의 약속', 'sea_dragon', '용왕이 쉬운 말을 물어봐.', ['바다', '받아', '바따'], '바다', '정답! 순풍이 불었어.', '괜찮아. 잠깐 쉬어 가자.', { storyClues: 1 }, { coins: -5 }, 'sea_dragon', 2, ['jeju_sea_route', 'island_sea_route', 'long_jeju_sea_route']),
+  spellingEvent('sea_dragon_3', 'quiz_folktale', 'sea', '섬 그림자', 'sea_dragon', '멀리 섬이 보여. 바른 말을 골라보자.', ['제주', '재주', '제쥬'], '제주', '정답! 제주가 가까워졌어.', '괜찮아. 다시 방향을 잡자.', { stars: 1 }, { coins: -5 }, 'sea_dragon', 3, ['jeju_sea_route', 'island_sea_route', 'long_jeju_sea_route']),
+  spellingEvent('sea_dragon_4', 'quiz_folktale', 'sea', '순풍 선물', 'sea_dragon', '마지막 말만 맞히면 바람이 도와줘.', ['순풍', '순퐁', '숨풍'], '순풍', '정답! 바다 배지를 받았어.', '괜찮아. 파도는 곧 잔잔해져.', { badge: '바다길 배지', stars: 1 }, { coins: -5 }, 'sea_dragon', 4, ['jeju_sea_route', 'island_sea_route', 'long_jeju_sea_route']),
+  spellingEvent('north_merchant_1', 'quiz_merchant', 'land', '북방 장사꾼', 'north_merchant', '장사꾼이 물건 이름을 물어봐.', ['인삼', '인쌈', '인삼이이'], '인삼', '정답! 북쪽 길 이야기를 들었어.', '괜찮아. 다음에 다시 물어보자.', { coins: 5 }, { coins: -5 }, 'north_merchant', 1, ['north_capital_road', 'border_river_road', 'northeast_coast_road', 'northeast_cold_road']),
+  spellingEvent('north_merchant_2', 'quiz_merchant', 'land', '강가 장터', 'north_merchant', '강가에서 바른 말을 골라봐.', ['강가', '강까', '간가'], '강가', '정답! 장터길을 배웠어.', '괜찮아. 천천히 다시 보자.', { storyClues: 1 }, { coins: -5 }, 'north_merchant', 2, ['north_capital_road', 'border_river_road', 'northeast_coast_road', 'northeast_cold_road']),
+  spellingEvent('north_merchant_3', 'quiz_merchant', 'land', '먼 길 추천', 'north_merchant', '상인이 팔기 좋은 말을 물어봐.', ['약초', '약쵸', '약초오'], '약초', '정답! 약초를 기억했어.', '괜찮아. 바람이가 다시 알려줄게.', { coins: 5 }, { coins: -5 }, 'north_merchant', 3, ['north_capital_road', 'border_river_road', 'northeast_coast_road', 'northeast_cold_road']),
+  spellingEvent('north_merchant_4', 'quiz_merchant', 'land', '북방 길 배지', 'north_merchant', '마지막으로 바른 인사를 골라봐.', ['고마워', '고마오', '고마워어'], '고마워', '정답! 북방 길 배지를 받았어.', '괜찮아. 다음 길에서 또 해보자.', { badge: '북방 길 배지', stars: 1 }, { coins: -5 }, 'north_merchant', 4, ['north_capital_road', 'border_river_road', 'northeast_coast_road', 'northeast_cold_road']),
   spellingEvent('bandit_spelling_1', 'quiz_bandit', 'land', '도적이 길을 막았어', 'bandit', '바른 말을 고르면 지나갈 수 있어.', ['맛춤법', '맞춤법', '맟춤법'], '맞춤법', '정답! 길이 열렸어.', '괜찮아. 짐 하나를 다시 묶었어.', { stars: 1 }, { coins: -5, loseCargo: 1 }),
   spellingEvent('bandit_spelling_2', 'quiz_bandit', 'land', '도적의 말놀이', 'bandit', '도적이 바른 말을 묻고 있어.', ['괜찮아', '괜찬아', '괜차나'], '괜찮아', '정답! 도적이 비켜줬어.', '조금 돌아가느라 돈을 잃었어.'),
   spellingEvent('bandit_spelling_3', 'quiz_bandit', 'land', '고개 길 도적', 'bandit', '바른 낱말을 골라보자.', ['어떻게', '어떡해', '어떠케'], '어떻게', '정답! 수레가 지나갔어.', '천천히 다시 가자.', { coins: 5 }, { coins: -5 }),
@@ -445,6 +481,7 @@ export const JUNIOR_EVENTS: JuniorEvent[] = [
 ];
 
 export const DEFAULT_JUNIOR_SAVE: JuniorSave = {
+  saveVersion: JUNIOR_SAVE_VERSION,
   currentStep: 'intro',
   currentCityId: 'busan',
   coins: 30,
@@ -458,6 +495,8 @@ export const DEFAULT_JUNIOR_SAVE: JuniorSave = {
   completedTutorial: false,
   tutorialStage: 0,
   seenEventIds: [],
+  storyArcProgress: {},
+  quizWrongStreak: 0,
   storyClues: 0,
   badges: [],
   completedEnding: false,

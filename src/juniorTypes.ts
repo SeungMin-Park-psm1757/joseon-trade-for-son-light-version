@@ -94,6 +94,13 @@ export interface JuniorRoute {
   scenery: JuniorRouteScenery;
   needsBoat?: boolean;
   distance?: 1 | 2 | 3;
+  routeType?: string;
+  travelSceneAsset?: string;
+  terrain?: string;
+  eventCategories?: string[];
+  fairyText?: string;
+  arrivalHint?: string;
+  storyArcIds?: string[];
 }
 
 export interface JuniorCargoItem {
@@ -154,6 +161,7 @@ export interface JuniorEvent {
   scene: string;
   fairyText: string;
   routeKind?: JuniorRouteKind | 'any';
+  routeTypes?: string[];
   storyArcId?: string;
   storyStage?: number;
   choices?: JuniorEventChoice[];
@@ -167,6 +175,7 @@ export interface JuniorMarketPressure {
 }
 
 export interface JuniorSave {
+  saveVersion: number;
   currentStep: JuniorStep;
   currentCityId: JuniorCityId;
   destinationCityId?: JuniorCityId;
@@ -184,10 +193,13 @@ export interface JuniorSave {
   completedTutorial: boolean;
   tutorialStage: number;
   seenEventIds: string[];
+  storyArcProgress: Record<string, number>;
+  quizWrongStreak: number;
   storyClues: number;
   badges: string[];
   completedEnding: boolean;
   completedRuns: number;
   marketPressure: JuniorMarketPressure;
+  lastSavedAt?: string;
   message?: string;
 }

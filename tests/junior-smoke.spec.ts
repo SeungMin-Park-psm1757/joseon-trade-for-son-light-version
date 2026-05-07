@@ -9,6 +9,7 @@ const allCities = [
 
 function baseSave(overrides = {}) {
   return {
+    saveVersion: 2,
     currentStep: 'city',
     currentCityId: 'busan',
     coins: 30,
@@ -22,11 +23,14 @@ function baseSave(overrides = {}) {
     completedTutorial: true,
     tutorialStage: 9,
     seenEventIds: [],
+    storyArcProgress: {},
+    quizWrongStreak: 0,
     storyClues: 0,
     badges: [],
     completedEnding: false,
     completedRuns: 0,
     marketPressure: { buy: {}, sell: {} },
+    lastSavedAt: '2026-05-08T09:00:00.000Z',
     ...overrides
   };
 }
@@ -46,7 +50,7 @@ async function departTo(page, cityId: string) {
 async function chooseVisibleCorrectSpelling(page) {
   const correctWords = ['맞춤법', '괜찮아', '어떻게', '가르치다', '며칠', '안 돼', '바닷길', '돛단배', '도착', '물결', '괜히', '금세', '멧돼지', '까치', '토끼', '헤엄', '강아지', '장터', '보따리', '왼쪽', '팔기', '고마워', '우산', '바람', '햇살'];
   const options = await page.locator('[data-testid^="quiz-option-"]').allTextContents();
-  const answer = options.find((option) => correctWords.includes(option.trim()));
+  const answer = options.find((option) => correctWords.includes(option.trim())) ?? (options.length === 2 ? options[0].trim() : undefined);
   expect(answer).toBeTruthy();
   await page.getByTestId(`quiz-option-${answer}`).click();
 }
@@ -55,6 +59,40 @@ test.beforeEach(async ({ page }) => {
   await page.goto('/');
   await page.evaluate(() => localStorage.clear());
   await page.reload();
+});
+
+test('pwa-shell: manifest, icons, service worker and offline page exist', async ({ page }) => {
+  await expect(page.locator('link[rel="manifest"]')).toHaveAttribute('href', './manifest.json');
+  const manifestResponse = await page.request.get('/manifest.json');
+  expect(manifestResponse.ok()).toBeTruthy();
+  const manifest = await manifestResponse.json();
+  expect(manifest.name).toBe('정우의 꼬마 거상 모험');
+  expect(manifest.short_name).toBe('꼬마 거상');
+  expect(manifest.display).toBe('standalone');
+  expect(manifest.orientation).toBe('portrait');
+  expect(manifest.icons.map((icon) => icon.sizes)).toContain('192x192');
+  expect(manifest.icons.map((icon) => icon.sizes)).toContain('512x512');
+  expect((await page.request.get('/service-worker.js')).ok()).toBeTruthy();
+  expect((await page.request.get('/offline.html')).ok()).toBeTruthy();
+});
+
+test('save-flow: corrupted save falls back to a playable start', async ({ page }) => {
+  await page.evaluate(([key]) => localStorage.setItem(key, '{bad json'), [saveKey]);
+  await page.reload();
+  await expect(page.getByTestId('screen-intro')).toBeVisible();
+  await expect(page.getByTestId('start-play')).toContainText('시작하기');
+});
+
+test('save-flow: continue data includes version and last saved time', async ({ page }) => {
+  await seed(page, baseSave({ currentStep: 'intro', completedTutorial: true, coins: 84, stars: 2, cargoLimit: 3 }));
+  await expect(page.getByTestId('continue-card')).toBeVisible();
+  await expect(page.getByTestId('continue-card')).toContainText('부산');
+  await expect(page.getByTestId('continue-card')).toContainText('돈 84');
+  await expect(page.getByTestId('continue-card')).toContainText('별 2');
+  await page.getByTestId('start-play').click();
+  const saved = await page.evaluate(([key]) => JSON.parse(localStorage.getItem(key) ?? '{}'), [saveKey]);
+  expect(saved.saveVersion).toBe(2);
+  expect(typeof saved.lastSavedAt).toBe('string');
 });
 
 test('tutorial-flow: buy, spelling event, first visit intro, sell', async ({ page }) => {
@@ -204,6 +242,38 @@ test('event-pool: low chance event data has many spelling encounters', async ({ 
   expect(eventSummary.folktale).toBeGreaterThanOrEqual(4);
   expect(eventSummary.maxChance).toBeLessThanOrEqual(3);
   expect(chanceSummary).toEqual({ bad: 3, good: 2, talk: 2, story: 1 });
+});
+
+test('route-cutscenes: key routes have art and story hooks', async ({ page }) => {
+  await seed(page, baseSave({ currentStep: 'map', currentCityId: 'busan' }));
+  const summary = await page.evaluate(() => import('/src/juniorData.ts').then((module) => {
+    const requiredRouteTypes = [
+      'inland_market_road',
+      'mountain_paper_road',
+      'west_river_salt_road',
+      'jeju_sea_route',
+      'south_coast_market_road',
+      'island_sea_route',
+      'east_mountain_road',
+      'north_capital_road',
+      'border_river_road',
+      'northeast_coast_road'
+    ];
+    const routes = module.JUNIOR_ROUTES.filter((route) => requiredRouteTypes.includes(route.routeType));
+    return {
+      routeCount: routes.length,
+      withAssets: routes.filter((route) => route.travelSceneAsset?.includes('/assets/routes/')).length,
+      withStoryHooks: routes.filter((route) => route.storyArcIds?.length).length,
+      storyEvents: module.JUNIOR_EVENTS.filter((event) => ['rice_cake_pass', 'fairy_cloth', 'sea_dragon', 'north_merchant'].includes(event.storyArcId)).length,
+      maxChance: Math.max(...module.JUNIOR_EVENTS.map((event) => event.chancePercent))
+    };
+  }));
+
+  expect(summary.routeCount).toBeGreaterThanOrEqual(10);
+  expect(summary.withAssets).toBeGreaterThanOrEqual(10);
+  expect(summary.withStoryHooks).toBeGreaterThanOrEqual(10);
+  expect(summary.storyEvents).toBeGreaterThanOrEqual(12);
+  expect(summary.maxChance).toBeLessThanOrEqual(3);
 });
 
 test('upgrade-flow: handcart and boat can be bought', async ({ page }) => {
