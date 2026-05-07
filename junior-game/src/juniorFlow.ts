@@ -1,5 +1,5 @@
 import type { JuniorBoat, JuniorCargoItem, JuniorCityId, JuniorEvent, JuniorGoodId, JuniorMarketPressure, JuniorReward, JuniorSave, JuniorStep, JuniorVehicle } from './juniorTypes';
-import { DEFAULT_JUNIOR_SAVE, ENDING_COINS, JUNIOR_BOATS, JUNIOR_CITIES, JUNIOR_EVENTS, JUNIOR_GOODS, JUNIOR_ROUTES, JUNIOR_SAVE_KEY, JUNIOR_VEHICLES, getGood } from './juniorData';
+import { DEFAULT_JUNIOR_SAVE, ENDING_COINS, JUNIOR_BOATS, JUNIOR_CITIES, JUNIOR_EVENTS, JUNIOR_GOODS, JUNIOR_ROUTES, JUNIOR_SAVE_KEY, JUNIOR_SAVE_VERSION, JUNIOR_VEHICLES, getGood } from './juniorData';
 
 function isStep(value: unknown): value is JuniorStep {
   return typeof value === 'string' && ['intro', 'pick', 'buy', 'city', 'map', 'travel', 'visitIntro', 'market', 'event', 'eventResult', 'shop', 'endingChoice', 'ending'].includes(value);
@@ -17,8 +17,43 @@ function numberOr(value: unknown, fallback: number) {
   return typeof value === 'number' && Number.isFinite(value) ? value : fallback;
 }
 
+let memorySave: JuniorSave | undefined;
+
+function cloneSave(save: JuniorSave): JuniorSave {
+  return {
+    ...save,
+    cargo: save.cargo.map((item) => ({ ...item })),
+    unlockedCities: [...save.unlockedCities],
+    visitedCityIds: [...save.visitedCityIds],
+    seenEventIds: [...save.seenEventIds],
+    storyArcProgress: { ...save.storyArcProgress },
+    badges: [...save.badges],
+    marketPressure: {
+      buy: { ...save.marketPressure.buy },
+      sell: { ...save.marketPressure.sell }
+    }
+  };
+}
+
+function defaultSave() {
+  return cloneSave(DEFAULT_JUNIOR_SAVE);
+}
+
+function lastSavedAtOr(value: unknown) {
+  return typeof value === 'string' && !Number.isNaN(Date.parse(value)) ? value : undefined;
+}
+
 function stringArray(value: unknown) {
   return Array.isArray(value) ? value.filter((item): item is string => typeof item === 'string') : [];
+}
+
+function normalizeStoryArcProgress(value: unknown) {
+  if (!value || typeof value !== 'object') return {};
+  const next: Record<string, number> = {};
+  for (const [key, progress] of Object.entries(value as Record<string, unknown>)) {
+    if (typeof progress === 'number' && Number.isFinite(progress)) next[key] = progress;
+  }
+  return next;
 }
 
 function cityArray(value: unknown, fallback = DEFAULT_JUNIOR_SAVE.unlockedCities) {
@@ -52,12 +87,13 @@ function normalizePressure(value: unknown): JuniorMarketPressure {
 }
 
 export function normalizeJuniorSave(raw: unknown): JuniorSave {
-  if (!raw || typeof raw !== 'object') return DEFAULT_JUNIOR_SAVE;
+  if (!raw || typeof raw !== 'object') return defaultSave();
   const value = raw as Partial<JuniorSave>;
   const vehicleId = JUNIOR_VEHICLES.some((vehicle) => vehicle.id === value.vehicleId) ? value.vehicleId as JuniorVehicle['id'] : DEFAULT_JUNIOR_SAVE.vehicleId;
   const boatId = JUNIOR_BOATS.some((boat) => boat.id === value.boatId) ? value.boatId as JuniorBoat['id'] : DEFAULT_JUNIOR_SAVE.boatId;
   const vehicle = JUNIOR_VEHICLES.find((item) => item.id === vehicleId) ?? JUNIOR_VEHICLES[0];
   return {
+    saveVersion: JUNIOR_SAVE_VERSION,
     currentStep: isStep(value.currentStep) ? value.currentStep : 'intro',
     currentCityId: isCity(value.currentCityId) ? value.currentCityId : 'busan',
     destinationCityId: isCity(value.destinationCityId) ? value.destinationCityId : undefined,
@@ -75,36 +111,59 @@ export function normalizeJuniorSave(raw: unknown): JuniorSave {
     completedTutorial: Boolean(value.completedTutorial),
     tutorialStage: numberOr(value.tutorialStage, 0),
     seenEventIds: stringArray(value.seenEventIds),
+    storyArcProgress: normalizeStoryArcProgress(value.storyArcProgress),
+    quizWrongStreak: numberOr(value.quizWrongStreak, 0),
     storyClues: numberOr(value.storyClues, 0),
     badges: stringArray(value.badges),
     completedEnding: Boolean(value.completedEnding),
     completedRuns: numberOr(value.completedRuns, 0),
     marketPressure: normalizePressure(value.marketPressure),
+    lastSavedAt: lastSavedAtOr(value.lastSavedAt),
     message: typeof value.message === 'string' ? value.message : undefined
   };
 }
 
 export function loadJuniorSave(): JuniorSave {
+  if (memorySave) return normalizeJuniorSave(memorySave);
   try {
     const raw = localStorage.getItem(JUNIOR_SAVE_KEY);
-    return raw ? normalizeJuniorSave(JSON.parse(raw)) : DEFAULT_JUNIOR_SAVE;
+    return raw ? normalizeJuniorSave(JSON.parse(raw)) : defaultSave();
   } catch {
-    return DEFAULT_JUNIOR_SAVE;
+    try {
+      localStorage.removeItem(JUNIOR_SAVE_KEY);
+    } catch {
+      // Local storage can be unavailable in private or locked-down browsers.
+    }
+    return defaultSave();
   }
 }
 
 export function saveJuniorGame(save: JuniorSave) {
-  localStorage.setItem(JUNIOR_SAVE_KEY, JSON.stringify(save));
+  const stamped = normalizeJuniorSave({
+    ...save,
+    saveVersion: JUNIOR_SAVE_VERSION,
+    lastSavedAt: new Date().toISOString()
+  });
+  memorySave = stamped;
+  try {
+    localStorage.setItem(JUNIOR_SAVE_KEY, JSON.stringify(stamped));
+  } catch {
+    // Keep the in-memory save so the current session survives storage errors.
+  }
 }
 
 export function resetJuniorGame(): JuniorSave {
   return {
     ...DEFAULT_JUNIOR_SAVE,
+    saveVersion: JUNIOR_SAVE_VERSION,
+    lastSavedAt: undefined,
     cargo: [],
     unlockedCities: [...DEFAULT_JUNIOR_SAVE.unlockedCities],
     visitedCityIds: [...DEFAULT_JUNIOR_SAVE.visitedCityIds],
     badges: [],
     seenEventIds: [],
+    storyArcProgress: {},
+    quizWrongStreak: 0,
     marketPressure: { buy: {}, sell: {} }
   };
 }
@@ -154,7 +213,7 @@ export function getSellPrice(save: JuniorSave, cityId: JuniorCityId, goodId: Jun
   const good = getGood(goodId);
   const wanted = city.sellGoodIds.includes(goodId) || city.id === 'seoul';
   const local = city.buyGoodIds.includes(goodId);
-  const bonus = wanted ? 9 : local ? -2 : 2;
+  const bonus = wanted ? 6 : local ? -2 : 1;
   const count = save.marketPressure.sell[pressureKey(cityId, goodId)] ?? 0;
   return Math.max(4, good.baseSellCoins + bonus + variation(cityId, goodId) - count * 2);
 }
@@ -241,11 +300,27 @@ function eventSeed(save: JuniorSave, routeKind?: string, distance = 1, salt = ''
   return Array.from(text).reduce((sum, char) => sum + char.charCodeAt(0), 0);
 }
 
-function eventFitsRoute(event: JuniorEvent, routeKind?: string) {
-  return !event.routeKind || event.routeKind === 'any' || event.routeKind === routeKind;
+function eventFitsRoute(event: JuniorEvent, routeKind?: string, routeType?: string) {
+  const kindFits = !event.routeKind || event.routeKind === 'any' || event.routeKind === routeKind;
+  const typeFits = !event.routeTypes || (routeType ? event.routeTypes.includes(routeType) : false);
+  return kindFits && typeFits;
 }
 
-function selectTravelEvent(save: JuniorSave, routeKind?: string, distance = 1) {
+function nextStoryArcEvent(save: JuniorSave, routeKind?: string, routeType?: string, storyArcIds: string[] = []) {
+  for (const storyArcId of storyArcIds) {
+    const nextStage = (save.storyArcProgress[storyArcId] ?? 0) + 1;
+    const candidate = JUNIOR_EVENTS.find((event) => (
+      event.storyArcId === storyArcId
+      && event.storyStage === nextStage
+      && eventFitsRoute(event, routeKind, routeType)
+      && !save.seenEventIds.includes(event.id)
+    ));
+    if (candidate) return candidate;
+  }
+  return undefined;
+}
+
+function selectTravelEvent(save: JuniorSave, routeKind?: string, distance = 1, routeType?: string, storyArcIds: string[] = []) {
   const types = routeKind === 'sea'
     ? ['quiz_pirate', 'quiz_weather', 'quiz_merchant', 'quiz_folktale']
     : ['quiz_bandit', 'quiz_animal', 'quiz_merchant', 'quiz_weather', 'quiz_folktale'];
@@ -258,14 +333,21 @@ function selectTravelEvent(save: JuniorSave, routeKind?: string, distance = 1) {
   for (const bucket of moods) {
     const roll = eventSeed(save, routeKind, distance, bucket.mood) % 100;
     if (roll >= bucket.chance) continue;
+    if (bucket.mood === 'story' || bucket.mood === 'good') {
+      const storyEvent = nextStoryArcEvent(save, routeKind, routeType, storyArcIds);
+      if (storyEvent && storyEvent.mood === bucket.mood) return storyEvent;
+    }
     const candidates = JUNIOR_EVENTS.filter((event) => (
       event.mood === bucket.mood
       && event.chancePercent <= bucket.chance
       && types.includes(event.type)
-      && eventFitsRoute(event, routeKind)
+      && eventFitsRoute(event, routeKind, routeType)
       && !save.seenEventIds.includes(event.id)
     ));
-    if (candidates.length) return candidates[eventSeed(save, routeKind, distance, `${bucket.mood}:pick`) % candidates.length];
+    const earlyEasyIds = ['tutorial_spelling_1', 'merchant_spelling_1', 'merchant_spelling_4', 'animal_spelling_5', 'weather_spelling_1', 'pirate_spelling_3'];
+    const pool = save.seenEventIds.length < 5 ? candidates.filter((event) => earlyEasyIds.includes(event.id)) : candidates;
+    const finalCandidates = pool.length ? pool : candidates;
+    if (finalCandidates.length) return finalCandidates[eventSeed(save, routeKind, distance, `${bucket.mood}:pick`) % finalCandidates.length];
   }
   return undefined;
 }
@@ -279,16 +361,16 @@ export function getTravelEventChanceSummary() {
   };
 }
 
-function shouldShowEvent(save: JuniorSave, routeKind?: string, distance = 1) {
+function shouldShowEvent(save: JuniorSave, routeKind?: string, distance = 1, routeType?: string, storyArcIds: string[] = []) {
   if (!save.completedTutorial && save.tutorialStage < 7) return true;
-  return Boolean(selectTravelEvent(save, routeKind, distance));
+  return Boolean(selectTravelEvent(save, routeKind, distance, routeType, storyArcIds));
 }
 
-function getTravelEvent(save: JuniorSave, routeKind?: string, distance = 1) {
+function getTravelEvent(save: JuniorSave, routeKind?: string, distance = 1, routeType?: string, storyArcIds: string[] = []) {
   if (!save.completedTutorial && save.tutorialStage < 7) {
-    return JUNIOR_EVENTS.find((event) => event.id === 'bandit_spelling_1');
+    return JUNIOR_EVENTS.find((event) => event.id === 'tutorial_spelling_1');
   }
-  return selectTravelEvent(save, routeKind, distance);
+  return selectTravelEvent(save, routeKind, distance, routeType, storyArcIds);
 }
 
 export function getRouteScenery(from: JuniorCityId, to: JuniorCityId) {
@@ -306,14 +388,21 @@ export function finishTravel(save: JuniorSave): JuniorSave {
     visitedCityIds: firstVisit ? [...save.visitedCityIds, destinationCityId] : save.visitedCityIds,
     tutorialStage: Math.max(save.tutorialStage, 6)
   };
-  if (shouldShowEvent(save, route?.kind, route?.distance)) {
-    const event = getTravelEvent(moved, route?.kind, route?.distance);
+  if (shouldShowEvent(save, route?.kind, route?.distance, route?.routeType, route?.storyArcIds)) {
+    const event = getTravelEvent(moved, route?.kind, route?.distance, route?.routeType, route?.storyArcIds);
     if (event) {
+      const storyArcProgress = event.storyArcId
+        ? {
+          ...moved.storyArcProgress,
+          [event.storyArcId]: Math.max(moved.storyArcProgress[event.storyArcId] ?? 0, event.storyStage ?? 1)
+        }
+        : moved.storyArcProgress;
       return {
         ...moved,
         currentStep: 'event',
         selectedEventId: event.id,
         seenEventIds: [...moved.seenEventIds, event.id],
+        storyArcProgress,
         message: undefined
       };
     }
@@ -392,8 +481,10 @@ export function answerQuiz(save: JuniorSave, option: string): JuniorSave {
   const quiz = event?.quiz;
   if (!quiz) return resolveSimpleEvent(save);
   const correct = option === quiz.answer;
+  const nextWrongStreak = correct ? 0 : save.quizWrongStreak + 1;
   const rewarded = applyReward(save, correct ? quiz.reward : quiz.wrongReward);
-  return applyMilestones({ ...rewarded, currentStep: 'eventResult', eventResultText: correct ? quiz.correctText : quiz.wrongText });
+  const hintText = nextWrongStreak >= 2 ? `${quiz.wrongText} 바람이가 힌트를 줄게.` : quiz.wrongText;
+  return applyMilestones({ ...rewarded, quizWrongStreak: nextWrongStreak, currentStep: 'eventResult', eventResultText: correct ? quiz.correctText : hintText });
 }
 
 export function closeEventResult(save: JuniorSave): JuniorSave {
@@ -447,6 +538,13 @@ export function buyBoat(save: JuniorSave, boatId: JuniorBoat['id']): JuniorSave 
 export function applyMilestones(save: JuniorSave): JuniorSave {
   let next = save;
   if (next.coins >= 100 && !next.badges.includes('꼬마 장사꾼')) next = { ...next, badges: [...next.badges, '꼬마 장사꾼'] };
+  if (next.visitedCityIds.length >= 3 && !next.badges.includes('도시 도장 3개')) next = { ...next, badges: [...next.badges, '도시 도장 3개'] };
+  if (next.visitedCityIds.length >= 7 && !next.badges.includes('도시 도장 7개')) next = { ...next, badges: [...next.badges, '도시 도장 7개'] };
+  if (next.visitedCityIds.length >= 14 && !next.badges.includes('도시 도장 14개')) next = { ...next, badges: [...next.badges, '도시 도장 14개'] };
+  if (next.visitedCityIds.length >= 21 && !next.badges.includes('팔도 도장')) next = { ...next, badges: [...next.badges, '팔도 도장'] };
+  if (next.visitedCityIds.includes('jeju') && !next.badges.includes('제주까지 다녀왔어요')) next = { ...next, badges: [...next.badges, '제주까지 다녀왔어요'] };
+  if (next.stars >= 5 && !next.badges.includes('착한 일 배지')) next = { ...next, badges: [...next.badges, '착한 일 배지'] };
+  if (next.stars >= 10 && !next.badges.includes('퀴즈 달인')) next = { ...next, badges: [...next.badges, '퀴즈 달인'] };
   if (next.coins >= 220 && next.storyClues < 3) next = { ...next, storyClues: Math.max(next.storyClues, 3) };
   return next;
 }

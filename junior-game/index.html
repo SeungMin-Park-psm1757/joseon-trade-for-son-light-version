@@ -3,10 +3,112 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#8bd6d0" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="꼬마 거상" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <link rel="manifest" href="./manifest.json" />
+    <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png" />
+    <link rel="apple-touch-icon" href="./icons/icon-192.png" />
     <title>정우의 꼬마 거상 모험</title>
+    <style>
+      .junior-preload {
+        min-height: 100dvh;
+        display: grid;
+        place-items: center;
+        margin: 0;
+        padding: 24px;
+        background: linear-gradient(180deg, #8bd6d0, #dff5cf 62%, #8dcb72);
+        color: #20351f;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      .junior-preload-card {
+        width: min(330px, 92vw);
+        display: grid;
+        gap: 14px;
+        justify-items: center;
+        padding: 26px 22px;
+        border: 4px solid rgba(45, 99, 78, 0.22);
+        border-radius: 28px;
+        background: rgba(255, 251, 229, 0.96);
+        box-shadow: 0 14px 28px rgba(42, 91, 68, 0.16);
+        text-align: center;
+      }
+
+      .junior-preload-faces {
+        display: flex;
+        align-items: end;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      .junior-preload-faces img {
+        width: 88px;
+        height: 92px;
+        object-fit: contain;
+      }
+
+      .junior-preload-faces img:last-child {
+        width: 74px;
+        height: 78px;
+        animation: junior-preload-float 880ms ease-in-out infinite alternate;
+      }
+
+      .junior-preload-card strong {
+        font-size: 1.2rem;
+        font-weight: 1000;
+      }
+
+      .junior-preload-bar {
+        width: 100%;
+        height: 13px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: #d6e9c6;
+      }
+
+      .junior-preload-bar::after {
+        content: "";
+        display: block;
+        width: 44%;
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, #ffe777, #f3a342);
+        animation: junior-preload-run 1.05s ease-in-out infinite alternate;
+      }
+
+      .junior-preload-card small {
+        font-weight: 800;
+      }
+
+      @keyframes junior-preload-float {
+        from { transform: translateY(0); }
+        to { transform: translateY(-8px); }
+      }
+
+      @keyframes junior-preload-run {
+        from { transform: translateX(0); }
+        to { transform: translateX(128%); }
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <main class="junior-preload" aria-live="polite">
+        <section class="junior-preload-card">
+          <div class="junior-preload-faces">
+            <img src="./assets/jeongwoo/jeongwoo.png" alt="정우" />
+            <img src="./assets/fairy/fairy-happy.png" alt="바람이" />
+          </div>
+          <strong>장사길을 여는 중...</strong>
+          <span class="junior-preload-bar" aria-hidden="true"></span>
+          <small>화면이 멈추면 다시 눌러볼까?</small>
+        </section>
+      </main>
+    </div>
+    <noscript>정우의 꼬마 거상 모험은 자바스크립트가 필요해요. 브라우저 설정을 확인해 주세요.</noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

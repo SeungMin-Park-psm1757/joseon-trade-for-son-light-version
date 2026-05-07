@@ -82,6 +82,7 @@ export interface JuniorCity {
   buyGoodIds: JuniorGoodId[];
   sellGoodIds: JuniorGoodId[];
   scene: string;
+  backgroundAsset?: string;
   note: string;
   introLines: string[];
 }
@@ -93,6 +94,13 @@ export interface JuniorRoute {
   scenery: JuniorRouteScenery;
   needsBoat?: boolean;
   distance?: 1 | 2 | 3;
+  routeType?: string;
+  travelSceneAsset?: string;
+  terrain?: string;
+  eventCategories?: string[];
+  fairyText?: string;
+  arrivalHint?: string;
+  storyArcIds?: string[];
 }
 
 export interface JuniorCargoItem {
@@ -112,10 +120,11 @@ export interface JuniorVehicle {
 }
 
 export interface JuniorBoat {
-  id: 'none' | 'small_ferry' | 'sailboat';
+  id: 'none' | 'small_ferry' | 'sailboat' | 'sturdy_sailboat' | 'merchant_ship';
   name: string;
   cost: number;
   text: string;
+  image: string;
 }
 
 export interface JuniorReward {
@@ -152,6 +161,7 @@ export interface JuniorEvent {
   scene: string;
   fairyText: string;
   routeKind?: JuniorRouteKind | 'any';
+  routeTypes?: string[];
   storyArcId?: string;
   storyStage?: number;
   choices?: JuniorEventChoice[];
@@ -165,6 +175,7 @@ export interface JuniorMarketPressure {
 }
 
 export interface JuniorSave {
+  saveVersion: number;
   currentStep: JuniorStep;
   currentCityId: JuniorCityId;
   destinationCityId?: JuniorCityId;
@@ -182,10 +193,13 @@ export interface JuniorSave {
   completedTutorial: boolean;
   tutorialStage: number;
   seenEventIds: string[];
+  storyArcProgress: Record<string, number>;
+  quizWrongStreak: number;
   storyClues: number;
   badges: string[];
   completedEnding: boolean;
   completedRuns: number;
   marketPressure: JuniorMarketPressure;
+  lastSavedAt?: string;
   message?: string;
 }

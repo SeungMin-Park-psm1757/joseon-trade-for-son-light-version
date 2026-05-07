@@ -8,3 +8,13 @@ createRoot(document.getElementById('root')!).render(
     <JuniorApp />
   </React.StrictMode>
 );
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register(`${import.meta.env.BASE_URL}service-worker.js`)
+      .catch(() => {
+        // The game still works online if service worker registration is blocked.
+      });
+  });
+}

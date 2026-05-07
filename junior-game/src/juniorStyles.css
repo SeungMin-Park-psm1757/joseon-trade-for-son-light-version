@@ -44,6 +44,7 @@ button:disabled {
 }
 
 .junior-shell {
+  position: relative;
   width: min(100vw, 430px);
   height: 100dvh;
   margin: 0 auto;
@@ -59,6 +60,26 @@ button:disabled {
   background:
     linear-gradient(180deg, rgba(142, 219, 238, 0.95), rgba(226, 245, 225, 0.96) 48%, rgba(137, 206, 111, 0.96)),
     #bfe9f2;
+}
+
+.junior-network-banner {
+  position: fixed;
+  z-index: 80;
+  left: max(10px, env(safe-area-inset-left, 0px));
+  right: max(10px, env(safe-area-inset-right, 0px));
+  top: max(10px, env(safe-area-inset-top, 0px));
+  min-height: 46px;
+  display: grid;
+  place-items: center;
+  padding: 9px 14px;
+  border: 3px solid rgba(255, 246, 210, .92);
+  border-radius: 18px;
+  background: rgba(54, 96, 83, .96);
+  color: #fffbe5;
+  font-size: .92rem;
+  font-weight: 1000;
+  text-align: center;
+  box-shadow: 0 10px 24px rgba(31, 59, 47, .22);
 }
 
 .junior-topbar {
@@ -165,6 +186,7 @@ button:disabled {
 .junior-action-button,
 .junior-choice {
   min-height: var(--junior-touch);
+  touch-action: manipulation;
   border: 0;
   border-radius: 18px;
   color: #3c2810;
@@ -247,6 +269,30 @@ button:disabled {
   line-height: 1.08;
 }
 
+.junior-continue-card {
+  width: 100%;
+  display: grid;
+  gap: 3px;
+  padding: 10px 13px;
+  border: 3px solid rgba(62, 129, 94, .24);
+  border-radius: 20px;
+  background: rgba(255, 251, 229, .96);
+  box-shadow: 0 8px 18px rgba(45, 79, 52, .11);
+}
+
+.junior-continue-card strong {
+  color: #235f59;
+  font-size: 1rem;
+  font-weight: 1000;
+}
+
+.junior-continue-card span,
+.junior-continue-card small {
+  color: #243420;
+  font-size: .9rem;
+  font-weight: 900;
+}
+
 .junior-book-scene img:first-child {
   width: min(150px, 42vw);
   height: min(230px, 38vh);
@@ -265,6 +311,7 @@ button:disabled {
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 7px;
   padding: 6px;
+  padding-bottom: calc(6px + env(safe-area-inset-bottom, 0px));
   border: 3px solid rgba(54, 113, 80, 0.18);
   border-radius: 22px;
   background: rgba(255, 251, 229, .86);
@@ -462,6 +509,33 @@ button:disabled {
 
 .junior-city-title span,
 .junior-city-cargo span {
+  font-weight: 900;
+}
+
+.junior-progress-card {
+  position: absolute;
+  z-index: 3;
+  left: 14px;
+  right: 14px;
+  bottom: 130px;
+  display: grid;
+  gap: 2px;
+  padding: 9px 12px;
+  border: 3px solid rgba(255, 249, 221, .88);
+  border-radius: 18px;
+  background: rgba(255, 253, 234, .9);
+  color: #24391f;
+  box-shadow: 0 8px 0 rgba(50, 94, 61, .12);
+}
+
+.junior-progress-card b {
+  font-size: .96rem;
+  font-weight: 1000;
+}
+
+.junior-progress-card span,
+.junior-progress-card small {
+  font-size: .78rem;
   font-weight: 900;
 }
 
@@ -798,6 +872,28 @@ button:disabled {
   box-shadow: inset 0 -10px 0 rgba(56, 112, 70, .14);
 }
 
+.junior-route-art {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 108%;
+  height: 108%;
+  object-fit: cover;
+  transform: translateX(-4%) scale(1.02);
+  filter: saturate(1.04) contrast(1.02);
+  animation: junior-route-art-pan 5.8s ease-in-out forwards;
+}
+
+.junior-route-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .08), transparent 22%, transparent 72%, rgba(46, 76, 43, .18)),
+    radial-gradient(ellipse at center, transparent 42%, rgba(56, 94, 56, .16));
+}
+
 .junior-travel.sea .junior-route-scene {
   background:
     linear-gradient(180deg, #8edcf0 0%, #c9f4ff 39%, #64c5dc 40%, #3baec9 100%);
@@ -843,6 +939,7 @@ button:disabled {
 .junior-route-progress,
 .junior-vehicle-shadow {
   position: absolute;
+  z-index: 2;
   pointer-events: none;
 }
 
@@ -872,14 +969,14 @@ button:disabled {
   top: 12px;
   width: min(58%, 220px);
   text-align: center;
-  animation: junior-guide-fade 5.1s ease both;
+  animation: junior-guide-fade 5.8s ease both;
 }
 
 .junior-travel-arrive-card {
   right: 12px;
   bottom: 16px;
   opacity: 0;
-  animation: junior-arrive-card 5.1s ease forwards;
+  animation: junior-arrive-card 5.8s ease forwards;
 }
 
 .junior-travel-start-card b,
@@ -1187,14 +1284,14 @@ button:disabled {
   height: 102px;
   object-fit: contain;
   filter: drop-shadow(0 12px 0 rgba(48, 74, 50, .18));
-  animation: junior-travel 5.05s cubic-bezier(.38, 0, .18, 1) forwards, junior-wobble 720ms ease-in-out infinite alternate;
+  animation: junior-travel 5.65s cubic-bezier(.38, 0, .18, 1) forwards, junior-wobble 720ms ease-in-out infinite alternate;
 }
 
 .junior-travel.sea .junior-moving-cart {
   top: 47%;
   width: 146px;
   height: 110px;
-  animation: junior-travel 5.05s cubic-bezier(.38, 0, .18, 1) forwards, junior-boat-bob 980ms ease-in-out infinite alternate;
+  animation: junior-travel 5.65s cubic-bezier(.38, 0, .18, 1) forwards, junior-boat-bob 980ms ease-in-out infinite alternate;
 }
 
 .junior-vehicle-shadow {
@@ -1205,7 +1302,7 @@ button:disabled {
   height: 17px;
   border-radius: 999px;
   background: rgba(49, 73, 38, .16);
-  animation: junior-shadow-travel 5.05s cubic-bezier(.38, 0, .18, 1) forwards;
+  animation: junior-shadow-travel 5.65s cubic-bezier(.38, 0, .18, 1) forwards;
 }
 
 .junior-dust {
@@ -1756,10 +1853,20 @@ button:disabled {
   place-items: center;
 }
 
+.junior-ending-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.92;
+}
+
 .junior-success-jeongwoo {
   position: absolute;
   left: 8%;
   bottom: 4%;
+  z-index: 1;
   width: 42%;
   height: 88%;
   object-fit: contain;
@@ -1769,6 +1876,7 @@ button:disabled {
   position: absolute;
   right: 9%;
   top: 8%;
+  z-index: 1;
   width: 32%;
   height: 66%;
   object-fit: contain;
@@ -1779,6 +1887,7 @@ button:disabled {
   position: absolute;
   right: 34%;
   bottom: 10%;
+  z-index: 1;
   width: 24%;
   object-fit: contain;
   animation: junior-grow 900ms ease-in-out infinite alternate;
@@ -1832,6 +1941,12 @@ button:disabled {
   62% { transform: translateX(calc(58vw - 88px)) translateY(-8px) scale(1.02); }
   82% { transform: translateX(calc(73vw - 116px)) translateY(4px) scale(.98); }
   100% { transform: translateX(calc(82vw - 142px)) translateY(0) scale(.94); }
+}
+
+@keyframes junior-route-art-pan {
+  0% { transform: translateX(-4%) scale(1.02); }
+  45% { transform: translateX(-1.5%) scale(1.055); }
+  100% { transform: translateX(0) scale(1.07); }
 }
 
 @keyframes junior-wobble {

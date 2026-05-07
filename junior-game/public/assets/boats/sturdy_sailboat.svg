@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img"><defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9eddf0"/><stop offset="1" stop-color="#fff3bd"/></linearGradient>
+    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fd26b"/><stop offset="1" stop-color="#5caf64"/></linearGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#70cce4"/><stop offset="1" stop-color="#2f9fbd"/></linearGradient>
+    <linearGradient id="wood" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d59b54"/><stop offset="1" stop-color="#8d5a2f"/></linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="8" stdDeviation="5" flood-color="#2b4c35" flood-opacity=".22"/></filter>
+    <style>
+      .ink{stroke:#5b4228;stroke-width:8;stroke-linecap:round;stroke-linejoin:round}
+      .thin{stroke:#5b4228;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+      .soft{stroke:#fff8cf;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;opacity:.75}
+      .accent{fill:#f0b85b}
+    </style>
+  </defs><rect width="256" height="256" fill="none"/><ellipse cx="128" cy="218" rx="82" ry="16" fill="#2c4730" opacity=".14"/><g transform="translate(128 154) scale(0.76)" filter="url(#softShadow)">
+    <path d="M-96 42 C-54 76 62 76 105 42 C73 102 -64 104 -108 42 Z" fill="url(#wood)" class="thin"/>
+    <path d="M-82 42 H92" class="thin" fill="none"/>
+    <path d="M-8 34 V-96" class="thin"/><path d="M2 -88 C50 -58 68 -4 16 22 Z" fill="#fff4c2" class="thin"/><path d="M-12 -76 C-58 -48 -66 -8 -18 20 Z" fill="#70b8d6" class="thin"/>
+  </g><path d="M68 204 h120" class="thin" opacity=".5"/></svg>
