@@ -429,7 +429,25 @@ export const JUNIOR_ROUTES: JuniorRoute[] = [
   { from: 'tongyeong', to: 'jeju', kind: 'sea', scenery: 'sea', distance: 2, needsBoat: true, ...routeMeta('island_sea_route', ROUTE_SCENE_ASSETS.tongyeongJeju, '남해 섬 사이를 지나는 뱃길', ['pirate', 'weather', 'sea_dragon'], '섬 사이로 배가 천천히 지나가.', '제주에 가면 귤을 볼 수 있어.', ['sea_dragon']) },
   { from: 'busan', to: 'jeju', kind: 'sea', scenery: 'sea', distance: 3, needsBoat: true, ...routeMeta('long_jeju_sea_route', ROUTE_SCENE_ASSETS.mokpoJeju, '부산에서 제주로 가는 먼 바닷길', ['pirate', 'weather', 'sea_dragon'], '먼 바닷길이야. 바람을 잘 보자.', '제주는 바람과 귤이 기다려.', ['sea_dragon']) },
   { from: 'busan', to: 'tsushima', kind: 'sea', scenery: 'sea', distance: 1, needsBoat: true, ...routeMeta('tsushima_sea_gate', publicAsset('/assets/scenes/south-port.webp'), '부산에서 섬 거점으로 가는 짧은 뱃길', ['pirate', 'weather', 'merchant'], '부산 앞바다를 지나 작은 섬으로 가.', '대마도는 바닷길 중간 장터야.', ['sea_dragon']) },
-  { from: 'tsushima', to: 'china_port', kind: 'sea', scenery: 'sea', distance: 3, needsBoat: true, ...routeMeta('china_trade_sea_route', publicAsset('/assets/scenes/market-street.webp'), '섬을 지나 큰 항구로 가는 먼 바닷길', ['pirate', 'weather', 'merchant'], '먼 바다 끝에 큰 항구가 보여.', '중국 항구는 비단과 도자기가 유명해.', ['sea_dragon']) }
+  { from: 'tsushima', to: 'china_port', kind: 'sea', scenery: 'sea', distance: 3, needsBoat: true, ...routeMeta('china_trade_sea_route', publicAsset('/assets/scenes/market-street.webp'), '섬을 지나 큰 항구로 가는 먼 바닷길', ['pirate', 'weather', 'merchant'], '먼 바다 끝에 큰 항구가 보여.', '중국 항구는 비단과 도자기가 유명해.', ['sea_dragon']) },
+  { from: 'incheon', to: 'gaeseong', kind: 'land', scenery: 'marketRoad', distance: 1 },
+  { from: 'gaeseong', to: 'nampo', kind: 'land', scenery: 'river', distance: 1 },
+  { from: 'nampo', to: 'sinuiju', kind: 'sea', scenery: 'sea', distance: 2, needsBoat: true },
+  { from: 'pyongyang', to: 'hamheung', kind: 'land', scenery: 'north', distance: 2 },
+  { from: 'chuncheon', to: 'andong', kind: 'land', scenery: 'mountain', distance: 2 },
+  { from: 'andong', to: 'jeonju', kind: 'land', scenery: 'plain', distance: 2 },
+  { from: 'andong', to: 'jinju', kind: 'land', scenery: 'plain', distance: 2 },
+  { from: 'daegu', to: 'gwangju', kind: 'land', scenery: 'plain', distance: 2 },
+  { from: 'daegu', to: 'yeosu', kind: 'land', scenery: 'coast', distance: 2 },
+  { from: 'jeonju', to: 'suncheon', kind: 'land', scenery: 'plain', distance: 1 },
+  { from: 'jeonju', to: 'jinju', kind: 'land', scenery: 'plain', distance: 2 },
+  { from: 'gwangju', to: 'yeosu', kind: 'land', scenery: 'coast', distance: 1 },
+  { from: 'mokpo', to: 'suncheon', kind: 'land', scenery: 'river', distance: 1 },
+  { from: 'suncheon', to: 'tongyeong', kind: 'sea', scenery: 'sea', distance: 1, needsBoat: true },
+  { from: 'yeosu', to: 'busan', kind: 'sea', scenery: 'sea', distance: 2, needsBoat: true },
+  { from: 'mokpo', to: 'busan', kind: 'sea', scenery: 'sea', distance: 3, needsBoat: true },
+  { from: 'wonsan', to: 'cheongjin', kind: 'sea', scenery: 'sea', distance: 2, needsBoat: true },
+  { from: 'china_port', to: 'incheon', kind: 'sea', scenery: 'sea', distance: 3, needsBoat: true }
 ];
 
 export const JUNIOR_VEHICLES: JuniorVehicle[] = [

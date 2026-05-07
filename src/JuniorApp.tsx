@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from 'react';
 import { ENDING_COINS, FULL_MODE_URL, JUNIOR_BOATS, JUNIOR_CITIES, JUNIOR_ROUTES, JUNIOR_VEHICLES, getGood, publicAsset } from './juniorData';
 import {
   answerQuiz,
@@ -430,7 +430,7 @@ function CityScreen({ save, onMarket, onMap, onShop, onEnding }: { save: JuniorS
   );
 }
 
-function KoreaMap({ save, selectedCityId, onCity }: { save: JuniorSave; selectedCityId?: JuniorCityId; onCity: (city: JuniorCity) => void }) {
+function KoreaMap({ save, selectedCityId, onCity, children }: { save: JuniorSave; selectedCityId?: JuniorCityId; onCity: (city: JuniorCity) => void; children?: ReactNode }) {
   const connected = getConnectedCityIds(save);
   return (
     <div className="junior-map-board" data-testid="korea-map">
@@ -462,6 +462,7 @@ function KoreaMap({ save, selectedCityId, onCity }: { save: JuniorSave; selected
           </button>
         );
       })}
+      {children}
     </div>
   );
 }
@@ -478,12 +479,17 @@ function MapScreen({ save, onDepart, onBack }: { save: JuniorSave; onDepart: (ci
   const good = goods[0];
   const route = selectedCity ? getRoute(save.currentCityId, selectedCity.id) : undefined;
   const canDepart = selectedCity ? canTravel(save, selectedCity.id) : false;
+  const bubbleStyle = selectedCity
+    ? ({ '--map-bubble-x': `${selectedCity.x}%`, '--map-bubble-y': `${selectedCity.y}%` } as CSSProperties)
+    : undefined;
+  const bubbleClass = selectedCity
+    ? `junior-map-bubble ${selectedCity.x > 58 ? 'left' : 'right'} ${selectedCity.y > 68 ? 'up' : 'down'}`
+    : 'junior-map-bubble';
   return (
     <section className="junior-screen junior-map-screen" data-testid="screen-map">
-      <KoreaMap save={save} selectedCityId={selectedCityId} onCity={(city) => setSelectedCityId(city.id)} />
-      <div className="junior-map-panel" data-testid="map-selection-panel">
+      <KoreaMap save={save} selectedCityId={selectedCityId} onCity={(city) => setSelectedCityId(city.id)}>
         {selectedCity && good ? (
-          <>
+          <div className={bubbleClass} style={bubbleStyle} data-testid="map-selection-panel">
             <div className="junior-map-pick">
               <span className="junior-map-region">{selectedCity.region} · {cityKindLabel(selectedCity)}</span>
               <strong>{selectedCity.name}</strong>
@@ -496,15 +502,18 @@ function MapScreen({ save, onDepart, onBack }: { save: JuniorSave; onDepart: (ci
                   </b>
                 ))}
               </div>
-              <small>{route?.kind === 'sea' ? '배로 가는 길' : '수레로 가는 길'} · {canDepart ? '갈 수 있어' : '아직 어려워'}</small>
+              <small>{route?.kind === 'sea' ? (save.boatId === 'none' ? '배가 필요해' : '배로 가는 길') : '수레로 가는 길'} · {canDepart ? '갈 수 있어' : '아직 어려워'}</small>
             </div>
             <button className="junior-button junior-primary" data-testid="depart-city" disabled={!canDepart} onClick={() => onDepart(selectedCity)}>출발</button>
-          </>
+            <button className="junior-map-back" data-testid="map-back" onClick={onBack}>도시로</button>
+          </div>
         ) : (
-          <strong>도시를 골라봐.</strong>
+          <div className="junior-map-bubble junior-map-empty" data-testid="map-selection-panel">
+            <strong>도시를 골라봐.</strong>
+            <button className="junior-map-back" data-testid="map-back" onClick={onBack}>도시로</button>
+          </div>
         )}
-        <button className="junior-map-back" data-testid="map-back" onClick={onBack}>도시로</button>
-      </div>
+      </KoreaMap>
     </section>
   );
 }
@@ -782,6 +791,19 @@ function VisitIntroScreen({ save, onDone }: { save: JuniorSave; onDone: () => vo
   );
 }
 
+function BoatTierArt({ boat }: { boat: JuniorBoat }) {
+  return (
+    <span className={`junior-boat-tier-art junior-boat-tier-${boat.id}`} aria-hidden="true">
+      <img src={boat.image} alt="" loading="lazy" onError={handleImageFallback} />
+      <i className="junior-boat-sail-main" />
+      <i className="junior-boat-sail-back" />
+      <i className="junior-boat-cargo" />
+      <i className="junior-boat-banner" />
+      <i className="junior-boat-wave" />
+    </span>
+  );
+}
+
 function ShopScreen({ save, onVehicle, onBoat, onBack }: { save: JuniorSave; onVehicle: (id: JuniorVehicle['id']) => void; onBoat: (id: JuniorBoat['id']) => void; onBack: () => void }) {
   const vehicle = getVehicle(save);
   const boat = getBoat(save);
@@ -811,7 +833,7 @@ function ShopScreen({ save, onVehicle, onBoat, onBack }: { save: JuniorSave; onV
           const canBuy = save.coins >= item.cost;
           return (
           <button className={`junior-shop-card boat ${owned ? 'owned' : ''} ${canBuy ? 'affordable' : ''}`} data-testid={`buy-boat-${item.id}`} key={item.id} onClick={() => onBoat(item.id)}>
-            <img src={item.image} alt="" loading="lazy" onError={handleImageFallback} />
+            <BoatTierArt boat={item} />
             <strong>{item.name}</strong>
             <small>{item.text}</small>
             <b>돈 {item.cost}</b>
@@ -887,6 +909,7 @@ export function JuniorApp() {
     <main className={`junior-shell junior-step-${save.currentStep}`} data-testid="junior-app">
       <NetworkStatus online={online} />
       <TopBar save={save} />
+      <FairyTalk save={save} lines={fairyLines(save, event)} />
 
       <section className="junior-main-card">
         {save.currentStep === 'intro' && <IntroScreen save={save} onStart={() => update(startIntro(save))} />}
@@ -911,8 +934,6 @@ export function JuniorApp() {
         onMarket={() => update(goToMarket(save))}
         onShop={() => update(goToShop(save))}
       />
-
-      <FairyTalk save={save} lines={fairyLines(save, event)} />
 
       <footer className="junior-goal" aria-label="목표">
         <span>{city.name}</span>

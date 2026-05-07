@@ -2456,6 +2456,333 @@ button:disabled {
   100% { opacity: 0; transform: scale(1.36) rotate(28deg); }
 }
 
+.junior-shell {
+  grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+}
+
+.junior-talk {
+  min-height: clamp(54px, 7dvh, 66px);
+  grid-template-columns: 48px minmax(0, 1fr);
+  gap: 6px;
+}
+
+.junior-fairy-face {
+  width: 48px;
+  height: 54px;
+}
+
+.junior-speech {
+  min-height: 50px;
+  padding: 7px 11px;
+  border-radius: 18px;
+}
+
+.junior-speech p {
+  font-size: clamp(.9rem, 3.8vw, 1.08rem);
+}
+
+.junior-book-scene {
+  grid-template-columns: 1fr;
+  place-items: center;
+  padding: 78px 16px 18px;
+  background-position: center;
+}
+
+.junior-book-scene > img:not(.junior-book-art) {
+  width: min(260px, 66vw);
+  height: min(370px, 42dvh);
+  justify-self: center;
+  align-self: end;
+  object-fit: contain;
+  object-position: center bottom;
+  transform: translateX(3%);
+  filter: drop-shadow(0 14px 0 rgba(48, 96, 70, .14));
+}
+
+.junior-book-art {
+  display: none;
+}
+
+.junior-map-screen {
+  grid-template-rows: minmax(0, 1fr);
+}
+
+.junior-map-board {
+  min-height: 100%;
+}
+
+.junior-map-panel-legacy {
+  display: none !important;
+}
+
+.junior-map-bubble {
+  position: absolute;
+  z-index: 6;
+  left: var(--map-bubble-x, 50%);
+  top: var(--map-bubble-y, 50%);
+  width: min(220px, 58vw);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 7px;
+  align-items: center;
+  padding: 10px;
+  border: 3px solid rgba(255, 246, 210, .96);
+  border-radius: 20px;
+  background: rgba(255, 251, 229, .97);
+  box-shadow: 0 12px 26px rgba(36, 70, 55, .22);
+}
+
+.junior-map-bubble.right {
+  transform: translate(18px, -50%);
+}
+
+.junior-map-bubble.left {
+  transform: translate(calc(-100% - 18px), -50%);
+}
+
+.junior-map-bubble.up.right {
+  transform: translate(18px, calc(-100% + 16px));
+}
+
+.junior-map-bubble.up.left {
+  transform: translate(calc(-100% - 18px), calc(-100% + 16px));
+}
+
+.junior-map-bubble .junior-map-pick {
+  min-width: 0;
+}
+
+.junior-map-bubble .junior-map-pick strong {
+  font-size: 1.12rem;
+}
+
+.junior-map-bubble .junior-map-pick span,
+.junior-map-bubble .junior-map-pick small {
+  font-size: .78rem;
+}
+
+.junior-map-bubble .junior-map-goods {
+  gap: 4px;
+}
+
+.junior-map-bubble .junior-map-goods b {
+  padding: 3px 5px;
+  font-size: .72rem;
+}
+
+.junior-map-bubble .junior-button,
+.junior-map-bubble .junior-map-back {
+  min-width: 58px;
+  min-height: 42px;
+  padding: 6px 9px;
+  border-radius: 15px;
+  font-size: .9rem;
+}
+
+.junior-market {
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  overflow: hidden;
+}
+
+.junior-market-list {
+  gap: 8px;
+  padding: 0 2px 8px 0;
+  scroll-padding-bottom: 10px;
+}
+
+.junior-market-card {
+  min-height: 272px;
+  align-content: start;
+  gap: 4px;
+  padding: 12px 8px 14px;
+  border-width: 3px;
+  border-radius: 19px;
+}
+
+.junior-market-card .junior-good-img {
+  width: 76px;
+  height: 60px;
+}
+
+.junior-market-card strong {
+  font-size: clamp(1.02rem, 4.8vw, 1.22rem);
+}
+
+.junior-market-card small {
+  padding: 2px 6px;
+  font-size: .74rem;
+  line-height: 1.18;
+}
+
+.junior-market-card b {
+  min-width: 78px;
+  padding: 2px 7px;
+  font-size: .76rem;
+}
+
+.junior-market-card em {
+  min-width: 70px;
+  min-height: 36px;
+  font-size: .82rem;
+  margin-top: auto;
+}
+
+.junior-market-ribbon {
+  top: 6px;
+  right: 6px;
+  padding: 2px 6px;
+  font-size: .74rem;
+}
+
+.junior-shop {
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  overflow: hidden;
+}
+
+.junior-shop-grid {
+  gap: 8px;
+  padding: 0 2px 10px 0;
+  scroll-padding-bottom: 10px;
+}
+
+.junior-shop-card {
+  min-height: 178px;
+  padding: 9px 7px 11px;
+  border-width: 3px;
+  border-radius: 20px;
+}
+
+.junior-boat-tier-art {
+  position: relative;
+  width: min(142px, 88%);
+  height: 86px;
+  display: block;
+  margin-top: 2px;
+}
+
+.junior-boat-tier-art img {
+  position: absolute;
+  left: 50%;
+  bottom: 2px;
+  width: 96%;
+  height: 72px;
+  object-fit: contain;
+  transform: translateX(-50%);
+}
+
+.junior-boat-tier-art i {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+}
+
+.junior-boat-sail-main {
+  left: 46%;
+  bottom: 34px;
+  width: 24px;
+  height: 38px;
+  border-radius: 5px 18px 6px 4px;
+  background: linear-gradient(135deg, #fff8d6, #e8c57d);
+  box-shadow: inset -3px 0 0 rgba(133, 93, 42, .22);
+}
+
+.junior-boat-sail-back {
+  left: 28%;
+  bottom: 33px;
+  width: 18px;
+  height: 28px;
+  border-radius: 5px 14px 5px 4px;
+  background: linear-gradient(135deg, #fef2bd, #d9a957);
+  opacity: .78;
+}
+
+.junior-boat-cargo {
+  right: 18%;
+  bottom: 18px;
+  width: 28px;
+  height: 18px;
+  border-radius: 5px;
+  background:
+    linear-gradient(90deg, rgba(91, 54, 22, .22) 1px, transparent 1px) 0 0 / 9px 100%,
+    linear-gradient(180deg, #c98b43, #8a5427);
+  box-shadow: 0 3px 0 rgba(73, 45, 24, .18);
+}
+
+.junior-boat-banner {
+  right: 20%;
+  bottom: 54px;
+  width: 22px;
+  height: 15px;
+  border-radius: 3px 10px 10px 3px;
+  background: #e45b3d;
+  box-shadow: -2px 0 0 #7b4a24;
+}
+
+.junior-boat-wave {
+  left: 8%;
+  right: 8%;
+  bottom: 0;
+  height: 12px;
+  border-radius: 999px;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(255,255,255,.9) 0 28%, transparent 31%),
+    radial-gradient(ellipse at 58% 50%, rgba(255,255,255,.75) 0 24%, transparent 27%),
+    linear-gradient(180deg, rgba(69, 183, 211, .9), rgba(42, 134, 181, .82));
+}
+
+.junior-boat-tier-small_ferry .junior-boat-sail-main,
+.junior-boat-tier-small_ferry .junior-boat-sail-back,
+.junior-boat-tier-small_ferry .junior-boat-cargo,
+.junior-boat-tier-small_ferry .junior-boat-banner {
+  display: none;
+}
+
+.junior-boat-tier-small_ferry img {
+  width: 76%;
+  height: 58px;
+}
+
+.junior-boat-tier-sailboat .junior-boat-cargo,
+.junior-boat-tier-sailboat .junior-boat-banner {
+  display: none;
+}
+
+.junior-boat-tier-sturdy_sailboat .junior-boat-sail-main {
+  width: 30px;
+  height: 44px;
+}
+
+.junior-boat-tier-sturdy_sailboat::after {
+  content: "";
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  bottom: 20px;
+  height: 9px;
+  border-radius: 999px;
+  background: rgba(72, 54, 34, .42);
+}
+
+.junior-boat-tier-merchant_ship {
+  height: 92px;
+}
+
+.junior-boat-tier-merchant_ship img {
+  width: 108%;
+  height: 78px;
+}
+
+.junior-boat-tier-merchant_ship .junior-boat-sail-main {
+  width: 34px;
+  height: 50px;
+}
+
+.junior-boat-tier-merchant_ship .junior-boat-cargo {
+  right: 10%;
+  width: 40px;
+  height: 23px;
+}
+
 @media (max-width: 400px) {
   .junior-topbar {
     grid-template-columns: 31px minmax(28px, 0.65fr) auto auto auto auto;
