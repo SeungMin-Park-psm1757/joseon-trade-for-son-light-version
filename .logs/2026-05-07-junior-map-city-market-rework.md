@@ -38,6 +38,7 @@
 - 금지어 검색: `팔아봐`, `판매처`, `매수가`, `매도가`, `수요`, `공급`, `수익률` 노출 없음
 - 장터: 구매 후 화면 유지, 짐 요약 갱신 확인
 - 지도: 26개 도시 노드 표시, 승인 지도 이미지 사용 확인
+- 추가 엄격 검수: 갈 수 없는 도시의 큰 흐린 원형 라벨을 제거하고 작은 지도 점으로 낮췄다. 현재/선택/갈 수 있는 도시만 이름 있는 핀으로 표시한다.
 
 ## 스크린샷
 - `.logs/2026-05-07-junior-map-city-market-rework/city-busan-rework.png`
@@ -47,6 +48,9 @@
 - `.logs/2026-05-07-junior-map-city-market-rework/market-rework.png`
 - `.logs/2026-05-07-junior-map-city-market-rework/travel-sea-route-rework.png`
 - `.logs/2026-05-07-junior-map-city-market-rework/mobile-430-map-selected.png`
+- `.logs/2026-05-07-junior-map-city-market-rework-strict/map-strict-marker-pass.png`
+- `.logs/2026-05-07-junior-map-city-market-rework-strict/city-strict-pass.png`
+- `.logs/2026-05-07-junior-map-city-market-rework-strict/market-strict-pass.png`
 
 ## 남은 후속 개선
 - 도시가 26개로 늘어 북부/수도권 노드 밀도가 높아졌다. 다음 단계에서 라벨 충돌을 더 줄이면 좋다.

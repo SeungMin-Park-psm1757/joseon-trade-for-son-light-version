@@ -912,6 +912,87 @@ button:disabled {
   font-size: 0.7rem;
 }
 
+.junior-city-dot {
+  width: 48px;
+  min-height: 36px;
+  grid-template-rows: 13px auto;
+  gap: 2px;
+  padding: 5px 7px 7px;
+  border: 2px solid rgba(255, 253, 222, .92);
+  border-radius: 16px 16px 16px 6px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 236, .92), rgba(226, 243, 194, .84));
+  color: rgba(44, 67, 47, .72);
+  box-shadow:
+    0 5px 0 rgba(46, 94, 69, .16),
+    0 7px 14px rgba(39, 72, 52, .12);
+  clip-path: polygon(0 0, 100% 0, 100% 82%, 62% 82%, 50% 100%, 38% 82%, 0 82%);
+}
+
+.junior-city-dot span {
+  max-width: 38px;
+  font-size: .5rem;
+}
+
+.junior-city-dot strong {
+  max-width: 42px;
+  overflow: hidden;
+  font-size: .65rem;
+  white-space: nowrap;
+}
+
+.junior-city-dot.reachable {
+  border-color: rgba(241, 255, 221, .98);
+  background:
+    linear-gradient(180deg, rgba(75, 194, 118, .98), rgba(34, 154, 92, .98));
+  color: #fff;
+  box-shadow:
+    0 6px 0 rgba(43, 82, 55, .2),
+    0 0 18px rgba(111, 245, 157, .58);
+}
+
+.junior-city-dot.selected {
+  border-color: rgba(255, 255, 224, .98);
+  background:
+    linear-gradient(180deg, #ffe97f, #ffae39);
+  color: #4a2e0e;
+  transform: translate(-50%, -50%) scale(1.18);
+}
+
+.junior-city-dot.selected::before {
+  border-radius: 20px;
+}
+
+.junior-city-dot.current {
+  border-color: rgba(255, 255, 224, .98);
+  background:
+    linear-gradient(180deg, #fff3a0, #ffd45a);
+}
+
+.junior-city-dot.unavailable {
+  width: 16px;
+  min-height: 16px;
+  padding: 0;
+  border: 2px solid rgba(255, 255, 232, .52);
+  border-radius: 999px;
+  background: rgba(231, 244, 202, .52);
+  color: rgba(42, 69, 50, .54);
+  box-shadow: 0 2px 0 rgba(49, 93, 68, .06), 0 0 0 1px rgba(53, 87, 60, .08);
+  clip-path: none;
+  filter: saturate(.72);
+  opacity: .68;
+}
+
+.junior-city-dot.unavailable span,
+.junior-city-dot.unavailable strong {
+  display: none;
+}
+
+.junior-city-dot.locked::after {
+  content: "잠김";
+  font-size: .56rem;
+}
+
 .junior-map-panel {
   width: 100%;
   display: grid;
@@ -2408,12 +2489,17 @@ button:disabled {
   }
 
   .junior-city-dot {
-    width: 52px;
-    min-height: 48px;
+    width: 43px;
+    min-height: 32px;
+  }
+
+  .junior-city-dot.unavailable {
+    width: 15px;
+    min-height: 15px;
   }
 
   .junior-city-dot strong {
-    font-size: 0.76rem;
+    font-size: 0.59rem;
   }
 }
 

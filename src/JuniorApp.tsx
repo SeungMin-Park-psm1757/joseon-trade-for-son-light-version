@@ -447,10 +447,11 @@ function KoreaMap({ save, selectedCityId, onCity }: { save: JuniorSave; selected
         const selected = city.id === selectedCityId;
         const unlocked = save.unlockedCities.includes(city.id);
         const reachable = connected.includes(city.id) && canTravel(save, city.id);
+        const unavailable = !current && !reachable;
         return (
           <button
             key={city.id}
-            className={`junior-city-dot ${current ? 'current' : ''} ${selected ? 'selected' : ''} ${reachable ? 'reachable' : ''} ${!unlocked ? 'locked' : ''}`}
+            className={`junior-city-dot ${current ? 'current' : ''} ${selected ? 'selected' : ''} ${reachable ? 'reachable' : ''} ${unavailable ? 'unavailable' : ''} ${!unlocked ? 'locked' : ''}`}
             style={{ left: `${city.x}%`, top: `${city.y}%` }}
             disabled={!current && !reachable}
             data-testid={`city-${city.id}`}
