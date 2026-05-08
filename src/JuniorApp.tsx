@@ -358,6 +358,16 @@ function cityKindLabel(city: JuniorCity) {
   return city.kind ? labels[city.kind] : '장터 도시';
 }
 
+function cityNodeIcon(city: JuniorCity) {
+  if (city.kind === 'island') return '섬';
+  if (city.kind === 'north_trade_port') return '북';
+  if (city.kind?.includes('port')) return '⚓';
+  if (city.buyGoodIds.includes('paper')) return '책';
+  if (city.buyGoodIds.includes('herbs')) return '잎';
+  if (city.buyGoodIds.includes('salt')) return '소';
+  return '장';
+}
+
 function marketHintForCity(city?: JuniorCity) {
   if (!city) return '다음 장터에서 잘 팔려';
   if (city.kind === 'west_port' || city.kind === 'east_port' || city.kind === 'south_port') return `${city.name} 항구에서 인기 많아`;
@@ -457,7 +467,7 @@ function KoreaMap({ save, selectedCityId, onCity, children }: { save: JuniorSave
             data-testid={`city-${city.id}`}
             onClick={() => onCity(city)}
           >
-            <span>{city.icon}</span>
+            <span aria-hidden="true">{cityNodeIcon(city)}</span>
             <strong>{city.name}</strong>
           </button>
         );
@@ -720,14 +730,13 @@ function MarketScreen({ save, onBuy, onSell, onBack, onMap }: { save: JuniorSave
 
 function EventIllustration({ event }: { event: JuniorEvent }) {
   const sceneSrc = eventSceneImages[event.scene] ?? publicAsset('/assets/events/book.svg');
+  const symbolLabel = event.quiz ? '맞춤말' : event.type === 'weather' ? '날씨' : event.type === 'kindness' ? '도움' : '이야기';
   return (
     <div className={`junior-event-visual mood-${event.type.includes('quiz') ? 'quiz' : event.type}`}>
       <img className="junior-event-bg" src={sceneSrc} alt="" loading="lazy" onError={handleImageFallback} />
       <img className="junior-event-jeongwoo" src={publicAsset('/assets/jeongwoo/jeongwoo.png')} alt="" />
       <img className="junior-event-fairy" src={publicAsset('/assets/fairy/fairy-default.png')} alt="" />
-      <span className="junior-event-symbol">
-        {event.type === 'quiz_pirate' ? '배' : event.type === 'quiz_bandit' ? '길' : event.type === 'quiz_animal' ? '숲' : event.type === 'quiz_merchant' ? '장' : event.type === 'quiz_folktale' ? '옛' : '별'}
-      </span>
+      <span className="junior-event-symbol">{symbolLabel}</span>
     </div>
   );
 }
