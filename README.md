@@ -1,72 +1,48 @@
-# 정우의 꼬마 거상 모험
+# Jeongwoo's Little Merchant Adventure
 
-초등학교 1학년도 할 수 있는 모바일 세로형 경량 무역 어드벤처입니다.
+Junior mode is a small Joseon trade RPG for grade 1-2 children. It is a separate light-mode app and does not include full-mode/starter code.
 
-이 저장소는 **라이트버전 전용 저장소**입니다. 기존 full mode 코드는 포함하지 않습니다.
-
-## 실행 링크
-
-로컬 실행 후 브라우저에서 아래 링크로 접속합니다.
-
-[http://127.0.0.1:4390/](http://127.0.0.1:4390/)
+## Run Locally
 
 ```bash
 npm install
 npm run dev
 ```
 
-## 게임 목표
-
-- 정우가 조선에 도착해 바람이와 함께 첫 장사를 배웁니다.
-- 지도에서 도시를 고르고 이동합니다.
-- 도시별 특산품을 사고팝니다.
-- 이동 중 도적, 해적, 동물, 상인, 날씨, 설화 이벤트를 만납니다.
-- 맞춤법 퀴즈를 풀어 사건을 지나갑니다.
-- 돈을 모아 수레와 배를 장만합니다.
-- 300냥을 모으면 집으로 돌아가는 엔딩을 볼 수 있습니다.
-
-## 화면 구조
-
-1. 시작 화면
-2. 도시 화면
-3. 한국 전도형 지도 화면
-4. 장터 화면
-5. 이동 화면
-6. 이벤트/맞춤법 퀴즈 화면
-7. 탈것 장만 화면
-8. 엔딩 화면
-
-모바일 세로 화면을 우선합니다. 주요 검수 화면은 `360x800`, `390x844`, `412x915`, `430x932`입니다.
-
-## 장사 루프
+Default local URL:
 
 ```text
-도시 보기
-→ 장터에서 물건 사기
-→ 짐에 싣기
-→ 지도에서 도시 고르기
-→ 이동 중 사건 만나기
-→ 처음 간 도시는 짧게 둘러보기
-→ 장터에서 팔기
-→ 돈을 모아 수레/배 장만하기
-→ 300냥 엔딩
+http://127.0.0.1:4390/
 ```
 
-## 쉬운 표현 원칙
+## Core Loop
 
-사용하는 말:
+1. See today's goal.
+2. Buy a good at the market.
+3. Load it into cargo.
+4. Pick a city on the map.
+5. Check the route card.
+6. Travel.
+7. Solve a small event or quiz.
+8. Sell the good.
+9. Earn coins/stars.
+10. Buy a cart or boat.
+11. Collect city stamps and badges.
+12. Reach 300 coins and choose the ending.
+
+## Child-Friendly Language Rules
+
+Use:
 
 - 산 값
-- 사는 값
 - 파는 돈
 - 여기서 사기 좋아
-- 여기서 팔기 좋아
-- 짐
-- 돈
-- 별
-- 장만하기
+- 다른 도시에서 인기 많아
+- 짐에 실렸어
+- 돈이 늘었어
+- 조금 더 모으면 손수레야
 
-사용하지 않는 말:
+Avoid:
 
 - 매수가
 - 매도가
@@ -74,121 +50,75 @@ npm run dev
 - 수익률
 - 수요/공급
 - 명성
-- 신뢰도
-- 장부 UI
+- 선박 상세 수치
+- full-mode ledger terms
 
-## 지도와 도시
+## Screens
 
-지도는 한국 전도 느낌의 2D 지도를 사용합니다.
+- Start / continue
+- City
+- Market
+- Map
+- Travel
+- Event / quiz
+- Event result
+- Vehicle shop
+- Ending choice
+- Ending
 
-도시 예시:
+## Data And Save
 
-- 서울
-- 개성
-- 평양
-- 신의주
-- 춘천
-- 강릉
-- 원산
-- 함흥
-- 청진
-- 안동
-- 대구
-- 울산
-- 부산
-- 진주
-- 통영
-- 전주
-- 광주
-- 순천
-- 여수
-- 목포
-- 제주
-
-도시마다 사기 좋은 물건과 팔기 좋은 물건이 다릅니다.
-
-## 이벤트와 퀴즈
-
-이동 중 이벤트는 낮은 확률로 발생합니다.
-
-- 육로: 도적, 동물, 상인, 날씨 이벤트
-- 해상: 해적, 바람, 바닷길 이벤트
-- 이야기: 떡 고개, 선녀의 옷감 같은 순한 설화 이벤트
-
-퀴즈는 초1~초2 수준의 맞춤법 문제입니다. 틀려도 게임오버는 없습니다.
-
-## 저장
-
-브라우저 `localStorage`를 사용합니다.
-
-저장 키:
+Save storage:
 
 ```text
 joseon_trade_junior_save_v1
 ```
 
-저장 항목:
+The save migration keeps older saves playable and fills defaults for newer fields such as result chips.
 
-- 현재 도시
-- 돈
-- 별
-- 짐
-- 짐칸
-- 수레
-- 배
-- 열린 도시
-- 첫 방문 도시
-- 본 이벤트
-- 이야기 단서
-- 엔딩 여부
-- 지역별 가격 변화
-
-## 테스트
+## Test
 
 ```bash
 npm run build
 npm run test
 ```
 
-검증된 항목:
+Validated flows:
 
-- 튜토리얼 흐름
-- 지도 이동
-- 장터 구매/판매
-- 가격 변화
-- 같은 도시 되팔기 방지
-- 이동 씬
-- 도적/해적 맞춤법 퀴즈
-- 수레/배 장만
-- 300냥 엔딩
-- full mode 시스템 비노출
+- tutorial flow
+- market buy/sell feedback
+- route card before travel
+- event result card
+- upgrade celebration
+- city stamps and badges
+- ending hint
+- save/continue
+- PWA manifest/service worker/offline files
 
-## PWA와 배포
+## GitHub Pages
 
-라이트버전은 모바일 홈 화면에 추가할 수 있는 PWA 기본 구성을 포함합니다.
+Current Pages URL:
 
-- 앱 이름: `정우의 꼬마 거상 모험`
-- 짧은 이름: `꼬마 거상`
-- 화면 방향: 세로형
-- 저장 키: `joseon_trade_junior_save_v1`
+```text
+https://seungmin-park-psm1757.github.io/joseon-trade-for-son-light-version/
+```
 
-로컬 배포 확인:
+Local release check:
 
 ```bash
 npm run build
 npx vite preview --host 127.0.0.1 --port 4390
 ```
 
-배포 후 확인할 것:
+Release checks:
 
-- 시작 화면이 빈 화면 없이 보이는지
-- 홈 화면 추가 아이콘이 보이는지
-- 새로고침 후 이어하기가 되는지
-- 네트워크가 끊겼을 때 안내가 보이는지
-- 이미지가 빠졌을 때 대체 화면이 보이는지
+- app loads on mobile viewport
+- manifest loads
+- service worker loads
+- offline fallback loads
+- continue works after reload
+- console errors are 0
 
-## 배포 메모
+## Asset Policy
 
-이 저장소에는 라이트버전 앱만 둡니다.
-
-full mode, `starter/`, 기존 본게임 문서와 에셋은 이 저장소에 포함하지 않습니다.
+Do not include SWF original files, extracted SWF images, extracted SWF sounds, or decompiled SWF code. Junior mode may reuse only the gameplay structure translated into child-friendly Joseon trade mechanics.

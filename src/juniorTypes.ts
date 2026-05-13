@@ -211,6 +211,7 @@ export interface JuniorSave {
   completedEnding: boolean;
   completedRuns: number;
   marketPressure: JuniorMarketPressure;
+  lastResultChips?: string[];
   lastSavedAt?: string;
   message?: string;
 }

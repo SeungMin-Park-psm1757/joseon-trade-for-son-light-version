@@ -107,6 +107,7 @@ test('tutorial-flow: buy, spelling event, first visit intro, sell', async ({ pag
 
   await page.getByTestId('buy-cotton_cloth').click();
   await expect(page.getByTestId('screen-market')).toBeVisible();
+  await expect(page.getByTestId('market-buy-sell-feedback')).toContainText('-');
   await expect(page.getByTestId('market-cargo-summary')).toContainText('내 짐 1/');
   await expect(page.getByTestId('market-cargo-summary')).toContainText('면포');
 
@@ -118,6 +119,7 @@ test('tutorial-flow: buy, spelling event, first visit intro, sell', async ({ pag
   await expect(page.getByTestId('quiz-question')).toContainText('바른 말');
   await chooseVisibleCorrectSpelling(page);
   await expect(page.getByTestId('screen-event-result')).toBeVisible();
+  await expect(page.getByTestId('event-result-card')).toBeVisible();
   await page.getByTestId('event-result-ok').click();
 
   await expect(page.getByTestId('screen-visit-intro')).toBeVisible();
@@ -140,6 +142,8 @@ test('tutorial-flow: buy, spelling event, first visit intro, sell', async ({ pag
 test('city-map-market-flow: expanded map and market stay simple', async ({ page }) => {
   await seed(page, baseSave({ currentCityId: 'busan' }));
   await expect(page.getByTestId('screen-city')).toBeVisible();
+  await expect(page.getByTestId('today-goal-card')).toBeVisible();
+  await expect(page.getByTestId('city-stamp')).toContainText('부산');
   await expect(page.getByTestId('open-market')).toBeVisible();
   await expect(page.getByTestId('open-map')).toBeVisible();
   await expect(page.getByTestId('open-cargo')).toBeVisible();
@@ -152,6 +156,7 @@ test('city-map-market-flow: expanded map and market stay simple', async ({ page 
   await expect(page.getByTestId('city-daegu')).toBeEnabled();
   await expect(page.getByTestId('city-jeju')).toBeDisabled();
   await page.getByTestId('city-daegu').click();
+  await expect(page.getByTestId('route-card-before-travel')).toBeVisible();
   await expect(page.locator('.junior-city-dot.selected')).toContainText('대구');
   await expect(page.locator('.junior-map-region')).toContainText('경상');
   await expect(page.locator('.junior-map-goods')).toContainText('약초');
@@ -159,7 +164,7 @@ test('city-map-market-flow: expanded map and market stay simple', async ({ page 
   await page.getByTestId('map-back').click();
   await page.getByTestId('open-market').click();
   await expect(page.getByTestId('buy-cotton_cloth')).toBeVisible();
-  await expect(page.getByTestId('buy-cotton_cloth')).toContainText('사는 값');
+  await expect(page.getByTestId('buy-cotton_cloth')).toContainText('산 값');
 });
 
 test('market-flow: buying changes price and keeps market open', async ({ page }) => {
@@ -184,6 +189,39 @@ test('market-flow: same city resale shows original buy price and no profit', asy
   await expect(page.getByTestId('sell-cotton_cloth')).toContainText('파는 돈 10냥');
   await page.getByTestId('sell-cotton_cloth').click();
   await expect(page.getByTestId('junior-coins')).toContainText('30');
+});
+
+test('market-flow: a producing city does not buy the same good expensively', async ({ page }) => {
+  await seed(page, baseSave({
+    currentStep: 'market',
+    currentCityId: 'daegu',
+    coins: 20,
+    cargo: [{ id: 'herbs-foreign', goodId: 'herbs', fromCityId: 'andong', buyPrice: 12 }]
+  }));
+  await expect(page.getByTestId('sell-herbs')).toContainText('산 값 12냥');
+  await expect(page.getByTestId('sell-herbs')).toContainText('여기에도 많아');
+  await expect(page.getByTestId('sell-herbs')).toContainText('파는 돈 11냥');
+});
+
+test('market-flow: city development changes market goods count between two and seven', async ({ page }) => {
+  await seed(page, baseSave({ currentStep: 'market', currentCityId: 'seoul', coins: 120 }));
+  await expect(page.getByTestId('screen-market')).toBeVisible();
+  await expect(page.getByTestId('screen-market')).toHaveClass(/junior-market-crowded/);
+  await expect(page.locator('[data-testid^="buy-"]')).toHaveCount(7);
+
+  await seed(page, baseSave({ currentStep: 'market', currentCityId: 'jeju', coins: 120 }));
+  await expect(page.getByTestId('screen-market')).not.toHaveClass(/junior-market-crowded/);
+  await expect(page.locator('[data-testid^="buy-"]')).toHaveCount(4);
+});
+
+test('audio-flow: sound controls and copied audio assets are available', async ({ page }) => {
+  await expect(page.getByTestId('junior-audio-controls')).toBeVisible();
+  await expect(page.getByTestId('junior-audio-prime')).toBeVisible();
+  expect((await page.request.get('/assets/audio/bgm-port-harbor-first-light.mp3')).ok()).toBeTruthy();
+  expect((await page.request.get('/assets/audio/sfx-buy-market-crossing.mp3')).ok()).toBeTruthy();
+  await page.getByTestId('junior-audio-prime').click();
+  const audioDebug = await page.evaluate(() => (window as unknown as { __JUNIOR_AUDIO_DEBUG__?: { musicOn: boolean } }).__JUNIOR_AUDIO_DEBUG__);
+  expect(audioDebug?.musicOn).toBe(true);
 });
 
 test('travel-scene: mountain route remains visible long enough', async ({ page }) => {
@@ -282,11 +320,13 @@ test('route-cutscenes: key routes have art and story hooks', async ({ page }) =>
 test('upgrade-flow: handcart and boat can be bought', async ({ page }) => {
   await seed(page, baseSave({ currentStep: 'shop', currentCityId: 'tongyeong', coins: 400 }));
   await expect(page.getByTestId('screen-shop')).toBeVisible();
+  await expect(page.getByTestId('equipment-goal')).toBeVisible();
   await page.getByTestId('buy-vehicle-handcart').click();
-  await expect(page.getByText('손수레를 장만했어!')).toBeVisible();
+  await expect(page.getByTestId('upgrade-celebration')).toBeVisible();
+  await expect(page.getByTestId('upgrade-celebration')).toContainText('손수레를 장만했어!');
   await expect(page.getByText('짐 0/3')).toBeVisible();
   await page.getByTestId('buy-boat-small_ferry').click();
-  await expect(page.getByText('작은 나룻배를 장만했어!')).toBeVisible();
+  await expect(page.getByTestId('upgrade-celebration')).toContainText('작은 나룻배를 장만했어!');
   await page.getByTestId('shop-back').click();
   await page.getByTestId('open-map').click();
   await expect(page.getByTestId('city-jeju')).toBeEnabled();
@@ -296,6 +336,7 @@ test('ending-flow: 300 coins opens home ending', async ({ page }) => {
   await seed(page, baseSave({ currentStep: 'city', coins: 300, storyClues: 3 }));
   await page.getByTestId('open-ending').click();
   await expect(page.getByTestId('screen-ending-choice')).toBeVisible();
+  await expect(page.getByTestId('ending-hint')).toBeVisible();
   await page.getByTestId('go-home').click();
   await expect(page.getByTestId('screen-ending')).toBeVisible();
   await expect(page.getByText('꼬마 거상 정우')).toBeVisible();

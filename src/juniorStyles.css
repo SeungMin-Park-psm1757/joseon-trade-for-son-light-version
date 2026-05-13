@@ -17,6 +17,168 @@
   --junior-touch: 56px;
 }
 
+/* Release polish: sound controls and thumb-first mobile map choices. */
+.junior-audio-controls {
+  display: inline-grid;
+  grid-template-columns: minmax(40px, auto);
+  align-items: center;
+  justify-items: end;
+  gap: 3px;
+}
+
+.junior-audio-controls button {
+  min-width: 36px;
+  min-height: 30px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 246, 210, .96);
+  color: #29554b;
+  font-size: .72rem;
+  font-weight: 1000;
+  box-shadow: inset 0 -3px 0 rgba(66, 92, 52, .12);
+}
+
+.junior-audio-controls button:first-child {
+  padding-inline: 8px;
+}
+
+.junior-audio-controls button.active,
+.junior-audio-controls button.ready {
+  background: linear-gradient(180deg, #ffe779, #f5b448);
+  color: #4a2e0e;
+}
+
+.junior-audio-controls button:nth-child(n + 2) {
+  display: none;
+}
+
+.junior-map-screen {
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 8px;
+}
+
+.junior-map-board {
+  touch-action: manipulation;
+}
+
+.junior-map-destination-rail {
+  width: 100%;
+  min-height: 56px;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 2px 2px 7px;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+
+.junior-map-destination-rail button {
+  flex: 0 0 auto;
+  min-width: 92px;
+  min-height: 50px;
+  display: grid;
+  align-content: center;
+  gap: 2px;
+  padding: 7px 12px;
+  border: 3px solid rgba(255, 246, 210, .88);
+  border-radius: 17px;
+  background: rgba(255, 251, 229, .96);
+  color: #244c43;
+  text-align: left;
+  box-shadow: 0 6px 0 rgba(45, 87, 63, .12);
+  scroll-snap-align: start;
+}
+
+.junior-map-destination-rail button.selected {
+  border-color: rgba(255, 232, 105, .98);
+  background: linear-gradient(180deg, #fff5a2, #ffc655);
+  color: #51340f;
+  transform: translateY(-1px);
+}
+
+.junior-map-destination-rail strong {
+  font-size: .94rem;
+  font-weight: 1000;
+  line-height: 1.05;
+  white-space: nowrap;
+}
+
+.junior-map-destination-rail span {
+  font-size: .74rem;
+  font-weight: 900;
+  opacity: .78;
+}
+
+.junior-map-svg line {
+  stroke-width: 1.35;
+  opacity: .5;
+  filter: none;
+}
+
+.junior-map-svg line.sea {
+  stroke-width: 1.55;
+  stroke-dasharray: 2.2 6.2;
+  opacity: .62;
+}
+
+.junior-map-bubble {
+  max-width: min(210px, 54vw);
+}
+
+.junior-city-dot.reachable,
+.junior-city-dot.current,
+.junior-city-dot.selected {
+  min-width: 48px;
+  min-height: 40px;
+}
+
+.junior-city-dot.selected {
+  animation: junior-click-pop 260ms ease-out;
+}
+
+.junior-market-card span {
+  word-break: keep-all;
+}
+
+@keyframes junior-click-pop {
+  0% { transform: translate(-50%, -50%) scale(.98); }
+  60% { transform: translate(-50%, -50%) scale(1.24); }
+  100% { transform: translate(-50%, -50%) scale(1.18); }
+}
+
+@media (min-width: 560px) {
+  .junior-topbar {
+    grid-template-columns: 34px minmax(42px, 1fr) repeat(4, auto) auto;
+  }
+
+  .junior-audio-controls {
+    grid-template-columns: repeat(3, auto);
+  }
+
+  .junior-audio-controls button:nth-child(n + 2) {
+    display: inline-grid;
+    place-items: center;
+  }
+}
+
+@media (max-width: 430px) {
+  .junior-topbar {
+    grid-template-columns: 31px minmax(34px, .72fr) repeat(4, auto) auto;
+  }
+
+  .junior-audio-controls button:first-child {
+    min-width: 34px;
+    width: 34px;
+    padding-inline: 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .junior-map-bubble {
+    max-width: min(190px, 50vw);
+  }
+}
+
 * {
   box-sizing: border-box;
 }
@@ -3288,4 +3450,333 @@ button:disabled {
     width: min(130px, 82%);
     height: auto;
   }
+}
+
+/* Final mobile overrides kept at file end so earlier screen-specific rules cannot undo them. */
+.junior-shell .junior-map-screen {
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 8px;
+}
+
+.junior-shell .junior-map-destination-rail {
+  width: 100%;
+  min-height: 56px;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 2px 2px 7px;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+
+.junior-shell .junior-map-destination-rail button {
+  flex: 0 0 auto;
+  min-width: 92px;
+  min-height: 50px;
+  display: grid;
+  align-content: center;
+  gap: 2px;
+  padding: 7px 12px;
+  border: 3px solid rgba(255, 246, 210, .88);
+  border-radius: 17px;
+  background: rgba(255, 251, 229, .96);
+  color: #244c43;
+  text-align: left;
+  box-shadow: 0 6px 0 rgba(45, 87, 63, .12);
+  scroll-snap-align: start;
+}
+
+.junior-shell .junior-map-destination-rail button.selected {
+  border-color: rgba(255, 232, 105, .98);
+  background: linear-gradient(180deg, #fff5a2, #ffc655);
+  color: #51340f;
+  transform: translateY(-1px);
+}
+
+.junior-shell .junior-map-svg line {
+  stroke-width: 1.35;
+  opacity: .5;
+  filter: none;
+}
+
+.junior-shell .junior-map-svg line.sea {
+  stroke-width: 1.55;
+  stroke-dasharray: 2.2 6.2;
+  opacity: .62;
+}
+
+.junior-shell .junior-map-bg {
+  object-fit: fill;
+  object-position: center;
+}
+
+@media (min-width: 560px) {
+  .junior-shell .junior-topbar {
+    grid-template-columns: 34px minmax(42px, 1fr) repeat(4, auto) auto;
+  }
+}
+
+@media (max-width: 430px) {
+  .junior-shell .junior-topbar {
+    grid-template-columns: 31px minmax(34px, .72fr) repeat(4, auto) auto;
+  }
+}
+
+/* Dense markets: big cities show 6-7 goods, so the card rhythm becomes more scannable. */
+.junior-shell .junior-market-crowded {
+  gap: 8px;
+}
+
+.junior-shell .junior-market-crowded .junior-market-hero {
+  min-height: 62px;
+  grid-template-columns: 76px minmax(0, 1fr);
+  padding: 6px 8px;
+}
+
+.junior-shell .junior-market-crowded .junior-market-hero img {
+  width: 70px;
+  height: 50px;
+  border-radius: 15px;
+}
+
+.junior-shell .junior-market-crowded .junior-market-hero .junior-market-cart {
+  left: 22px;
+  width: 58px;
+  height: 42px;
+}
+
+.junior-shell .junior-market-crowded .junior-market-hero strong {
+  font-size: 1.08rem;
+}
+
+.junior-shell .junior-market-crowded .junior-market-hero span {
+  font-size: .82rem;
+}
+
+.junior-shell .junior-market-crowded .junior-market-cargo-summary {
+  min-height: 46px;
+  padding: 6px 9px;
+  border-radius: 17px;
+}
+
+.junior-shell .junior-market-crowded .junior-market-list {
+  gap: 7px;
+  padding-bottom: 12px;
+}
+
+.junior-shell .junior-market-crowded .junior-market-card {
+  min-height: 204px;
+  gap: 3px;
+  padding: 9px 7px 11px;
+  border-width: 3px;
+  border-radius: 18px;
+}
+
+.junior-shell .junior-market-crowded .junior-market-card::after {
+  inset: 6px;
+  border-radius: 14px;
+}
+
+.junior-shell .junior-market-crowded .junior-market-card .junior-good-img {
+  width: 64px;
+  height: 50px;
+}
+
+.junior-shell .junior-market-crowded .junior-market-card strong {
+  font-size: clamp(.98rem, 4.2vw, 1.12rem);
+  line-height: 1.04;
+}
+
+.junior-shell .junior-market-crowded .junior-market-card span {
+  font-size: .78rem;
+  line-height: 1.05;
+}
+
+.junior-shell .junior-market-crowded .junior-market-card b {
+  min-width: 72px;
+  padding: 2px 6px;
+  font-size: .74rem;
+}
+
+.junior-shell .junior-market-crowded .junior-market-card small {
+  max-width: 96%;
+  padding: 2px 6px;
+  font-size: .68rem;
+  line-height: 1.08;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: keep-all;
+}
+
+.junior-shell .junior-market-crowded .junior-market-card em {
+  min-width: 68px;
+  min-height: 32px;
+  padding-inline: 10px;
+  font-size: .78rem;
+}
+
+.junior-shell .junior-market-crowded .junior-market-ribbon {
+  top: 5px;
+  right: 5px;
+  padding: 2px 5px;
+  font-size: .66rem;
+}
+
+@media (max-width: 390px) {
+  .junior-shell .junior-market-crowded .junior-market-card {
+    min-height: 192px;
+    padding-inline: 6px;
+  }
+
+  .junior-shell .junior-market-crowded .junior-market-card .junior-good-img {
+    width: 58px;
+    height: 46px;
+  }
+}
+
+.junior-shell .junior-today-goal,
+.junior-shell .junior-route-card,
+.junior-shell .junior-equipment-goal,
+.junior-shell .junior-ending-hint {
+  display: grid;
+  gap: 5px;
+  border: 3px solid rgba(95, 61, 35, .22);
+  border-radius: 18px;
+  background: linear-gradient(135deg, #fff7d8, #eaf7ef);
+  box-shadow: 0 12px 22px rgba(69, 43, 24, .12);
+  color: #3d2818;
+}
+
+.junior-shell .junior-today-goal {
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  margin: 8px 0;
+  padding: 10px 12px;
+}
+
+.junior-shell .junior-today-goal span,
+.junior-shell .junior-equipment-goal b,
+.junior-shell .junior-ending-hint b {
+  font-size: .76rem;
+  color: #896032;
+}
+
+.junior-shell .junior-today-goal strong {
+  font-size: 1.02rem;
+  line-height: 1.15;
+}
+
+.junior-shell .junior-today-goal small {
+  grid-column: 1 / 2;
+  font-weight: 800;
+  color: #5d4932;
+}
+
+.junior-shell .junior-today-goal .junior-button {
+  grid-row: 1 / span 3;
+  grid-column: 2;
+  min-height: 56px;
+  padding-inline: 16px;
+  white-space: nowrap;
+}
+
+.junior-shell .junior-action-button.today-focus {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 0 rgba(117, 75, 38, .22), 0 0 0 4px rgba(255, 207, 92, .42);
+}
+
+.junior-shell .junior-route-card {
+  margin-top: 7px;
+  padding: 9px;
+  background: linear-gradient(135deg, #ecfbff, #fff4c9);
+}
+
+.junior-shell .junior-route-card.sea {
+  background: linear-gradient(135deg, #dff7ff, #edf6ff);
+}
+
+.junior-shell .junior-route-card b {
+  font-size: .96rem;
+}
+
+.junior-shell .junior-route-card span,
+.junior-shell .junior-route-card small {
+  font-size: .78rem;
+  line-height: 1.15;
+}
+
+.junior-shell .junior-money-feedback {
+  position: absolute;
+  right: 22px;
+  top: 115px;
+  z-index: 9;
+  display: inline-grid;
+  min-width: 74px;
+  min-height: 40px;
+  place-items: center;
+  border-radius: 999px;
+  background: #fff2a8;
+  border: 3px solid rgba(104, 68, 34, .2);
+  color: #704018;
+  font-weight: 1000;
+  animation: juniorPopMoney .75s ease both;
+}
+
+@keyframes juniorPopMoney {
+  0% { transform: translateY(10px) scale(.82); opacity: 0; }
+  35% { transform: translateY(-4px) scale(1.08); opacity: 1; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.junior-shell .junior-result-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  width: min(100%, 310px);
+}
+
+.junior-shell .junior-result-chips span,
+.junior-shell .junior-city-stamps span {
+  display: inline-grid;
+  min-height: 32px;
+  place-items: center;
+  border-radius: 999px;
+  padding: 5px 10px;
+  background: #fff5bf;
+  border: 2px solid rgba(105, 68, 35, .18);
+  font-weight: 900;
+}
+
+.junior-shell .junior-city-stamps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+  margin: 4px 0;
+}
+
+.junior-shell .junior-upgrade-celebration {
+  display: grid;
+  gap: 4px;
+  padding: 10px 12px;
+  border-radius: 18px;
+  background: #fff0a6;
+  border: 3px solid rgba(124, 77, 32, .22);
+  text-align: center;
+  animation: juniorPopMoney .75s ease both;
+}
+
+.junior-shell .junior-equipment-goal,
+.junior-shell .junior-ending-hint {
+  padding: 11px 13px;
+  text-align: center;
+}
+
+.junior-shell .junior-equipment-goal span,
+.junior-shell .junior-ending-hint span {
+  font-weight: 900;
+  line-height: 1.25;
 }

@@ -31,7 +31,8 @@ function cloneSave(save: JuniorSave): JuniorSave {
     marketPressure: {
       buy: { ...save.marketPressure.buy },
       sell: { ...save.marketPressure.sell }
-    }
+    },
+    lastResultChips: save.lastResultChips ? [...save.lastResultChips] : undefined
   };
 }
 
@@ -118,6 +119,7 @@ export function normalizeJuniorSave(raw: unknown): JuniorSave {
     completedEnding: Boolean(value.completedEnding),
     completedRuns: numberOr(value.completedRuns, 0),
     marketPressure: normalizePressure(value.marketPressure),
+    lastResultChips: stringArray(value.lastResultChips),
     lastSavedAt: lastSavedAtOr(value.lastSavedAt),
     message: typeof value.message === 'string' ? value.message : undefined
   };
@@ -164,6 +166,7 @@ export function resetJuniorGame(): JuniorSave {
     seenEventIds: [],
     storyArcProgress: {},
     quizWrongStreak: 0,
+    lastResultChips: undefined,
     marketPressure: { buy: {}, sell: {} }
   };
 }
@@ -213,14 +216,16 @@ export function getSellPrice(save: JuniorSave, cityId: JuniorCityId, goodId: Jun
   const good = getGood(goodId);
   const wanted = city.sellGoodIds.includes(goodId) || city.id === 'seoul';
   const local = city.buyGoodIds.includes(goodId);
-  const bonus = wanted ? 6 : local ? -2 : 1;
+  const bonus = local ? -5 : wanted ? 6 : 1;
   const count = save.marketPressure.sell[pressureKey(cityId, goodId)] ?? 0;
   return Math.max(4, good.baseSellCoins + bonus + variation(cityId, goodId) - count * 2);
 }
 
 export function getSellPriceForCargo(save: JuniorSave, cityId: JuniorCityId, cargoItem: JuniorCargoItem) {
   const marketPrice = getSellPrice(save, cityId, cargoItem.goodId);
+  const city = getCity(cityId);
   if (cargoItem.fromCityId === cityId) return Math.min(marketPrice, cargoItem.buyPrice);
+  if (city.buyGoodIds.includes(cargoItem.goodId)) return Math.min(marketPrice, Math.max(4, cargoItem.buyPrice - 1));
   return marketPrice;
 }
 
@@ -264,6 +269,7 @@ export function buyGood(save: JuniorSave, goodId: JuniorGoodId): JuniorSave {
       ...save.marketPressure,
       buy: { ...save.marketPressure.buy, [key]: (save.marketPressure.buy[key] ?? 0) + 1 }
     },
+    lastResultChips: [`돈 -${price}냥`, '짐 +1'],
     message: bestCity ? `${good.name}을 샀어. ${bestCity.name}에서 인기 많아.` : `${good.name}을 짐에 실었어.`
   };
 }
@@ -291,6 +297,7 @@ export function startTravel(save: JuniorSave, destinationCityId: JuniorCityId): 
     destinationCityId,
     currentStep: 'travel',
     tutorialStage: Math.max(save.tutorialStage, 5),
+    lastResultChips: undefined,
     message: `${getCity(destinationCityId).name}으로 출발!`
   };
 }
@@ -419,7 +426,8 @@ export function sellCargoItem(save: JuniorSave, cargoId: string): JuniorSave {
   const nextCargo = save.cargo.filter((item) => item.id !== cargoId);
   const key = pressureKey(save.currentCityId, cargoItem.goodId);
   const city = getCity(save.currentCityId);
-  const goodPlace = city.sellGoodIds.includes(cargoItem.goodId) || city.id === 'seoul';
+  const localProduction = city.buyGoodIds.includes(cargoItem.goodId);
+  const goodPlace = !localProduction && (city.sellGoodIds.includes(cargoItem.goodId) || city.id === 'seoul');
   const next = applyMilestones({
     ...save,
     coins: save.coins + price,
@@ -432,6 +440,7 @@ export function sellCargoItem(save: JuniorSave, cargoId: string): JuniorSave {
       ...save.marketPressure,
       sell: { ...save.marketPressure.sell, [key]: (save.marketPressure.sell[key] ?? 0) + 1 }
     },
+    lastResultChips: [`돈 +${price}냥`, ...(goodPlace ? ['별 +1'] : []), '짐 -1'],
     message: `${good.name}을 팔았어. 돈이 늘고 짐칸이 비었어.`
   });
   return next;
@@ -459,6 +468,18 @@ function applyReward(save: JuniorSave, reward?: JuniorReward): JuniorSave {
   };
 }
 
+function rewardChips(reward?: JuniorReward): string[] {
+  if (!reward) return [];
+  const chips: string[] = [];
+  if (reward.coins) chips.push(reward.coins > 0 ? `돈 +${reward.coins}냥` : `돈 ${reward.coins}냥`);
+  if (reward.stars) chips.push(`별 +${reward.stars}`);
+  if (reward.storyClues) chips.push(`이야기 +${reward.storyClues}`);
+  if (reward.loseCargo) chips.push('짐 하나 잃음');
+  if (reward.badge) chips.push('배지');
+  if (reward.unlockCityId) chips.push('새 도시');
+  return chips;
+}
+
 export function getSelectedEvent(save: JuniorSave): JuniorEvent | undefined {
   return JUNIOR_EVENTS.find((event) => event.id === save.selectedEventId);
 }
@@ -466,14 +487,14 @@ export function getSelectedEvent(save: JuniorSave): JuniorEvent | undefined {
 export function resolveSimpleEvent(save: JuniorSave): JuniorSave {
   const event = getSelectedEvent(save);
   const rewarded = applyReward(save, event?.reward);
-  return applyMilestones({ ...rewarded, currentStep: 'eventResult', eventResultText: event?.reward ? '좋은 일이 생겼어!' : '무사히 지나갔어.' });
+  return applyMilestones({ ...rewarded, currentStep: 'eventResult', eventResultText: event?.reward ? '좋은 일이 생겼어!' : '무사히 지나갔어.', lastResultChips: rewardChips(event?.reward) });
 }
 
 export function resolveChoice(save: JuniorSave, choiceIndex: number): JuniorSave {
   const event = getSelectedEvent(save);
   const choice = event?.choices?.[choiceIndex];
   const rewarded = applyReward(save, choice?.reward);
-  return applyMilestones({ ...rewarded, currentStep: 'eventResult', eventResultText: choice?.resultText ?? '잘했어!' });
+  return applyMilestones({ ...rewarded, currentStep: 'eventResult', eventResultText: choice?.resultText ?? '잘했어!', lastResultChips: rewardChips(choice?.reward) });
 }
 
 export function answerQuiz(save: JuniorSave, option: string): JuniorSave {
@@ -484,7 +505,7 @@ export function answerQuiz(save: JuniorSave, option: string): JuniorSave {
   const nextWrongStreak = correct ? 0 : save.quizWrongStreak + 1;
   const rewarded = applyReward(save, correct ? quiz.reward : quiz.wrongReward);
   const hintText = nextWrongStreak >= 2 ? `${quiz.wrongText} 바람이가 힌트를 줄게.` : quiz.wrongText;
-  return applyMilestones({ ...rewarded, quizWrongStreak: nextWrongStreak, currentStep: 'eventResult', eventResultText: correct ? quiz.correctText : hintText });
+  return applyMilestones({ ...rewarded, quizWrongStreak: nextWrongStreak, currentStep: 'eventResult', eventResultText: correct ? quiz.correctText : hintText, lastResultChips: rewardChips(correct ? quiz.reward : quiz.wrongReward) });
 }
 
 export function closeEventResult(save: JuniorSave): JuniorSave {
@@ -495,6 +516,7 @@ export function closeEventResult(save: JuniorSave): JuniorSave {
     selectedEventId: undefined,
     eventResultText: undefined,
     tutorialStage: Math.max(save.tutorialStage, 7),
+    lastResultChips: undefined,
     message: '도착했어. 장터를 살펴보자.'
   };
 }
@@ -518,6 +540,7 @@ export function buyVehicle(save: JuniorSave, vehicleId: JuniorVehicle['id']): Ju
     vehicleId: vehicle.id,
     cargoLimit: vehicle.cargoLimit,
     badges: save.badges.includes(vehicle.name) ? save.badges : [...save.badges, vehicle.name],
+    lastResultChips: [`돈 -${vehicle.cost}냥`, `짐칸 ${vehicle.cargoLimit}칸`],
     message: `${vehicle.name}를 장만했어!`
   });
 }
@@ -531,6 +554,7 @@ export function buyBoat(save: JuniorSave, boatId: JuniorBoat['id']): JuniorSave 
     coins: save.coins - boat.cost,
     boatId: boat.id,
     badges: save.badges.includes(boat.name) ? save.badges : [...save.badges, boat.name],
+    lastResultChips: [`돈 -${boat.cost}냥`, '바닷길 좋아'],
     message: `${boat.name}를 장만했어!`
   });
 }
@@ -569,4 +593,30 @@ export function continueAfterEnding(save: JuniorSave): JuniorSave {
 
 export function getBuyGoodsForCity(cityId: JuniorCityId) {
   return getCity(cityId).buyGoodIds.map(getGood);
+}
+
+function marketSizeForCity(cityId: JuniorCityId) {
+  const city = getCity(cityId);
+  if (city.id === 'seoul' || city.id === 'china_port' || city.id === 'north_port') return 7;
+  if (['busan', 'incheon', 'pyongyang', 'nampo', 'wonsan', 'daegu'].includes(city.id)) return 6;
+  if (city.kind?.includes('port') || ['jeonju', 'andong', 'gaeseong'].includes(city.id)) return 5;
+  if (city.kind === 'island' || ['chuncheon', 'suncheon', 'jinju'].includes(city.id)) return 4;
+  return 3;
+}
+
+export function getMarketGoodsForCity(cityId: JuniorCityId) {
+  const city = getCity(cityId);
+  const desiredCount = marketSizeForCity(cityId);
+  const seen = new Set<JuniorGoodId>();
+  const ordered: JuniorGoodId[] = [];
+  const push = (goodId: JuniorGoodId) => {
+    if (!seen.has(goodId)) {
+      seen.add(goodId);
+      ordered.push(goodId);
+    }
+  };
+  city.buyGoodIds.forEach(push);
+  city.sellGoodIds.forEach(push);
+  JUNIOR_GOODS.map((good) => good.id).forEach(push);
+  return ordered.slice(0, Math.max(2, Math.min(7, desiredCount))).map(getGood);
 }

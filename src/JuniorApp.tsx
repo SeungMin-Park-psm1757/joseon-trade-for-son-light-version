@@ -18,6 +18,7 @@ import {
   getBestSellCityForGood,
   getCity,
   getConnectedCityIds,
+  getMarketGoodsForCity,
   getRoute,
   getRouteScenery,
   getSelectedEvent,
@@ -36,7 +37,7 @@ import {
   startIntro,
   startTravel
 } from './juniorFlow';
-import { playJuniorSuccessSound } from './juniorAudio';
+import { useJuniorAudio, type JuniorAudioScene } from './juniorAudio';
 import type { JuniorBoat, JuniorCargoItem, JuniorCity, JuniorCityId, JuniorEvent, JuniorGood, JuniorGoodId, JuniorSave, JuniorVehicle } from './juniorTypes';
 
 const eventSceneImages: Record<string, string> = {
@@ -167,7 +168,17 @@ function fairyLines(save: JuniorSave, event?: JuniorEvent) {
   return lines[save.currentStep] ?? ['정우야, 천천히 해보자.'];
 }
 
-function TopBar({ save }: { save: JuniorSave }) {
+function audioSceneForStep(step: JuniorSave['currentStep']): JuniorAudioScene {
+  if (step === 'market') return 'market';
+  if (step === 'map') return 'map';
+  if (step === 'travel') return 'travel';
+  if (step === 'event' || step === 'eventResult') return 'event';
+  if (step === 'shop') return 'shop';
+  if (step === 'ending' || step === 'endingChoice') return 'ending';
+  return 'city';
+}
+
+function TopBar({ save, audio }: { save: JuniorSave; audio: ReturnType<typeof useJuniorAudio> }) {
   const city = getCity(save.currentCityId);
   return (
     <header className="junior-topbar" aria-label="현재 상태">
@@ -177,6 +188,11 @@ function TopBar({ save }: { save: JuniorSave }) {
       <span className="junior-pill" data-testid="junior-coins">돈 {save.coins}</span>
       <span className="junior-pill junior-star-pill">별 {save.stars}</span>
       <span className={`junior-pill ${save.cargo.length >= save.cargoLimit ? 'junior-full-cargo' : ''}`}>짐 {save.cargo.length}/{save.cargoLimit}</span>
+      <div className="junior-audio-controls" data-testid="junior-audio-controls" aria-label="소리 설정">
+        <button type="button" className={audio.unlocked ? 'ready' : ''} data-testid="junior-audio-prime" onClick={audio.prime}>소리</button>
+        <button type="button" className={audio.settings.music ? 'active' : ''} aria-label={audio.settings.music ? '배경음악 끄기' : '배경음악 켜기'} onClick={audio.toggleMusic}>♪</button>
+        <button type="button" className={audio.settings.sfx ? 'active' : ''} aria-label={audio.settings.sfx ? '효과음 끄기' : '효과음 켜기'} onClick={audio.toggleSfx}>딸깍</button>
+      </div>
     </header>
   );
 }
@@ -369,11 +385,86 @@ function cityNodeIcon(city: JuniorCity) {
 }
 
 function marketHintForCity(city?: JuniorCity) {
-  if (!city) return '다음 장터에서 잘 팔려';
-  if (city.kind === 'west_port' || city.kind === 'east_port' || city.kind === 'south_port') return `${city.name} 항구에서 인기 많아`;
-  if (city.kind === 'north_trade_port') return `${city.name}에서 찾는 사람이 많아`;
-  if (city.kind === 'island') return `${city.name} 섬 장터에서 값이 좋아`;
-  return `${city.name} 장터에서 값이 좋아`;
+  if (!city) return '다음 장터에서 인기';
+  if (city.kind === 'west_port' || city.kind === 'east_port' || city.kind === 'south_port') return `${city.name} 항구 인기`;
+  if (city.kind === 'north_trade_port') return `${city.name}에서 인기`;
+  if (city.kind === 'island') return `${city.name} 섬에서 인기`;
+  return `${city.name}에서 값이 좋아`;
+}
+
+type JuniorGoalAction = 'market' | 'map' | 'shop' | 'ending';
+
+function isGoodSalePlace(save: JuniorSave, item: JuniorCargoItem) {
+  const city = getCity(save.currentCityId);
+  return item.fromCityId !== city.id && !city.buyGoodIds.includes(item.goodId) && (city.sellGoodIds.includes(item.goodId) || city.id === 'seoul');
+}
+
+function getNextVehicle(save: JuniorSave) {
+  const current = getVehicle(save);
+  return JUNIOR_VEHICLES
+    .filter((vehicle) => vehicle.id !== 'bundle' && vehicle.cargoLimit > current.cargoLimit)
+    .sort((a, b) => a.cost - b.cost)[0];
+}
+
+function getNextBoat(save: JuniorSave) {
+  const currentIndex = JUNIOR_BOATS.findIndex((boat) => boat.id === save.boatId);
+  return JUNIOR_BOATS.find((boat, index) => boat.id !== 'none' && index > currentIndex);
+}
+
+function getTodayGoal(save: JuniorSave): { text: string; hint: string; action: JuniorGoalAction; actionLabel: string } {
+  const city = getCity(save.currentCityId);
+  const firstCargo = save.cargo[0];
+  if (save.coins >= ENDING_COINS) {
+    return { text: '집으로 돌아가자.', hint: '장부가 반짝이고 있어.', action: 'ending', actionLabel: '집으로' };
+  }
+  if (firstCargo) {
+    const good = getGood(firstCargo.goodId);
+    if (isGoodSalePlace(save, firstCargo)) {
+      return { text: `${good.name}을 팔아보자.`, hint: '여기서 값이 좋아.', action: 'market', actionLabel: '팔기' };
+    }
+    const bestCity = getBestSellCityForGood(firstCargo.goodId, firstCargo.fromCityId);
+    return { text: `${bestCity?.name ?? '다른 장터'}에서 팔자.`, hint: `${good.name}이 인기 많아.`, action: 'map', actionLabel: '지도 보기' };
+  }
+  const nextVehicle = getNextVehicle(save);
+  if (nextVehicle && save.coins >= Math.max(70, nextVehicle.cost - 25)) {
+    const left = Math.max(0, nextVehicle.cost - save.coins);
+    return { text: `${nextVehicle.name}를 장만하자.`, hint: left ? `${left}냥만 더 모으면 돼.` : '지금 살 수 있어.', action: 'shop', actionLabel: '탈것 보기' };
+  }
+  const firstGood = getGood(city.buyGoodIds[0]);
+  return { text: `${city.name}에서 ${firstGood.name}을 사자.`, hint: '이 도시 물건이야.', action: 'market', actionLabel: '장터 가기' };
+}
+
+function TodayGoalCard({ goal, onAction }: { goal: ReturnType<typeof getTodayGoal>; onAction: () => void }) {
+  return (
+    <section className={`junior-today-goal goal-${goal.action}`} data-testid="today-goal-card">
+      <span>오늘 할 일</span>
+      <strong>{goal.text}</strong>
+      <small>{goal.hint}</small>
+      <button className="junior-button junior-primary" data-testid="today-goal-action" onClick={onAction}>{goal.actionLabel}</button>
+    </section>
+  );
+}
+
+function RouteCard({ save, city }: { save: JuniorSave; city: JuniorCity }) {
+  const route = getRoute(save.currentCityId, city.id);
+  const canDepart = canTravel(save, city.id);
+  const label = route?.kind === 'sea'
+    ? '바닷길'
+    : route?.routeType?.includes('north')
+      ? '북방길'
+      : route?.scenery === 'mountain'
+        ? '산길'
+        : '장터길';
+  const hint = route?.kind === 'sea'
+    ? (save.boatId === 'none' ? '작은 배가 있으면 좋아.' : '파도를 보며 천천히 가자.')
+    : route?.fairyText ?? '수레를 끌고 천천히 가자.';
+  return (
+    <div className={`junior-route-card ${route?.kind ?? 'land'}`} data-testid="route-card-before-travel">
+      <b>{label}</b>
+      <span>{hint}</span>
+      <small>{canDepart ? '출발 준비 끝' : '아직 준비가 필요해'}</small>
+    </div>
+  );
 }
 
 function CityScreen({ save, onMarket, onMap, onShop, onEnding }: { save: JuniorSave; onMarket: () => void; onMap: () => void; onShop: () => void; onEnding: () => void }) {
@@ -388,6 +479,14 @@ function CityScreen({ save, onMarket, onMap, onShop, onEnding }: { save: JuniorS
       : save.boatId === 'none'
         ? '배를 장만해 보자.'
         : `${ENDING_COINS}냥까지 조금씩 모으자.`;
+  const goal = getTodayGoal(save);
+  const runGoal = () => {
+    if (goal.action === 'market') onMarket();
+    if (goal.action === 'map') onMap();
+    if (goal.action === 'shop') onShop();
+    if (goal.action === 'ending') onEnding();
+  };
+  const focusClass = (action: JuniorGoalAction) => goal.action === action ? 'today-focus' : '';
   return (
     <section className={`junior-screen junior-city-dashboard junior-city-${city.id}`} data-testid="screen-city">
       <div className="junior-city-header-card">
@@ -415,6 +514,7 @@ function CityScreen({ save, onMarket, onMap, onShop, onEnding }: { save: JuniorS
           <span>{save.cargo.length ? '잘 팔리는 장터를 찾아보자.' : '먼저 장터에서 물건을 골라보자.'}</span>
         </section>
       </div>
+      <TodayGoalCard goal={goal} onAction={runGoal} />
       {showCargo && (
         <div className="junior-city-cargo" data-testid="cargo-panel">
           <CargoSlots save={save} />
@@ -422,17 +522,20 @@ function CityScreen({ save, onMarket, onMap, onShop, onEnding }: { save: JuniorS
         </div>
       )}
       <div className="junior-city-actions">
-        <button className={`junior-action-button ${tutorial ? 'tutorial-focus' : ''}`} data-testid="open-market" onClick={onMarket}>장터 가기</button>
-        <button className="junior-action-button" data-testid="open-map" onClick={onMap}>지도 보기</button>
+        <button className={`junior-action-button ${tutorial ? 'tutorial-focus' : ''} ${focusClass('market')}`} data-testid="open-market" onClick={onMarket}>장터 가기</button>
+        <button className={`junior-action-button ${focusClass('map')}`} data-testid="open-map" onClick={onMap}>지도 보기</button>
         {save.coins >= ENDING_COINS ? (
-          <button className="junior-action-button home" data-testid="open-ending" onClick={onEnding}>집으로</button>
+          <button className={`junior-action-button home ${focusClass('ending')}`} data-testid="open-ending" onClick={onEnding}>집으로</button>
         ) : (
           <button className="junior-action-button" data-testid="open-cargo" onClick={() => setShowCargo((value) => !value)}>짐 보기</button>
         )}
-        <button className="junior-action-button" data-testid="open-shop" onClick={onShop}>탈것 장만</button>
+        <button className={`junior-action-button ${focusClass('shop')}`} data-testid="open-shop" onClick={onShop}>탈것 장만</button>
       </div>
       <div className="junior-progress-card" data-testid="junior-progress-card">
         <b>도시 도장 {save.visitedCityIds.length}/{JUNIOR_CITIES.length}</b>
+        <div className="junior-city-stamps" data-testid="city-stamp">
+          {save.visitedCityIds.slice(-5).map((cityId) => <span key={cityId}>{getCity(cityId).name}</span>)}
+        </div>
         <span>{nextGoal}</span>
         {save.badges.length > 0 && <small>{save.badges.slice(-2).join(' · ')}</small>}
       </div>
@@ -489,6 +592,9 @@ function MapScreen({ save, onDepart, onBack }: { save: JuniorSave; onDepart: (ci
   const good = goods[0];
   const route = selectedCity ? getRoute(save.currentCityId, selectedCity.id) : undefined;
   const canDepart = selectedCity ? canTravel(save, selectedCity.id) : false;
+  const quickCities = connectedCities
+    .filter((cityId) => cityId !== save.currentCityId && canTravel(save, cityId))
+    .map(getCity);
   const bubbleStyle = selectedCity
     ? ({ '--map-bubble-x': `${selectedCity.x}%`, '--map-bubble-y': `${selectedCity.y}%` } as CSSProperties)
     : undefined;
@@ -513,6 +619,7 @@ function MapScreen({ save, onDepart, onBack }: { save: JuniorSave; onDepart: (ci
                 ))}
               </div>
               <small>{route?.kind === 'sea' ? (save.boatId === 'none' ? '배가 필요해' : '배로 가는 길') : '수레로 가는 길'} · {canDepart ? '갈 수 있어' : '아직 어려워'}</small>
+              <RouteCard save={save} city={selectedCity} />
             </div>
             <button className="junior-button junior-primary" data-testid="depart-city" disabled={!canDepart} onClick={() => onDepart(selectedCity)}>출발</button>
             <button className="junior-map-back" data-testid="map-back" onClick={onBack}>도시로</button>
@@ -524,6 +631,23 @@ function MapScreen({ save, onDepart, onBack }: { save: JuniorSave; onDepart: (ci
           </div>
         )}
       </KoreaMap>
+      <div className="junior-map-destination-rail" data-testid="map-destination-rail" aria-label="갈 수 있는 도시">
+        {quickCities.map((city) => {
+          const nextRoute = getRoute(save.currentCityId, city.id);
+          return (
+            <button
+              type="button"
+              key={city.id}
+              className={selectedCityId === city.id ? 'selected' : ''}
+              data-testid={`map-quick-${city.id}`}
+              onClick={() => setSelectedCityId(city.id)}
+            >
+              <strong>{city.name}</strong>
+              <span>{nextRoute?.kind === 'sea' ? '배길' : '수레길'}</span>
+            </button>
+          );
+        })}
+      </div>
     </section>
   );
 }
@@ -620,7 +744,7 @@ function TravelScreen({ save, onDone }: { save: JuniorSave; onDone: () => void }
 }
 
 function priceLabel(isLocal: boolean, kind: 'buy' | 'sell') {
-  if (kind === 'buy') return isLocal ? '여기서 사기 좋아' : '이번 값';
+  if (kind === 'buy') return isLocal ? '여기서 사기 좋아' : '다른 도시에서 인기';
   return isLocal ? '여기서 팔기 좋아' : '팔 수 있어요';
 }
 
@@ -636,7 +760,7 @@ function MarketGoodCard({ save, good, city, onBuy }: { save: JuniorSave; good: J
       <GoodArt good={good} />
       <strong>{good.name}</strong>
       <span>{priceLabel(local, 'buy')}</span>
-      <b>사는 값 {price}냥</b>
+      <b>산 값 {price}냥</b>
       <small>짐에 {countInCargo}개</small>
       <small>{buyCount > 0 ? '값이 조금 올랐어' : marketHintForCity(bestCity)}</small>
       <em>사기</em>
@@ -646,7 +770,8 @@ function MarketGoodCard({ save, good, city, onBuy }: { save: JuniorSave; good: J
 
 function MarketCargoCard({ save, item, good, city, onSell }: { save: JuniorSave; item: JuniorCargoItem; good: JuniorGood; city: JuniorCity; onSell: () => void }) {
   const sameCity = item.fromCityId === city.id;
-  const isGoodPlace = !sameCity && (city.sellGoodIds.includes(good.id) || city.id === 'seoul');
+  const localProduction = city.buyGoodIds.includes(good.id);
+  const isGoodPlace = !sameCity && !localProduction && (city.sellGoodIds.includes(good.id) || city.id === 'seoul');
   const price = getSellPriceForCargo(save, city.id, item);
   const sellCount = save.marketPressure.sell[`${city.id}:${good.id}`] ?? 0;
   return (
@@ -654,7 +779,7 @@ function MarketCargoCard({ save, item, good, city, onSell }: { save: JuniorSave;
       {isGoodPlace && <span className="junior-market-ribbon sell">팔기 좋아</span>}
       <GoodArt good={good} />
       <strong>{good.name}</strong>
-      <span>{sameCity ? '산 곳이라 그대로예요' : priceLabel(isGoodPlace, 'sell')}</span>
+      <span>{sameCity ? '산 곳이라 그대로예요' : localProduction ? '여기에도 많아' : priceLabel(isGoodPlace, 'sell')}</span>
       <b>파는 돈 {price}냥</b>
       <em>팔기</em>
       <small>산 값 {item.buyPrice}냥</small>
@@ -667,14 +792,19 @@ function MarketScreen({ save, onBuy, onSell, onBack, onMap }: { save: JuniorSave
   const [flyingGood, setFlyingGood] = useState<JuniorGood | undefined>();
   const [sellingGood, setSellingGood] = useState<JuniorGood | undefined>();
   const [cargoPulse, setCargoPulse] = useState(false);
+  const [moneyFeedback, setMoneyFeedback] = useState<string | undefined>();
   const city = getCity(save.currentCityId);
   const vehicle = getVehicle(save);
-  const buyGoods = getBuyGoodsForCity(city.id).slice(0, 4);
+  const buyGoods = getMarketGoodsForCity(city.id);
   const cargoItems = save.cargo.slice(0, 4);
+  const marketItemCount = buyGoods.length + cargoItems.length;
+  const densityClass = buyGoods.length >= 6 || marketItemCount >= 7 ? 'junior-market-crowded' : '';
 
   function handleBuy(good: JuniorGood) {
+    const price = getBuyPrice(save, city.id, good.id);
     setFlyingGood(good);
     setCargoPulse(true);
+    setMoneyFeedback(`-${price}냥`);
     window.setTimeout(() => setFlyingGood(undefined), 520);
     window.setTimeout(() => setCargoPulse(false), 720);
     onBuy(good);
@@ -682,15 +812,17 @@ function MarketScreen({ save, onBuy, onSell, onBack, onMap }: { save: JuniorSave
 
   function handleSell(item: JuniorCargoItem) {
     const good = getGood(item.goodId);
+    const price = getSellPriceForCargo(save, city.id, item);
     setSellingGood(good);
     setCargoPulse(true);
+    setMoneyFeedback(`+${price}냥`);
     window.setTimeout(() => setSellingGood(undefined), 520);
     window.setTimeout(() => setCargoPulse(false), 720);
     onSell(item.id);
   }
 
   return (
-    <section className="junior-screen junior-market" data-testid="screen-market">
+    <section className={`junior-screen junior-market ${densityClass}`} data-testid="screen-market">
       <div className="junior-market-hero">
         <img src={city.backgroundAsset ?? city.scene} alt="" loading="lazy" onError={handleImageFallback} />
         <div>
@@ -711,6 +843,7 @@ function MarketScreen({ save, onBuy, onSell, onBack, onMap }: { save: JuniorSave
       {flyingGood && <img className="junior-flying-good" src={flyingGood.image} alt="" />}
       {flyingGood && <span className="junior-cargo-sparkle" aria-hidden="true" />}
       {sellingGood && <img className="junior-selling-good" src={sellingGood.image} alt="" />}
+      {moneyFeedback && <span className="junior-money-feedback" data-testid="market-buy-sell-feedback">{moneyFeedback}</span>}
       <div className="junior-market-list">
         {buyGoods.map((good) => <MarketGoodCard key={good.id} save={save} good={good} city={city} onBuy={handleBuy} />)}
         {cargoItems.map((item) => {
@@ -766,10 +899,14 @@ function EventScreen({ save, onSimple, onChoice, onQuiz }: { save: JuniorSave; o
 }
 
 function EventResultScreen({ save, onClose }: { save: JuniorSave; onClose: () => void }) {
+  const chips = save.lastResultChips?.length ? save.lastResultChips : ['괜찮아'];
   return (
     <section className="junior-screen junior-event-result" data-testid="screen-event-result">
       <img className="junior-result-stamp" src={publicAsset('/assets/ui/success-stamp.png')} alt="" />
       <strong>{save.eventResultText ?? '잘했어!'}</strong>
+      <div className="junior-result-chips" data-testid="event-result-card">
+        {chips.map((chip) => <span key={chip}>{chip}</span>)}
+      </div>
       <button className="junior-button junior-primary" data-testid="event-result-ok" onClick={onClose}>계속하기</button>
     </section>
   );
@@ -816,12 +953,28 @@ function BoatTierArt({ boat }: { boat: JuniorBoat }) {
 function ShopScreen({ save, onVehicle, onBoat, onBack }: { save: JuniorSave; onVehicle: (id: JuniorVehicle['id']) => void; onBoat: (id: JuniorBoat['id']) => void; onBack: () => void }) {
   const vehicle = getVehicle(save);
   const boat = getBoat(save);
+  const nextVehicle = getNextVehicle(save);
+  const nextBoat = getNextBoat(save);
+  const nextGoal = nextVehicle ?? nextBoat;
+  const shortage = nextGoal ? Math.max(0, nextGoal.cost - save.coins) : 0;
+  const celebration = save.message?.includes('장만했어');
   return (
     <section className="junior-screen junior-shop" data-testid="screen-shop">
       <div className="junior-shop-summary">
         <strong>탈것 장만</strong>
         <span>지금 수레: {vehicle.name} · 짐칸 {save.cargoLimit}칸</span>
         <small>지금 배: {boat.name}</small>
+      </div>
+      {celebration && (
+        <div className="junior-upgrade-celebration" data-testid="upgrade-celebration">
+          <b>새 탈것!</b>
+          <span>{save.message}</span>
+        </div>
+      )}
+      <div className="junior-equipment-goal" data-testid="equipment-goal">
+        <b>다음 목표</b>
+        <span>{nextGoal ? `${nextGoal.name}까지 ${shortage}냥` : '탈것 준비 완료'}</span>
+        <small>{nextVehicle ? `짐칸이 ${nextVehicle.cargoLimit}칸이 돼.` : nextBoat ? '바닷길이 더 쉬워져.' : '멀리 떠날 준비가 됐어.'}</small>
       </div>
       <div className="junior-shop-grid">
         {JUNIOR_VEHICLES.filter((item) => item.id !== 'bundle').map((item) => {
@@ -863,6 +1016,10 @@ function EndingChoiceScreen({ onHome, onMore }: { onHome: () => void; onMore: ()
         <img src={publicAsset('/assets/jeongwoo/jeongwoo.png')} alt="" />
         <img className="junior-book-art" src={publicAsset('/assets/events/ending_door.svg')} alt="" />
       </div>
+      <div className="junior-ending-hint" data-testid="ending-hint">
+        <b>장부가 반짝여.</b>
+        <span>300냥을 모았어. 집으로 돌아갈 수 있어.</span>
+      </div>
       <div className="junior-action-row">
         <button className="junior-button junior-primary" data-testid="go-home" onClick={onHome}>집으로 가기</button>
         <button className="junior-button junior-secondary" data-testid="trade-more" onClick={onMore}>조금 더 장사</button>
@@ -896,52 +1053,55 @@ export function JuniorApp() {
   const selectedGood = useMemo(() => save.selectedGoodId ? getGood(save.selectedGoodId) : undefined, [save.selectedGoodId]);
   const city = getCity(save.currentCityId);
   const event = getSelectedEvent(save);
+  const audio = useJuniorAudio(audioSceneForStep(save.currentStep));
 
   function update(next: JuniorSave) {
     setSave(next);
   }
 
   function sell(cargoId: string) {
-    playJuniorSuccessSound();
+    audio.playSfx('sell');
     update(sellCargoItem(save, cargoId));
   }
 
   function marketBuy(good: JuniorGood) {
+    audio.playSfx('buy');
     update(buyGood(save, good.id));
   }
 
   function pick(good: JuniorGood) {
+    audio.playSfx('click');
     update(chooseGood(save, good.id));
   }
 
   return (
     <main className={`junior-shell junior-step-${save.currentStep}`} data-testid="junior-app">
       <NetworkStatus online={online} />
-      <TopBar save={save} />
+      <TopBar save={save} audio={audio} />
       <FairyTalk save={save} lines={fairyLines(save, event)} />
 
       <section className="junior-main-card">
-        {save.currentStep === 'intro' && <IntroScreen save={save} onStart={() => update(startIntro(save))} />}
+        {save.currentStep === 'intro' && <IntroScreen save={save} onStart={() => { void audio.prime(); audio.playSfx('click'); update(startIntro(save)); }} />}
         {save.currentStep === 'pick' && <PickScreen save={save} onPick={pick} />}
-        {save.currentStep === 'buy' && <BuyScreen save={save} onBuy={() => update(buySelectedGood(save))} />}
-        {save.currentStep === 'city' && <CityScreen save={save} onMarket={() => update(goToMarket(save))} onMap={() => update(goToMap(save))} onShop={() => update(goToShop(save))} onEnding={() => update(openEnding(save))} />}
-        {save.currentStep === 'map' && <MapScreen save={save} onDepart={(nextCity) => update(startTravel(save, nextCity.id))} onBack={() => update(goToCity(save))} />}
-        {save.currentStep === 'travel' && <TravelScreen save={save} onDone={() => update(finishTravel(save))} />}
-        {save.currentStep === 'visitIntro' && <VisitIntroScreen save={save} onDone={() => update(completeVisitIntro(save))} />}
-        {save.currentStep === 'market' && <MarketScreen save={save} onBuy={marketBuy} onSell={sell} onBack={() => update(goToCity(save))} onMap={() => update(goToMap(save))} />}
-        {save.currentStep === 'event' && <EventScreen save={save} onSimple={() => update(resolveSimpleEvent(save))} onChoice={(index) => update(resolveChoice(save, index))} onQuiz={(option) => update(answerQuiz(save, option))} />}
-        {save.currentStep === 'eventResult' && <EventResultScreen save={save} onClose={() => update(closeEventResult(save))} />}
-        {save.currentStep === 'shop' && <ShopScreen save={save} onVehicle={(id) => update(buyVehicle(save, id))} onBoat={(id) => update(buyBoat(save, id))} onBack={() => update(goToCity(save))} />}
-        {save.currentStep === 'endingChoice' && <EndingChoiceScreen onHome={() => update(finishEnding(save))} onMore={() => update(continueAfterEnding(save))} />}
-        {save.currentStep === 'ending' && <EndingScreen onAgain={() => update(resetJuniorGame())} onMore={() => update(continueAfterEnding(save))} />}
+        {save.currentStep === 'buy' && <BuyScreen save={save} onBuy={() => { audio.playSfx('buy'); update(buySelectedGood(save)); }} />}
+        {save.currentStep === 'city' && <CityScreen save={save} onMarket={() => { audio.playSfx('shop'); update(goToMarket(save)); }} onMap={() => { audio.playSfx('click'); update(goToMap(save)); }} onShop={() => { audio.playSfx('shop'); update(goToShop(save)); }} onEnding={() => { audio.playSfx('reward'); update(openEnding(save)); }} />}
+        {save.currentStep === 'map' && <MapScreen save={save} onDepart={(nextCity) => { const route = getRoute(save.currentCityId, nextCity.id); audio.playSfx(route?.kind === 'sea' ? 'depart' : 'cart'); update(startTravel(save, nextCity.id)); }} onBack={() => { audio.playSfx('click'); update(goToCity(save)); }} />}
+        {save.currentStep === 'travel' && <TravelScreen save={save} onDone={() => { audio.playSfx('arrive'); update(finishTravel(save)); }} />}
+        {save.currentStep === 'visitIntro' && <VisitIntroScreen save={save} onDone={() => { audio.playSfx('click'); update(completeVisitIntro(save)); }} />}
+        {save.currentStep === 'market' && <MarketScreen save={save} onBuy={marketBuy} onSell={sell} onBack={() => { audio.playSfx('click'); update(goToCity(save)); }} onMap={() => { audio.playSfx('click'); update(goToMap(save)); }} />}
+        {save.currentStep === 'event' && <EventScreen save={save} onSimple={() => { audio.playSfx('reward'); update(resolveSimpleEvent(save)); }} onChoice={(index) => { audio.playSfx('click'); update(resolveChoice(save, index)); }} onQuiz={(option) => { const quiz = event?.quiz; audio.playSfx(quiz && option === quiz.answer ? 'correct' : 'wrong'); update(answerQuiz(save, option)); }} />}
+        {save.currentStep === 'eventResult' && <EventResultScreen save={save} onClose={() => { audio.playSfx('click'); update(closeEventResult(save)); }} />}
+        {save.currentStep === 'shop' && <ShopScreen save={save} onVehicle={(id) => { audio.playSfx('shop'); update(buyVehicle(save, id)); }} onBoat={(id) => { audio.playSfx('shop'); update(buyBoat(save, id)); }} onBack={() => { audio.playSfx('click'); update(goToCity(save)); }} />}
+        {save.currentStep === 'endingChoice' && <EndingChoiceScreen onHome={() => { audio.playSfx('reward'); update(finishEnding(save)); }} onMore={() => { audio.playSfx('click'); update(continueAfterEnding(save)); }} />}
+        {save.currentStep === 'ending' && <EndingScreen onAgain={() => { audio.playSfx('click'); update(resetJuniorGame()); }} onMore={() => { audio.playSfx('click'); update(continueAfterEnding(save)); }} />}
       </section>
 
       <QuickNav
         save={save}
-        onCity={() => update(goToCity(save))}
-        onMap={() => update(goToMap(save))}
-        onMarket={() => update(goToMarket(save))}
-        onShop={() => update(goToShop(save))}
+        onCity={() => { audio.playSfx('click'); update(goToCity(save)); }}
+        onMap={() => { audio.playSfx('click'); update(goToMap(save)); }}
+        onMarket={() => { audio.playSfx('shop'); update(goToMarket(save)); }}
+        onShop={() => { audio.playSfx('shop'); update(goToShop(save)); }}
       />
 
       <footer className="junior-goal" aria-label="목표">
