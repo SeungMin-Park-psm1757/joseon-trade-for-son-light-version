@@ -8,7 +8,11 @@
     "stats": {
       "guard": 1
     },
-    "tier": 1
+    "tier": 1,
+    "counterTags": [
+      "bandits"
+    ],
+    "choiceHint": "도적 협상과 호위 선택의 기본 성공률을 올린다."
   },
   {
     "id": "fishing_net",
@@ -19,7 +23,12 @@
     "stats": {
       "fishing": 1
     },
-    "tier": 1
+    "tier": 1,
+    "counterTags": [
+      "recovery",
+      "drifting_boat"
+    ],
+    "choiceHint": "표류선 구조와 어업 보상에서 작은 이득을 만든다."
   },
   {
     "id": "survey_tools",
@@ -30,7 +39,13 @@
     "stats": {
       "navigation": 1
     },
-    "tier": 1
+    "tier": 1,
+    "counterTags": [
+      "reef",
+      "fog",
+      "rough_sea"
+    ],
+    "choiceHint": "암초·안개·풍랑 선택지의 실패 손실을 줄인다."
   },
   {
     "id": "trade_abacus",
@@ -41,7 +56,12 @@
     "stats": {
       "trade": 1
     },
-    "tier": 1
+    "tier": 1,
+    "counterTags": [
+      "trade",
+      "tax_inspection"
+    ],
+    "choiceHint": "가격 비교와 검문 협상에서 유리하다."
   },
   {
     "id": "language_notes",
@@ -53,7 +73,12 @@
       "japanese": 1,
       "chinese": 1
     },
-    "tier": 1
+    "tier": 1,
+    "counterTags": [
+      "foreign_inspection",
+      "permit"
+    ],
+    "choiceHint": "왜관·국경 교역 선택지의 준비물로 쓰인다."
   },
   {
     "id": "sturdy_sword",
@@ -66,7 +91,12 @@
     },
     "tier": 2,
     "requiresTool": "short_sword",
-    "hint": "도적과 호랑이 소문에 더 침착해져요."
+    "hint": "도적과 호랑이 소문에 더 침착해져요.",
+    "counterTags": [
+      "bandits",
+      "tiger"
+    ],
+    "choiceHint": "위험한 산길에서 전투 손실을 낮춘다."
   },
   {
     "id": "brass_compass",
@@ -79,7 +109,14 @@
     },
     "tier": 2,
     "requiresTool": "survey_tools",
-    "hint": "먼 바닷길과 안개 길에서 도움이 돼요."
+    "hint": "먼 바닷길과 안개 길에서 도움이 돼요.",
+    "counterTags": [
+      "storm",
+      "reef",
+      "fog",
+      "rough_sea"
+    ],
+    "choiceHint": "제주와 동해 장거리 항로의 준비 핵심."
   },
   {
     "id": "merchant_ledger",
@@ -92,7 +129,13 @@
     },
     "tier": 2,
     "requiresTool": "trade_abacus",
-    "hint": "살 때 조금 싸게, 팔 때 조금 유리해져요."
+    "hint": "살 때 조금 싸게, 팔 때 조금 유리해져요.",
+    "counterTags": [
+      "trade",
+      "tax_inspection",
+      "foreign_inspection"
+    ],
+    "choiceHint": "검문 대응과 추천 거래 판단을 강화한다."
   },
   {
     "id": "strong_fishing_net",
@@ -105,7 +148,13 @@
     },
     "tier": 2,
     "requiresTool": "fishing_net",
-    "hint": "어업 보상이 더 좋아져요."
+    "hint": "어업 보상이 더 좋아져요.",
+    "counterTags": [
+      "recovery",
+      "drifting_boat",
+      "fishing"
+    ],
+    "choiceHint": "남해·제주 어장 보상과 구조 이벤트에 강하다."
   },
   {
     "id": "interpreter_notebook",
@@ -120,6 +169,12 @@
     },
     "tier": 2,
     "requiresTool": "language_notes",
-    "hint": "쓰시마(대마도)와 먼 교역 준비에 좋아요."
+    "hint": "쓰시마(대마도)와 먼 교역 준비에 좋아요.",
+    "counterTags": [
+      "foreign_inspection",
+      "permit",
+      "trade"
+    ],
+    "choiceHint": "대마도·청 국경 장시에서 대화 선택지를 넓힌다."
   }
 ]

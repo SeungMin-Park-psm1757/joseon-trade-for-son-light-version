@@ -9847,3 +9847,688 @@ button.secondary,
 .scene-equipment-layout .visual-shop-row strong {
   color: #1f2e22;
 }
+
+/* 2026-05-04 mobile portrait gate and art QA lock. */
+:root {
+  --vvw: 100vw;
+  --vvh: 100vh;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+}
+
+html,
+body,
+#root {
+  min-height: var(--vvh);
+}
+
+.app-shell {
+  min-height: var(--vvh);
+}
+
+.orientation-gate {
+  min-height: var(--vvh);
+  width: var(--vvw);
+  display: grid;
+  place-items: center;
+  padding:
+    calc(18px + var(--safe-top))
+    calc(18px + var(--safe-right))
+    calc(18px + var(--safe-bottom))
+    calc(18px + var(--safe-left));
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(17, 42, 45, 0.92), rgba(45, 91, 85, 0.86)),
+    url('/assets/painted2d/scenes/south-port.webp') center / cover no-repeat;
+  color: #fff6dc;
+}
+
+.orientation-card {
+  width: min(360px, 100%);
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  padding: 24px 22px 22px;
+  border: 2px solid rgba(244, 205, 115, 0.72);
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(16, 38, 42, 0.95), rgba(30, 63, 59, 0.92)),
+    rgba(17, 42, 45, 0.92);
+  box-shadow: 0 22px 54px rgba(4, 14, 18, 0.48), inset 0 0 0 1px rgba(255, 246, 220, 0.12);
+  text-align: center;
+}
+
+.orientation-card h1 {
+  margin: 0;
+  font-size: 1.45rem;
+  line-height: 1.18;
+  color: #fff7df;
+}
+
+.orientation-card p,
+.orientation-card small {
+  margin: 0;
+  color: rgba(255, 246, 220, 0.86);
+  line-height: 1.55;
+  word-break: keep-all;
+}
+
+.orientation-icon {
+  position: relative;
+  width: 92px;
+  height: 76px;
+}
+
+.phone-shape {
+  position: absolute;
+  left: 30px;
+  top: 10px;
+  width: 32px;
+  height: 56px;
+  border: 4px solid #f4cd73;
+  border-radius: 9px;
+  background: linear-gradient(180deg, #f7e6a6, #6db9a7);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.28);
+  transform: rotate(90deg);
+}
+
+.phone-shape::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  width: 8px;
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(16, 38, 42, 0.7);
+  transform: translateX(-50%);
+}
+
+.turn-arrow {
+  position: absolute;
+  left: 9px;
+  top: 4px;
+  width: 68px;
+  height: 62px;
+  border: 4px solid rgba(255, 246, 220, 0.86);
+  border-left-color: transparent;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+}
+
+.turn-arrow::after {
+  content: "";
+  position: absolute;
+  right: -5px;
+  top: 38px;
+  width: 0;
+  height: 0;
+  border-top: 9px solid transparent;
+  border-bottom: 9px solid transparent;
+  border-left: 13px solid rgba(255, 246, 220, 0.86);
+  transform: rotate(35deg);
+}
+
+.orientation-continue {
+  min-width: 190px;
+  min-height: 52px;
+  font-size: 1.08rem;
+}
+
+.korea-map-raster {
+  object-fit: fill;
+  image-rendering: auto;
+  filter: saturate(1.05) contrast(1.03);
+}
+
+.vehicle-token,
+.guide-spirit,
+.good-icon,
+.market-good-icon,
+.hub-hotspot img,
+.route-destination-scene,
+.season-art,
+.npc-portrait,
+.facility-npc,
+.market-npc,
+.companion-avatar img,
+.discovery-art,
+.seal-card img,
+.equipment-card img,
+.visual-shop-row img {
+  object-fit: contain;
+}
+
+.hub-hotspot img,
+.route-token.vehicle-token,
+.traveler-token.vehicle-token {
+  image-rendering: auto;
+}
+
+.hub-hotspot img {
+  padding: 3px;
+  border-radius: 10px;
+  background: rgba(255, 248, 222, 0.74);
+  box-shadow: inset 0 0 0 1px rgba(107, 72, 28, 0.18), 0 4px 10px rgba(30, 22, 12, 0.22);
+}
+
+.route-token.vehicle-token,
+.traveler-token.vehicle-token {
+  filter: drop-shadow(0 5px 5px rgba(19, 27, 25, 0.3));
+}
+
+@media (orientation: landscape) {
+  .game-shell {
+    height: var(--vvh);
+    min-height: var(--vvh);
+    padding:
+      calc(6px + var(--safe-top))
+      max(8px, var(--safe-right))
+      calc(7px + var(--safe-bottom))
+      max(8px, var(--safe-left));
+    overflow: hidden;
+  }
+
+  .content-surface {
+    min-height: 0;
+    height: calc(var(--vvh) - 122px - var(--safe-top) - var(--safe-bottom));
+    overflow: hidden;
+  }
+
+  .bottom-tabs {
+    width: 100%;
+    display: flex;
+    grid-template-columns: none !important;
+    gap: 6px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 1px;
+  }
+
+  .bottom-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .bottom-tabs button {
+    flex: 0 0 clamp(64px, 11vw, 116px);
+    min-width: 0;
+    min-height: 38px;
+    white-space: nowrap;
+  }
+}
+
+@media (orientation: landscape) and (max-width: 1100px) {
+  .status-bar {
+    min-height: 40px;
+    gap: 5px;
+    grid-template-columns: minmax(116px, 1.18fr) minmax(92px, 0.85fr) minmax(76px, 0.66fr) minmax(84px, 0.72fr) minmax(156px, 1.15fr) minmax(84px, auto);
+  }
+
+  .status-bar > div {
+    min-width: 0;
+    padding: 6px 8px;
+  }
+
+  .status-bar > .wide:nth-of-type(4),
+  .status-bar .autosave,
+  .audio-controls input {
+    display: none !important;
+  }
+
+  .audio-controls {
+    gap: 4px;
+    min-width: 0;
+    padding: 4px;
+  }
+
+  .audio-controls button:not(.audio-prime) {
+    width: 30px;
+    min-width: 30px;
+    padding: 0;
+    font-size: 0.58rem;
+  }
+
+  .audio-controls .audio-prime {
+    min-width: 52px;
+    padding: 5px 7px;
+    font-size: 0.72rem;
+  }
+
+  .content-surface {
+    height: calc(var(--vvh) - 108px - var(--safe-top) - var(--safe-bottom));
+    border-radius: 12px;
+  }
+
+  .landscape-layout {
+    min-height: 0;
+    height: 100%;
+    gap: 8px;
+    overflow: hidden;
+  }
+
+  .port-layout,
+  .map-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(238px, 0.48fr);
+  }
+
+  .market-layout.visual-market-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .main-panel,
+  .side-panel,
+  .market-main-panel,
+  .market-side-panel {
+    min-height: 0;
+  }
+
+  .side-panel,
+  .market-side-panel {
+    max-height: 100%;
+    overflow: auto;
+    overscroll-behavior: contain;
+    padding-right: 2px;
+  }
+
+  .side-panel > .panel,
+  .side-panel > .facility-panel,
+  .side-panel > .ship-berth-panel,
+  .market-side-panel > .panel {
+    padding: 9px;
+    border-radius: 10px;
+  }
+
+  .side-panel .panel:not(:first-child),
+  .side-panel .facility-panel:not(:first-child) {
+    margin-top: 7px;
+  }
+
+  .port-scene-stage,
+  .map-board.landscape-map-board,
+  .market-scene-stage {
+    min-height: 0;
+    height: 100%;
+  }
+
+  .map-board.landscape-map-board {
+    aspect-ratio: auto;
+  }
+
+  .route-preview .route-destination-scene {
+    height: 58px;
+    object-fit: cover;
+  }
+
+  .route-risk-row,
+  .chips,
+  .hazard-chips {
+    gap: 4px;
+  }
+
+  .icon-chip,
+  .route-danger-chip {
+    padding: 3px 6px;
+    font-size: 0.66rem;
+  }
+
+  .route-overview-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 5px;
+  }
+
+  .route-prep-board,
+  .route-profit-box,
+  .sale-guide-list button,
+  .cargo-slot-strip {
+    padding: 6px;
+  }
+
+  .tutorial-coach {
+    left: auto;
+    right: max(8px, var(--safe-right));
+    bottom: calc(8px + var(--safe-bottom));
+    width: min(314px, calc(100vw - 18px));
+    grid-template-columns: 38px minmax(0, 1fr) 82px;
+    gap: 8px;
+    padding: 8px 9px;
+    border-radius: 12px;
+  }
+
+  .tutorial-coach .coach-portrait.guide-spirit {
+    width: 38px;
+    height: 38px;
+  }
+
+  .tutorial-coach p,
+  .tutorial-coach .tutorial-path {
+    display: none;
+  }
+
+  .tutorial-coach strong {
+    font-size: 0.82rem;
+  }
+
+  .tutorial-coach .coach-action {
+    min-height: 34px;
+    padding: 5px 7px;
+    font-size: 0.72rem;
+  }
+
+  .toast {
+    top: calc(140px + var(--safe-top)) !important;
+    left: auto !important;
+    right: max(10px, var(--safe-right)) !important;
+    width: min(300px, calc(100vw - 20px)) !important;
+    max-width: 300px !important;
+    padding: 7px 10px;
+    transform: none !important;
+    font-size: 0.78rem;
+    line-height: 1.35;
+    border-color: rgba(215, 166, 77, 0.32);
+    background: rgba(255, 250, 240, 0.94);
+    backdrop-filter: blur(8px);
+  }
+}
+
+@media (orientation: landscape) and (max-width: 900px) {
+  .game-shell {
+    padding:
+      calc(5px + var(--safe-top))
+      max(5px, var(--safe-right))
+      calc(5px + var(--safe-bottom))
+      max(5px, var(--safe-left));
+    gap: 5px;
+  }
+
+  .status-bar {
+    grid-template-columns: minmax(100px, 1.08fr) minmax(78px, 0.72fr) minmax(64px, 0.58fr) minmax(74px, 0.62fr) minmax(128px, 0.95fr) minmax(58px, auto);
+    font-size: 0.72rem;
+  }
+
+  .status-bar > div {
+    padding: 5px 6px;
+  }
+
+  .status-bar .label {
+    font-size: 0.6rem;
+  }
+
+  .fame-strip {
+    gap: 3px;
+  }
+
+  .fame-chip {
+    padding: 3px 5px;
+    font-size: 0.66rem;
+  }
+
+  .audio-controls button:not(.audio-prime) {
+    display: none !important;
+  }
+
+  .bottom-tabs {
+    gap: 4px;
+  }
+
+  .bottom-tabs button {
+    flex-basis: 66px;
+    min-height: 34px;
+    padding: 6px 5px;
+    font-size: 0.72rem;
+  }
+
+  .content-surface {
+    height: calc(var(--vvh) - 96px - var(--safe-top) - var(--safe-bottom));
+  }
+
+  .port-layout,
+  .map-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(222px, 0.46fr);
+    gap: 6px;
+  }
+
+  .hub-hotspot {
+    min-width: 74px;
+    min-height: 58px;
+    padding: 5px;
+  }
+
+  .hub-hotspot img {
+    width: 36px;
+    height: 36px;
+  }
+
+  .hub-hotspot strong {
+    font-size: 0.66rem;
+  }
+
+  .hub-hotspot span,
+  .scene-copy p,
+  .side-panel p,
+  .side-panel small {
+    font-size: 0.72rem;
+    line-height: 1.35;
+  }
+
+  .scene-copy {
+    max-width: 46%;
+    padding: 8px;
+  }
+
+  .wide-action {
+    min-height: 38px;
+  }
+
+  .tutorial-coach {
+    width: min(286px, calc(100vw - 14px));
+    grid-template-columns: 34px minmax(0, 1fr) 72px;
+    padding: 7px;
+  }
+}
+
+@media (orientation: portrait) and (max-width: 760px) {
+  .rotate-notice,
+  .game-shell,
+  .start-shell {
+    display: none !important;
+  }
+}
+
+/* 2026-05-05 story/art correction: project-bound painted PNGs replace CSS doodle icons. */
+.tool-art.tool-pixel,
+.notice-avatar-wrap .tool-art.tool-pixel {
+  display: block;
+  width: 54px;
+  height: 54px;
+  object-fit: contain;
+  padding: 4px;
+  border: 1px solid rgba(128, 91, 43, 0.2);
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(255, 250, 235, 0.82), rgba(238, 214, 155, 0.44));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.38), 0 3px 8px rgba(58, 38, 18, 0.16);
+  image-rendering: auto;
+}
+
+.tool-art.tool-pixel::before,
+.tool-art.tool-pixel::after {
+  content: none;
+}
+
+.tool-row .tool-art.tool-pixel,
+.equipment-tool-card .tool-art.tool-pixel,
+.personal-kit-path .tool-art.tool-pixel {
+  width: 58px;
+  height: 58px;
+}
+
+.pixel-vehicle,
+.current-vehicle-card img,
+.visual-shop-row .pixel-vehicle,
+.route-token.vehicle-token,
+.traveler-token.vehicle-token,
+.season-art,
+.discovery-card img,
+.discovery-grid img {
+  image-rendering: auto !important;
+}
+
+.discovery-card img {
+  padding: 4px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(255, 252, 237, 0.9), rgba(233, 207, 140, 0.38));
+  box-shadow: inset 0 0 0 1px rgba(102, 70, 32, 0.16), 0 3px 8px rgba(47, 31, 15, 0.16);
+}
+
+.full-loop-strip {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid rgba(68, 45, 25, 0.16);
+  border-radius: 8px;
+  background: rgba(255, 250, 232, 0.92);
+  box-shadow: 0 8px 20px rgba(42, 25, 12, 0.08);
+}
+
+.full-loop-strip strong,
+.full-loop-strip span {
+  display: block;
+  min-width: 0;
+}
+
+.full-loop-strip strong {
+  font-size: 0.92rem;
+  color: #3a2b1d;
+}
+
+.full-loop-strip span {
+  margin-top: 2px;
+  font-size: 0.76rem;
+  line-height: 1.35;
+  color: #705841;
+}
+
+.full-loop-strip button {
+  min-width: 74px;
+  min-height: 34px;
+  border-radius: 8px;
+  border: 1px solid rgba(112, 80, 43, 0.28);
+  background: #fff7db;
+  color: #4b3320;
+  font-weight: 800;
+}
+
+.market-intel-chips,
+.event-intel-row,
+.route-recommended-goods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.market-intel-chips {
+  margin-top: 6px;
+  max-width: min(420px, 80vw);
+}
+
+.market-intel-chips b,
+.event-intel-row span,
+.route-recommended-goods span,
+.route-recommended-goods b {
+  border-radius: 999px;
+  border: 1px solid rgba(80, 58, 35, 0.18);
+  background: rgba(255, 251, 232, 0.9);
+  padding: 4px 7px;
+  font-size: 0.68rem;
+  line-height: 1;
+  color: #4b3320;
+  white-space: nowrap;
+}
+
+.route-risk-card {
+  display: grid;
+  gap: 4px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: rgba(91, 55, 32, 0.08);
+  border: 1px solid rgba(91, 55, 32, 0.12);
+}
+
+.route-risk-card strong {
+  font-size: 0.82rem;
+  color: #402c1b;
+}
+
+.route-risk-card span {
+  font-size: 0.74rem;
+  color: #74543a;
+}
+
+.good-system-note {
+  display: grid;
+  gap: 3px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: rgba(62, 100, 91, 0.1);
+  border: 1px solid rgba(62, 100, 91, 0.16);
+}
+
+.good-system-note span,
+.good-system-note small {
+  line-height: 1.35;
+  color: #365249;
+}
+
+.good-system-note span {
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.good-system-note small {
+  font-size: 0.7rem;
+}
+
+.route-recommended-goods {
+  align-items: center;
+}
+
+.route-recommended-goods span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.route-recommended-goods .pixel-good-icon,
+.route-recommended-goods .good-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.event-intel-row {
+  margin-top: 8px;
+}
+
+.event-next-hint {
+  display: grid;
+  gap: 3px;
+  padding: 9px 11px;
+  border-radius: 8px;
+  background: rgba(255, 247, 218, 0.94);
+  border: 1px solid rgba(112, 76, 33, 0.18);
+}
+
+.event-next-hint small {
+  color: #8a6040;
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+
+.event-next-hint strong {
+  color: #3b2b1c;
+  font-size: 0.86rem;
+}

@@ -64,6 +64,22 @@
     "hazards": [
       "bandits"
     ],
+    "riskProfile": "첫 장사에 알맞은 영남 땅길. 도적 소문이 있지만 큰 손실은 드물다.",
+    "recommendedPrep": [
+      "guard",
+      "cart"
+    ],
+    "routeRole": "starter",
+    "rewardHint": "부산(부산포) 면포를 대구에서 팔아 첫 수익을 배운다.",
+    "eventDeck": [
+      "traveling_merchant",
+      "bandit_ambush"
+    ],
+    "recommendedGoods": [
+      "cotton_cloth",
+      "dried_fish",
+      "salt"
+    ],
     "description": "영남 내륙과 부산(부산포)를 잇는 핵심 루트."
   },
   {
@@ -130,6 +146,23 @@
     "hazards": [
       "bandits",
       "flood"
+    ],
+    "riskProfile": "호남 내륙과 서남해를 잇는 안정적인 두 번째 거래 길.",
+    "recommendedPrep": [
+      "cart",
+      "guard"
+    ],
+    "routeRole": "starter",
+    "rewardHint": "목포 소금과 건어물 장사로 손수레 자금을 모은다.",
+    "eventDeck": [
+      "traveling_merchant",
+      "bandit_ambush",
+      "flooded_road"
+    ],
+    "recommendedGoods": [
+      "salt",
+      "dried_fish",
+      "rice"
     ],
     "description": "호남 내륙과 서남해 항구를 잇는다."
   },
@@ -203,6 +236,26 @@
       "pirates",
       "storm"
     ],
+    "riskProfile": "암초와 해적 소문이 함께 도는 서남해 어장길. 수리 도구나 호위가 있으면 손실을 줄인다.",
+    "recommendedPrep": [
+      "navigation",
+      "repair",
+      "escort"
+    ],
+    "routeRole": "profit",
+    "seasonalRiskNote": "여름과 장마철에는 태풍 위험이 크게 오른다.",
+    "rewardHint": "흑산도 홍어와 건어물 발견으로 서해 장부를 채운다.",
+    "eventDeck": [
+      "reef_scrape",
+      "pirate_sighting",
+      "storm_warning",
+      "drifting_boat_rescue"
+    ],
+    "recommendedGoods": [
+      "skate",
+      "dried_fish",
+      "seaweed"
+    ],
     "description": "흑산도 어장과 연결되는 위험 항로."
   },
   {
@@ -219,6 +272,27 @@
       "storm",
       "rough_sea",
       "pirates"
+    ],
+    "riskProfile": "제주 장부를 여는 장거리 바닷길. 풍랑과 해적이 겹쳐 작은 배로는 손실이 커진다.",
+    "recommendedPrep": [
+      "ship",
+      "escort",
+      "repair",
+      "navigation"
+    ],
+    "routeRole": "story",
+    "seasonalRiskNote": "겨울과 태풍철에는 항해일이 늘 수 있다.",
+    "rewardHint": "제주 말과 감귤 교역의 입구를 연다.",
+    "eventDeck": [
+      "storm_warning",
+      "pirate_sighting",
+      "drifting_boat_rescue",
+      "reef_scrape"
+    ],
+    "recommendedGoods": [
+      "citrus",
+      "horse",
+      "seaweed"
     ],
     "description": "서남해에서 제주로 가는 장거리 항로."
   },
@@ -303,6 +377,22 @@
     "hazards": [
       "pirates"
     ],
+    "riskProfile": "부산(부산포)로 복귀하기 쉬운 짧은 남해 연안길. 해적 소문이 첫 해상 긴장감을 만든다.",
+    "recommendedPrep": [
+      "escort",
+      "ship"
+    ],
+    "routeRole": "starter",
+    "rewardHint": "부산 장터로 돌아와 면포 장사를 이어간다.",
+    "eventDeck": [
+      "pirate_sighting",
+      "drifting_boat_rescue"
+    ],
+    "recommendedGoods": [
+      "dried_fish",
+      "lumber",
+      "cotton_cloth"
+    ],
     "description": "진해(제포)와 부산(부산포)를 잇는 짧은 길."
   },
   {
@@ -322,6 +412,28 @@
       "foreign_inspection"
     ],
     "permitRequired": "waegwan_pass",
+    "riskProfile": "왜관 허가가 필요한 대외 교역 첫 관문. 검문, 풍랑, 해적이 함께 따라온다.",
+    "recommendedPrep": [
+      "permit",
+      "escort",
+      "ship",
+      "navigation"
+    ],
+    "routeRole": "story",
+    "seasonalRiskNote": "바람이 거센 달에는 항해 손실이 커진다.",
+    "rewardHint": "왜관/대마도 장부와 고가 외래품 교역을 해금한다.",
+    "eventDeck": [
+      "tax_inspection",
+      "storm_warning",
+      "pirate_sighting",
+      "waegwan_contact"
+    ],
+    "recommendedGoods": [
+      "cotton_cloth",
+      "ginseng",
+      "silver",
+      "japanese_paper"
+    ],
     "description": "첫 버전의 해외 목표 항로. 왜관 허가가 필요하다."
   },
   {
@@ -437,6 +549,25 @@
     "hazards": [
       "bandits",
       "fog"
+    ],
+    "riskProfile": "북방 장부를 향한 긴 수레길. 안개와 도적 때문에 호위와 짐말이 중요하다.",
+    "recommendedPrep": [
+      "cart",
+      "guard",
+      "permit"
+    ],
+    "routeRole": "border",
+    "seasonalRiskNote": "겨울에는 눈길 때문에 속도가 떨어진다.",
+    "rewardHint": "의주 변경 장시와 북방 교역 허가 목표를 드러낸다.",
+    "eventDeck": [
+      "traveling_merchant",
+      "bandit_ambush",
+      "tax_inspection"
+    ],
+    "recommendedGoods": [
+      "paper",
+      "books",
+      "ginseng"
     ],
     "description": "대동강 장터에서 신의주(의주) 압록강 변경으로 이어지는 장거리 수레길."
   },
@@ -563,6 +694,25 @@
       "bandits"
     ],
     "permitRequired": "qing_border_pass",
+    "riskProfile": "청 상인을 만나는 국경 장시길. 허가 문서와 세관 대응이 수익을 좌우한다.",
+    "recommendedPrep": [
+      "permit",
+      "guard",
+      "trade"
+    ],
+    "routeRole": "border",
+    "seasonalRiskNote": "안개가 짙은 달에는 검문과 지연이 잦다.",
+    "rewardHint": "청 방면 차, 비단, 도자기 교역과 북방 장부를 연다.",
+    "eventDeck": [
+      "tax_inspection",
+      "traveling_merchant",
+      "bandit_ambush"
+    ],
+    "recommendedGoods": [
+      "tea",
+      "silk",
+      "ceramics"
+    ],
     "description": "신의주(의주)에서 압록강 건너 청 상인을 만나는 국경 장시길. 허가 문서가 있어야 안전하다."
   },
   {

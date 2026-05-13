@@ -270,3 +270,54 @@
 - [ ] Ledger/codex screen shows discovery progress and ledger seal progress as achievement cards.
 - [ ] Cargo sale hints still select the matching map route.
 - [ ] `1365x768`, `1920x1080`, `844x390`, and `932x430` screenshots for quest/equipment/ledger have no horizontal scroll.
+
+## 2026-05-04 Mobile Portrait And Art QA Acceptance
+
+- [x] `390x844` portrait shows only the orientation gate, not HUD/tabs/content/modal UI.
+- [x] `412x915` portrait shows only the orientation gate, not gameplay UI.
+- [x] Orientation gate includes a rotate icon, the required Korean guidance sentence, and one large `계속` button.
+- [x] `844x390`, `932x430`, and `1024x600` landscape screenshots have no horizontal scroll.
+- [x] Landscape HUD stays compact and does not collapse into vertical text columns.
+- [x] Bottom tabs remain scrollable/fixed-height and do not wrap.
+- [x] Map board and right route panel do not overlap in mobile landscape.
+- [x] Port scene and side panel do not overlap in mobile landscape.
+- [x] Market goods use larger painted icons and consistent object-fit behavior.
+- [x] Inline polygon Korea map is removed from primary gameplay and replaced by the painted route map asset.
+- [x] Travel animation token no longer uses crude inline SVG for ship/cart.
+- [x] Hub/facility icons use the painted PNG versions instead of the tiny SVG versions.
+- [x] `result-plain` placeholder is no longer selected for primary result icon display.
+- [x] Visual screenshots are saved under `.logs/visual-mobile-portrait-art-2026-05-04/`.
+- [x] `npm run validate:data`, `npm run audit:consistency`, `npm run build`, `npm run test:smoke`, and `npm run test:visual` were run for this pass.
+
+## 2026-05-04 Junior Light Mode Acceptance
+
+- [x] `junior-game/`이 `starter/`와 별도로 존재하고 독립 실행된다.
+- [x] `starter/src/App.tsx`는 junior 구현을 직접 import하지 않는다.
+- [x] Junior game은 full mode HUD, 하단 탭, 가격표, 지도 패널을 렌더링하지 않는다.
+- [x] Junior mode 도입에서 요정이 “정우야, 여긴 조선이야!”라고 안내한다.
+- [x] 상품 고르기 화면에는 면포, 건어물, 소금 3개 큰 카드만 보인다.
+- [x] 선택한 상품이 짐에 실리는 화면과 `출발!` 버튼이 보인다.
+- [x] 이동 화면에서 `부산포 → 대구`와 수레 이동 연출이 보인다.
+- [x] 도착 후 `팔기` 버튼으로 성공 화면에 진입한다.
+- [x] 성공 화면에서 돈 증가, 반짝임, `첫 장사 성공` 배지가 보인다.
+- [x] `또 하기`는 junior 루프를 다시 시작한다.
+- [x] `큰 모험 보기`는 full mode 링크 또는 안내로 연결된다.
+- [x] 새로고침 후 `joseon_trade_junior_save_v1` 저장이 유지된다.
+- [x] `390x844` portrait에서 회전 안내 없이 바로 플레이된다.
+- [x] `844x390` landscape에서도 화면이 깨지지 않는다.
+
+## 2026-05-13 Full Mode SWF-Inspired Implementation Acceptance
+
+- [x] Junior Light Mode는 수정 대상에서 제외하고 full mode `starter/`만 개정한다.
+- [x] 부산포 첫 루프가 시장 구매, 지도 선택, 이동 사건, 도착 판매, 첫 의뢰 완료, 손수레 목표로 이어진다.
+- [x] 시장 팝업에 산 값, 파는 값, 평균가, 가격 이유, 추천 판매처, 즉시 되팔기 손익이 표시된다.
+- [x] 지역 특산품, 수요품, 월별 유행품이 시장 간판과 상품 칩으로 보인다.
+- [x] 지도 루트 선택 시 육로/해로, 위험 프로필, 소요일, 추천 준비물, 추천 상품, 보상 힌트가 보인다.
+- [x] 도적, 해적, 태풍, 갯벌, 암초, 검문, 길손 상인, 표류선 구조 사건 데이터가 full mode 이벤트 흐름에 연결된다.
+- [x] 첫 이동에서는 과도한 손실 없이 이동 중 사건을 경험할 수 있다.
+- [x] 이벤트 선택지는 대응 준비물과 결과 힌트를 표시하고, 결과 모달은 다음 추천 행동을 표시한다.
+- [x] 배/수레 구매 목록은 가격, 부족 금액, 새로 유리해지는 길을 보여준다.
+- [x] 손수레, 어선, 연안 상선 목표가 장기 루프와 남해/제주/대마도 준비로 이어진다.
+- [x] 장부 화면에서 최근 거래, 발견, 장부 조각 진행도와 다음 목표를 확인할 수 있다.
+- [x] 사건/발견/의뢰/장비 모달은 겹쳐서 입력을 가로막지 않고 순차적으로 표시된다.
+- [x] `npm run validate:data`, `npm run audit:consistency`, `npm run build`, `npm run test:smoke`, `npm run test:visual`이 통과한다.

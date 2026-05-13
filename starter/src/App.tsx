@@ -31,8 +31,9 @@ import type {
 import { useGameAudio, type AudioSettings, type SfxKey } from './audio';
 import {
   PROTAGONIST_ASSET,
+  KOREA_ROUTE_MAP_ASSET,
   TITLE_HARBOR_ASSET,
-  cartAssetForTier,
+  cartAssetForId,
   goodIconAsset,
   guideSpiritAsset,
   hubIconAsset,
@@ -40,12 +41,14 @@ import {
   resultIconAsset,
   sceneAssetForVisualType,
   seasonArtAsset,
-  shipAssetForTier
+  shipAssetForTier,
+  toolAsset
 } from './artDirection';
 
 type Tab = 'port' | 'market' | 'map' | 'cargo' | 'quests' | 'vehicles' | 'ledger';
 type Toast = { tone: 'good' | 'warn' | 'plain'; text: string };
 type StatePatch = Partial<Pick<GameState, 'questNotices' | 'discoveryNotices' | 'ledgerSealNotices' | 'lastEventResult' | 'lastMonthNews'>>;
+const DISABLED_STORY_COMPANION_IDS = new Set(['park_seyeon', 'dad', 'mom']);
 type TravelAnimation = { routeId: string; fromPortId: string; toPortId: string; mode: Route['mode'] };
 type TradeHint = {
   goodId: string;
@@ -300,6 +303,20 @@ const dateText = (date: GameState['date']) => `${date.month}월 ${date.day}일`;
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
 const uniqueId = (prefix: string) => `${prefix}-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
 const MARKET_SIZE_BY_TIER: Record<Port['tier'], number> = { S: 8, A: 6, B: 5, C: 3 };
+
+function isStoryCompanionDisabled(companion?: Companion) {
+  return Boolean(companion && DISABLED_STORY_COMPANION_IDS.has(companion.id));
+}
+
+function visibleCompanions(data: GameData, kind?: Companion['kind']) {
+  return data.companions.filter((companion) => !isStoryCompanionDisabled(companion) && (!kind || companion.kind === kind));
+}
+
+function removeDisabledStoryCompanions(companions: Record<string, boolean>) {
+  const next = { ...companions };
+  for (const id of DISABLED_STORY_COMPANION_IDS) delete next[id];
+  return next;
+}
 
 function hashNoise(seed: string) {
   let hash = 2166136261;
@@ -726,7 +743,7 @@ function cartArtFor(data: GameData, cart: Cart) {
   const ordered = [...data.carts].sort((a, b) => a.price - b.price);
   const index = Math.max(0, ordered.findIndex((item) => item.id === cart.id));
   const tier = index <= 1 ? 1 : index <= 2 ? 2 : index <= 4 ? 3 : 4;
-  return cartAssetForTier(tier);
+  return cartAssetForId(cart.id, tier);
 }
 
 function sceneAssetForPort(port: Port) {
@@ -811,6 +828,137 @@ function nextShipFor(data: GameData, current: Ship) {
 
 function nextCartFor(data: GameData, current: Cart) {
   return [...data.carts].sort((a, b) => a.price - b.price).find((item) => item.price > current.price);
+}
+
+const HAZARD_LABELS: Record<string, string> = {
+  bandits: '도적',
+  pirates: '해적',
+  storm: '태풍',
+  rough_sea: '거친 바다',
+  reef: '암초',
+  mudflat: '갯벌',
+  fog: '안개',
+  flood: '홍수',
+  tax_inspection: '검문',
+  foreign_inspection: '허가 확인',
+  tiger: '산짐승',
+  tiger_clan: '마적',
+  snow: '눈길'
+};
+
+const PREP_LABELS: Record<string, string> = {
+  guard: '호위 장비',
+  navigation: '측량도구',
+  repair: '목재/수리비',
+  permit: '허가장',
+  trade: '거래 장부',
+  escort: '호위 고용',
+  food: '보급',
+  tide: '물때 확인',
+  language: '통역 준비',
+  cart: '수레 점검',
+  ship: '배 수리'
+};
+
+function hazardLabel(hazard: string) {
+  return HAZARD_LABELS[hazard] ?? hazard;
+}
+
+function routePrepLabels(data: GameData, state: GameState, route: Route) {
+  const labels = new Set<string>();
+  for (const prep of route.recommendedPrep ?? []) labels.add(PREP_LABELS[prep] ?? prep);
+  if (route.mode === 'sea') labels.add('배 수리');
+  if (route.mode === 'land') labels.add('수레 점검');
+  if (route.hazards.some((hazard) => ['bandits', 'pirates', 'tiger_clan', 'tiger'].includes(hazard))) labels.add('호위 장비');
+  if (route.hazards.some((hazard) => ['reef', 'fog', 'mudflat', 'rough_sea', 'storm'].includes(hazard))) labels.add('측량도구');
+  if (route.hazards.some((hazard) => ['storm', 'rough_sea', 'mudflat', 'flood'].includes(hazard))) labels.add('목재/수리비');
+  if (route.hazards.some((hazard) => ['tax_inspection', 'foreign_inspection'].includes(hazard)) || route.permitRequired) labels.add(route.permitRequired ? permitLabel(route.permitRequired) : '거래 장부');
+  const repair = routeRepairReadiness(data, state, route);
+  if (repair.tone !== 'ok') labels.add(repair.label);
+  return [...labels].slice(0, 5);
+}
+
+function routeRiskSentence(data: GameData, state: GameState, route: Route) {
+  const monthly = currentMonthEvent(data, state.date.month);
+  const boostedHazards = route.hazards.filter((hazard) => (monthly?.hazardModifiers?.[hazard] ?? 1) > 1 || monthly?.riskTags?.includes(hazard));
+  const base = route.riskProfile ?? `${routeModeLabel(route)} 위험 ${displayedRouteRisk(data, state, route)}/5`;
+  if (boostedHazards.length) return `${base} · 이번 달 ${boostedHazards.map(hazardLabel).join(', ')} 주의`;
+  if (route.seasonalRiskNote) return `${base} · ${route.seasonalRiskNote}`;
+  return base;
+}
+
+function routeRewardText(data: GameData, state: GameState, route: Route, hint?: TradeHint) {
+  if (hint) return `${hint.goodName} ${hint.toPortName} 판매 예상 +${money(hint.totalProfit ?? hint.profitEach)}`;
+  if (route.rewardHint) return route.rewardHint;
+  const destination = data.portById[routeDestination(route, state.currentPortId)];
+  if (destination?.permitRequired) return `${permitLabel(destination.permitRequired)} 목표와 연결`;
+  if (route.mode === 'sea') return '해상 장부와 항구 신뢰를 올릴 수 있어요';
+  return '내륙 장사와 손수레 성장을 이어가요';
+}
+
+function recommendedGoodsForRoute(data: GameData, route: Route, hints: TradeHint[]) {
+  const ids = route.recommendedGoods?.length
+    ? route.recommendedGoods
+    : hints.filter((hint) => hint.routeId === route.id).map((hint) => hint.goodId);
+  return [...new Set(ids)].map((id) => data.goodById[id]).filter((good): good is Good => Boolean(good)).slice(0, 4);
+}
+
+function nextLoopHint(data: GameData, state: GameState) {
+  const sellHint = cargoSaleHintsForCurrentPort(data, state, 1)[0];
+  if (sellHint) return `다음 추천: ${sellHint.toPortName}에서 ${sellHint.goodName} 팔기`;
+  const buyHint = potentialBuyHintsForCurrentPort(data, state, 1)[0];
+  if (buyHint) return `다음 추천: ${buyHint.fromPortName}에서 ${buyHint.goodName} 사기`;
+  const handcart = data.cartById.handcart;
+  if (handcart && !state.questProgress.ownedCarts.handcart) return `손수레까지 ${money(Math.max(0, handcart.price - state.money))} 남음`;
+  if (!state.completedLedgerSeals.includes('seal_south_sea')) return '다음 추천: 남해 장부 조각 확인';
+  if (!state.permits.includes('waegwan_pass')) return '다음 추천: 왜관 허가장 의뢰 확인';
+  return '다음 추천: 장부에서 새 장사길 확인';
+}
+
+function loopFocusFor(data: GameData, state: GameState, tab: Tab) {
+  const activeQuest = data.quests.find((quest) => state.activeQuestIds.includes(quest.id) && !state.completedQuests.includes(quest.id));
+  const openObjective = activeQuest?.objectives.map((objective) => objectiveStatus(data, state, objective)).find((status) => !status.done);
+  const hint = nextLoopHint(data, state);
+  const byTab: Record<Tab, { title: string; action: string; target: Tab }> = {
+    port: { title: '항구에서 소식 확인', action: '시장 보기', target: 'market' },
+    market: { title: '장터에서 살 물건 고르기', action: '지도 보기', target: 'map' },
+    map: { title: '길과 위험을 보고 출발', action: '시장 보기', target: 'market' },
+    cargo: { title: '실은 짐의 팔 곳 확인', action: '지도 보기', target: 'map' },
+    quests: { title: '의뢰와 다음 목표 확인', action: '시장 보기', target: 'market' },
+    vehicles: { title: '장비 목표 확인', action: '지도 보기', target: 'map' },
+    ledger: { title: '장부 조각 진행 확인', action: '지도 보기', target: 'map' }
+  };
+  const current = byTab[tab];
+  return {
+    title: openObjective?.nextAction ?? current.title,
+    text: activeQuest ? `${activeQuest.name}: ${openObjective?.label ?? '보상 확인'} · ${hint}` : hint,
+    action: current.action,
+    target: openObjective?.targetTab ?? current.target
+  };
+}
+
+function FullModeGoalStrip({
+  data,
+  state,
+  tab,
+  onNavigate
+}: {
+  data: GameData;
+  state: GameState;
+  tab: Tab;
+  onNavigate?: (tab: Tab) => void;
+}) {
+  const focus = loopFocusFor(data, state, tab);
+  return (
+    <section className={`full-loop-strip full-loop-${tab}`} data-testid={`full-loop-strip-${tab}`}>
+      <div>
+        <p className="eyebrow">현재 목표</p>
+        <strong>{focus.title}</strong>
+        <span>{focus.text}</span>
+      </div>
+      {onNavigate && <button type="button" onClick={() => onNavigate(focus.target)}>{focus.action}</button>}
+    </section>
+  );
 }
 
 type PixelPalette = {
@@ -1138,29 +1286,11 @@ function VehiclePixelToken({
   style?: CSSProperties;
   testId?: string;
 }) {
+  const asset = mode === 'sea'
+    ? '/assets/painted2d/vehicles/ship-tier-2.png'
+    : '/assets/painted2d/vehicles/cart-tier-2.png';
   return (
-    <svg className={`vehicle-token ${className}`} viewBox="0 0 56 40" style={style} data-testid={testId} aria-hidden="true" shapeRendering="crispEdges">
-      {mode === 'sea' ? (
-        <>
-          <path d="M6 27 H45 C42 34 28 38 13 34 Z" fill="#8a5b2f" stroke="#26384d" strokeWidth="3" strokeLinejoin="round" />
-          <path d="M14 22 H39 V28 H14 Z" fill="#c98238" stroke="#26384d" strokeWidth="2" />
-          <path d="M27 8 V27" stroke="#26384d" strokeWidth="3" strokeLinecap="round" />
-          <path d="M30 10 L49 26 H30 Z" fill="#fff4d6" stroke="#26384d" strokeWidth="2.4" strokeLinejoin="round" />
-          <path d="M25 14 L10 27 H25 Z" fill="#ffd75c" stroke="#26384d" strokeWidth="2.4" strokeLinejoin="round" />
-          <path d="M7 36 C20 32 35 37 50 32" fill="none" stroke="#24b1cb" strokeWidth="3" strokeLinecap="round" />
-        </>
-      ) : (
-        <>
-          <path d="M12 18 H41 V31 H12 Z" fill="#c98238" stroke="#26384d" strokeWidth="3" strokeLinejoin="round" />
-          <path d="M17 12 H36 V19 H17 Z" fill="#ffd75c" stroke="#26384d" strokeWidth="2.5" strokeLinejoin="round" />
-          <path d="M8 28 H48" stroke="#26384d" strokeWidth="3" strokeLinecap="round" />
-          <circle cx="17" cy="34" r="6" fill="#26384d" />
-          <circle cx="39" cy="34" r="6" fill="#26384d" />
-          <circle cx="17" cy="34" r="2.4" fill="#f2d99a" />
-          <circle cx="39" cy="34" r="2.4" fill="#f2d99a" />
-        </>
-      )}
-    </svg>
+    <img className={`vehicle-token ${className}`} src={asset} style={style} data-testid={testId} alt="" aria-hidden="true" />
   );
 }
 
@@ -1334,7 +1464,8 @@ function createInitialState(data: GameData): GameState {
     shipDurability: ship?.durability ?? 1,
     cartDurability: cart?.durability ?? 1,
     tools: {},
-    companions: { park_seyeon: true, dad: true, mom: true },
+    // 정우만 과거로 이동한다. 세연/엄마/아빠 family helper는 스토리 재검토 전까지 비활성화한다.
+    companions: {},
     fleetName: '정우상단',
     permits: [...start.permits],
     cargo: { ...start.cargo },
@@ -1393,7 +1524,7 @@ function normalizeState(data: GameData, raw: GameState): GameState {
     shipDurability: raw.shipDurability ?? data.shipById[currentShipId]?.durability ?? 1,
     cartDurability: raw.cartDurability ?? data.cartById[currentCartId]?.durability ?? 1,
     tools: raw.tools ?? {},
-    companions: raw.companions ?? {},
+    companions: removeDisabledStoryCompanions(raw.companions ?? {}),
     fleetName: raw.fleetName ?? '정우상단',
     cargo: raw.cargo ?? {},
     cargoCost: raw.cargoCost ?? {},
@@ -1545,7 +1676,8 @@ function fleetStats(data: GameData, state: GameState): FleetStats {
     if (owned) addStats(total, data.toolById[toolId]?.stats);
   }
   for (const [companionId, joined] of Object.entries(state.companions ?? {})) {
-    if (joined) addStats(total, data.companionById[companionId]?.stats);
+    const companion = data.companionById[companionId];
+    if (joined && !isStoryCompanionDisabled(companion)) addStats(total, companion?.stats);
   }
   return total;
 }
@@ -1767,6 +1899,9 @@ function selectEvent(data: GameData, state: GameState, route: Route) {
     0.85
   );
   const seed = hashNoise(`${state.date.year}-${state.date.month}-${state.date.day}-${route.id}-${state.money}`);
+  const deckMatching = (route.eventDeck ?? [])
+    .map((eventId) => data.eventById[eventId])
+    .filter((event): event is GameEvent => Boolean(event));
   const matching = data.events.filter((event) => {
     const hazard = event.trigger.routeHazard;
     const monthOk = !event.trigger.months || event.trigger.months.includes(state.date.month);
@@ -1774,7 +1909,11 @@ function selectEvent(data: GameData, state: GameState, route: Route) {
     const draftOk = !event.trigger.shipDraftMin || (data.shipById[state.shipId]?.draft ?? 0) >= event.trigger.shipDraftMin;
     return hazard && route.hazards.includes(hazard) && monthOk && tideOk && draftOk;
   });
-  const pool = matching.length > 0 ? matching : data.events.filter((event) => event.type === 'good_luck' || event.id.includes('wind'));
+  const firstTravelEvent = state.ledger.travels.length === 0
+    ? data.eventById[route.mode === 'sea' ? 'drifting_boat_rescue' : 'traveling_merchant']
+    : undefined;
+  if (firstTravelEvent) return firstTravelEvent;
+  const pool = deckMatching.length > 0 ? deckMatching : matching.length > 0 ? matching : data.events.filter((event) => event.type === 'good_luck' || event.id.includes('wind'));
   const modifier = Math.max(...route.hazards.map((hazard) => monthly?.hazardModifiers?.[hazard] ?? 1), 1);
   const guardFactor = Math.max(0.7, 1 - fleetStats(data, state).guard * 0.04);
   if (pool.length === 0 || seed > chance * modifier * guardFactor) return undefined;
@@ -2477,7 +2616,69 @@ function recordSell(data: GameData, state: GameState, good: Good, quantity: numb
   return checkQuestCompletion(data, nextState);
 }
 
+function useResponsiveViewport() {
+  const readViewport = () => {
+    if (typeof window === 'undefined') return { width: 1024, height: 600, isPortraitPhone: false };
+    const visual = window.visualViewport;
+    const width = Math.round(visual?.width ?? window.innerWidth);
+    const height = Math.round(visual?.height ?? window.innerHeight);
+    return {
+      width,
+      height,
+      isPortraitPhone: width <= 760 && height > width
+    };
+  };
+  const [viewport, setViewport] = useState(readViewport);
+
+  useEffect(() => {
+    const applyViewport = () => {
+      const next = readViewport();
+      document.documentElement.style.setProperty('--vvw', `${next.width}px`);
+      document.documentElement.style.setProperty('--vvh', `${next.height}px`);
+      setViewport(next);
+    };
+    applyViewport();
+    window.addEventListener('resize', applyViewport);
+    window.addEventListener('orientationchange', applyViewport);
+    window.visualViewport?.addEventListener('resize', applyViewport);
+    window.visualViewport?.addEventListener('scroll', applyViewport);
+    return () => {
+      window.removeEventListener('resize', applyViewport);
+      window.removeEventListener('orientationchange', applyViewport);
+      window.visualViewport?.removeEventListener('resize', applyViewport);
+      window.visualViewport?.removeEventListener('scroll', applyViewport);
+    };
+  }, []);
+
+  return viewport;
+}
+
+function PortraitOrientationGate({
+  acknowledged,
+  onAcknowledge
+}: {
+  acknowledged: boolean;
+  onAcknowledge: () => void;
+}) {
+  return (
+    <main className="orientation-gate" data-testid="portrait-orientation-gate">
+      <section className="orientation-card" aria-live="polite">
+        <div className="orientation-icon" aria-hidden="true">
+          <span className="phone-shape" />
+          <span className="turn-arrow" />
+        </div>
+        <h1>가로 화면으로 준비해요</h1>
+        <p>이 게임은 가로 화면에서 더 잘 보여요. 휴대폰을 옆으로 돌려주세요.</p>
+        <button type="button" className="primary orientation-continue" onClick={onAcknowledge}>계속</button>
+        {acknowledged && <small>확인했어요. 휴대폰을 옆으로 돌리면 정우의 거상 모험이 바로 보여요.</small>}
+      </section>
+    </main>
+  );
+}
+
 export default function App() {
+  const viewport = useResponsiveViewport();
+  const [portraitAcknowledged, setPortraitAcknowledged] = useState(false);
   const [data, setData] = useState<GameData | null>(null);
   const [loadError, setLoadError] = useState('');
   const [state, setState] = useState<GameState | null>(null);
@@ -2550,6 +2751,10 @@ export default function App() {
     if (!state?.discoveryNotices[0]) return;
     audio.playSfx('reward');
   }, [state?.discoveryNotices[0]?.id]);
+
+  useEffect(() => {
+    if (!viewport.isPortraitPhone) setPortraitAcknowledged(false);
+  }, [viewport.isPortraitPhone]);
 
   const context = useMemo(() => {
     if (!data || !state) return null;
@@ -2653,7 +2858,11 @@ export default function App() {
     if (nextUsed > cargoCapacity(data, state)) return showToast({ tone: 'warn', text: '짐칸이 부족합니다.' });
     audio.playSfx('buy');
     const bought = recordBuy(data, state, good, qty, price);
-    commit(good.id === 'cotton_cloth' ? queueTutorialDialog(data, bought, 'bought_first_001') : bought, { tone: 'good', text: `${good.name} ${qty}개를 샀습니다.` });
+    const buyHint = potentialBuyHintsForCurrentPort(data, bought, 4).find((hint) => hint.goodId === good.id);
+    const buyText = buyHint
+      ? `${good.name} ${qty}개 구입 · ${buyHint.toPortName} 판매 추천`
+      : `${good.name} ${qty}개 구입 · ${nextLoopHint(data, bought)}`;
+    commit(good.id === 'cotton_cloth' ? queueTutorialDialog(data, bought, 'bought_first_001') : bought, { tone: 'good', text: buyText });
   }
 
   function sellGood(good: Good, quantity: number) {
@@ -2662,9 +2871,12 @@ export default function App() {
     const qty = Math.max(1, Math.floor(quantity));
     if ((state.cargo[good.id] ?? 0) < qty) return showToast({ tone: 'warn', text: '팔 수량이 부족합니다.' });
     const price = marketQuote(data, state, state.currentPortId, good).sellPrice;
+    const avgCost = averageCargoCost(state, good.id);
+    const profit = Math.round((price - (avgCost || price)) * qty);
     audio.playSfx('sell');
     const sold = recordSell(data, state, good, qty, price);
-    commit(good.id === 'cotton_cloth' && state.currentPortId === 'daegu' ? queueTutorialDialog(data, sold, 'profit_first_001') : sold, { tone: 'good', text: `${good.name} ${qty}개를 팔았습니다.` });
+    const saleText = `${good.name} 판매 ${profit >= 0 ? '+' : ''}${money(profit)} · ${nextLoopHint(data, sold)}`;
+    commit(good.id === 'cotton_cloth' && state.currentPortId === 'daegu' ? queueTutorialDialog(data, sold, 'profit_first_001') : sold, { tone: profit >= 0 ? 'good' : 'warn', text: saleText });
   }
 
   function inspectMarketGood(good: Good) {
@@ -2764,6 +2976,7 @@ export default function App() {
         description: event.text,
         result: resolved.result,
         lines: effectLines(data, before, after, resolved.effects, travelMode),
+        nextHint: event.recoveryOption ?? nextLoopHint(data, after),
         fameDelta: eventFameDelta,
         portTrustDelta: event.severity >= 2 ? { [after.currentPortId]: 1 } : undefined,
         companionReaction: companionEventResult(data, state, event)
@@ -2997,6 +3210,8 @@ export default function App() {
   }
 
   function recruitCompanion(companion: Companion) {
+    // Story companions are disabled: only Jeongwoo travelled to Joseon in the revised premise.
+    if (isStoryCompanionDisabled(companion)) return;
     if (!data || !state || state.companions?.[companion.id]) return;
     if (blockForTutorial()) return;
     if (state.money < companion.recruitCost) return showToast({ tone: 'warn', text: `${companion.name}을 동료로 맞으려면 ${money(companion.recruitCost)}이 필요합니다.` });
@@ -3075,6 +3290,10 @@ export default function App() {
   if (loadError) return <main className="app-shell center"><p className="notice warn">{loadError}</p></main>;
   if (!data) return <main className="app-shell center"><p className="notice">장터 데이터를 불러오는 중입니다...</p></main>;
 
+  if (viewport.isPortraitPhone) {
+    return <PortraitOrientationGate acknowledged={portraitAcknowledged} onAcknowledge={() => setPortraitAcknowledged(true)} />;
+  }
+
   if (!state || !context) {
     return (
       <main className="app-shell start-shell">
@@ -3083,7 +3302,7 @@ export default function App() {
           <img className="start-portrait" src={PROTAGONIST_ASSET} alt="" />
           <p className="eyebrow">그림으로 떠나는 모바일 교역 RPG</p>
           <h1>팔도상단: 조선의 바람</h1>
-          <p>현대의 정우가 갑자기 조선 부산(부산포)에 도착했습니다. 요정과 함께 첫 장사를 배우고 조선의 거상을 향해 떠나 보세요.</p>
+          <p>현대의 정우가 혼자 조선 부산(부산포)에 도착했습니다. 거상이 되어 다시 현대세계로 돌아갈 단서를 장부에 모아 보세요.</p>
           <div className="save-slot-picker" aria-label="저장 슬롯">
             {[1, 2, 3].map((slot) => (
               <button key={slot} className={saveSlot === slot ? 'active' : ''} onClick={() => { setSaveSlot(slot); setSavedAvailable(savedSlots[slot]); }}>
@@ -3105,12 +3324,15 @@ export default function App() {
   const questNotice = state.questNotices[0];
   const discoveryNotice = state.discoveryNotices[0];
   const ledgerSealNotice = state.ledgerSealNotices[0];
+  const showDiscoveryNotice = Boolean(discoveryNotice && !pendingEvent && !state.lastEventResult && !fishingSession);
+  const showQuestNotice = Boolean(questNotice && !pendingEvent && !state.lastEventResult && !discoveryNotice && !fishingSession);
+  const showLedgerSealNotice = Boolean(ledgerSealNotice && !pendingEvent && !state.lastEventResult && !discoveryNotice && !questNotice && !fishingSession);
+  const showEquipmentNotice = Boolean(equipmentNotice && !pendingEvent && !state.lastEventResult && !discoveryNotice && !questNotice && !ledgerSealNotice && !fishingSession);
   const modalBusy = Boolean(fishingSession || pendingEvent || state.lastEventResult || discoveryNotice || questNotice || ledgerSealNotice || equipmentNotice);
   const tutorialStoryStep = !modalBusy ? tutorialDialog : undefined;
 
   return (
     <main className={`app-shell game-shell tab-${tab} ${inputPaused ? 'game-paused' : ''}`}>
-      <div className="rotate-notice">이 게임은 가로화면에 최적화되어 있습니다. 기기를 가로로 돌려주세요.</div>
       <StatusBar data={data} state={state} context={context} audioSettings={audio.settings} audioUnlocked={audio.unlocked} onPrimeAudio={audio.primeAudio} onToggleMusic={audio.toggleMusic} onToggleSfx={audio.toggleSfx} onVolume={audio.setVolume} />
       {toast && <div className={`toast ${toast.tone}`}>{toast.text}</div>}
       <BottomTabs active={tab} onChange={navigate} highlightTarget={activeTutorialHighlight} />
@@ -3138,8 +3360,8 @@ export default function App() {
       )}
       {pendingEvent && <EventChoiceModal data={data} state={state} event={pendingEvent} onResolve={resolveEvent} />}
       {state.lastEventResult && <EventResultModal result={state.lastEventResult} onClose={() => patchState({ lastEventResult: undefined })} />}
-      {discoveryNotice && <DiscoveryModal notice={discoveryNotice} onClose={() => patchState({ discoveryNotices: state.discoveryNotices.slice(1) })} />}
-      {questNotice && (
+      {showDiscoveryNotice && discoveryNotice && <DiscoveryModal notice={discoveryNotice} onClose={() => patchState({ discoveryNotices: state.discoveryNotices.slice(1) })} />}
+      {showQuestNotice && questNotice && (
         <QuestCompleteModal
           data={data}
           notice={questNotice}
@@ -3150,7 +3372,7 @@ export default function App() {
           }}
         />
       )}
-      {ledgerSealNotice && (
+      {showLedgerSealNotice && ledgerSealNotice && (
         <QuestCompleteModal
           data={data}
           notice={ledgerSealNotice}
@@ -3161,7 +3383,7 @@ export default function App() {
           }}
         />
       )}
-      {equipmentNotice && <EquipmentNoticeModal notice={equipmentNotice} onClose={() => setEquipmentNotice(null)} onNavigate={(nextTab) => { setEquipmentNotice(null); navigate(nextTab); }} />}
+      {showEquipmentNotice && equipmentNotice && <EquipmentNoticeModal notice={equipmentNotice} onClose={() => setEquipmentNotice(null)} onNavigate={(nextTab) => { setEquipmentNotice(null); navigate(nextTab); }} />}
       {tutorialStoryStep && (
         <TutorialStoryModal
           data={data}
@@ -4086,6 +4308,7 @@ function PortView({
         </section>
       </div>
       <aside className="side-panel">
+        <FullModeGoalStrip data={data} state={state} tab="port" onNavigate={onNavigate} />
         <PortFlavorPanel data={data} state={state} port={port} />
         <div className="side-quick-ctas" aria-label="우선 행동">
           <button className="primary" onClick={() => onNavigate('market')}>시장 가기</button>
@@ -4189,45 +4412,7 @@ function WorldMapBoard({
 }
 
 function KoreaRouteMapLayer() {
-  return (
-    <svg className="korea-map-layer clean-korea-map normalized-map-layer" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-      <rect className="map-sea west-sea" x="0" y="0" width="31" height="100" />
-      <rect className="map-sea central-sea" x="31" y="0" width="44" height="100" />
-      <rect className="map-sea east-sea" x="75" y="0" width="25" height="100" />
-      <rect className="map-sea south-sea" x="24" y="81" width="60" height="19" />
-      <text className="sea-label west-label" x="10" y="49">서해</text>
-      <text className="sea-label south-label" x="52" y="88">남해</text>
-      <text className="sea-label east-label" x="87" y="41">동해</text>
-      <path
-        className="korea-land-shadow"
-        d="M35 5 C42 2 52 3 60 6 C66 8 71 7 76 11 C73 17 74 23 72 30 C69 37 64 41 63 48 C62 55 67 61 70 68 C70 75 65 80 58 82 C54 83 51 79 48 80 C44 82 43 85 39 83 C34 80 33 75 34 68 C36 62 32 58 34 52 C37 46 33 42 35 36 C38 30 34 27 36 22 C31 17 30 10 35 5 Z"
-      />
-      <path
-        className="korea-land-main"
-        d="M35 4 C42 2 52 3 60 6 C66 8 71 7 75 11 C72 17 73 23 71 30 C68 37 63 41 62 48 C61 55 66 61 69 68 C69 74 64 78 57 80 C53 81 51 78 48 79 C44 81 43 84 39 82 C34 79 33 74 34 68 C36 62 32 58 34 52 C36 46 33 42 35 36 C37 30 34 27 36 23 C32 17 30 10 35 4 Z"
-      />
-      <path className="korea-north-region" d="M35 4 C42 2 52 3 60 6 C66 8 71 7 75 11 C72 17 73 23 71 30 C68 35 62 38 56 37 C49 36 44 34 39 35 C37 35 35 35 35 36 C37 30 34 27 36 23 C32 17 30 10 35 4 Z" />
-      <path className="korea-coast-highlight" d="M35 4 C42 2 52 3 60 6 M75 11 C72 17 73 23 71 30 M62 48 C61 55 66 61 69 68 M69 68 C69 74 64 78 57 80 M39 82 C34 79 33 74 34 68 M34 52 C36 46 33 42 35 36 M36 23 C32 17 30 10 35 4" />
-      <path className="dmz-line" d="M33 36 C43 34 52 37 62 36 C66 36 69 36 72 35" />
-      <path className="korea-mountain spine" d="M57 9 C60 20 60 31 63 43 C61 55 65 67 67 76" />
-      <path className="korea-mountain north-ridge" d="M44 10 C49 18 52 26 55 34" />
-      <path className="korea-mountain west-ridge" d="M38 23 C43 34 40 48 44 60 C46 70 48 78 51 82" />
-      <path className="river-line yalu" d="M34 11 C38 12 42 12 46 15" />
-      <text className="border-river-label yalu-label" x="30" y="10">압록강</text>
-      <path className="river-line tumen border-river" d="M58 7 C64 8 70 8 77 10" />
-      <text className="border-river-label tumen-label" x="67" y="7">두만강</text>
-      <path className="river-line daedong" d="M36 25 C41 23 46 25 51 27" />
-      <path className="river-line han" d="M38 40 C45 38 52 42 58 43" />
-      <path className="river-line nakdong" d="M59 58 C63 64 64 72 70 76" />
-      <ellipse className="korea-island jeju-island" cx="39.7" cy="90.2" rx="11" ry="4.1" />
-      <ellipse className="korea-island tsushima-island" cx="81.2" cy="85.6" rx="4.1" ry="8.4" />
-      <ellipse className="korea-island ulleungdo-island" cx="83.8" cy="50.5" rx="2.8" ry="2.2" />
-      <path className="southern-islets" d="M50 82 L52 82 M56 81 L58 81 M62 79 L64 79 M34 80 L36 80 M28 78 L30 78" />
-      <path className="sea-route-hint" d="M69 79 C73 81 77 83 81 86" />
-      <path className="sea-route-hint east-chain" d="M69 48 C75 47 80 48 84 51" />
-      <text className="island-label" x="82" y="55">울릉</text>
-    </svg>
-  );
+  return <img className="korea-map-layer korea-map-raster normalized-map-layer" src={KOREA_ROUTE_MAP_ASSET} alt="" aria-hidden="true" />;
 }
 
 function MapView({
@@ -4266,6 +4451,7 @@ function MapView({
         <WorldMapBoard data={data} state={state} routes={routes} selectedRouteId={selectedRoute?.id ?? ''} travelAnimation={travelAnimation} saleGuide={bestSaleGuide} onSelectRoute={onSelectRoute} />
       </div>
       <aside className="side-panel map-side">
+        <FullModeGoalStrip data={data} state={state} tab="map" />
         <section className="panel map-command">
           <p className="eyebrow">출발지</p>
           <h2>{port.name}</h2>
@@ -4280,6 +4466,8 @@ function MapView({
               const usedCargo = cargoUsed(data, state.cargo);
               const routeCapacity = routeCargoCapacity(data, state, selectedRoute);
               const expectedProfit = selectedRouteHint ? `+${money(selectedRouteHint.totalProfit ?? selectedRouteHint.profitEach)}` : '추천 없음';
+              const prepLabels = routePrepLabels(data, state, selectedRoute);
+              const recommendedGoods = recommendedGoodsForRoute(data, selectedRoute, [...sellHints, ...buyHints]);
               return (
                 <>
                   <img className="route-destination-scene" src={sceneAssetForPort(destination)} alt="" />
@@ -4295,17 +4483,27 @@ function MapView({
                     <span className="icon-chip">{isBorderTradeRoute(selectedRoute) ? '국경 장시' : selectedRoute.mode === 'sea' ? '배로 가요' : '수레로 가요'}</span>
                     <span className="icon-chip">{selectedRouteDays}일</span>
                   </div>
+                  <div className="route-risk-card" data-testid="route-risk-card">
+                    <strong>{routeRiskSentence(data, state, selectedRoute)}</strong>
+                    <span>{routeRewardText(data, state, selectedRoute, selectedRouteHint)}</span>
+                  </div>
                   <div className="route-overview-grid" data-testid="route-overview-grid">
                     <span><b>위치 타입</b>{portKindLabel(destination)}</span>
                     <span><b>수리</b><em className={repair.tone}>{repair.label}</em></span>
                     <span><b>짐칸</b>{usedCargo}/{routeCapacity}칸</span>
                     <span><b>벌 돈</b>{expectedProfit}</span>
                   </div>
+                  {recommendedGoods.length > 0 && (
+                    <div className="route-recommended-goods" data-testid="route-recommended-goods">
+                      <b>추천 상품</b>
+                      {recommendedGoods.map((good) => <span key={good.id}><GoodIcon good={good} />{good.name}</span>)}
+                    </div>
+                  )}
                   <CargoSlotStrip data={data} state={state} route={selectedRoute} />
                   <div className="route-prep-board" data-testid="route-prep-board">
                     <span className={blocked ? 'bad' : 'ok'}>{blocked ? '준비 필요' : '출발 가능'}</span>
-                    <span>{selectedRoute.mode === 'sea' && state.shipPortId !== state.currentPortId ? '배가 다른 항구에 있어요' : '이동 수단 확인'}</span>
-                    <span>{cargoUsed(data, state.cargo) > routeCargoCapacity(data, state, selectedRoute) ? '수레에 다 안 실려요' : '짐칸 확인'}</span>
+                    {prepLabels.slice(0, 3).map((label) => <span key={label}>{label}</span>)}
+                    <span>{cargoUsed(data, state.cargo) > routeCargoCapacity(data, state, selectedRoute) ? '짐칸 초과' : '짐칸 확인'}</span>
                   </div>
                   {companionSpeedBonus(data, state) > 0 && <span className="icon-chip speed-chip">동료 속도 +{Math.round(companionSpeedBonus(data, state) * 100)}%</span>}
                   {guardRiskReduction(data, state) > 0 && <span className="icon-chip speed-chip">호위 위험 -{guardRiskReduction(data, state)}</span>}
@@ -4316,7 +4514,7 @@ function MapView({
                       <span>{money(selectedRouteHint.buyPrice)} → {money(selectedRouteHint.sellPrice)} · +{money(selectedRouteHint.totalProfit ?? selectedRouteHint.profitEach)}</span>
                     </div>
                   )}
-                  <div className="chips hazard-chips">{selectedRoute.hazards.slice(0, 4).map((hazard) => <span className={`route-danger-chip hazard-${hazard}`} data-testid="route-danger-chip" key={hazard}>{hazard}</span>)}</div>
+                  <div className="chips hazard-chips">{selectedRoute.hazards.slice(0, 4).map((hazard) => <span className={`route-danger-chip hazard-${hazard}`} data-testid="route-danger-chip" key={hazard}>{hazardLabel(hazard)}</span>)}</div>
                   {blocked && <p className="danger-text">{blocked}</p>}
                   <button className={`primary wide-action ${highlightTarget === `travel-button-${selectedRoute.id}` || (highlightTarget === 'travel-button-busanpo-daegu' && destination.id === 'daegu') ? 'tutorial-highlight' : ''}`} data-testid={`travel-button-${selectedRoute.id}`} disabled={disabled || Boolean(blocked) || Boolean(travelAnimation)} onClick={() => onTravel(selectedRoute)}>
                     {travelAnimation ? '이동 중' : '출발'}
@@ -4448,6 +4646,11 @@ function MarketView({
             <p className="eyebrow">{port.name}</p>
             <h2>시장</h2>
             <span>아이콘을 고르고 사기/팔기를 눌러요</span>
+            <div className="market-intel-chips" data-testid="market-intel-chips">
+              <b>특산 {goodsLabel(data, port.produces.slice(0, 3)) || '확인 중'}</b>
+              <b>수요 {goodsLabel(data, port.demands.slice(0, 3)) || '보통'}</b>
+              {monthly?.trendGoods?.length ? <b>유행 {goodsLabel(data, monthly.trendGoods.slice(0, 2))}</b> : null}
+            </div>
           </div>
       <img className="market-npc" src={npcAsset('/assets/painted2d/npc/market-merchant.png')} alt="" onError={(event) => { event.currentTarget.src = npcAsset('/assets/painted2d/npc/fallback-npc.png'); }} />
           <div className={`market-stall-shelf ${hasStallPositions ? 'free-stall-shelf' : ''}`} aria-label="시장 상품">
@@ -4522,6 +4725,7 @@ function MarketView({
                   <span>사는 값 {money(buyPrice)} · 파는 값 {money(sellPrice)} · 가진 수 {owned}개</span>
                   {owned > 0 && <span>내가 산 값 {money(avgCost || buyPrice)} · 지금 팔면 {currentProfit >= 0 ? '+' : ''}{money(currentProfit)}</span>}
                   <div className="trade-detail-grid">
+                    <span><b>평균가</b>{money(quote.averagePrice)}</span>
                     <span><b>보통 값과 비교</b>{quote.averageDeltaPercent >= 0 ? '+' : ''}{quote.averageDeltaPercent}%</span>
                     <span><b>생산지</b>{quote.relation === 'origin' ? '예' : '아니오'}</span>
                     <span><b>수요</b>{quote.relation === 'demand' ? '높음' : '보통'}</span>
@@ -4540,6 +4744,12 @@ function MarketView({
                     <span data-testid={`trade-estimate-${selectedGood.id}`}>{money(total)}</span>
                   </div>
                   <div className="price-reason-line">{quote.reasons.join(' · ')}</div>
+                  {(selectedGood.starterUse || selectedGood.riskNote) && (
+                    <div className="good-system-note">
+                      {selectedGood.starterUse && <span>{selectedGood.starterUse}</span>}
+                      {selectedGood.riskNote && <small>{selectedGood.riskNote}</small>}
+                    </div>
+                  )}
                   <div className={`fairy-trade-note ${tradeGuideMood}`} data-testid="fairy-trade-note">
                     <GuideSpirit mood={tradeGuideMood} />
                     <span>{tradeGuideLine}</span>
@@ -4586,10 +4796,13 @@ function MarketView({
       </div>
       <aside className="side-panel market-quick-panel">
         <section className="panel market-summary">
+          <p className="eyebrow">현재 목표</p>
+          <span>{nextLoopHint(data, state)}</span>
           <strong>남은 칸 {Math.max(0, capacity - used)}</strong>
           <span>돈 {money(state.money)}</span>
-          <span>{port.produces.slice(0, 3).map((id) => data.goodById[id]?.name ?? id).join(' · ')}</span>
+          <span>가격 이유: 생산지, 수요지, 월별 유행, 위험 할증 반영</span>
         </section>
+        <FullModeGoalStrip data={data} state={state} tab="market" onNavigate={onNavigate} />
         <MonthNewsCard data={data} monthly={currentMonthEvent(data, state.date.month)} />
         <TradeAdvicePanel data={data} sellHints={sellHints} buyHints={hints} onSellHint={onSellHint} onBuyHint={onBuyHint} />
       </aside>
@@ -4649,6 +4862,8 @@ function CargoLedger({
           <span><strong>{joinedCompanions(data, state).length + metNpcIds.length}</strong><small>만난 사람</small></span>
         </div>
       </section>
+
+      <FullModeGoalStrip data={data} state={state} tab="ledger" onNavigate={onNavigate} />
 
       <section className="panel cargo-achievement-panel">
         <div className="panel-title-row">
@@ -4803,7 +5018,15 @@ function LedgerSealSection({ data, state }: { data: GameData; state: GameState }
 }
 
 function ToolIcon({ tool }: { tool: ToolItem }) {
-  return <span className={toolIconClass(tool)} aria-hidden="true" />;
+  return (
+    <img
+      className={`tool-pixel tool-art tool-${tool.kind}`}
+      src={toolAsset(tool.id)}
+      alt=""
+      aria-hidden="true"
+      onError={(event) => { event.currentTarget.src = toolAsset(tool.kind); }}
+    />
+  );
 }
 
 function toolRequirementMet(state: GameState, tool: ToolItem) {
@@ -4826,7 +5049,7 @@ function statLine(stats: Record<string, number>) {
 }
 
 function joinedCompanions(data: GameData, state: GameState, kind?: Companion['kind']) {
-  return data.companions.filter((companion) => state.companions?.[companion.id] && (!kind || companion.kind === kind));
+  return visibleCompanions(data, kind).filter((companion) => state.companions?.[companion.id]);
 }
 
 function strongestCompanionFor(data: GameData, state: GameState, skills: string[]) {
@@ -4878,9 +5101,7 @@ function companionEventResult(data: GameData, state: GameState, event: GameEvent
     kim_sora: '김소라가 사람들을 진정시키고 남은 물건을 다시 묶었습니다.',
     lee_doyun: '이도윤이 낯선 말과 표식을 살펴 다음 검문에 대비하자고 했습니다.',
     park_siwoo: '박시우가 앞에서 버텨 수레와 짐을 지키는 데 큰 도움이 됐습니다.',
-    park_seyeon: '세연이의 응원 덕분에 정우가 겁먹지 않고 다시 길을 잡았습니다.',
-    dad: '아빠가 침착하게 피해를 살피고 복구 순서를 정했습니다.',
-    mom: '엄마가 남은 돈과 짐을 세어 다음 장사를 망치지 않게 챙겼습니다.'
+    // park_seyeon/dad/mom disabled: revised story keeps only Jeongwoo in Joseon.
   };
   const travelLines: Record<string, string> = {
     naraon: '나라온이 바람과 구름을 보며 다음 길은 조금 늦게 잡자고 했습니다.',
@@ -4889,9 +5110,7 @@ function companionEventResult(data: GameData, state: GameState, event: GameEvent
     kim_sora: '김소라가 물때와 어장 소문을 엮어 다음 항구 정보를 알려줬습니다.',
     lee_doyun: '이도윤이 표식과 문서를 다시 확인해 허가가 필요한 길을 짚었습니다.',
     park_siwoo: '박시우가 짐끈과 바퀴를 다시 조여 다음 길을 준비했습니다.',
-    park_seyeon: '세연이가 작은 목소리로 괜찮다고 해 정우가 다시 힘을 냈습니다.',
-    dad: '아빠가 장비 상태를 확인하고 무리하지 말자고 조언했습니다.',
-    mom: '엄마가 남은 물건을 먼저 팔 곳부터 정하자고 알려줬습니다.'
+    // park_seyeon/dad/mom disabled: revised story keeps only Jeongwoo in Joseon.
   };
   return {
     name: companion.name,
@@ -4992,8 +5211,7 @@ function FleetPanel({
   const [draftName, setDraftName] = useState(state.fleetName ?? '정우상단');
   useEffect(() => setDraftName(state.fleetName ?? '정우상단'), [state.fleetName]);
   const stats = fleetStats(data, state);
-  const crew = data.companions.filter((companion) => companion.kind === 'crew');
-  const family = data.companions.filter((companion) => companion.kind === 'family');
+  const crew = visibleCompanions(data, 'crew');
   const joinedCount = crew.filter((companion) => state.companions?.[companion.id]).length;
   const leadCompanion = joinedCompanions(data, state, 'crew')[0];
   return (
@@ -5041,15 +5259,7 @@ function FleetPanel({
           );
         })}
       </div>
-      <div className="family-helper-row">
-        {family.map((helper) => (
-          <span key={helper.id} className={state.companions?.[helper.id] ? 'active' : ''}>
-            <CompanionAvatar companion={helper} />
-            <b>{helper.name}</b>
-            <small>{helper.line}</small>
-          </span>
-        ))}
-      </div>
+      {/* Family helper row disabled: 정우 혼자 조선으로 온다는 새 서사에 맞춰 세연/엄마/아빠 노출을 막는다. */}
     </section>
   );
 }
@@ -5120,6 +5330,7 @@ function VehicleView({
             <button className="primary" onClick={() => onNavigate('map')}>열린 길 보기</button>
           </div>
         </section>
+        <FullModeGoalStrip data={data} state={state} tab="vehicles" onNavigate={onNavigate} />
         <ToolCabinet data={data} state={state} onBuyTool={onBuyTool} />
         <FacilityPanel data={data} state={state} facility="shipyard" onNavigate={onNavigate} />
         <section className="panel equipment-panel">
@@ -5212,8 +5423,8 @@ function VehicleView({
         </section>
       </div>
       <aside className="side-panel equipment-shop-panel">
-        <section className="panel"><h2>배 구입</h2>{data.ships.map((item) => <article className="shop-row visual-shop-row" key={item.id}><img className="pixel-vehicle" src={shipArtFor(data, item)} alt="" /><div><strong>{item.name}</strong><p>{money(item.price)} · 짐칸 {item.cargo} · 싸움 {item.combat} · 어업 {Math.round(item.fishingBonus * 100)}%</p></div><button onClick={() => onBuyShip(item)} disabled={state.shipId === item.id}>{state.shipId === item.id ? '보유' : '구입'}</button></article>)}</section>
-        <section className="panel"><h2>수레 구입</h2>{data.carts.map((item) => <article className="shop-row visual-shop-row" key={item.id}><img className="pixel-vehicle" src={cartArtFor(data, item)} alt="" /><div><strong>{item.name}</strong><p>{money(item.price)} · 짐칸 {item.cargo} · 빠르기 {item.speed}</p></div><button onClick={() => onBuyCart(item)} disabled={state.cartId === item.id}>{state.cartId === item.id ? '보유' : '구입'}</button></article>)}</section>
+        <section className="panel"><h2>배 구입</h2>{data.ships.map((item) => <article className="shop-row visual-shop-row" data-testid={`ship-row-${item.id}`} key={item.id}><img className="pixel-vehicle" src={shipArtFor(data, item)} alt="" /><div><strong>{item.name}</strong><p>{money(item.price)} · 짐칸 {item.cargo} · 싸움 {item.combat} · 어업 {Math.round(item.fishingBonus * 100)}%</p><small>{item.routeUnlockHints?.join(' · ') ?? item.description}</small></div><button data-testid={`buy-ship-${item.id}`} onClick={() => onBuyShip(item)} disabled={state.shipId === item.id || state.money < item.price}>{state.shipId === item.id ? '보유' : state.money < item.price ? `${money(item.price - state.money)} 부족` : '구입'}</button></article>)}</section>
+        <section className="panel"><h2>수레 구입</h2>{data.carts.map((item) => <article className="shop-row visual-shop-row" data-testid={`cart-row-${item.id}`} key={item.id}><img className="pixel-vehicle" src={cartArtFor(data, item)} alt="" /><div><strong>{item.name}</strong><p>{money(item.price)} · 짐칸 {item.cargo} · 빠르기 {item.speed}</p><small>{item.routeUnlockHints?.join(' · ') ?? item.description}</small></div><button data-testid={`buy-cart-${item.id}`} onClick={() => onBuyCart(item)} disabled={state.cartId === item.id || state.money < item.price}>{state.cartId === item.id ? '보유' : state.money < item.price ? `${money(item.price - state.money)} 부족` : '구입'}</button></article>)}</section>
       </aside>
     </div>
   );
@@ -5360,6 +5571,7 @@ function QuestView({
         </section>
       </div>
       <aside className="side-panel quest-side-panel">
+        <FullModeGoalStrip data={data} state={state} tab="quests" onNavigate={onNavigate} />
         <FacilityPanel data={data} state={state} facility="office" onNavigate={onNavigate} />
         <section className="panel quest-next-board">
           <p className="eyebrow">다음에 열릴 의뢰</p>
@@ -5474,6 +5686,12 @@ function EventChoiceModal({ data, state, event, onResolve }: { data: GameData; s
           <h2>{event.name}</h2>
           <p>{event.text}</p>
           {event.enemy && <p className="danger-text">상대: {event.enemy.name} · 공격 {event.enemy.attack}</p>}
+          {(event.prepCounters?.length || event.resultChips?.length) && (
+            <div className="event-intel-row" data-testid="event-intel-row">
+              {event.prepCounters?.slice(0, 3).map((counter) => <span key={counter}>대응 {PREP_LABELS[counter] ?? counter}</span>)}
+              {event.resultChips?.slice(0, 3).map((chip) => <span key={chip}>결과 {chip}</span>)}
+            </div>
+          )}
           {companionLine && <p className="companion-advice" data-testid="event-companion-line">{companionLine}</p>}
         </div>
         <div className="event-actions event-choice-grid">
@@ -5491,6 +5709,7 @@ function EventChoiceModal({ data, state, event, onResolve }: { data: GameData; s
                 <span className="choice-icon" aria-hidden="true" />
                 <strong>{choice.label}</strong>
                 <small>{choiceHint(choice)}</small>
+                {choice.resultHint && <small>{choice.resultHint}</small>}
                 {support && <em>{support}</em>}
               </button>
             );
@@ -5539,6 +5758,12 @@ function EventResultModal({ result, onClose }: { result: EventResult; onClose: (
           const kind = resultLineKind(line);
           return <span className={`result-chip result-${kind}`} key={line}><img src={resultIconFor(kind)} alt="" />{line}</span>;
         })}</div>
+        {result.nextHint && (
+          <div className="event-next-hint" data-testid="event-next-hint">
+            <small>다음 추천</small>
+            <strong>{result.nextHint}</strong>
+          </div>
+        )}
         <button className="primary" onClick={onClose}>확인</button>
       </section>
     </div>

@@ -12,6 +12,15 @@
       "forest"
     ],
     "monthlyUpkeep": 0,
+    "upgradePath": "첫 면포 장사를 배우는 시작 운반 수단",
+    "routeUnlockHints": [
+      "부산(부산포)·대구 첫 길",
+      "소량 고마진 상품"
+    ],
+    "riskCounters": [
+      "bandits"
+    ],
+    "tradeRole": "튜토리얼",
     "description": "시작용 운반 수단."
   },
   {
@@ -26,12 +35,23 @@
       "road"
     ],
     "monthlyUpkeep": 1,
+    "upgradePath": "초반 30분의 첫 성취 목표. 짐칸이 늘어 두 번째 거래가 선명해진다.",
+    "routeUnlockHints": [
+      "대구·전주 땅길",
+      "목포 소금 장사",
+      "첫 의뢰 납품"
+    ],
+    "riskCounters": [
+      "bandits",
+      "flood"
+    ],
+    "tradeRole": "초반 수익 확대",
     "description": "첫 장사를 여러 번 성공하면 노릴 수 있는 초반 큰 목표."
   },
   {
     "id": "packhorse",
     "name": "짐말",
-    "price": 1200,
+    "price": 1050,
     "cargo": 8,
     "speed": 3,
     "durability": 40,
@@ -41,6 +61,16 @@
       "mountain"
     ],
     "monthlyUpkeep": 4,
+    "upgradePath": "산길과 북방 입구를 빠르게 넘는 이동형 성장 목표",
+    "routeUnlockHints": [
+      "안동·강릉 산길",
+      "북방 장부 준비"
+    ],
+    "riskCounters": [
+      "snow",
+      "bandits"
+    ],
+    "tradeRole": "빠른 내륙 납품",
     "description": "산길을 더 빠르고 안전하게 지나가기 좋은 동물 운반 수단."
   },
   {
@@ -55,6 +85,16 @@
       "road"
     ],
     "monthlyUpkeep": 6,
+    "upgradePath": "쌀·소금·목재 같은 무거운 상품을 굴리는 중반 내륙 장사",
+    "routeUnlockHints": [
+      "전주·군산 곡물 장사",
+      "평양·남포 대량 운송"
+    ],
+    "riskCounters": [
+      "tax_inspection",
+      "flood"
+    ],
+    "tradeRole": "대량 저위험 교역",
     "description": "느리지만 짐을 많이 싣는 중반 내륙 장사의 핵심."
   },
   {
@@ -69,6 +109,16 @@
       "plain"
     ],
     "monthlyUpkeep": 12,
+    "upgradePath": "길 좋은 관로에서 의뢰를 빠르게 끝내는 중후반 선택지",
+    "routeUnlockHints": [
+      "한양·개성 관로",
+      "빠른 납품 의뢰"
+    ],
+    "riskCounters": [
+      "bandits",
+      "tax_inspection"
+    ],
+    "tradeRole": "시간 제한 의뢰",
     "description": "길이 좋은 곳에서 빠르게 움직이는 중후반 목표."
   },
   {
@@ -84,6 +134,18 @@
     ],
     "monthlyUpkeep": 35,
     "combat": 3,
+    "upgradePath": "북방과 큰 장사길을 지키는 후반 호송 체계",
+    "routeUnlockHints": [
+      "북방 국경 장시",
+      "고가 화물 호송",
+      "거상 엔딩 준비"
+    ],
+    "riskCounters": [
+      "bandits",
+      "tax_inspection",
+      "snow"
+    ],
+    "tradeRole": "후반 대량 호송",
     "description": "후반 대량 운송용. 도적을 피하고 큰 장사를 이어 가는 장기 목표."
   }
 ]

@@ -32,7 +32,15 @@
     ],
     "taxRate": 0.02,
     "tier": 1,
-    "rarity": "common"
+    "rarity": "common",
+    "starterUse": "싸게 사서 도시와 섬에서 안정적으로 파는 현금 회전 상품.",
+    "bestRegions": [
+      "hanyang",
+      "jeju",
+      "tsushima"
+    ],
+    "tradeRole": "stable",
+    "riskNote": "무겁지만 상하기 않아 초보자 손실이 작다."
   },
   {
     "id": "barley",
@@ -127,7 +135,15 @@
     ],
     "taxRate": 0.03,
     "tier": 1,
-    "rarity": "common"
+    "rarity": "common",
+    "starterUse": "목포·군산에서 사서 대구·전주 같은 내륙 장터로 가져가는 초반 추천 상품.",
+    "bestRegions": [
+      "daegu",
+      "jeonju",
+      "hanyang"
+    ],
+    "tradeRole": "profit",
+    "riskNote": "무거워 짐칸이 빨리 차므로 손수레 이후 효율이 좋아진다."
   },
   {
     "id": "dried_fish",
@@ -169,7 +185,15 @@
     ],
     "taxRate": 0.03,
     "tier": 1,
-    "rarity": "common"
+    "rarity": "common",
+    "starterUse": "부산(부산포)에서 대구로 가는 첫 길에도 부담 없이 실을 수 있는 안정 상품.",
+    "bestRegions": [
+      "daegu",
+      "jeonju",
+      "hanyang"
+    ],
+    "tradeRole": "stable",
+    "riskNote": "가격 폭은 크지 않지만 부패 걱정이 없어 이동 사건을 배워도 안전하다."
   },
   {
     "id": "fresh_fish",
@@ -230,7 +254,15 @@
     ],
     "taxRate": 0.03,
     "tier": 2,
-    "rarity": "regional"
+    "rarity": "regional",
+    "starterUse": "흑산도·목포 항로의 위험 보상으로 쓰는 지역 특산품.",
+    "bestRegions": [
+      "jeonju",
+      "hanyang",
+      "busanpo"
+    ],
+    "tradeRole": "risky",
+    "riskNote": "고수익이지만 항로가 암초·해적 위험을 동반한다."
   },
   {
     "id": "seaweed",
@@ -293,7 +325,15 @@
     ],
     "taxRate": 0.035,
     "tier": 2,
-    "rarity": "regional"
+    "rarity": "regional",
+    "starterUse": "부산(부산포) 시작 루프의 대표 고마진 상품. 첫 판매 성공감을 만든다.",
+    "bestRegions": [
+      "daegu",
+      "tsushima",
+      "hanyang"
+    ],
+    "tradeRole": "profit",
+    "riskNote": "같은 항구 되팔기는 손해가 나도록 설계되어 목적지 선택을 유도한다."
   },
   {
     "id": "hemp_cloth",
@@ -611,7 +651,15 @@
     "originPorts": [],
     "taxRate": 0.055,
     "tier": 3,
-    "rarity": "rare"
+    "rarity": "rare",
+    "starterUse": "왜관/대마도 허가 이후 목표가 되는 고가 약재.",
+    "bestRegions": [
+      "tsushima",
+      "hanyang",
+      "qing_yalu_market"
+    ],
+    "tradeRole": "quest",
+    "riskNote": "고가 상품이라 검문과 약탈 손실이 크게 느껴진다."
   },
   {
     "id": "herbs",
@@ -702,7 +750,15 @@
     ],
     "taxRate": 0.03,
     "tier": 1,
-    "rarity": "regional"
+    "rarity": "regional",
+    "starterUse": "제주 장부를 연 뒤 첫 보상감을 주는 특산품.",
+    "bestRegions": [
+      "hanyang",
+      "busanpo",
+      "pyeongyang"
+    ],
+    "tradeRole": "risky",
+    "riskNote": "상하기 쉬워 빠른 배나 짧은 납품 계획이 필요하다."
   },
   {
     "id": "japanese_paper",

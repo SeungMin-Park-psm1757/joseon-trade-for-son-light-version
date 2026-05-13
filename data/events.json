@@ -10,9 +10,21 @@
     },
     "severity": 2,
     "text": "간조가 되며 배가 갯벌에 걸렸다. 큰 배라면 선체가 상할 수 있다.",
+    "eventRole": "risk",
+    "prepCounters": [
+      "tide",
+      "repair"
+    ],
+    "resultChips": [
+      "시간",
+      "배 내구",
+      "목재"
+    ],
+    "recoveryOption": "다음 추천: 목재를 챙기거나 조선소에서 배를 수리하세요.",
     "choices": [
       {
         "label": "만조까지 기다린다",
+        "resultHint": "시간 -1일, 손상 없음",
         "effects": {
           "days": 1,
           "morale": -1
@@ -20,6 +32,7 @@
       },
       {
         "label": "선원들이 배를 민다",
+        "resultHint": "빠르지만 배가 상할 수 있음",
         "effects": {
           "crewFatigue": 8,
           "durability": -3
@@ -27,6 +40,7 @@
       },
       {
         "label": "목재로 받친다",
+        "resultHint": "목재 1개로 손실 방지",
         "requires": {
           "lumber": 1
         },
@@ -84,9 +98,20 @@
     },
     "severity": 2,
     "text": "섬 사이 물길에서 암초가 나타났다.",
+    "eventRole": "risk",
+    "prepCounters": [
+      "navigation",
+      "repair"
+    ],
+    "resultChips": [
+      "배 내구",
+      "항해"
+    ],
+    "recoveryOption": "다음 추천: 측량도구나 수리비를 챙기면 섬길이 안정됩니다.",
     "choices": [
       {
         "label": "회피 기동",
+        "resultHint": "항해 판정으로 손상 회피",
         "skillCheck": {
           "skill": "navigation",
           "target": 8
@@ -101,6 +126,7 @@
       },
       {
         "label": "속도를 줄인다",
+        "resultHint": "시간을 쓰고 피해를 줄임",
         "effects": {
           "days": 1,
           "durability": -2
@@ -122,9 +148,21 @@
     },
     "severity": 3,
     "text": "남쪽 바다에서 먹구름이 몰려온다.",
+    "eventRole": "risk",
+    "prepCounters": [
+      "ship",
+      "repair"
+    ],
+    "resultChips": [
+      "시간",
+      "배 내구",
+      "사기"
+    ],
+    "recoveryOption": "다음 추천: 태풍철에는 수리비와 목재를 남겨 두세요.",
     "choices": [
       {
         "label": "가까운 항구로 피항",
+        "resultHint": "시간을 쓰고 안전 확보",
         "effects": {
           "days": 1,
           "morale": 1
@@ -132,6 +170,7 @@
       },
       {
         "label": "강행한다",
+        "resultHint": "빠르지만 큰 손상 위험",
         "random": [
           {
             "chance": 0.45,
@@ -161,6 +200,19 @@
     },
     "severity": 3,
     "text": "수평선 너머 수상한 배가 다가온다.",
+    "eventRole": "combat",
+    "prepCounters": [
+      "guard",
+      "navigation",
+      "ship"
+    ],
+    "resultChips": [
+      "돈",
+      "배 내구",
+      "호위 명성"
+    ],
+    "recoveryOption": "다음 추천: 수군 의뢰나 호위 장비를 챙기면 남해 길이 안전해집니다.",
+    "combatProfile": "회피/협상/간단 전투",
     "enemy": {
       "name": "남해 해적선",
       "durability": 45,
@@ -171,6 +223,7 @@
     "choices": [
       {
         "label": "도주한다",
+        "resultHint": "항해 판정, 실패 시 돈/내구 손실",
         "skillCheck": {
           "skill": "navigation",
           "target": 7
@@ -185,10 +238,12 @@
       },
       {
         "label": "맞서 싸운다",
+        "resultHint": "호위와 배 전투력으로 판정",
         "startCombat": true
       },
       {
         "label": "통행세를 준다",
+        "resultHint": "돈을 잃고 전투 회피",
         "effects": {
           "money": -45,
           "morale": -1
@@ -205,6 +260,18 @@
     },
     "severity": 2,
     "text": "산길에서 도적대가 길을 막았다.",
+    "eventRole": "combat",
+    "prepCounters": [
+      "guard",
+      "cart"
+    ],
+    "resultChips": [
+      "화물",
+      "수레 내구",
+      "호위 명성"
+    ],
+    "recoveryOption": "다음 추천: 손수레와 호위 장비를 갖추면 산길 손실이 줄어듭니다.",
+    "combatProfile": "회피/협상/간단 전투",
     "enemy": {
       "name": "산도적",
       "durability": 35,
@@ -215,10 +282,12 @@
     "choices": [
       {
         "label": "호위와 맞선다",
+        "resultHint": "호위 전투, 성공 시 보상",
         "startCombat": true
       },
       {
         "label": "짐 일부를 내준다",
+        "resultHint": "화물 손실로 전투 회피",
         "effects": {
           "randomCargoLoss": 2,
           "morale": -1
@@ -226,6 +295,7 @@
       },
       {
         "label": "우회한다",
+        "resultHint": "시간을 쓰고 위험 회피",
         "effects": {
           "days": 1,
           "riskNext": -1
@@ -366,9 +436,20 @@
     },
     "severity": 1,
     "text": "관아 관리가 장부와 실은 짐을 확인한다.",
+    "eventRole": "risk",
+    "prepCounters": [
+      "trade",
+      "permit"
+    ],
+    "resultChips": [
+      "돈",
+      "관아 신뢰"
+    ],
+    "recoveryOption": "다음 추천: 거래 장부와 허가장을 챙기면 검문 손실이 줄어듭니다.",
     "choices": [
       {
         "label": "세금을 낸다",
+        "resultHint": "돈 일부, 관아 신뢰 +1",
         "effects": {
           "moneyPercent": -0.03,
           "officialRep": 1
@@ -376,6 +457,7 @@
       },
       {
         "label": "흥정한다",
+        "resultHint": "교역 판정으로 세금 절감",
         "skillCheck": {
           "skill": "trade",
           "target": 7
@@ -596,6 +678,98 @@
         "label": "거래 기회를 확인한다",
         "effects": {
           "temporaryDemand": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "traveling_merchant",
+    "name": "길손 상인",
+    "type": "info",
+    "trigger": {
+      "routeHazard": "bandits"
+    },
+    "severity": 0,
+    "text": "길손 상인이 길목 소문과 장터값을 알려주며 잠시 쉬어 가자고 한다.",
+    "eventRole": "info",
+    "prepCounters": [
+      "trade"
+    ],
+    "resultChips": [
+      "소문",
+      "상인 신용",
+      "사기"
+    ],
+    "recoveryOption": "다음 추천: 소문을 장부에 적고 지도에서 판매 추천을 확인하세요.",
+    "choices": [
+      {
+        "label": "소문을 장부에 적는다",
+        "resultHint": "상인 신용 +1",
+        "effects": {
+          "merchantRep": 1,
+          "morale": 1
+        }
+      },
+      {
+        "label": "값을 흥정해 본다",
+        "resultHint": "교역 판정, 성공하면 돈 절약",
+        "skillCheck": {
+          "skill": "trade",
+          "target": 6
+        },
+        "success": {
+          "money": 15,
+          "merchantRep": 1
+        },
+        "failure": {
+          "days": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "drifting_boat_rescue",
+    "name": "표류선 구조",
+    "type": "story",
+    "trigger": {
+      "routeHazard": "rough_sea"
+    },
+    "severity": 1,
+    "text": "물살에 밀린 작은 배가 도움을 청한다. 시간을 쓰면 사람과 짐을 구할 수 있다.",
+    "eventRole": "recovery",
+    "prepCounters": [
+      "navigation",
+      "repair"
+    ],
+    "resultChips": [
+      "시간",
+      "항구 신뢰",
+      "호위 명성"
+    ],
+    "recoveryOption": "다음 추천: 구조 보상으로 오른 신뢰를 장부에서 확인하세요.",
+    "choices": [
+      {
+        "label": "돕는다",
+        "resultHint": "시간 1일, 명성 상승",
+        "effects": {
+          "days": 1,
+          "navalRep": 1,
+          "morale": 1
+        }
+      },
+      {
+        "label": "밧줄만 던져 빠르게 돕는다",
+        "resultHint": "항해 판정, 성공 시 지연 없음",
+        "skillCheck": {
+          "skill": "navigation",
+          "target": 7
+        },
+        "success": {
+          "navalRep": 1
+        },
+        "failure": {
+          "days": 1,
+          "durability": -3
         }
       }
     ]

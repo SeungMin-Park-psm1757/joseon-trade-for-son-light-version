@@ -412,6 +412,17 @@ Primary focus screens: port main, map/travel, and market.
 - Quest, equipment, and ledger screens reuse the pass-1 visual language: compact HUD, floating tabs, dark translucent panels, brass borders, teal primary CTA, and icon-first cards.
 - Each screen should connect back to the core loop with clear market/map/equipment/quest action buttons.
 
+## 2026-05-04 Mobile Portrait And Art QA Lock
+
+- Phone portrait is no longer a gameplay layout. At `390x844` and `412x915`, the React app returns only the orientation gate with the text: "이 게임은 가로 화면에서 더 잘 보여요. 휴대폰을 옆으로 돌려주세요." HUD, tabs, content panels, side panels, bottom coach, and modals must not render behind it.
+- Gameplay remains landscape-first. The active mobile landscape targets are `844x390`, `932x430`, and `1024x600`; desktop QA targets are `1366x768`, `1600x900`, and `1920x1080`.
+- Landscape uses `visualViewport`-backed `--vvh`/`--vvw` CSS variables and safe-area padding so mobile browser chrome does not squeeze the HUD, tabs, or content surface.
+- The top HUD is intentionally compact on mobile landscape: current port, money, date, cargo, fame chips, and a compact sound control remain; monthly/autosave extras are hidden at narrow widths.
+- Bottom tabs are a horizontal scrollable tab bar on constrained landscape widths. They must never wrap into vertical text columns.
+- Port and map screens keep a two-column gameplay layout in landscape, but the side panel gets its own scroll area so it does not overlap the main board.
+- The tutorial coach is compacted at mobile landscape widths and must not cover the main map CTA or port primary CTAs.
+- Art direction is locked to the painted 2D asset set under `starter/public/assets/painted2d/`. Inline polygon map art, tiny hub SVGs, and crude travel SVG tokens should not be reintroduced for primary gameplay surfaces.
+
 ## 2026-05-03 조선 후기 지도/국경 장시 표시
 
 - 지도 표기는 조선 후기 세계관을 우선한다. 한양, 부산포, 제포, 의주, 경흥처럼 시대감이 드러나는 표시명을 사용한다.
@@ -419,3 +430,28 @@ Primary focus screens: port main, map/travel, and market.
 - 국경 장시 루트는 일반 땅길/바닷길과 구분되는 보라색 점선으로 표시한다.
 - 국경 장시 노드는 항구나 내륙 도시와 다른 마름모형 표시를 사용한다.
 - 국경 장시 이동 버튼이 잠겨 있으면 “청 교역 허가” 또는 “두만강 통행 허가”처럼 구체적인 이유를 보여준다.
+
+## 2026-05-04 Junior Light Mode UI
+
+- `정우의 첫 장사놀이`는 `junior-game/`에서 독립 실행되는 세로형 모바일 게임이다.
+- `starter/`의 `정우의 거상 모험`은 기존 가로형 full mode 시작 화면과 회전 안내를 유지한다.
+- Junior game은 full mode의 HUD, 하단 탭, 지도 패널, 시장 팝업을 사용하지 않는다.
+- Junior 전용 화면은 도입, 상품 고르기, 사기, 이동, 팔기, 성공 단계로 나뉜다.
+- 한 화면의 주요 버튼은 1개로 제한하고, 성공 화면만 `또 하기`와 `큰 모험 보기` 2개를 둔다.
+- 요정 초상과 말풍선은 항상 큰 첫 읽기 요소다.
+- 상품 선택은 면포, 건어물, 소금 3개 큰 카드만 보여준다.
+- Junior game은 휴대폰 세로 `390x844`, `412x915`, `430x932`에서 회전 안내 없이 바로 플레이된다.
+- Junior game은 `844x390` landscape에서도 화면이 깨지지 않게 축약 배치한다.
+
+## 2026-05-13 Full Mode SWF-Inspired Loop UI
+
+- Full mode의 항구, 시장, 지도, 화물/장부, 의뢰, 장비 화면은 모두 `현재 목표`와 `다음 추천`을 짧은 목표 스트립으로 보여준다.
+- 시장 거래 팝업은 `사는 값`, `파는 값`, `평균가`, `보통 값과 비교`, `팔기 좋은 곳`, `벌 돈`, `바로 다시 팔면`을 한눈에 보여준다.
+- 상품 데이터에 `starterUse`와 `riskNote`가 있으면 팝업 안에 초반 사용처와 위험 노트를 표시한다.
+- 시장 간판은 현재 항구의 특산품, 수요품, 월별 유행품을 칩으로 노출한다.
+- 지도 루트 선택 패널은 위험 프로필, 이번 달 위험, 추천 준비물, 추천 상품, 보상 힌트를 이동 전 카드로 보여준다.
+- 육로/해로 위험 태그는 한글 위험 칩으로 표시하고, 해로/육로에 따라 배 수리 또는 수레 점검 준비물이 자동으로 추가된다.
+- 이벤트 선택 모달은 대응 준비물과 결과 카테고리 칩을 먼저 보여주고, 각 선택지에는 짧은 결과 힌트를 붙인다.
+- 이벤트 결과 모달은 손실/획득 칩 아래에 다음 추천 행동을 보여준다.
+- 장비 화면은 돈이 부족한 배/수레 버튼에 부족 금액을 표시하고, 장비별로 새로 유리해지는 루트를 한 줄로 보여준다.
+- 모달은 사건, 사건 결과, 발견, 의뢰, 장부 조각, 장비 순서로 하나씩만 노출해 클릭이 뒤쪽 모달에 걸리지 않게 한다.

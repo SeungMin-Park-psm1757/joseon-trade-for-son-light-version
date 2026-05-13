@@ -151,6 +151,25 @@ availableRoutes = routes.filter(r => r.from === currentPortId || r.to === curren
 3. 선박/수레 상태 조건 이벤트
 4. 긍정 이벤트
 
+### 6.1 2026-05-13 루트 사건 덱과 초반 리듬
+
+Full mode 루트는 이제 선택 필드로 `riskProfile`, `recommendedPrep`, `routeRole`, `seasonalRiskNote`, `rewardHint`, `eventDeck`, `recommendedGoods`를 가질 수 있다. 이 필드는 저장 데이터 구조를 바꾸지 않고 지도 준비표, 위험 카드, 추천 상품, 사건 선택 우선순위에만 사용한다.
+
+이벤트 선택 순서:
+
+```text
+1. 첫 이동이면 루트 성격에 맞는 낮은 손실 사건을 우선한다.
+   - 육로: 길손 상인
+   - 해로: 표류선 구조
+2. route.eventDeck에 적힌 사건 중 route.hazards와 맞는 사건을 우선한다.
+3. 기존 hazard 기반 사건 풀에서 뽑는다.
+4. 해당 루트에 맞는 사건이 없으면 순풍 같은 긍정 사건으로 fallback한다.
+```
+
+이 설계는 SWF식 "길 위에서 반드시 일이 생긴다"는 재미를 가져오되, 첫 30분에 큰 손실이 반복되지 않도록 조선식 소문/구조/검문/도적 사건으로 완화한다.
+
+`GameEvent`는 선택 필드로 `prepCounters`, `resultChips`, `eventRole`, `recoveryOption`, `combatProfile`을 가질 수 있다. 이벤트 UI는 이 값을 읽어 대응 준비물과 결과 요약, 다음 추천 행동을 짧게 표시한다.
+
 ## 7. 조수/갯벌
 
 MVP 조수는 단순 순환이다.
@@ -356,3 +375,20 @@ Monthly events now support `trendGoods`, `officialDemandGoods`, and `riskTags`. 
   - `tumen_north_market`: 두만강 북방장, reached from `chongjin` with `tumen_trade_pass`.
 - Route `mode` remains `land | sea`. Border routes are identified by `terrain: ["border_trade"]` so existing movement, cargo, event, and save logic remains compatible.
 - Border routes should be high-entry goals: permit required, higher risk, long northern approach, and goods that demand larger carts or safer escort preparation.
+
+## 2026-05-04 Responsive Runtime And Asset Rules
+
+- The full game now has a runtime viewport gate. If the current visual viewport is phone portrait (`width <= 760` and `height > width`), the app returns the portrait orientation gate instead of the start screen or gameplay tree.
+- The gate is intentionally UI-only. Data loading and localStorage compatibility remain unchanged, but gameplay input, HUD, tab content, modal trees, and tutorial pauses are not rendered while the gate is active.
+- The app writes `--vvw` and `--vvh` from `window.visualViewport` when available, with `window.innerWidth/innerHeight` as fallback. CSS uses those variables plus `env(safe-area-inset-*)` for landscape sizing.
+- Visual QA now treats the painted2d raster/WebP set as the source of truth for primary game art. Code-level SVG placeholders can remain only as non-primary fallbacks; primary map, facility, vehicle, goods, NPC, guide, and result surfaces should use painted2d assets.
+- `starter/scripts/visual-check.mjs` now verifies portrait gate leakage, desktop port/map screenshots, mobile landscape gameplay screenshots, and `BASE_URL`-driven dev-server ports.
+
+## 2026-05-04 Standalone Junior Game State
+
+- `정우의 첫 장사놀이` lives in `junior-game/` as a separate Vite app.
+- Full mode keeps the existing `joseon_trade_save_v1` localStorage key and `GameState` schema.
+- Junior game uses a separate localStorage key: `joseon_trade_junior_save_v1`.
+- Junior save data is intentionally small: `currentStep`, `selectedGoodId`, `coins`, `completedRuns`, `badges`, and `hasSeenIntro`.
+- Junior rendering does not import full mode HUD, tabs, market, map, event, quest, equipment, ledger, storage, or CSS modules.
+- The junior flow is fixed to six steps: arrive, pick, buy, travel, sell, success. It does not expose fame, trust, ledger, quests, route risk, price comparison, equipment, repairs, tax, permits, or complex maps.

@@ -2,7 +2,7 @@
   {
     "id": "dugout_boat",
     "name": "나룻배",
-    "price": 450,
+    "price": 380,
     "cargo": 3,
     "speed": 2,
     "durability": 20,
@@ -17,6 +17,15 @@
       "river",
       "coastal"
     ],
+    "upgradePath": "강나루와 짧은 연안길을 여는 비상용 첫 배",
+    "routeUnlockHints": [
+      "강화·군산 같은 짧은 물길",
+      "서해 갯벌 항로 연습"
+    ],
+    "riskCounters": [
+      "mudflat"
+    ],
+    "combatRole": "비전투",
     "description": "강과 가까운 바다만 조심히 다니는 작은 배. 비상용 목표."
   },
   {
@@ -38,12 +47,21 @@
       "south_sea",
       "west_sea"
     ],
+    "upgradePath": "부산(부산포)에서 시작하는 기본 연안 상선",
+    "routeUnlockHints": [
+      "부산·진해·통영 연안",
+      "초반 면포 장사"
+    ],
+    "riskCounters": [
+      "rough_sea"
+    ],
+    "combatRole": "회피 중심",
     "description": "정우가 처음 가진 시작 배. 가까운 바닷길 교역에 적합."
   },
   {
     "id": "fishing_boat",
     "name": "어선",
-    "price": 2600,
+    "price": 2200,
     "cargo": 10,
     "speed": 3,
     "durability": 45,
@@ -59,12 +77,22 @@
       "south_sea",
       "west_sea"
     ],
+    "upgradePath": "남해 어장과 표류선 구조 보상을 노리는 초중반 배",
+    "routeUnlockHints": [
+      "목포·흑산도 어장",
+      "남해 수군 의뢰 준비"
+    ],
+    "riskCounters": [
+      "rough_sea",
+      "repair"
+    ],
+    "combatRole": "구조·회피",
     "description": "어업으로 꾸준히 돈을 벌고 남해를 준비할 때 좋은 배."
   },
   {
     "id": "coastal_merchant",
     "name": "연안 상선",
-    "price": 6500,
+    "price": 5800,
     "cargo": 20,
     "speed": 4,
     "durability": 75,
@@ -81,6 +109,18 @@
       "west_sea",
       "east_sea"
     ],
+    "upgradePath": "제주와 동해 장거리 장사를 실제 목표로 만드는 중반 상선",
+    "routeUnlockHints": [
+      "제주 납품",
+      "동해 장거리 항로",
+      "대마도 준비"
+    ],
+    "riskCounters": [
+      "storm",
+      "pirates",
+      "repair"
+    ],
+    "combatRole": "호위 동반",
     "description": "큰 짐칸으로 남해와 동해 장사를 본격적으로 열어 주는 배."
   },
   {
@@ -103,6 +143,16 @@
       "south_sea",
       "east_sea"
     ],
+    "upgradePath": "고가 화물과 빠른 의뢰를 위한 속도형 선택지",
+    "routeUnlockHints": [
+      "빠른 납품 의뢰",
+      "제주·동해 단축"
+    ],
+    "riskCounters": [
+      "storm",
+      "rough_sea"
+    ],
+    "combatRole": "회피·추격",
     "description": "귀중품과 빠른 의뢰에 강하지만 짐칸은 조금 작다."
   },
   {
@@ -126,6 +176,18 @@
       "west_sea",
       "east_sea"
     ],
+    "upgradePath": "해적 위험을 정면 대응하는 후반 호위 상선",
+    "routeUnlockHints": [
+      "대마도 외해",
+      "제주 고가 화물",
+      "수군 호위 의뢰"
+    ],
+    "riskCounters": [
+      "pirates",
+      "foreign_inspection",
+      "storm"
+    ],
+    "combatRole": "전투·호위",
     "description": "위험한 바닷길에서 상단을 지켜 주는 든든한 상선."
   },
   {
@@ -147,6 +209,16 @@
       "west_sea",
       "south_sea"
     ],
+    "upgradePath": "곡물·소금 대량 교역으로 현금 흐름을 키우는 선택지",
+    "routeUnlockHints": [
+      "서해 조운길",
+      "군산·목포 대량 장사"
+    ],
+    "riskCounters": [
+      "mudflat",
+      "tax_inspection"
+    ],
+    "combatRole": "방어 중심",
     "description": "쌀·소금 같은 무거운 짐을 크게 실을 수 있지만 물때를 살펴야 한다."
   },
   {
@@ -168,6 +240,17 @@
       "south_sea",
       "east_sea"
     ],
+    "upgradePath": "거상 엔딩을 위한 대량 장거리 교역 최종 목표",
+    "routeUnlockHints": [
+      "대외 교역 대량 운송",
+      "후반 장부 완성"
+    ],
+    "riskCounters": [
+      "storm",
+      "pirates",
+      "rough_sea"
+    ],
+    "combatRole": "대형 호송",
     "description": "후반 큰 장사를 위한 꿈의 배. 오래 돈을 모아야 하는 장기 목표."
   }
 ]

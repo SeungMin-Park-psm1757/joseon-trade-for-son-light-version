@@ -30,6 +30,10 @@ export interface Port {
   marketBias: Record<string, number>;
   permitRequired?: string;
   startAvailable: boolean;
+  marketIdentity?: string;
+  trustUnlocks?: string[];
+  permitHint?: string;
+  newsFocus?: string[];
 }
 
 export interface Good {
@@ -53,6 +57,10 @@ export interface Good {
   seasonal: Record<string, number>;
   iconAsset?: string;
   fragile?: boolean;
+  starterUse?: string;
+  bestRegions?: string[];
+  tradeRole?: 'stable' | 'profit' | 'quest' | 'risky' | 'recovery';
+  riskNote?: string;
 }
 
 export interface Ship {
@@ -71,6 +79,10 @@ export interface Ship {
   monthlyUpkeep: number;
   allowedWaters: string[];
   description: string;
+  upgradePath?: string;
+  routeUnlockHints?: string[];
+  riskCounters?: string[];
+  combatRole?: string;
 }
 
 export interface Cart {
@@ -84,6 +96,10 @@ export interface Cart {
   monthlyUpkeep: number;
   combat?: number;
   description: string;
+  upgradePath?: string;
+  routeUnlockHints?: string[];
+  riskCounters?: string[];
+  tradeRole?: string;
 }
 
 export interface ToolItem {
@@ -96,6 +112,8 @@ export interface ToolItem {
   tier?: number;
   requiresTool?: string;
   hint?: string;
+  counterTags?: string[];
+  choiceHint?: string;
 }
 
 export interface Companion {
@@ -122,6 +140,13 @@ export interface Route {
   tideSensitive?: boolean;
   permitRequired?: string;
   description: string;
+  riskProfile?: string;
+  recommendedPrep?: string[];
+  routeRole?: 'starter' | 'safe' | 'profit' | 'story' | 'danger' | 'border';
+  seasonalRiskNote?: string;
+  rewardHint?: string;
+  eventDeck?: string[];
+  recommendedGoods?: string[];
 }
 
 export interface EventChoice {
@@ -134,6 +159,7 @@ export interface EventChoice {
   failure?: EffectSet;
   random?: Array<{ chance: number; effects: EffectSet; resultText?: string }>;
   startCombat?: boolean;
+  resultHint?: string;
 }
 
 export interface GameEvent {
@@ -148,6 +174,11 @@ export interface GameEvent {
   };
   severity: number;
   text: string;
+  resultChips?: string[];
+  prepCounters?: string[];
+  eventRole?: 'risk' | 'combat' | 'info' | 'recovery' | 'story' | 'reward';
+  recoveryOption?: string;
+  combatProfile?: string;
   enemy?: {
     name: string;
     durability: number;
@@ -202,6 +233,8 @@ export interface MonthlyEvent {
   trendGoods?: string[];
   officialDemandGoods?: string[];
   riskTags?: string[];
+  headline?: string;
+  routeWarning?: string;
 }
 
 export interface PortFlavor {
@@ -460,6 +493,7 @@ export interface EventResult {
   description: string;
   result: string;
   lines: string[];
+  nextHint?: string;
   fameDelta?: Partial<FameState>;
   portTrustDelta?: Record<string, number>;
   companionReaction?: {
