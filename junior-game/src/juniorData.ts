@@ -11,17 +11,35 @@ export function publicAsset(path: string) {
 }
 
 export const JUNIOR_GOODS: JuniorGood[] = [
-  { id: 'cotton_cloth', name: '면포', image: publicAsset('/assets/goods-v2/cotton_cloth.svg'), baseBuyCoins: 10, baseSellCoins: 16 },
-  { id: 'dried_fish', name: '건어물', image: publicAsset('/assets/goods-v2/dried_fish.svg'), baseBuyCoins: 9, baseSellCoins: 15 },
-  { id: 'salt', name: '소금', image: publicAsset('/assets/goods-v2/salt.svg'), baseBuyCoins: 8, baseSellCoins: 14 },
-  { id: 'paper', name: '한지', image: publicAsset('/assets/goods-v2/paper.svg'), baseBuyCoins: 11, baseSellCoins: 18 },
-  { id: 'citrus', name: '귤', image: publicAsset('/assets/goods-v2/citrus.svg'), baseBuyCoins: 12, baseSellCoins: 20 },
-  { id: 'fresh_fish', name: '생선', image: publicAsset('/assets/goods-v2/fresh_fish.svg'), baseBuyCoins: 9, baseSellCoins: 16 },
-  { id: 'herbs', name: '약초', image: publicAsset('/assets/goods-v2/herbs.svg'), baseBuyCoins: 12, baseSellCoins: 20 },
-  { id: 'rice', name: '쌀', image: publicAsset('/assets/goods-v2/rice.svg'), baseBuyCoins: 10, baseSellCoins: 17 }
+  { id: 'cotton_cloth', name: '면포', image: publicAsset('/assets/goods/cotton_cloth.png'), baseBuyCoins: 10, baseSellCoins: 16 },
+  { id: 'dried_fish', name: '건어물', image: publicAsset('/assets/goods/dried_fish.png'), baseBuyCoins: 9, baseSellCoins: 15 },
+  { id: 'salt', name: '소금', image: publicAsset('/assets/goods/salt.png'), baseBuyCoins: 8, baseSellCoins: 14 },
+  { id: 'paper', name: '한지', image: publicAsset('/assets/goods/paper.png'), baseBuyCoins: 11, baseSellCoins: 18 },
+  { id: 'citrus', name: '귤', image: publicAsset('/assets/goods/citrus.png'), baseBuyCoins: 12, baseSellCoins: 20 },
+  { id: 'fresh_fish', name: '생선', image: publicAsset('/assets/goods/fresh_fish.png'), baseBuyCoins: 9, baseSellCoins: 16 },
+  { id: 'herbs', name: '약초', image: publicAsset('/assets/goods/herbs.png'), baseBuyCoins: 12, baseSellCoins: 20 },
+  { id: 'rice', name: '쌀', image: publicAsset('/assets/goods/rice.png'), baseBuyCoins: 10, baseSellCoins: 17 },
+  { id: 'ginseng', name: '인삼', image: publicAsset('/assets/goods/ginseng.png'), baseBuyCoins: 15, baseSellCoins: 24 },
+  { id: 'silk', name: '비단', image: publicAsset('/assets/goods/silk.png'), baseBuyCoins: 18, baseSellCoins: 30 },
+  { id: 'ceramics', name: '도자기', image: publicAsset('/assets/goods/ceramics.png'), baseBuyCoins: 17, baseSellCoins: 28 },
+  { id: 'horse', name: '말', image: publicAsset('/assets/goods/horse.png'), baseBuyCoins: 20, baseSellCoins: 34 }
 ];
 
 export const JUNIOR_CITIES: JuniorCity[] = [
+  {
+    id: 'china_port',
+    name: '중국 항구',
+    region: '바깥 장터',
+    kind: 'north_trade_port',
+    icon: '비단',
+    x: 16,
+    y: 22,
+    buyGoodIds: ['silk', 'ceramics'],
+    sellGoodIds: ['ginseng', 'horse', 'dried_fish'],
+    scene: '/assets/scenes/market-street.webp',
+    note: '비단과 도자기가 들어와.',
+    introLines: ['여긴 중국 항구야.', '비단과 도자기가 유명해.', '북쪽 물건을 가져오면 좋아.', '먼 바닷길은 배가 든든해야 해.']
+  },
   {
     id: 'sinuiju',
     name: '신의주',
@@ -49,6 +67,20 @@ export const JUNIOR_CITIES: JuniorCity[] = [
     introLines: ['청진은 바다가 가까워.', '생선과 건어물이 많아.', '따뜻한 남쪽으로 가져가 보자.', '바닷길은 배가 든든해.']
   },
   {
+    id: 'north_port',
+    name: '북방 항구',
+    region: '북방',
+    kind: 'north_trade_port',
+    icon: '말',
+    x: 86,
+    y: 12,
+    buyGoodIds: ['horse', 'fresh_fish'],
+    sellGoodIds: ['rice', 'cotton_cloth', 'silk'],
+    scene: '/assets/scenes/east-port.webp',
+    note: '먼 북쪽 물건이 모여.',
+    introLines: ['북방 항구는 아주 먼 곳이야.', '말과 바다 물건을 볼 수 있어.', '쌀과 면포는 귀하게 여겨져.', '청진과 이어진 바닷길이 있어.']
+  },
+  {
     id: 'pyongyang',
     name: '평양',
     region: '평안',
@@ -60,6 +92,20 @@ export const JUNIOR_CITIES: JuniorCity[] = [
     scene: '/assets/scenes/inland-city.webp',
     note: '큰 성과 장터가 있어.',
     introLines: ['여긴 평양이야.', '북쪽의 큰 장터라 물건이 많아.', '쌀과 한지를 잘 볼 수 있어.', '바닷가 물건을 가져오면 좋아.']
+  },
+  {
+    id: 'nampo',
+    name: '남포',
+    region: '평안',
+    kind: 'west_port',
+    icon: '서해',
+    x: 31,
+    y: 25,
+    buyGoodIds: ['salt', 'dried_fish'],
+    sellGoodIds: ['rice', 'paper', 'herbs'],
+    scene: '/assets/scenes/west-mudflat.webp',
+    note: '평양 가까운 서해 항구야.',
+    introLines: ['남포는 평양 가까운 항구야.', '서해 바람과 물건이 모여.', '쌀과 한지는 여기서 잘 팔려.', '인천으로 가는 바닷길도 있어.']
   },
   {
     id: 'hamheung',
@@ -112,6 +158,20 @@ export const JUNIOR_CITIES: JuniorCity[] = [
     scene: '/assets/scenes/inland-city.webp',
     note: '여러 물건을 잘 사줘.',
     introLines: ['서울은 아주 큰 장터야.', '여러 물건을 잘 사줘.', '멀리서 가져온 물건이 빛나.', '돈을 모으기 좋은 곳이야.']
+  },
+  {
+    id: 'incheon',
+    name: '인천',
+    region: '경기',
+    kind: 'west_port',
+    icon: '서해',
+    x: 39,
+    y: 44,
+    buyGoodIds: ['salt', 'dried_fish', 'silk'],
+    sellGoodIds: ['ginseng', 'ceramics', 'horse'],
+    scene: '/assets/scenes/west-mudflat.webp',
+    note: '서울 옆 서해 항구야.',
+    introLines: ['인천은 서울 가까운 항구야.', '서해 바닷길 물건이 들어와.', '북쪽 물건은 여기서 인기야.', '서울과 남포로 길이 이어져.']
   },
   {
     id: 'chuncheon',
@@ -294,20 +354,34 @@ export const JUNIOR_CITIES: JuniorCity[] = [
     scene: '/assets/scenes/jeju.webp',
     note: '귤 향기가 나.',
     introLines: ['제주는 바람이 센 섬이야.', '귤이 아주 유명해.', '면포와 쌀은 잘 팔려.', '배가 있으면 오가기 좋아.']
+  },
+  {
+    id: 'tsushima',
+    name: '대마도',
+    region: '섬 길',
+    kind: 'island',
+    icon: '섬',
+    x: 79,
+    y: 90,
+    buyGoodIds: ['dried_fish', 'salt'],
+    sellGoodIds: ['silk', 'ceramics', 'cotton_cloth'],
+    scene: '/assets/scenes/south-port.webp',
+    note: '부산과 중국 항구 사이 섬이야.',
+    introLines: ['대마도는 바닷길의 섬 거점이야.', '부산에서 배로 갈 수 있어.', '비단과 도자기가 인기야.', '멀리 중국 항구로 이어져.']
   }
 ];
 
 const ROUTE_SCENE_ASSETS = {
-  busanDaegu: publicAsset('/assets/routes/busan-daegu.png'),
-  daeguJeonju: publicAsset('/assets/routes/daegu-jeonju.png'),
-  jeonjuMokpo: publicAsset('/assets/routes/jeonju-mokpo.png'),
-  mokpoJeju: publicAsset('/assets/routes/mokpo-jeju.png'),
-  busanTongyeong: publicAsset('/assets/routes/busan-tongyeong.png'),
-  tongyeongJeju: publicAsset('/assets/routes/tongyeong-jeju.png'),
-  seoulGangneung: publicAsset('/assets/routes/seoul-gangneung.png'),
-  seoulPyongyang: publicAsset('/assets/routes/seoul-pyongyang.png'),
-  pyongyangSinuiju: publicAsset('/assets/routes/pyongyang-sinuiju.png'),
-  wonsanHamheung: publicAsset('/assets/routes/wonsan-hamheung.png')
+  busanDaegu: publicAsset('/assets/scenes/daegu-town.webp'),
+  daeguJeonju: publicAsset('/assets/scenes/market-street.webp'),
+  jeonjuMokpo: publicAsset('/assets/scenes/west-mudflat.webp'),
+  mokpoJeju: publicAsset('/assets/scenes/jeju.webp'),
+  busanTongyeong: publicAsset('/assets/scenes/south-port.webp'),
+  tongyeongJeju: publicAsset('/assets/scenes/jeju.webp'),
+  seoulGangneung: publicAsset('/assets/scenes/east-port.webp'),
+  seoulPyongyang: publicAsset('/assets/scenes/inland-city.webp'),
+  pyongyangSinuiju: publicAsset('/assets/scenes/west-mudflat.webp'),
+  wonsanHamheung: publicAsset('/assets/scenes/east-port.webp')
 };
 
 function routeMeta(routeType: string, travelSceneAsset: string, terrain: string, eventCategories: string[], fairyText: string, arrivalHint: string, storyArcIds: string[] = []) {
@@ -316,24 +390,35 @@ function routeMeta(routeType: string, travelSceneAsset: string, terrain: string,
 
 export const JUNIOR_ROUTES: JuniorRoute[] = [
   { from: 'sinuiju', to: 'pyongyang', kind: 'land', scenery: 'north', distance: 2, ...routeMeta('border_river_road', ROUTE_SCENE_ASSETS.pyongyangSinuiju, '압록강 물길과 북방 장터', ['merchant', 'weather', 'north_story'], '강을 따라 북쪽 장사길을 지나가.', '신의주는 강가 물건이 모여.', ['north_merchant']) },
+  { from: 'sinuiju', to: 'china_port', kind: 'sea', scenery: 'sea', distance: 2, needsBoat: true, ...routeMeta('china_river_port', publicAsset('/assets/scenes/west-mudflat.webp'), '강 끝에서 큰 항구로 가는 길', ['merchant', 'weather'], '서쪽 물길을 따라 큰 항구로 가.', '중국 항구는 비단과 도자기가 유명해.', ['north_merchant']) },
   { from: 'pyongyang', to: 'gaeseong', kind: 'land', scenery: 'plain', distance: 2 },
+  { from: 'pyongyang', to: 'nampo', kind: 'land', scenery: 'river', distance: 1 },
+  { from: 'nampo', to: 'incheon', kind: 'sea', scenery: 'sea', distance: 2, needsBoat: true, ...routeMeta('west_sea_capital_route', publicAsset('/assets/scenes/west-mudflat.webp'), '서해를 따라 수도권으로 가는 뱃길', ['pirate', 'weather', 'merchant'], '서해 바람을 따라 남쪽 항구로 내려가.', '인천은 서울 옆 항구야.', ['sea_dragon']) },
   { from: 'gaeseong', to: 'seoul', kind: 'land', scenery: 'marketRoad', distance: 1 },
+  { from: 'seoul', to: 'incheon', kind: 'land', scenery: 'marketRoad', distance: 1 },
   { from: 'seoul', to: 'chuncheon', kind: 'land', scenery: 'river', distance: 1 },
+  { from: 'seoul', to: 'andong', kind: 'land', scenery: 'mountain', distance: 2 },
   { from: 'seoul', to: 'gangneung', kind: 'land', scenery: 'mountain', distance: 2, ...routeMeta('east_mountain_road', ROUTE_SCENE_ASSETS.seoulGangneung, '한양을 떠나 산을 넘는 동쪽 길', ['animal', 'folktale', 'weather'], '높은 고개를 넘으면 동해 바람이 와.', '강릉은 바다와 솔숲이 가까워.', ['rice_cake_pass']) },
   { from: 'seoul', to: 'pyongyang', kind: 'land', scenery: 'north', distance: 3, ...routeMeta('north_capital_road', ROUTE_SCENE_ASSETS.seoulPyongyang, '성문과 강을 지나는 북방 큰길', ['merchant', 'weather', 'north_story'], '한양을 떠나 북쪽 큰길로 가 보자.', '평양은 큰 강과 장터가 있어.', ['north_merchant']) },
   { from: 'chuncheon', to: 'gangneung', kind: 'land', scenery: 'mountain', distance: 1 },
+  { from: 'andong', to: 'gangneung', kind: 'land', scenery: 'mountain', distance: 1 },
   { from: 'gangneung', to: 'wonsan', kind: 'sea', scenery: 'coast', distance: 2, needsBoat: true },
   { from: 'wonsan', to: 'hamheung', kind: 'land', scenery: 'coast', distance: 1, ...routeMeta('northeast_coast_road', ROUTE_SCENE_ASSETS.wonsanHamheung, '동북 바닷가와 산길', ['weather', 'merchant', 'animal'], '바다와 산이 나란히 따라오는 길이야.', '함흥은 산과 약초가 가까워.', ['north_merchant']) },
-  { from: 'hamheung', to: 'cheongjin', kind: 'land', scenery: 'north', distance: 2, ...routeMeta('northeast_cold_road', ROUTE_SCENE_ASSETS.wonsanHamheung, '차가운 북쪽 바닷길', ['weather', 'animal', 'merchant'], '차가운 바람이 불어도 천천히 가자.', '청진은 북쪽 바다 물건이 모여.', ['north_merchant']) },
+  { from: 'hamheung', to: 'cheongjin', kind: 'sea', scenery: 'sea', distance: 2, needsBoat: true, ...routeMeta('northeast_cold_road', ROUTE_SCENE_ASSETS.wonsanHamheung, '차가운 북쪽 바닷길', ['weather', 'animal', 'merchant'], '차가운 바람이 불어도 천천히 가자.', '청진은 북쪽 바다 물건이 모여.', ['north_merchant']) },
+  { from: 'cheongjin', to: 'north_port', kind: 'sea', scenery: 'sea', distance: 2, needsBoat: true, ...routeMeta('north_sea_trade_route', publicAsset('/assets/scenes/east-port.webp'), '북쪽 바다로 이어지는 먼 뱃길', ['pirate', 'weather', 'merchant'], '차가운 바다를 지나 북방 항구로 가.', '북방 항구에는 말과 먼 길 물건이 있어.', ['north_merchant']) },
   { from: 'seoul', to: 'jeonju', kind: 'land', scenery: 'plain', distance: 2 },
   { from: 'jeonju', to: 'gwangju', kind: 'land', scenery: 'plain', distance: 1 },
   { from: 'jeonju', to: 'mokpo', kind: 'land', scenery: 'river', distance: 2, ...routeMeta('west_river_salt_road', ROUTE_SCENE_ASSETS.jeonjuMokpo, '전주 들길에서 목포 갯벌로 가는 길', ['weather', 'merchant', 'folktale'], '종이 냄새가 소금 바람으로 바뀌고 있어.', '목포는 소금과 바닷길이 좋아.', ['fairy_cloth']) },
+  { from: 'incheon', to: 'mokpo', kind: 'sea', scenery: 'sea', distance: 2, needsBoat: true },
   { from: 'gwangju', to: 'mokpo', kind: 'land', scenery: 'river', distance: 1 },
   { from: 'gwangju', to: 'suncheon', kind: 'land', scenery: 'plain', distance: 1 },
   { from: 'suncheon', to: 'yeosu', kind: 'land', scenery: 'coast', distance: 1 },
+  { from: 'mokpo', to: 'yeosu', kind: 'sea', scenery: 'sea', distance: 1, needsBoat: true },
   { from: 'yeosu', to: 'tongyeong', kind: 'sea', scenery: 'sea', distance: 1 },
-  { from: 'tongyeong', to: 'busan', kind: 'land', scenery: 'coast', distance: 1, ...routeMeta('south_coast_market_road', ROUTE_SCENE_ASSETS.busanTongyeong, '남해 포구와 장터길', ['merchant', 'weather', 'animal'], '포구마다 생선 냄새가 가득해.', '통영은 생선과 건어물이 많아.', ['fairy_cloth']) },
-  { from: 'busan', to: 'ulsan', kind: 'land', scenery: 'coast', distance: 1 },
+  { from: 'tongyeong', to: 'busan', kind: 'sea', scenery: 'sea', distance: 1, needsBoat: true, ...routeMeta('south_coast_market_road', ROUTE_SCENE_ASSETS.busanTongyeong, '남해 포구와 장터길', ['merchant', 'weather', 'animal'], '포구마다 생선 냄새가 가득해.', '통영은 생선과 건어물이 많아.', ['fairy_cloth']) },
+  { from: 'busan', to: 'ulsan', kind: 'sea', scenery: 'coast', distance: 1, needsBoat: true },
+  { from: 'ulsan', to: 'gangneung', kind: 'sea', scenery: 'coast', distance: 2, needsBoat: true },
+  { from: 'ulsan', to: 'wonsan', kind: 'sea', scenery: 'sea', distance: 3, needsBoat: true },
   { from: 'ulsan', to: 'daegu', kind: 'land', scenery: 'mountain', distance: 1 },
   { from: 'busan', to: 'daegu', kind: 'land', scenery: 'mountain', distance: 1, ...routeMeta('inland_market_road', ROUTE_SCENE_ASSETS.busanDaegu, '바닷가에서 내륙 장터로 들어가는 길', ['merchant', 'bandit', 'guide'], '바다 냄새가 점점 장터 냄새로 바뀌고 있어.', '대구는 약초를 사기 좋아.', ['rice_cake_pass']) },
   { from: 'daegu', to: 'andong', kind: 'land', scenery: 'river', distance: 1 },
@@ -342,52 +427,107 @@ export const JUNIOR_ROUTES: JuniorRoute[] = [
   { from: 'jeonju', to: 'daegu', kind: 'land', scenery: 'mountain', distance: 2, ...routeMeta('mountain_paper_road', ROUTE_SCENE_ASSETS.daeguJeonju, '한지 고을과 약초 장터 사이 산길', ['bandit', 'animal', 'folktale'], '고개를 넘으면 약초 장터가 가까워져.', '전주는 한지와 쌀이 좋아.', ['rice_cake_pass']) },
   { from: 'mokpo', to: 'jeju', kind: 'sea', scenery: 'sea', distance: 2, needsBoat: true, ...routeMeta('jeju_sea_route', ROUTE_SCENE_ASSETS.mokpoJeju, '넓은 바다와 멀리 보이는 섬', ['pirate', 'weather', 'sea_dragon'], '바람이 세지만 제주가 가까워지고 있어.', '제주는 귤이 유명해.', ['sea_dragon']) },
   { from: 'tongyeong', to: 'jeju', kind: 'sea', scenery: 'sea', distance: 2, needsBoat: true, ...routeMeta('island_sea_route', ROUTE_SCENE_ASSETS.tongyeongJeju, '남해 섬 사이를 지나는 뱃길', ['pirate', 'weather', 'sea_dragon'], '섬 사이로 배가 천천히 지나가.', '제주에 가면 귤을 볼 수 있어.', ['sea_dragon']) },
-  { from: 'busan', to: 'jeju', kind: 'sea', scenery: 'sea', distance: 3, needsBoat: true, ...routeMeta('long_jeju_sea_route', ROUTE_SCENE_ASSETS.mokpoJeju, '부산에서 제주로 가는 먼 바닷길', ['pirate', 'weather', 'sea_dragon'], '먼 바닷길이야. 바람을 잘 보자.', '제주는 바람과 귤이 기다려.', ['sea_dragon']) }
+  { from: 'busan', to: 'jeju', kind: 'sea', scenery: 'sea', distance: 3, needsBoat: true, ...routeMeta('long_jeju_sea_route', ROUTE_SCENE_ASSETS.mokpoJeju, '부산에서 제주로 가는 먼 바닷길', ['pirate', 'weather', 'sea_dragon'], '먼 바닷길이야. 바람을 잘 보자.', '제주는 바람과 귤이 기다려.', ['sea_dragon']) },
+  { from: 'busan', to: 'tsushima', kind: 'sea', scenery: 'sea', distance: 1, needsBoat: true, ...routeMeta('tsushima_sea_gate', publicAsset('/assets/scenes/south-port.webp'), '부산에서 섬 거점으로 가는 짧은 뱃길', ['pirate', 'weather', 'merchant'], '부산 앞바다를 지나 작은 섬으로 가.', '대마도는 바닷길 중간 장터야.', ['sea_dragon']) },
+  { from: 'tsushima', to: 'china_port', kind: 'sea', scenery: 'sea', distance: 3, needsBoat: true, ...routeMeta('china_trade_sea_route', publicAsset('/assets/scenes/market-street.webp'), '섬을 지나 큰 항구로 가는 먼 바닷길', ['pirate', 'weather', 'merchant'], '먼 바다 끝에 큰 항구가 보여.', '중국 항구는 비단과 도자기가 유명해.', ['sea_dragon']) },
+  { from: 'incheon', to: 'gaeseong', kind: 'land', scenery: 'marketRoad', distance: 1 },
+  { from: 'gaeseong', to: 'nampo', kind: 'land', scenery: 'river', distance: 1 },
+  { from: 'nampo', to: 'sinuiju', kind: 'sea', scenery: 'sea', distance: 2, needsBoat: true },
+  { from: 'pyongyang', to: 'hamheung', kind: 'land', scenery: 'north', distance: 2 },
+  { from: 'chuncheon', to: 'andong', kind: 'land', scenery: 'mountain', distance: 2 },
+  { from: 'andong', to: 'jeonju', kind: 'land', scenery: 'plain', distance: 2 },
+  { from: 'andong', to: 'jinju', kind: 'land', scenery: 'plain', distance: 2 },
+  { from: 'daegu', to: 'gwangju', kind: 'land', scenery: 'plain', distance: 2 },
+  { from: 'daegu', to: 'yeosu', kind: 'land', scenery: 'coast', distance: 2 },
+  { from: 'jeonju', to: 'suncheon', kind: 'land', scenery: 'plain', distance: 1 },
+  { from: 'jeonju', to: 'jinju', kind: 'land', scenery: 'plain', distance: 2 },
+  { from: 'gwangju', to: 'yeosu', kind: 'land', scenery: 'coast', distance: 1 },
+  { from: 'mokpo', to: 'suncheon', kind: 'land', scenery: 'river', distance: 1 },
+  { from: 'suncheon', to: 'tongyeong', kind: 'sea', scenery: 'sea', distance: 1, needsBoat: true },
+  { from: 'yeosu', to: 'busan', kind: 'sea', scenery: 'sea', distance: 2, needsBoat: true },
+  { from: 'mokpo', to: 'busan', kind: 'sea', scenery: 'sea', distance: 3, needsBoat: true },
+  { from: 'wonsan', to: 'cheongjin', kind: 'sea', scenery: 'sea', distance: 2, needsBoat: true },
+  { from: 'china_port', to: 'incheon', kind: 'sea', scenery: 'sea', distance: 3, needsBoat: true }
 ];
 
 export const JUNIOR_VEHICLES: JuniorVehicle[] = [
-  { id: 'bundle', name: '보따리 수레', cost: 0, cargoLimit: 2, text: '처음 쓰는 작은 수레', image: publicAsset('/assets/vehicles/junior-cart-bundle.png') },
-  { id: 'handcart', name: '손수레', cost: 100, cargoLimit: 3, text: '짐을 하나 더 실어', image: publicAsset('/assets/vehicles/junior-cart-handcart.png') },
-  { id: 'big_cart', name: '큰 수레', cost: 190, cargoLimit: 4, text: '짐을 더 많이 실어', image: publicAsset('/assets/vehicles/junior-cart-large.png') },
-  { id: 'merchant_cart', name: '장사 수레', cost: 300, cargoLimit: 5, text: '먼 길도 든든해', image: publicAsset('/assets/vehicles/junior-cart-merchant.png') }
+  { id: 'bundle', name: '보따리 수레', cost: 0, cargoLimit: 2, text: '처음 쓰는 작은 수레', image: publicAsset('/assets/vehicles/polished-cart-bundle.png') },
+  { id: 'handcart', name: '손수레', cost: 100, cargoLimit: 3, text: '짐을 하나 더 실어', image: publicAsset('/assets/vehicles/polished-cart-handcart.png') },
+  { id: 'big_cart', name: '큰 수레', cost: 190, cargoLimit: 4, text: '짐을 더 많이 실어', image: publicAsset('/assets/vehicles/polished-cart-large.png') },
+  { id: 'merchant_cart', name: '장사 수레', cost: 300, cargoLimit: 5, text: '먼 길도 든든해', image: publicAsset('/assets/vehicles/polished-cart-merchant.png') }
 ];
 
 export const JUNIOR_BOATS: JuniorBoat[] = [
-  { id: 'none', name: '배 없음', cost: 0, text: '아직 바닷길은 어려워', image: publicAsset('/assets/boats/no_boat.svg') },
-  { id: 'small_ferry', name: '작은 나룻배', cost: 200, text: '바닷길을 건널 때 좋아', image: publicAsset('/assets/boats/small_ferry.svg') },
-  { id: 'sailboat', name: '작은 돛배', cost: 360, text: '먼 바닷길도 든든해', image: publicAsset('/assets/boats/sailboat.svg') },
-  { id: 'sturdy_sailboat', name: '튼튼한 돛배', cost: 520, text: '큰 파도에도 든든해', image: publicAsset('/assets/boats/sturdy_sailboat.svg') },
-  { id: 'merchant_ship', name: '장사배', cost: 720, text: '멀리 장사 가기 좋아', image: publicAsset('/assets/boats/merchant_ship.svg') }
+  { id: 'none', name: '배 없음', cost: 0, text: '아직 바닷길은 어려워', image: publicAsset('/assets/ui/result-ship.png') },
+  { id: 'small_ferry', name: '작은 나룻배', cost: 200, text: '바닷길을 건널 때 좋아', image: publicAsset('/assets/boats/small_ferry.png') },
+  { id: 'sailboat', name: '작은 돛배', cost: 360, text: '먼 바닷길도 든든해', image: publicAsset('/assets/boats/sailboat.png') },
+  { id: 'sturdy_sailboat', name: '튼튼한 돛배', cost: 520, text: '큰 파도에도 든든해', image: publicAsset('/assets/boats/sturdy_sailboat.png') },
+  { id: 'merchant_ship', name: '장사배', cost: 720, text: '멀리 장사 가기 좋아', image: publicAsset('/assets/boats/merchant_ship.png') }
 ];
 
 export const CITY_BACKGROUND_ASSETS: Record<JuniorCityId, string> = {
-  seoul: publicAsset('/assets/cities/seoul.svg'),
-  gaeseong: publicAsset('/assets/cities/gaeseong.svg'),
-  pyongyang: publicAsset('/assets/cities/pyongyang.svg'),
-  sinuiju: publicAsset('/assets/cities/sinuiju.svg'),
-  chuncheon: publicAsset('/assets/cities/chuncheon.svg'),
-  gangneung: publicAsset('/assets/cities/gangneung.svg'),
-  wonsan: publicAsset('/assets/cities/wonsan.svg'),
-  hamheung: publicAsset('/assets/cities/hamheung.svg'),
-  cheongjin: publicAsset('/assets/cities/cheongjin.svg'),
-  andong: publicAsset('/assets/cities/andong.svg'),
-  daegu: publicAsset('/assets/cities/daegu.svg'),
-  ulsan: publicAsset('/assets/cities/ulsan.svg'),
-  busan: publicAsset('/assets/cities/busan.svg'),
-  jinju: publicAsset('/assets/cities/jinju.svg'),
-  tongyeong: publicAsset('/assets/cities/tongyeong.svg'),
-  jeonju: publicAsset('/assets/cities/jeonju.svg'),
-  gwangju: publicAsset('/assets/cities/gwangju.svg'),
-  suncheon: publicAsset('/assets/cities/suncheon.svg'),
-  yeosu: publicAsset('/assets/cities/yeosu.svg'),
-  mokpo: publicAsset('/assets/cities/mokpo.svg'),
-  jeju: publicAsset('/assets/cities/jeju.svg')
+  china_port: publicAsset('/assets/scenes/market-street.webp'),
+  seoul: publicAsset('/assets/scenes/inland-city.webp'),
+  incheon: publicAsset('/assets/scenes/west-mudflat.webp'),
+  gaeseong: publicAsset('/assets/scenes/market-street.webp'),
+  pyongyang: publicAsset('/assets/scenes/inland-city.webp'),
+  nampo: publicAsset('/assets/scenes/west-mudflat.webp'),
+  sinuiju: publicAsset('/assets/scenes/west-mudflat.webp'),
+  chuncheon: publicAsset('/assets/scenes/inland-city.webp'),
+  gangneung: publicAsset('/assets/scenes/east-port.webp'),
+  wonsan: publicAsset('/assets/scenes/east-port.webp'),
+  hamheung: publicAsset('/assets/scenes/east-port.webp'),
+  cheongjin: publicAsset('/assets/scenes/east-port.webp'),
+  andong: publicAsset('/assets/scenes/inland-city.webp'),
+  daegu: publicAsset('/assets/scenes/daegu-town.webp'),
+  ulsan: publicAsset('/assets/scenes/south-port.webp'),
+  busan: publicAsset('/assets/scenes/busan-port.webp'),
+  jinju: publicAsset('/assets/scenes/inland-city.webp'),
+  tongyeong: publicAsset('/assets/scenes/south-port.webp'),
+  jeonju: publicAsset('/assets/scenes/market-street.webp'),
+  gwangju: publicAsset('/assets/scenes/inland-city.webp'),
+  suncheon: publicAsset('/assets/scenes/west-mudflat.webp'),
+  yeosu: publicAsset('/assets/scenes/south-port.webp'),
+  mokpo: publicAsset('/assets/scenes/west-mudflat.webp'),
+  jeju: publicAsset('/assets/scenes/jeju.webp'),
+  tsushima: publicAsset('/assets/scenes/south-port.webp'),
+  north_port: publicAsset('/assets/scenes/east-port.webp')
+};
+
+const CITY_KIND_ASSETS: Record<JuniorCityId, NonNullable<JuniorCity['kind']>> = {
+  seoul: 'inland_market',
+  incheon: 'west_port',
+  gaeseong: 'inland_market',
+  pyongyang: 'inland_market',
+  nampo: 'west_port',
+  sinuiju: 'north_trade_port',
+  chuncheon: 'inland_market',
+  gangneung: 'east_port',
+  wonsan: 'east_port',
+  hamheung: 'east_port',
+  cheongjin: 'north_trade_port',
+  andong: 'inland_market',
+  daegu: 'inland_market',
+  jeonju: 'inland_market',
+  gwangju: 'inland_market',
+  mokpo: 'west_port',
+  yeosu: 'south_port',
+  suncheon: 'inland_market',
+  jinju: 'inland_market',
+  tongyeong: 'south_port',
+  busan: 'south_port',
+  ulsan: 'east_port',
+  jeju: 'island',
+  tsushima: 'island',
+  china_port: 'north_trade_port',
+  north_port: 'north_trade_port'
 };
 
 JUNIOR_CITIES.forEach((city) => {
   city.backgroundAsset = CITY_BACKGROUND_ASSETS[city.id];
-  city.scene = city.backgroundAsset;
+  city.kind = CITY_KIND_ASSETS[city.id];
 });
+
 
 function spellingEvent(
   id: string,

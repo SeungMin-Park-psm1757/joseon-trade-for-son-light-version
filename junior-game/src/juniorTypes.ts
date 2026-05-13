@@ -21,12 +21,18 @@ export type JuniorGoodId =
   | 'citrus'
   | 'fresh_fish'
   | 'herbs'
-  | 'rice';
+  | 'rice'
+  | 'ginseng'
+  | 'silk'
+  | 'ceramics'
+  | 'horse';
 
 export type JuniorCityId =
   | 'seoul'
+  | 'incheon'
   | 'gaeseong'
   | 'pyongyang'
+  | 'nampo'
   | 'sinuiju'
   | 'chuncheon'
   | 'gangneung'
@@ -44,9 +50,13 @@ export type JuniorCityId =
   | 'tongyeong'
   | 'busan'
   | 'ulsan'
-  | 'jeju';
+  | 'jeju'
+  | 'tsushima'
+  | 'china_port'
+  | 'north_port';
 
 export type JuniorRouteKind = 'land' | 'sea';
+export type JuniorCityKind = 'inland_market' | 'east_port' | 'south_port' | 'west_port' | 'north_trade_port' | 'island';
 export type JuniorEventType =
   | 'travel'
   | 'weather'
@@ -76,6 +86,7 @@ export interface JuniorCity {
   id: JuniorCityId;
   name: string;
   region: string;
+  kind?: JuniorCityKind;
   icon: string;
   x: number;
   y: number;
@@ -200,6 +211,7 @@ export interface JuniorSave {
   completedEnding: boolean;
   completedRuns: number;
   marketPressure: JuniorMarketPressure;
+  lastResultChips?: string[];
   lastSavedAt?: string;
   message?: string;
 }
