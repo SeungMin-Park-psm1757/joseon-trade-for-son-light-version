@@ -3780,3 +3780,192 @@ button:disabled {
   font-weight: 900;
   line-height: 1.25;
 }
+
+.junior-shell .junior-route-cargo {
+  display: grid;
+  gap: 2px;
+  padding: 6px 8px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, .62);
+  border: 2px solid rgba(80, 61, 34, .13);
+}
+
+.junior-shell .junior-route-cargo strong {
+  font-size: .82rem;
+}
+
+.junior-shell .junior-route-cargo span,
+.junior-shell .junior-route-cargo small {
+  font-size: .74rem;
+  font-weight: 900;
+}
+
+.junior-shell .junior-market-cargo-summary {
+  grid-template-columns: auto minmax(0, 1fr);
+}
+
+.junior-shell .junior-market-cargo-summary > small {
+  grid-column: 1 / -1;
+  font-weight: 900;
+  color: #6b5434;
+}
+
+.junior-shell .junior-shop {
+  grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+  gap: 7px;
+}
+
+.junior-shell .junior-shop-summary {
+  grid-template-columns: 1fr;
+  gap: 3px;
+  border: 3px solid rgba(79, 137, 92, .22);
+}
+
+.junior-shell .junior-vehicle-sections {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 9px;
+  overflow: hidden auto;
+  padding: 0 2px 6px;
+}
+
+.junior-shell .junior-shop-section {
+  display: grid;
+  gap: 7px;
+}
+
+.junior-shell .junior-shop-section h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: #4a321e;
+}
+
+.junior-shell .junior-shop-section-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.junior-shell .junior-shop-card {
+  min-height: 188px;
+}
+
+.junior-shell .junior-shop-card:disabled {
+  cursor: default;
+}
+
+.junior-shell .junior-shop-badge {
+  min-height: 27px;
+  display: inline-grid;
+  place-items: center;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #fff0a6;
+  color: #6c421e;
+  font-size: .74rem;
+  font-weight: 1000;
+}
+
+.junior-shell .junior-shop-card.owned .junior-shop-badge {
+  background: #37a86c;
+  color: #fff;
+}
+
+.junior-shell .junior-land-sea-summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.junior-shell .junior-land-sea-summary span {
+  min-height: 34px;
+  display: grid;
+  place-items: center;
+  padding: 5px 8px;
+  border-radius: 14px;
+  background: rgba(255, 251, 229, .92);
+  border: 2px solid rgba(82, 57, 31, .14);
+  font-size: .78rem;
+  font-weight: 1000;
+  text-align: center;
+}
+
+.junior-shell .junior-regional-event {
+  place-items: center;
+  padding: 14px;
+}
+
+.junior-shell .junior-regional-card {
+  width: min(100%, 330px);
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 16px;
+  border-radius: 24px;
+  background: linear-gradient(180deg, #fff9de, #edf9f0);
+  border: 4px solid rgba(92, 65, 38, .18);
+  box-shadow: 0 16px 32px rgba(61, 39, 22, .15);
+  text-align: center;
+}
+
+.junior-shell .junior-regional-card img {
+  width: 74px;
+  height: 74px;
+  object-fit: contain;
+}
+
+.junior-shell .junior-regional-card > span {
+  color: #7b562e;
+  font-size: .82rem;
+  font-weight: 1000;
+}
+
+.junior-shell .junior-regional-card strong {
+  font-size: 1.18rem;
+}
+
+.junior-shell .junior-regional-card p,
+.junior-shell .junior-regional-card small {
+  margin: 0;
+  line-height: 1.35;
+  font-weight: 900;
+}
+
+.junior-shell .junior-regional-hint {
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: #fff1a8;
+  color: #5d3a1c;
+  font-size: .84rem;
+  font-weight: 1000;
+}
+
+.junior-shell .junior-vehicle-footer {
+  grid-template-columns: auto minmax(0, 1fr) minmax(92px, auto);
+}
+
+.junior-shell .junior-vehicle-footer span:last-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 390px) {
+  .junior-shell .junior-shop-section-grid {
+    gap: 6px;
+  }
+
+  .junior-shell .junior-shop-card {
+    min-height: 176px;
+    padding-inline: 6px;
+  }
+
+  .junior-shell .junior-shop-card strong {
+    font-size: 1.05rem;
+  }
+
+  .junior-shell .junior-shop-card b,
+  .junior-shell .junior-shop-card small {
+    font-size: .76rem;
+  }
+}

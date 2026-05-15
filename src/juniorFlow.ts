@@ -1,8 +1,8 @@
-import type { JuniorBoat, JuniorCargoItem, JuniorCityId, JuniorEvent, JuniorGoodId, JuniorMarketPressure, JuniorReward, JuniorSave, JuniorStep, JuniorVehicle } from './juniorTypes';
-import { DEFAULT_JUNIOR_SAVE, ENDING_COINS, JUNIOR_BOATS, JUNIOR_CITIES, JUNIOR_EVENTS, JUNIOR_GOODS, JUNIOR_ROUTES, JUNIOR_SAVE_KEY, JUNIOR_SAVE_VERSION, JUNIOR_VEHICLES, getGood } from './juniorData';
+import type { JuniorBoat, JuniorCargoItem, JuniorCityId, JuniorEvent, JuniorGoodId, JuniorMarketPressure, JuniorRegionalEvent, JuniorReward, JuniorSave, JuniorStep, JuniorVehicle } from './juniorTypes';
+import { DEFAULT_JUNIOR_SAVE, ENDING_COINS, JUNIOR_BOATS, JUNIOR_CITIES, JUNIOR_EVENTS, JUNIOR_GOODS, JUNIOR_REGIONAL_EVENTS, JUNIOR_ROUTES, JUNIOR_SAVE_KEY, JUNIOR_SAVE_VERSION, JUNIOR_VEHICLES, getGood } from './juniorData';
 
 function isStep(value: unknown): value is JuniorStep {
-  return typeof value === 'string' && ['intro', 'pick', 'buy', 'city', 'map', 'travel', 'visitIntro', 'market', 'event', 'eventResult', 'shop', 'endingChoice', 'ending'].includes(value);
+  return typeof value === 'string' && ['intro', 'pick', 'buy', 'city', 'map', 'travel', 'visitIntro', 'market', 'event', 'eventResult', 'regionalEvent', 'shop', 'endingChoice', 'ending'].includes(value);
 }
 
 function isCity(value: unknown): value is JuniorCityId {
@@ -26,6 +26,7 @@ function cloneSave(save: JuniorSave): JuniorSave {
     unlockedCities: [...save.unlockedCities],
     visitedCityIds: [...save.visitedCityIds],
     seenEventIds: [...save.seenEventIds],
+    seenRegionalEventIds: [...save.seenRegionalEventIds],
     storyArcProgress: { ...save.storyArcProgress },
     badges: [...save.badges],
     marketPressure: {
@@ -100,6 +101,8 @@ export function normalizeJuniorSave(raw: unknown): JuniorSave {
     destinationCityId: isCity(value.destinationCityId) ? value.destinationCityId : undefined,
     selectedGoodId: isGood(value.selectedGoodId) ? value.selectedGoodId : undefined,
     selectedEventId: typeof value.selectedEventId === 'string' ? value.selectedEventId : undefined,
+    selectedRegionalEventId: typeof value.selectedRegionalEventId === 'string' ? value.selectedRegionalEventId : undefined,
+    regionalReturnStep: isStep(value.regionalReturnStep) ? value.regionalReturnStep : undefined,
     eventResultText: typeof value.eventResultText === 'string' ? value.eventResultText : undefined,
     coins: numberOr(value.coins, DEFAULT_JUNIOR_SAVE.coins),
     stars: numberOr(value.stars, 0),
@@ -112,6 +115,9 @@ export function normalizeJuniorSave(raw: unknown): JuniorSave {
     completedTutorial: Boolean(value.completedTutorial),
     tutorialStage: numberOr(value.tutorialStage, 0),
     seenEventIds: stringArray(value.seenEventIds),
+    seenRegionalEventIds: stringArray(value.seenRegionalEventIds),
+    lastRegionalEventCityId: isCity(value.lastRegionalEventCityId) ? value.lastRegionalEventCityId : undefined,
+    lastRegionalEventId: typeof value.lastRegionalEventId === 'string' ? value.lastRegionalEventId : undefined,
     storyArcProgress: normalizeStoryArcProgress(value.storyArcProgress),
     quizWrongStreak: numberOr(value.quizWrongStreak, 0),
     storyClues: numberOr(value.storyClues, 0),
@@ -164,11 +170,93 @@ export function resetJuniorGame(): JuniorSave {
     visitedCityIds: [...DEFAULT_JUNIOR_SAVE.visitedCityIds],
     badges: [],
     seenEventIds: [],
+    seenRegionalEventIds: [],
+    selectedRegionalEventId: undefined,
+    regionalReturnStep: undefined,
+    lastRegionalEventCityId: undefined,
+    lastRegionalEventId: undefined,
     storyArcProgress: {},
     quizWrongStreak: 0,
     lastResultChips: undefined,
     marketPressure: { buy: {}, sell: {} }
   };
+}
+
+function currentSeason(): JuniorRegionalEvent['season'] {
+  const month = new Date().getMonth() + 1;
+  if (month >= 3 && month <= 5) return 'spring';
+  if (month >= 6 && month <= 8) return 'summer';
+  if (month >= 9 && month <= 11) return 'autumn';
+  return 'winter';
+}
+
+function regionalEventSeed(save: JuniorSave, cityId: JuniorCityId, salt = '') {
+  const text = `${salt}:${cityId}:${save.coins}:${save.stars}:${save.seenRegionalEventIds.length}:${save.lastRegionalEventId ?? ''}:${save.cargo.length}`;
+  return Array.from(text).reduce((sum, char) => sum + char.charCodeAt(0), 0);
+}
+
+function regionalEventFits(event: JuniorRegionalEvent, save: JuniorSave, cityId: JuniorCityId) {
+  if (event.cityId !== cityId) return false;
+  if (event.id === save.lastRegionalEventId) return false;
+  if (event.once && save.seenRegionalEventIds.includes(event.id)) return false;
+  if (event.season && event.season !== currentSeason()) return false;
+  return true;
+}
+
+function selectRegionalEvent(save: JuniorSave, cityId: JuniorCityId, preferLandmark = false) {
+  const candidates = JUNIOR_REGIONAL_EVENTS.filter((event) => regionalEventFits(event, save, cityId));
+  if (!candidates.length) return undefined;
+  const landmark = candidates.find((event) => preferLandmark && event.type === 'landmark');
+  if (landmark) return landmark;
+  const merchant = candidates.find((event) => event.type === 'merchant_rumor');
+  const seed = regionalEventSeed(save, cityId, 'regional-pick');
+  const pool = merchant && seed % 2 === 0 ? [merchant, ...candidates.filter((event) => event.id !== merchant.id)] : candidates;
+  return pool[seed % pool.length];
+}
+
+export function getSelectedRegionalEvent(save: JuniorSave): JuniorRegionalEvent | undefined {
+  return JUNIOR_REGIONAL_EVENTS.find((event) => event.id === save.selectedRegionalEventId);
+}
+
+export function getRegionalEventChanceSummary() {
+  return {
+    merchantRumor: 30,
+    cityOrMarket: 'city visit or market entry',
+    noImmediateRepeat: true
+  };
+}
+
+export function maybeOpenRegionalEvent(save: JuniorSave, returnStep: JuniorStep = 'city', forcedRoll?: number, preferLandmark = false): JuniorSave {
+  if (!save.completedTutorial) return save;
+  if (save.currentStep === 'regionalEvent') return save;
+  const roll = forcedRoll ?? ((regionalEventSeed(save, save.currentCityId, returnStep) % 100) / 100);
+  if (!preferLandmark && roll >= 0.3) return save;
+  const event = selectRegionalEvent(save, save.currentCityId, preferLandmark);
+  if (!event) return save;
+  return {
+    ...save,
+    currentStep: 'regionalEvent',
+    selectedRegionalEventId: event.id,
+    regionalReturnStep: returnStep,
+    seenRegionalEventIds: save.seenRegionalEventIds.includes(event.id) ? save.seenRegionalEventIds : [...save.seenRegionalEventIds, event.id],
+    lastRegionalEventCityId: save.currentCityId,
+    lastRegionalEventId: event.id,
+    message: undefined
+  };
+}
+
+export function closeRegionalEvent(save: JuniorSave): JuniorSave {
+  const event = getSelectedRegionalEvent(save);
+  const returnStep = save.regionalReturnStep && save.regionalReturnStep !== 'regionalEvent' ? save.regionalReturnStep : 'city';
+  const rewarded = applyReward(save, event?.reward);
+  return applyMilestones({
+    ...rewarded,
+    currentStep: returnStep,
+    selectedRegionalEventId: undefined,
+    regionalReturnStep: undefined,
+    lastResultChips: event?.reward ? rewardChips(event.reward) : rewarded.lastResultChips,
+    message: event?.fairyText
+  });
 }
 
 export function getCity(cityId: JuniorCityId) {
@@ -283,7 +371,7 @@ export function goToCity(save: JuniorSave): JuniorSave {
 }
 
 export function goToMarket(save: JuniorSave): JuniorSave {
-  return { ...save, currentStep: 'market', selectedGoodId: undefined, message: '사거나 팔 물건을 골라봐.' };
+  return maybeOpenRegionalEvent({ ...save, currentStep: 'market', selectedGoodId: undefined, message: '사거나 팔 물건을 골라봐.' }, 'market');
 }
 
 export function goToShop(save: JuniorSave): JuniorSave {
@@ -522,12 +610,13 @@ export function closeEventResult(save: JuniorSave): JuniorSave {
 }
 
 export function completeVisitIntro(save: JuniorSave): JuniorSave {
-  return {
+  const next: JuniorSave = {
     ...save,
     currentStep: 'city',
     tutorialStage: Math.max(save.tutorialStage, 8),
     message: `${getCity(save.currentCityId).name}을 둘러보자.`
   };
+  return save.completedTutorial ? maybeOpenRegionalEvent(next, 'city', 0, true) : next;
 }
 
 export function buyVehicle(save: JuniorSave, vehicleId: JuniorVehicle['id']): JuniorSave {
@@ -554,7 +643,7 @@ export function buyBoat(save: JuniorSave, boatId: JuniorBoat['id']): JuniorSave 
     coins: save.coins - boat.cost,
     boatId: boat.id,
     badges: save.badges.includes(boat.name) ? save.badges : [...save.badges, boat.name],
-    lastResultChips: [`돈 -${boat.cost}냥`, '바닷길 좋아'],
+    lastResultChips: [`돈 -${boat.cost}냥`, `바닷길 짐칸 ${boat.cargoLimit}칸`],
     message: `${boat.name}를 장만했어!`
   });
 }

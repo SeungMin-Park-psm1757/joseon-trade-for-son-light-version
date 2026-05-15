@@ -29,8 +29,19 @@ Last QA pass: 2026-05-14
 | Handcart | 100 | Cargo limit 3 | Good first milestone |
 | Big cart | 190 | Cargo limit 4 | Good mid milestone |
 | Merchant cart | 300 | Cargo limit 5 | Optional late goal |
-| Small ferry | 200 | Unlocks easier sea routes | Good 15-20 min goal |
-| Sailboat+ | 360+ | Longer sea route comfort | Later replay goal |
+| Small ferry | 200 | Sea cargo limit 2, unlocks easier sea routes | Good 15-20 min goal |
+| Sailboat | 360 | Sea cargo limit 3 | Later replay goal |
+| Sturdy sailboat | 520 | Sea cargo limit 4 | Long sea-route goal |
+| Merchant ship | 720 | Sea cargo limit 5 | Optional late goal |
+
+## 2026-05-14 Vehicle And Regional Event Balance
+
+- Cart cargo and boat cargo are now shown separately. The market still uses the current general cargo display, while the map route card explains whether the selected trip uses cart cargo or boat cargo.
+- Cart costs stayed at 0/100/190/300 so the handcart remains reachable around the first 10 minutes.
+- Boat costs stayed at 0/200/360/520/720. The first boat is still a mid-game goal, but the UI now explains why it matters before the child can buy it.
+- Merchant rumor and regional learning events use a 30% city/market entry chance after tutorial completion.
+- First-visit landmark learning is prioritized after tutorial completion and avoids repeating the same event back-to-back.
+- Dialect events are one-time per city and include a fairy explanation to avoid confusing or mocking regional speech.
 
 ## Event Penalties
 

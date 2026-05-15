@@ -9,6 +9,7 @@ export type JuniorStep =
   | 'market'
   | 'event'
   | 'eventResult'
+  | 'regionalEvent'
   | 'shop'
   | 'endingChoice'
   | 'ending';
@@ -73,6 +74,7 @@ export type JuniorEventType =
 
 export type JuniorEventMood = 'bad' | 'good' | 'talk' | 'story';
 export type JuniorRouteScenery = 'plain' | 'mountain' | 'river' | 'coast' | 'sea' | 'marketRoad' | 'north';
+export type JuniorRegionalEventType = 'merchant_rumor' | 'dialect' | 'landmark' | 'season' | 'specialty_tip';
 
 export interface JuniorGood {
   id: JuniorGoodId;
@@ -128,14 +130,23 @@ export interface JuniorVehicle {
   cargoLimit: number;
   text: string;
   image: string;
+  kind?: 'cart';
+  shortBenefit?: string;
+  routeBenefit?: string;
+  childDescription?: string;
 }
 
 export interface JuniorBoat {
   id: 'none' | 'small_ferry' | 'sailboat' | 'sturdy_sailboat' | 'merchant_ship';
   name: string;
   cost: number;
+  cargoLimit: number;
   text: string;
   image: string;
+  kind?: 'boat';
+  shortBenefit?: string;
+  routeBenefit?: string;
+  childDescription?: string;
 }
 
 export interface JuniorReward {
@@ -180,6 +191,22 @@ export interface JuniorEvent {
   reward?: JuniorReward;
 }
 
+export interface JuniorRegionalEvent {
+  id: string;
+  cityId: JuniorCityId;
+  type: JuniorRegionalEventType;
+  title: string;
+  speaker: string;
+  text: string;
+  fairyText: string;
+  hintGoodId?: JuniorGoodId;
+  relatedCityId?: JuniorCityId;
+  chance: number;
+  once?: boolean;
+  season?: 'spring' | 'summer' | 'autumn' | 'winter';
+  reward?: JuniorReward;
+}
+
 export interface JuniorMarketPressure {
   buy: Record<string, number>;
   sell: Record<string, number>;
@@ -192,6 +219,8 @@ export interface JuniorSave {
   destinationCityId?: JuniorCityId;
   selectedGoodId?: JuniorGoodId;
   selectedEventId?: string;
+  selectedRegionalEventId?: string;
+  regionalReturnStep?: JuniorStep;
   eventResultText?: string;
   coins: number;
   stars: number;
@@ -204,6 +233,9 @@ export interface JuniorSave {
   completedTutorial: boolean;
   tutorialStage: number;
   seenEventIds: string[];
+  seenRegionalEventIds: string[];
+  lastRegionalEventCityId?: JuniorCityId;
+  lastRegionalEventId?: string;
   storyArcProgress: Record<string, number>;
   quizWrongStreak: number;
   storyClues: number;

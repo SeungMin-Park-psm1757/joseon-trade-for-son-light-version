@@ -1,3 +1,9 @@
+# Play Now
+
+[정우의 꼬마 거상 모험 바로 플레이](https://seungmin-park-psm1757.github.io/joseon-trade-for-son-light-version/)
+
+---
+
 # Jeongwoo's Little Merchant Adventure
 
 Junior mode is a small Joseon trade RPG for grade 1-2 children. It is a separate light-mode app and does not include full-mode/starter code.
@@ -27,8 +33,10 @@ http://127.0.0.1:4390/
 8. Sell the good.
 9. Earn coins/stars.
 10. Buy a cart or boat.
-11. Collect city stamps and badges.
-12. Reach 300 coins and choose the ending.
+11. Check separate land cargo and sea cargo.
+12. Hear short regional stories and market rumors.
+13. Collect city stamps and badges.
+14. Reach 300 coins and choose the ending.
 
 ## Child-Friendly Language Rules
 
@@ -38,6 +46,8 @@ Use:
 - 파는 돈
 - 여기서 사기 좋아
 - 다른 도시에서 인기 많아
+- 대구 장터에서 잘 팔려
+- 목포에서 찾는 사람이 많아
 - 짐에 실렸어
 - 돈이 늘었어
 - 조금 더 모으면 손수레야
@@ -75,6 +85,7 @@ joseon_trade_junior_save_v1
 ```
 
 The save migration keeps older saves playable and fills defaults for newer fields such as result chips.
+It also fills regional event defaults so older saves can keep going without losing progress.
 
 ## Test
 
@@ -90,6 +101,8 @@ Validated flows:
 - route card before travel
 - event result card
 - upgrade celebration
+- vehicle current status, cart/boat prices, land/sea cargo
+- regional merchant rumor, dialect, landmark, and repeat prevention
 - city stamps and badges
 - ending hint
 - save/continue
@@ -122,3 +135,4 @@ Release checks:
 ## Asset Policy
 
 Do not include SWF original files, extracted SWF images, extracted SWF sounds, or decompiled SWF code. Junior mode may reuse only the gameplay structure translated into child-friendly Joseon trade mechanics.
+

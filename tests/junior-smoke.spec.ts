@@ -24,6 +24,7 @@ function baseSave(overrides = {}) {
     completedTutorial: true,
     tutorialStage: 9,
     seenEventIds: [],
+    seenRegionalEventIds: [],
     storyArcProgress: {},
     quizWrongStreak: 0,
     storyClues: 0,
@@ -154,7 +155,7 @@ test('city-map-market-flow: expanded map and market stay simple', async ({ page 
   await expect(page.locator('.junior-map-bg')).toHaveAttribute('src', '/assets/maps/korea-approved-map.webp');
   await expect(page.locator('.junior-city-dot')).toHaveCount(26);
   await expect(page.getByTestId('city-daegu')).toBeEnabled();
-  await expect(page.getByTestId('city-jeju')).toBeDisabled();
+  await expect(page.getByTestId('city-jeju')).toHaveClass(/unavailable/);
   await page.getByTestId('city-daegu').click();
   await expect(page.getByTestId('route-card-before-travel')).toBeVisible();
   await expect(page.locator('.junior-city-dot.selected')).toContainText('대구');
@@ -176,6 +177,14 @@ test('market-flow: buying changes price and keeps market open', async ({ page })
   await expect(page.getByTestId('market-cargo-summary')).toContainText('면포');
   const priceAfter = await page.getByTestId('buy-cotton_cloth').locator('b').innerText();
   expect(priceAfter).not.toBe(priceBefore);
+});
+
+test('market-flow: natural market hint copy avoids awkward sell-there wording', async ({ page }) => {
+  await seed(page, baseSave({ currentStep: 'market', currentCityId: 'busan', coins: 60 }));
+  await expect(page.getByTestId('buy-cotton_cloth')).toBeVisible();
+  await expect(page.getByTestId('screen-market')).toContainText(/인기 많아|잘 팔려|값이 좋아|찾는 사람이 많아/);
+  await expect(page.getByTestId('screen-market')).not.toContainText('팔아봐');
+  await expect(page.getByTestId('screen-market')).not.toContainText('에 팔아');
 });
 
 test('market-flow: same city resale shows original buy price and no profit', async ({ page }) => {
@@ -320,6 +329,8 @@ test('route-cutscenes: key routes have art and story hooks', async ({ page }) =>
 test('upgrade-flow: handcart and boat can be bought', async ({ page }) => {
   await seed(page, baseSave({ currentStep: 'shop', currentCityId: 'tongyeong', coins: 400 }));
   await expect(page.getByTestId('screen-shop')).toBeVisible();
+  await expect(page.getByTestId('vehicle-current-status')).toContainText('수레: 보따리');
+  await expect(page.getByTestId('vehicle-current-status')).toContainText('배: 배 없음');
   await expect(page.getByTestId('equipment-goal')).toBeVisible();
   await page.getByTestId('buy-vehicle-handcart').click();
   await expect(page.getByTestId('upgrade-celebration')).toBeVisible();
@@ -330,6 +341,91 @@ test('upgrade-flow: handcart and boat can be bought', async ({ page }) => {
   await page.getByTestId('shop-back').click();
   await page.getByTestId('open-map').click();
   await expect(page.getByTestId('city-jeju')).toBeEnabled();
+});
+
+test('vehicle-current-status-visible: shop and footer show current cart and boat', async ({ page }) => {
+  await seed(page, baseSave({ currentStep: 'shop', vehicleId: 'big_cart', boatId: 'small_ferry', cargoLimit: 4, coins: 80 }));
+  await expect(page.getByTestId('vehicle-current-status')).toContainText('수레: 큰 수레');
+  await expect(page.getByTestId('vehicle-current-status')).toContainText('땅길 짐칸 4칸');
+  await expect(page.getByTestId('vehicle-current-status')).toContainText('배: 작은 나룻배');
+  await expect(page.getByTestId('vehicle-current-status')).toContainText('바닷길 짐칸 2칸');
+  await expect(page.getByTestId('vehicle-status-footer')).toContainText('땅길 4칸');
+  await expect(page.getByTestId('vehicle-status-footer')).toContainText('바닷길 2칸');
+});
+
+test('cart-prices-visible: every cart card shows a price and state', async ({ page }) => {
+  await seed(page, baseSave({ currentStep: 'shop', coins: 250 }));
+  const section = page.getByTestId('vehicle-cart-prices');
+  await expect(section).toBeVisible();
+  for (const id of ['bundle', 'handcart', 'big_cart', 'merchant_cart']) {
+    await expect(page.getByTestId(`buy-vehicle-${id}`)).toContainText('가격');
+    await expect(page.getByTestId(`buy-vehicle-${id}`)).toContainText('땅길 짐칸');
+  }
+  await expect(page.getByTestId('buy-vehicle-bundle')).toContainText('쓰는 중');
+  await expect(page.getByTestId('buy-vehicle-handcart')).toContainText('살 수 있어');
+});
+
+test('boat-prices-visible: every boat card shows sea cargo and price', async ({ page }) => {
+  await seed(page, baseSave({ currentStep: 'shop', coins: 250 }));
+  const section = page.getByTestId('vehicle-boat-prices');
+  await expect(section).toBeVisible();
+  for (const id of ['none', 'small_ferry', 'sailboat', 'sturdy_sailboat', 'merchant_ship']) {
+    await expect(page.getByTestId(`buy-boat-${id}`)).toContainText('가격');
+    await expect(page.getByTestId(`buy-boat-${id}`)).toContainText('바닷길 짐칸');
+  }
+  await expect(page.getByTestId('buy-boat-none')).toContainText('지금 배');
+  await expect(page.getByTestId('buy-boat-small_ferry')).toContainText('살 수 있어');
+});
+
+test('land-vs-sea-cargo-visible: map route card explains cart and boat cargo', async ({ page }) => {
+  await seed(page, baseSave({ currentStep: 'map', currentCityId: 'busan', vehicleId: 'handcart', cargoLimit: 3 }));
+  await page.getByTestId('city-daegu').click();
+  await expect(page.getByTestId('route-land-cargo')).toContainText('이번 길: 땅길');
+  await expect(page.getByTestId('route-land-cargo')).toContainText('수레: 손수레');
+  await expect(page.getByTestId('route-land-cargo')).toContainText('3칸');
+
+  await seed(page, baseSave({ currentStep: 'map', currentCityId: 'tongyeong', boatId: 'small_ferry', vehicleId: 'handcart', cargoLimit: 3 }));
+  await page.getByTestId('city-jeju').click();
+  await expect(page.getByTestId('route-sea-cargo')).toContainText('이번 길: 바닷길');
+  await expect(page.getByTestId('route-sea-cargo')).toContainText('배: 작은 나룻배');
+  await expect(page.getByTestId('route-sea-cargo')).toContainText('2칸');
+});
+
+test('regional-merchant-rumor: regional event card can show merchant rumor', async ({ page }) => {
+  await seed(page, baseSave({ currentStep: 'regionalEvent', selectedRegionalEventId: 'busan_merchant_dried_fish', regionalReturnStep: 'market' }));
+  await expect(page.getByTestId('screen-regional-event')).toBeVisible();
+  await expect(page.getByTestId('regional-merchant-rumor')).toContainText('장터 소문');
+  await expect(page.getByTestId('regional-merchant-rumor')).toContainText('건어물');
+  await page.getByTestId('regional-event-ok').click();
+  await expect(page.getByTestId('screen-market')).toBeVisible();
+});
+
+test('regional-dialect-event: dialect cards stay short and explained', async ({ page }) => {
+  await seed(page, baseSave({ currentStep: 'regionalEvent', selectedRegionalEventId: 'jeju_dialect_welcome', regionalReturnStep: 'city', currentCityId: 'jeju' }));
+  await expect(page.getByTestId('regional-dialect-event')).toContainText('혼저 옵서예');
+  await expect(page.getByTestId('regional-dialect-event')).toContainText('어서 오라는 뜻');
+});
+
+test('regional-landmark-event: first-visit style landmark card teaches place', async ({ page }) => {
+  await seed(page, baseSave({ currentStep: 'regionalEvent', selectedRegionalEventId: 'mokpo_landmark_mudflat', regionalReturnStep: 'city', currentCityId: 'mokpo' }));
+  await expect(page.getByTestId('regional-landmark-event')).toContainText('목포 갯벌');
+  await expect(page.getByTestId('regional-landmark-event')).toContainText('서해');
+});
+
+test('no-repeated-regional-event: selection avoids the last regional event', async ({ page }) => {
+  await seed(page, baseSave({
+    currentStep: 'market',
+    currentCityId: 'busan',
+    lastRegionalEventId: 'busan_merchant_dried_fish',
+    seenRegionalEventIds: ['busan_merchant_dried_fish']
+  }));
+  const selected = await page.evaluate(() => import('/src/juniorFlow.ts').then((module) => {
+    const save = JSON.parse(localStorage.getItem('joseon_trade_junior_save_v1') ?? '{}');
+    const next = module.maybeOpenRegionalEvent(save, 'market', 0);
+    return next.selectedRegionalEventId;
+  }));
+  expect(selected).not.toBe('busan_merchant_dried_fish');
+  expect(selected).toBeTruthy();
 });
 
 test('ending-flow: 300 coins opens home ending', async ({ page }) => {
