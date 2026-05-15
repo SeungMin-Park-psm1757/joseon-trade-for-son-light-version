@@ -9,6 +9,7 @@ import {
   canTravel,
   chooseGood,
   closeEventResult,
+  closeRegionalEvent,
   completeVisitIntro,
   continueAfterEnding,
   finishEnding,
@@ -22,6 +23,7 @@ import {
   getRoute,
   getRouteScenery,
   getSelectedEvent,
+  getSelectedRegionalEvent,
   getSellPriceForCargo,
   goToCity,
   goToMap,
@@ -38,7 +40,7 @@ import {
   startTravel
 } from './juniorFlow';
 import { useJuniorAudio, type JuniorAudioScene } from './juniorAudio';
-import type { JuniorBoat, JuniorCargoItem, JuniorCity, JuniorCityId, JuniorEvent, JuniorGood, JuniorGoodId, JuniorSave, JuniorVehicle } from './juniorTypes';
+import type { JuniorBoat, JuniorCargoItem, JuniorCity, JuniorCityId, JuniorEvent, JuniorGood, JuniorGoodId, JuniorRegionalEvent, JuniorSave, JuniorVehicle } from './juniorTypes';
 
 const eventSceneImages: Record<string, string> = {
   bandit: publicAsset('/assets/scenes/inland-city.webp'),
@@ -131,6 +133,29 @@ function getBoat(save: JuniorSave) {
   return JUNIOR_BOATS.find((boat) => boat.id === save.boatId) ?? JUNIOR_BOATS[0];
 }
 
+function getBoatCargoLimit(save: JuniorSave) {
+  return getBoat(save).cargoLimit ?? 0;
+}
+
+function getRouteCargoCopy(save: JuniorSave, kind?: 'land' | 'sea') {
+  const vehicle = getVehicle(save);
+  const boat = getBoat(save);
+  if (kind === 'sea') {
+    return {
+      label: '이번 길: 바닷길',
+      detail: save.boatId === 'none' ? '배가 필요해!' : '이번 길에는 배 짐칸을 써요.',
+      vehicle: `배: ${boat.name} · 바닷길 짐칸 ${boat.cargoLimit}칸`,
+      testId: 'route-sea-cargo'
+    };
+  }
+  return {
+    label: '이번 길: 땅길',
+    detail: '이번 길에는 수레 짐칸을 써요.',
+    vehicle: `수레: ${vehicle.name} · 땅길 짐칸 ${vehicle.cargoLimit}칸`,
+    testId: 'route-land-cargo'
+  };
+}
+
 function tutorialLine(save: JuniorSave) {
   if (save.completedTutorial) return undefined;
   if (save.currentStep === 'city' && save.tutorialStage <= 1) return ['정우야, 먼저 장터에서 물건을 사보자.'];
@@ -161,6 +186,7 @@ function fairyLines(save: JuniorSave, event?: JuniorEvent) {
     visitIntro: ['처음 온 고을이야.'],
     market: ['사거나 팔 물건을 골라봐.'],
     eventResult: ['잘했어. 이제 다시 움직이자.'],
+    regionalEvent: ['고을 이야기를 들어보자.'],
     shop: ['새 수레와 배를 장만할 수 있어.'],
     endingChoice: ['장부가 다 빛났어.', '이제 집으로 갈 수 있어.'],
     ending: ['멋진 꼬마 거상이야!']
@@ -172,7 +198,7 @@ function audioSceneForStep(step: JuniorSave['currentStep']): JuniorAudioScene {
   if (step === 'market') return 'market';
   if (step === 'map') return 'map';
   if (step === 'travel') return 'travel';
-  if (step === 'event' || step === 'eventResult') return 'event';
+  if (step === 'event' || step === 'eventResult' || step === 'regionalEvent') return 'event';
   if (step === 'shop') return 'shop';
   if (step === 'ending' || step === 'endingChoice') return 'ending';
   return 'city';
@@ -257,7 +283,7 @@ function IntroScreen({ save, onStart }: { save: JuniorSave; onStart: () => void 
 }
 
 function QuickNav({ save, onCity, onMap, onMarket, onShop }: { save: JuniorSave; onCity: () => void; onMap: () => void; onMarket: () => void; onShop: () => void }) {
-  if (['intro', 'pick', 'buy', 'travel', 'visitIntro', 'event', 'eventResult', 'endingChoice', 'ending'].includes(save.currentStep)) return null;
+  if (['intro', 'pick', 'buy', 'travel', 'visitIntro', 'event', 'eventResult', 'regionalEvent', 'endingChoice', 'ending'].includes(save.currentStep)) return null;
   const itemClass = (step: JuniorSave['currentStep']) => save.currentStep === step ? 'active' : '';
   return (
     <nav className="junior-bottom-nav" aria-label="주요 이동">
@@ -385,11 +411,11 @@ function cityNodeIcon(city: JuniorCity) {
 }
 
 function marketHintForCity(city?: JuniorCity) {
-  if (!city) return '다음 장터에서 인기';
-  if (city.kind === 'west_port' || city.kind === 'east_port' || city.kind === 'south_port') return `${city.name} 항구 인기`;
-  if (city.kind === 'north_trade_port') return `${city.name}에서 인기`;
-  if (city.kind === 'island') return `${city.name} 섬에서 인기`;
-  return `${city.name}에서 값이 좋아`;
+  if (!city) return '다음 장터에서 인기 많아';
+  if (city.kind === 'west_port' || city.kind === 'east_port' || city.kind === 'south_port') return `${city.name}에서 찾는 사람이 많아`;
+  if (city.kind === 'north_trade_port') return `${city.name}에서 값이 좋아`;
+  if (city.kind === 'island') return `${city.name}에서 인기 많아`;
+  return `${city.name} 장터에서 잘 팔려`;
 }
 
 type JuniorGoalAction = 'market' | 'map' | 'shop' | 'ending';
@@ -420,10 +446,10 @@ function getTodayGoal(save: JuniorSave): { text: string; hint: string; action: J
   if (firstCargo) {
     const good = getGood(firstCargo.goodId);
     if (isGoodSalePlace(save, firstCargo)) {
-      return { text: `${good.name}을 팔아보자.`, hint: '여기서 값이 좋아.', action: 'market', actionLabel: '팔기' };
+      return { text: `${good.name}이 여기서 잘 팔려.`, hint: '여기서 값이 좋아.', action: 'market', actionLabel: '팔기' };
     }
     const bestCity = getBestSellCityForGood(firstCargo.goodId, firstCargo.fromCityId);
-    return { text: `${bestCity?.name ?? '다른 장터'}에서 팔자.`, hint: `${good.name}이 인기 많아.`, action: 'map', actionLabel: '지도 보기' };
+    return { text: `${bestCity?.name ?? '다른 장터'}에서 인기 많아.`, hint: `${good.name}을 가져가면 좋아.`, action: 'map', actionLabel: '지도 보기' };
   }
   const nextVehicle = getNextVehicle(save);
   if (nextVehicle && save.coins >= Math.max(70, nextVehicle.cost - 25)) {
@@ -448,6 +474,7 @@ function TodayGoalCard({ goal, onAction }: { goal: ReturnType<typeof getTodayGoa
 function RouteCard({ save, city }: { save: JuniorSave; city: JuniorCity }) {
   const route = getRoute(save.currentCityId, city.id);
   const canDepart = canTravel(save, city.id);
+  const cargoCopy = getRouteCargoCopy(save, route?.kind);
   const label = route?.kind === 'sea'
     ? '바닷길'
     : route?.routeType?.includes('north')
@@ -462,7 +489,12 @@ function RouteCard({ save, city }: { save: JuniorSave; city: JuniorCity }) {
     <div className={`junior-route-card ${route?.kind ?? 'land'}`} data-testid="route-card-before-travel">
       <b>{label}</b>
       <span>{hint}</span>
-      <small>{canDepart ? '출발 준비 끝' : '아직 준비가 필요해'}</small>
+      <div className="junior-route-cargo" data-testid={cargoCopy.testId}>
+        <strong>{cargoCopy.label}</strong>
+        <span>{cargoCopy.vehicle}</span>
+        <small>{cargoCopy.detail}</small>
+      </div>
+      <small>{canDepart ? '출발 준비 끝' : route?.kind === 'sea' ? '작은 나룻배를 장만하면 갈 수 있어.' : '아직 준비가 필요해'}</small>
     </div>
   );
 }
@@ -559,14 +591,16 @@ function KoreaMap({ save, selectedCityId, onCity, children }: { save: JuniorSave
         const current = city.id === save.currentCityId;
         const selected = city.id === selectedCityId;
         const unlocked = save.unlockedCities.includes(city.id);
-        const reachable = connected.includes(city.id) && canTravel(save, city.id);
-        const unavailable = !current && !reachable;
+        const connectedUnlocked = connected.includes(city.id) && unlocked;
+        const reachable = connectedUnlocked && canTravel(save, city.id);
+        const unavailable = !current && connectedUnlocked && !reachable;
+        const disabled = !current && !connectedUnlocked;
         return (
           <button
             key={city.id}
             className={`junior-city-dot ${current ? 'current' : ''} ${selected ? 'selected' : ''} ${reachable ? 'reachable' : ''} ${unavailable ? 'unavailable' : ''} ${!unlocked ? 'locked' : ''}`}
             style={{ left: `${city.x}%`, top: `${city.y}%` }}
-            disabled={!current && !reachable}
+            disabled={disabled}
             data-testid={`city-${city.id}`}
             onClick={() => onCity(city)}
           >
@@ -839,6 +873,7 @@ function MarketScreen({ save, onBuy, onSell, onBack, onMap }: { save: JuniorSave
             return <span key={item.id}><img src={cargoGood.image} alt="" />{cargoGood.name}</span>;
           }) : <span>짐칸이 비었어</span>}
         </div>
+        <small>땅길 짐칸 기준 · 바닷길은 배 {getBoatCargoLimit(save)}칸</small>
       </div>
       {flyingGood && <img className="junior-flying-good" src={flyingGood.image} alt="" />}
       {flyingGood && <span className="junior-cargo-sparkle" aria-hidden="true" />}
@@ -912,6 +947,35 @@ function EventResultScreen({ save, onClose }: { save: JuniorSave; onClose: () =>
   );
 }
 
+function RegionalEventScreen({ event, onClose }: { event: JuniorRegionalEvent; onClose: () => void }) {
+  const testId = event.type === 'merchant_rumor'
+    ? 'regional-merchant-rumor'
+    : event.type === 'dialect'
+      ? 'regional-dialect-event'
+      : event.type === 'landmark'
+        ? 'regional-landmark-event'
+        : `regional-${event.type}`;
+  const hintGood = event.hintGoodId ? getGood(event.hintGoodId) : undefined;
+  const relatedCity = event.relatedCityId ? getCity(event.relatedCityId) : undefined;
+  return (
+    <section className="junior-screen junior-regional-event" data-testid="screen-regional-event">
+      <div className="junior-regional-card" data-testid={testId}>
+        <img src={publicAsset(event.type === 'landmark' ? '/assets/events/book.svg' : '/assets/fairy/fairy-happy.png')} alt="" onError={handleImageFallback} />
+        <span>{event.title}</span>
+        <strong>{event.speaker}</strong>
+        <p>{event.text}</p>
+        <small>{event.fairyText}</small>
+        {(hintGood || relatedCity) && (
+          <div className="junior-regional-hint">
+            힌트: {hintGood?.name ?? '물건'}{relatedCity ? ` · ${relatedCity.name}에서 인기 많아` : ''}
+          </div>
+        )}
+        <button className="junior-button junior-primary" data-testid="regional-event-ok" onClick={onClose}>알겠어</button>
+      </div>
+    </section>
+  );
+}
+
 function VisitIntroScreen({ save, onDone }: { save: JuniorSave; onDone: () => void }) {
   const city = getCity(save.currentCityId);
   const [index, setIndex] = useState(0);
@@ -955,54 +1019,93 @@ function ShopScreen({ save, onVehicle, onBoat, onBack }: { save: JuniorSave; onV
   const boat = getBoat(save);
   const nextVehicle = getNextVehicle(save);
   const nextBoat = getNextBoat(save);
-  const nextGoal = nextVehicle ?? nextBoat;
+  const nextGoal = nextVehicle && (!nextBoat || nextVehicle.cost <= nextBoat.cost) ? nextVehicle : nextBoat;
   const shortage = nextGoal ? Math.max(0, nextGoal.cost - save.coins) : 0;
   const celebration = save.message?.includes('장만했어');
+  const currentVehicleIndex = JUNIOR_VEHICLES.findIndex((item) => item.id === save.vehicleId);
+  const currentBoatIndex = JUNIOR_BOATS.findIndex((item) => item.id === save.boatId);
+  const vehicleState = (item: JuniorVehicle, index: number) => {
+    if (item.id === save.vehicleId) return '쓰는 중';
+    if (index < currentVehicleIndex) return '보유 중';
+    if (save.coins >= item.cost) return '살 수 있어';
+    return '돈이 부족해';
+  };
+  const boatState = (item: JuniorBoat, index: number) => {
+    if (item.id === save.boatId) return save.boatId === 'none' ? '지금 배' : '쓰는 중';
+    if (index < currentBoatIndex) return '보유 중';
+    if (item.id === 'none') return '기본';
+    if (save.coins >= item.cost) return '살 수 있어';
+    return '돈이 부족해';
+  };
   return (
     <section className="junior-screen junior-shop" data-testid="screen-shop">
-      <div className="junior-shop-summary">
-        <strong>탈것 장만</strong>
-        <span>지금 수레: {vehicle.name} · 짐칸 {save.cargoLimit}칸</span>
-        <small>지금 배: {boat.name}</small>
+      <div className="junior-shop-summary" data-testid="vehicle-current-status">
+        <strong>현재 탈것</strong>
+        <span>수레: {vehicle.name} · 땅길 짐칸 {vehicle.cargoLimit}칸</span>
+        <span>배: {boat.name} · 바닷길 짐칸 {boat.cargoLimit}칸</span>
+        <small>다음 목표: {nextGoal ? nextGoal.name : '탈것 준비 완료'}</small>
       </div>
       {celebration && (
         <div className="junior-upgrade-celebration" data-testid="upgrade-celebration">
           <b>새 탈것!</b>
           <span>{save.message}</span>
+          <small>{save.lastResultChips?.join(' · ')}</small>
         </div>
       )}
       <div className="junior-equipment-goal" data-testid="equipment-goal">
         <b>다음 목표</b>
         <span>{nextGoal ? `${nextGoal.name}까지 ${shortage}냥` : '탈것 준비 완료'}</span>
-        <small>{nextVehicle ? `짐칸이 ${nextVehicle.cargoLimit}칸이 돼.` : nextBoat ? '바닷길이 더 쉬워져.' : '멀리 떠날 준비가 됐어.'}</small>
+        <small>{nextGoal && 'cargoLimit' in nextGoal ? `${nextGoal.kind === 'boat' ? '바닷길' : '땅길'} 짐칸이 ${nextGoal.cargoLimit}칸이 돼.` : '멀리 떠날 준비가 됐어.'}</small>
       </div>
-      <div className="junior-shop-grid">
-        {JUNIOR_VEHICLES.filter((item) => item.id !== 'bundle').map((item) => {
-          const owned = save.vehicleId === item.id;
-          const canBuy = save.coins >= item.cost;
+      <div className="junior-shop-grid junior-vehicle-sections">
+        <section className="junior-shop-section" data-testid="vehicle-cart-prices">
+          <h3>수레 장만</h3>
+          <div className="junior-shop-section-grid">
+        {JUNIOR_VEHICLES.map((item, index) => {
+          const state = vehicleState(item, index);
+          const current = item.id === save.vehicleId;
+          const owned = index <= currentVehicleIndex;
+          const canBuy = !owned && save.coins >= item.cost;
           return (
-          <button className={`junior-shop-card ${owned ? 'owned' : ''} ${canBuy ? 'affordable' : ''}`} data-testid={`buy-vehicle-${item.id}`} key={item.id} onClick={() => onVehicle(item.id)}>
+          <button className={`junior-shop-card ${current ? 'owned' : ''} ${canBuy ? 'affordable' : ''}`} data-testid={`buy-vehicle-${item.id}`} key={item.id} disabled={!canBuy} onClick={() => onVehicle(item.id)}>
             <img src={item.image} alt="" loading="lazy" onError={handleImageFallback} />
+            <span className="junior-shop-badge">{state}</span>
             <strong>{item.name}</strong>
             <small>{item.text}</small>
-            <b>짐칸 {item.cargoLimit}칸 · 돈 {item.cost}</b>
-            <em>{owned ? '쓰는 중' : canBuy ? '장만하기' : `${item.cost - save.coins}냥 더`}</em>
+            <b>가격 {item.cost}냥</b>
+            <b>땅길 짐칸 {item.cargoLimit}칸</b>
+            <em>{canBuy ? '장만하기' : state}</em>
           </button>
           );
         })}
-        {JUNIOR_BOATS.filter((item) => item.id !== 'none').map((item) => {
-          const owned = save.boatId === item.id;
-          const canBuy = save.coins >= item.cost;
+          </div>
+        </section>
+        <section className="junior-shop-section" data-testid="vehicle-boat-prices">
+          <h3>배 장만</h3>
+          <div className="junior-shop-section-grid">
+        {JUNIOR_BOATS.map((item, index) => {
+          const state = boatState(item, index);
+          const current = item.id === save.boatId;
+          const owned = index <= currentBoatIndex;
+          const canBuy = item.id !== 'none' && !owned && save.coins >= item.cost;
           return (
-          <button className={`junior-shop-card boat ${owned ? 'owned' : ''} ${canBuy ? 'affordable' : ''}`} data-testid={`buy-boat-${item.id}`} key={item.id} onClick={() => onBoat(item.id)}>
+          <button className={`junior-shop-card boat ${current ? 'owned' : ''} ${canBuy ? 'affordable' : ''}`} data-testid={`buy-boat-${item.id}`} key={item.id} disabled={!canBuy} onClick={() => onBoat(item.id)}>
             <BoatTierArt boat={item} />
+            <span className="junior-shop-badge">{state}</span>
             <strong>{item.name}</strong>
             <small>{item.text}</small>
-            <b>돈 {item.cost}</b>
-            <em>{owned ? '쓰는 중' : canBuy ? '장만하기' : `${item.cost - save.coins}냥 더`}</em>
+            <b>가격 {item.cost}냥</b>
+            <b>바닷길 짐칸 {item.cargoLimit}칸</b>
+            <em>{canBuy ? '장만하기' : state}</em>
           </button>
           );
         })}
+          </div>
+        </section>
+      </div>
+      <div className="junior-land-sea-summary" data-testid="land-vs-sea-cargo-visible">
+        <span>땅길: {vehicle.name} {vehicle.cargoLimit}칸</span>
+        <span>바닷길: {boat.name} {boat.cargoLimit}칸</span>
       </div>
       <button className="junior-button junior-primary" data-testid="shop-back" onClick={onBack}>도시로</button>
     </section>
@@ -1053,6 +1156,7 @@ export function JuniorApp() {
   const selectedGood = useMemo(() => save.selectedGoodId ? getGood(save.selectedGoodId) : undefined, [save.selectedGoodId]);
   const city = getCity(save.currentCityId);
   const event = getSelectedEvent(save);
+  const regionalEvent = getSelectedRegionalEvent(save);
   const audio = useJuniorAudio(audioSceneForStep(save.currentStep));
 
   function update(next: JuniorSave) {
@@ -1091,6 +1195,7 @@ export function JuniorApp() {
         {save.currentStep === 'market' && <MarketScreen save={save} onBuy={marketBuy} onSell={sell} onBack={() => { audio.playSfx('click'); update(goToCity(save)); }} onMap={() => { audio.playSfx('click'); update(goToMap(save)); }} />}
         {save.currentStep === 'event' && <EventScreen save={save} onSimple={() => { audio.playSfx('reward'); update(resolveSimpleEvent(save)); }} onChoice={(index) => { audio.playSfx('click'); update(resolveChoice(save, index)); }} onQuiz={(option) => { const quiz = event?.quiz; audio.playSfx(quiz && option === quiz.answer ? 'correct' : 'wrong'); update(answerQuiz(save, option)); }} />}
         {save.currentStep === 'eventResult' && <EventResultScreen save={save} onClose={() => { audio.playSfx('click'); update(closeEventResult(save)); }} />}
+        {save.currentStep === 'regionalEvent' && regionalEvent && <RegionalEventScreen event={regionalEvent} onClose={() => { audio.playSfx('click'); update(closeRegionalEvent(save)); }} />}
         {save.currentStep === 'shop' && <ShopScreen save={save} onVehicle={(id) => { audio.playSfx('shop'); update(buyVehicle(save, id)); }} onBoat={(id) => { audio.playSfx('shop'); update(buyBoat(save, id)); }} onBack={() => { audio.playSfx('click'); update(goToCity(save)); }} />}
         {save.currentStep === 'endingChoice' && <EndingChoiceScreen onHome={() => { audio.playSfx('reward'); update(finishEnding(save)); }} onMore={() => { audio.playSfx('click'); update(continueAfterEnding(save)); }} />}
         {save.currentStep === 'ending' && <EndingScreen onAgain={() => { audio.playSfx('click'); update(resetJuniorGame()); }} onMore={() => { audio.playSfx('click'); update(continueAfterEnding(save)); }} />}
@@ -1104,10 +1209,10 @@ export function JuniorApp() {
         onShop={() => { audio.playSfx('shop'); update(goToShop(save)); }}
       />
 
-      <footer className="junior-goal" aria-label="목표">
+      <footer className="junior-goal junior-vehicle-footer" data-testid="vehicle-status-footer" aria-label="목표">
         <span>{city.name}</span>
         <strong>{save.coins >= ENDING_COINS ? '집으로 갈 수 있어!' : `${ENDING_COINS}냥이면 단서가 보여!`}</strong>
-        {selectedGood ? <span>{selectedGood.name}</span> : <span>{getBoat(save).name}</span>}
+        <span>{selectedGood ? selectedGood.name : `땅길 ${getVehicle(save).cargoLimit}칸 · 바닷길 ${getBoatCargoLimit(save)}칸`}</span>
       </footer>
     </main>
   );

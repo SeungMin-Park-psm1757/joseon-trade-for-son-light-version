@@ -1,4 +1,4 @@
-import type { JuniorBoat, JuniorCity, JuniorCityId, JuniorEvent, JuniorGood, JuniorGoodId, JuniorReward, JuniorRoute, JuniorSave, JuniorVehicle } from './juniorTypes';
+import type { JuniorBoat, JuniorCity, JuniorCityId, JuniorEvent, JuniorGood, JuniorGoodId, JuniorRegionalEvent, JuniorReward, JuniorRoute, JuniorSave, JuniorVehicle } from './juniorTypes';
 
 export const JUNIOR_SAVE_KEY = 'joseon_trade_junior_save_v1';
 export const JUNIOR_SAVE_VERSION = 2;
@@ -451,18 +451,18 @@ export const JUNIOR_ROUTES: JuniorRoute[] = [
 ];
 
 export const JUNIOR_VEHICLES: JuniorVehicle[] = [
-  { id: 'bundle', name: '보따리 수레', cost: 0, cargoLimit: 2, text: '처음 쓰는 작은 수레', image: publicAsset('/assets/vehicles/polished-cart-bundle.png') },
-  { id: 'handcart', name: '손수레', cost: 100, cargoLimit: 3, text: '짐을 하나 더 실어', image: publicAsset('/assets/vehicles/polished-cart-handcart.png') },
-  { id: 'big_cart', name: '큰 수레', cost: 190, cargoLimit: 4, text: '짐을 더 많이 실어', image: publicAsset('/assets/vehicles/polished-cart-large.png') },
-  { id: 'merchant_cart', name: '장사 수레', cost: 300, cargoLimit: 5, text: '먼 길도 든든해', image: publicAsset('/assets/vehicles/polished-cart-merchant.png') }
+  { id: 'bundle', name: '보따리', cost: 0, cargoLimit: 2, text: '처음 짐', image: publicAsset('/assets/vehicles/polished-cart-bundle.png'), kind: 'cart', shortBenefit: '땅길 짐칸 2칸', routeBenefit: '가까운 장터길', childDescription: '처음 쓰는 작은 짐이야.' },
+  { id: 'handcart', name: '손수레', cost: 100, cargoLimit: 3, text: '땅길 짐칸 +1', image: publicAsset('/assets/vehicles/polished-cart-handcart.png'), kind: 'cart', shortBenefit: '땅길 짐칸 3칸', routeBenefit: '장터길이 편해', childDescription: '짐을 하나 더 실어.' },
+  { id: 'big_cart', name: '큰 수레', cost: 190, cargoLimit: 4, text: '더 많이 실어', image: publicAsset('/assets/vehicles/polished-cart-large.png'), kind: 'cart', shortBenefit: '땅길 짐칸 4칸', routeBenefit: '먼 장터길도 좋아', childDescription: '물건을 더 많이 싣기 좋아.' },
+  { id: 'merchant_cart', name: '장사 수레', cost: 300, cargoLimit: 5, text: '먼 장사 가기 좋아', image: publicAsset('/assets/vehicles/polished-cart-merchant.png'), kind: 'cart', shortBenefit: '땅길 짐칸 5칸', routeBenefit: '먼 장사길 준비', childDescription: '먼 길 장사도 든든해.' }
 ];
 
 export const JUNIOR_BOATS: JuniorBoat[] = [
-  { id: 'none', name: '배 없음', cost: 0, text: '아직 바닷길은 어려워', image: publicAsset('/assets/ui/result-ship.png') },
-  { id: 'small_ferry', name: '작은 나룻배', cost: 200, text: '바닷길을 건널 때 좋아', image: publicAsset('/assets/boats/small_ferry.png') },
-  { id: 'sailboat', name: '작은 돛배', cost: 360, text: '먼 바닷길도 든든해', image: publicAsset('/assets/boats/sailboat.png') },
-  { id: 'sturdy_sailboat', name: '튼튼한 돛배', cost: 520, text: '큰 파도에도 든든해', image: publicAsset('/assets/boats/sturdy_sailboat.png') },
-  { id: 'merchant_ship', name: '장사배', cost: 720, text: '멀리 장사 가기 좋아', image: publicAsset('/assets/boats/merchant_ship.png') }
+  { id: 'none', name: '배 없음', cost: 0, cargoLimit: 0, text: '바닷길은 아직 어려워', image: publicAsset('/assets/ui/result-ship.png'), kind: 'boat', shortBenefit: '바닷길 준비 전', routeBenefit: '배가 필요해', childDescription: '작은 나룻배를 장만하면 바닷길을 볼 수 있어.' },
+  { id: 'small_ferry', name: '작은 나룻배', cost: 200, cargoLimit: 2, text: '가까운 바닷길에 좋아', image: publicAsset('/assets/boats/small_ferry.png'), kind: 'boat', shortBenefit: '바닷길 짐칸 2칸', routeBenefit: '가까운 바닷길', childDescription: '목포에서 제주 길을 살펴볼 수 있어.' },
+  { id: 'sailboat', name: '작은 돛배', cost: 360, cargoLimit: 3, text: '먼 바닷길도 든든해', image: publicAsset('/assets/boats/sailboat.png'), kind: 'boat', shortBenefit: '바닷길 짐칸 3칸', routeBenefit: '섬 길이 편해', childDescription: '섬까지 가는 길이 더 편해져.' },
+  { id: 'sturdy_sailboat', name: '튼튼한 돛배', cost: 520, cargoLimit: 4, text: '큰 파도에도 든든해', image: publicAsset('/assets/boats/sturdy_sailboat.png'), kind: 'boat', shortBenefit: '바닷길 짐칸 4칸', routeBenefit: '긴 바닷길 준비', childDescription: '파도가 센 길도 마음이 놓여.' },
+  { id: 'merchant_ship', name: '장사배', cost: 720, cargoLimit: 5, text: '멀리 장사 가기 좋아', image: publicAsset('/assets/boats/merchant_ship.png'), kind: 'boat', shortBenefit: '바닷길 짐칸 5칸', routeBenefit: '먼 바다 장사', childDescription: '멀리 물건을 실어 나르기 좋아.' }
 ];
 
 export const CITY_BACKGROUND_ASSETS: Record<JuniorCityId, string> = {
@@ -620,6 +620,253 @@ export const JUNIOR_EVENTS: JuniorEvent[] = [
   { id: 'home_hint', type: 'ending', mood: 'story', chancePercent: 1, routeKind: 'any', title: '집으로 가는 빛', scene: 'home', fairyText: '300냥을 모으면 장부가 문처럼 열려.' }
 ];
 
+export const JUNIOR_REGIONAL_EVENTS: JuniorRegionalEvent[] = [
+  {
+    id: 'busan_merchant_dried_fish',
+    cityId: 'busan',
+    type: 'merchant_rumor',
+    title: '장터 소문',
+    speaker: '부산 상인',
+    text: '부산은 바닷길이 좋아. 건어물이 많이 모여.',
+    fairyText: '정우야, 건어물은 내륙 장터에서 인기야.',
+    hintGoodId: 'dried_fish',
+    relatedCityId: 'daegu',
+    chance: 0.3
+  },
+  {
+    id: 'busan_dialect_welcome',
+    cityId: 'busan',
+    type: 'dialect',
+    title: '지역 말맛',
+    speaker: '부산 상인',
+    text: '어서 오이소!',
+    fairyText: '부산에서는 이렇게 반갑게 말하기도 해.',
+    chance: 0.3,
+    once: true
+  },
+  {
+    id: 'busan_landmark_port',
+    cityId: 'busan',
+    type: 'landmark',
+    title: '부산 항구',
+    speaker: '바람이',
+    text: '부산은 큰 항구야. 배와 장터가 늘 바빠.',
+    fairyText: '생선과 건어물이 많이 모이는 곳이야.',
+    hintGoodId: 'fresh_fish',
+    chance: 0.2,
+    once: true
+  },
+  {
+    id: 'daegu_merchant_herbs',
+    cityId: 'daegu',
+    type: 'merchant_rumor',
+    title: '장터 소문',
+    speaker: '대구 상인',
+    text: '대구 장터엔 약초 이야기가 많아.',
+    fairyText: '약초는 바닷가 도시에서 찾는 사람이 있어.',
+    hintGoodId: 'herbs',
+    relatedCityId: 'busan',
+    chance: 0.3
+  },
+  {
+    id: 'daegu_landmark_market',
+    cityId: 'daegu',
+    type: 'landmark',
+    title: '대구 장터',
+    speaker: '바람이',
+    text: '대구는 내륙 장사길의 중심이야.',
+    fairyText: '약초와 쌀을 기억해 두자.',
+    hintGoodId: 'herbs',
+    chance: 0.2,
+    once: true
+  },
+  {
+    id: 'jeonju_merchant_paper',
+    cityId: 'jeonju',
+    type: 'merchant_rumor',
+    title: '장터 소문',
+    speaker: '전주 상인',
+    text: '전주는 한지가 유명해. 종이 물건을 잘 살펴봐.',
+    fairyText: '한지는 큰 장터에서 값이 좋아.',
+    hintGoodId: 'paper',
+    relatedCityId: 'seoul',
+    chance: 0.3
+  },
+  {
+    id: 'jeonju_dialect_easy',
+    cityId: 'jeonju',
+    type: 'dialect',
+    title: '지역 말맛',
+    speaker: '전주 상인',
+    text: '천천히 보고 가셔.',
+    fairyText: '전주 장터는 여유로운 느낌이야.',
+    chance: 0.3,
+    once: true
+  },
+  {
+    id: 'mokpo_merchant_salt',
+    cityId: 'mokpo',
+    type: 'merchant_rumor',
+    title: '장터 소문',
+    speaker: '목포 상인',
+    text: '목포는 소금 바람이 세지.',
+    fairyText: '소금은 내륙으로 가져가면 좋아.',
+    hintGoodId: 'salt',
+    relatedCityId: 'gwangju',
+    chance: 0.3
+  },
+  {
+    id: 'mokpo_landmark_mudflat',
+    cityId: 'mokpo',
+    type: 'landmark',
+    title: '목포 갯벌',
+    speaker: '바람이',
+    text: '목포는 서해와 갯벌이 가까워.',
+    fairyText: '소금과 생선 이야기가 많아.',
+    hintGoodId: 'salt',
+    chance: 0.2,
+    once: true
+  },
+  {
+    id: 'jeju_merchant_citrus',
+    cityId: 'jeju',
+    type: 'merchant_rumor',
+    title: '장터 소문',
+    speaker: '제주 상인',
+    text: '제주는 귤과 말 이야기가 많아.',
+    fairyText: '귤은 멀리 가져가면 좋아.',
+    hintGoodId: 'citrus',
+    relatedCityId: 'seoul',
+    chance: 0.3
+  },
+  {
+    id: 'jeju_dialect_welcome',
+    cityId: 'jeju',
+    type: 'dialect',
+    title: '지역 말맛',
+    speaker: '제주 상인',
+    text: '혼저 옵서예!',
+    fairyText: '제주에서는 어서 오라는 뜻이래.',
+    chance: 0.3,
+    once: true
+  },
+  {
+    id: 'jeju_landmark_halla',
+    cityId: 'jeju',
+    type: 'landmark',
+    title: '한라산 이야기',
+    speaker: '바람이',
+    text: '제주는 한라산과 귤이 유명해.',
+    fairyText: '바람이 세고 바다가 넓어.',
+    hintGoodId: 'citrus',
+    chance: 0.2,
+    once: true
+  },
+  {
+    id: 'seoul_landmark_palace',
+    cityId: 'seoul',
+    type: 'landmark',
+    title: '한양 이야기',
+    speaker: '바람이',
+    text: '한양에는 큰 궁과 장터가 있어.',
+    fairyText: '사람이 많아서 여러 물건이 잘 팔려.',
+    chance: 0.2,
+    once: true
+  },
+  {
+    id: 'gangneung_dialect_sea',
+    cityId: 'gangneung',
+    type: 'dialect',
+    title: '지역 말맛',
+    speaker: '강릉 상인',
+    text: '바닷바람이 세지?',
+    fairyText: '동해 쪽 말투도 조금 달라.',
+    chance: 0.3,
+    once: true
+  },
+  {
+    id: 'gangneung_landmark_east_sea',
+    cityId: 'gangneung',
+    type: 'landmark',
+    title: '동해 바다',
+    speaker: '바람이',
+    text: '강릉은 동해 바다가 가까워.',
+    fairyText: '바닷가에서 생선 이야기가 많아.',
+    hintGoodId: 'fresh_fish',
+    chance: 0.2,
+    once: true
+  },
+  {
+    id: 'andong_landmark_books',
+    cityId: 'andong',
+    type: 'landmark',
+    title: '안동 이야기',
+    speaker: '바람이',
+    text: '안동에는 고택과 책 이야기가 많아.',
+    fairyText: '한지와 글 공부에 어울리는 곳이야.',
+    hintGoodId: 'paper',
+    chance: 0.2,
+    once: true
+  },
+  {
+    id: 'gwangju_landmark_field',
+    cityId: 'gwangju',
+    type: 'landmark',
+    title: '넓은 들',
+    speaker: '바람이',
+    text: '광주는 넓은 들과 장터가 있어.',
+    fairyText: '쌀과 곡식 이야기가 많아.',
+    hintGoodId: 'rice',
+    chance: 0.2,
+    once: true
+  },
+  {
+    id: 'tongyeong_landmark_boats',
+    cityId: 'tongyeong',
+    type: 'landmark',
+    title: '남해 바다',
+    speaker: '바람이',
+    text: '통영은 남해 바다와 배 이야기가 많아.',
+    fairyText: '생선과 건어물이 잘 모여.',
+    hintGoodId: 'dried_fish',
+    chance: 0.2,
+    once: true
+  },
+  {
+    id: 'pyongyang_landmark_river',
+    cityId: 'pyongyang',
+    type: 'landmark',
+    title: '큰 강 이야기',
+    speaker: '바람이',
+    text: '평양은 큰 강과 장터 이야기가 있어.',
+    fairyText: '북쪽 길의 중요한 도시야.',
+    chance: 0.2,
+    once: true
+  },
+  {
+    id: 'spring_flower_road',
+    cityId: 'seoul',
+    type: 'season',
+    title: '봄길',
+    speaker: '바람이',
+    text: '길가에 꽃이 피었어.',
+    fairyText: '오늘은 장사길이 밝아 보여!',
+    chance: 0.15,
+    season: 'spring'
+  },
+  {
+    id: 'autumn_leaf_road',
+    cityId: 'andong',
+    type: 'season',
+    title: '가을길',
+    speaker: '바람이',
+    text: '단풍이 예쁘게 물들었어.',
+    fairyText: '정우가 길을 더 잘 기억할 수 있겠어.',
+    chance: 0.15,
+    season: 'autumn'
+  }
+];
+
 export const DEFAULT_JUNIOR_SAVE: JuniorSave = {
   saveVersion: JUNIOR_SAVE_VERSION,
   currentStep: 'intro',
@@ -635,6 +882,7 @@ export const DEFAULT_JUNIOR_SAVE: JuniorSave = {
   completedTutorial: false,
   tutorialStage: 0,
   seenEventIds: [],
+  seenRegionalEventIds: [],
   storyArcProgress: {},
   quizWrongStreak: 0,
   storyClues: 0,
