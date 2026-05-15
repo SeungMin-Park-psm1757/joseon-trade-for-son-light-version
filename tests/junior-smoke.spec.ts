@@ -338,8 +338,7 @@ test('upgrade-flow: handcart and boat can be bought', async ({ page }) => {
   await expect(page.getByText('짐 0/3')).toBeVisible();
   await page.getByTestId('buy-boat-small_ferry').click();
   await expect(page.getByTestId('upgrade-celebration')).toContainText('작은 나룻배를 장만했어!');
-  await page.getByTestId('shop-back').click();
-  await page.getByTestId('open-map').click();
+  await page.getByTestId('nav-map').click();
   await expect(page.getByTestId('city-jeju')).toBeEnabled();
 });
 
@@ -351,6 +350,15 @@ test('vehicle-current-status-visible: shop and footer show current cart and boat
   await expect(page.getByTestId('vehicle-current-status')).toContainText('바닷길 짐칸 2칸');
   await expect(page.getByTestId('vehicle-status-footer')).toContainText('땅길 4칸');
   await expect(page.getByTestId('vehicle-status-footer')).toContainText('바닷길 2칸');
+});
+
+test('vehicle-shop-layout: shop uses cart-boat wording and scrolls the next goal', async ({ page }) => {
+  await seed(page, baseSave({ currentStep: 'shop', coins: 120 }));
+  await expect(page.getByTestId('vehicle-current-status')).toContainText('현재 수레와 배');
+  await expect(page.getByTestId('shop-scroll-area')).toBeVisible();
+  await expect(page.getByTestId('shop-scroll-area')).toContainText('다음 목표');
+  await expect(page.getByTestId('shop-back')).toHaveCount(0);
+  await expect(page.getByTestId('nav-shop')).toContainText('수레·배');
 });
 
 test('cart-prices-visible: every cart card shows a price and state', async ({ page }) => {
