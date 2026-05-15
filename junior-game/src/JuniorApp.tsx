@@ -290,7 +290,7 @@ function QuickNav({ save, onCity, onMap, onMarket, onShop }: { save: JuniorSave;
       <button className={itemClass('city')} data-testid="nav-city" onClick={onCity}>도시</button>
       <button className={itemClass('map')} data-testid="nav-map" onClick={onMap}>지도</button>
       <button className={itemClass('market')} data-testid="nav-market" onClick={onMarket}>장터</button>
-      <button className={itemClass('shop')} data-testid="nav-shop" onClick={onShop}>탈것</button>
+      <button className={itemClass('shop')} data-testid="nav-shop" onClick={onShop}>수레·배</button>
     </nav>
   );
 }
@@ -454,7 +454,7 @@ function getTodayGoal(save: JuniorSave): { text: string; hint: string; action: J
   const nextVehicle = getNextVehicle(save);
   if (nextVehicle && save.coins >= Math.max(70, nextVehicle.cost - 25)) {
     const left = Math.max(0, nextVehicle.cost - save.coins);
-    return { text: `${nextVehicle.name}를 장만하자.`, hint: left ? `${left}냥만 더 모으면 돼.` : '지금 살 수 있어.', action: 'shop', actionLabel: '탈것 보기' };
+    return { text: `${nextVehicle.name}를 장만하자.`, hint: left ? `${left}냥만 더 모으면 돼.` : '지금 살 수 있어.', action: 'shop', actionLabel: '수레·배' };
   }
   const firstGood = getGood(city.buyGoodIds[0]);
   return { text: `${city.name}에서 ${firstGood.name}을 사자.`, hint: '이 도시 물건이야.', action: 'market', actionLabel: '장터 가기' };
@@ -561,7 +561,7 @@ function CityScreen({ save, onMarket, onMap, onShop, onEnding }: { save: JuniorS
         ) : (
           <button className="junior-action-button" data-testid="open-cargo" onClick={() => setShowCargo((value) => !value)}>짐 보기</button>
         )}
-        <button className={`junior-action-button ${focusClass('shop')}`} data-testid="open-shop" onClick={onShop}>탈것 장만</button>
+        <button className={`junior-action-button ${focusClass('shop')}`} data-testid="open-shop" onClick={onShop}>수레·배</button>
       </div>
       <div className="junior-progress-card" data-testid="junior-progress-card">
         <b>도시 도장 {save.visitedCityIds.length}/{JUNIOR_CITIES.length}</b>
@@ -1014,7 +1014,7 @@ function BoatTierArt({ boat }: { boat: JuniorBoat }) {
   );
 }
 
-function ShopScreen({ save, onVehicle, onBoat, onBack }: { save: JuniorSave; onVehicle: (id: JuniorVehicle['id']) => void; onBoat: (id: JuniorBoat['id']) => void; onBack: () => void }) {
+function ShopScreen({ save, onVehicle, onBoat }: { save: JuniorSave; onVehicle: (id: JuniorVehicle['id']) => void; onBoat: (id: JuniorBoat['id']) => void }) {
   const vehicle = getVehicle(save);
   const boat = getBoat(save);
   const nextVehicle = getNextVehicle(save);
@@ -1040,21 +1040,22 @@ function ShopScreen({ save, onVehicle, onBoat, onBack }: { save: JuniorSave; onV
   return (
     <section className="junior-screen junior-shop" data-testid="screen-shop">
       <div className="junior-shop-summary" data-testid="vehicle-current-status">
-        <strong>현재 탈것</strong>
+        <strong>현재 수레와 배</strong>
         <span>수레: {vehicle.name} · 땅길 짐칸 {vehicle.cargoLimit}칸</span>
         <span>배: {boat.name} · 바닷길 짐칸 {boat.cargoLimit}칸</span>
-        <small>다음 목표: {nextGoal ? nextGoal.name : '탈것 준비 완료'}</small>
+        <small>다음 목표: {nextGoal ? nextGoal.name : '준비 완료'}</small>
       </div>
+      <div className="junior-shop-scroll" data-testid="shop-scroll-area">
       {celebration && (
         <div className="junior-upgrade-celebration" data-testid="upgrade-celebration">
-          <b>새 탈것!</b>
+          <b>새로 장만!</b>
           <span>{save.message}</span>
           <small>{save.lastResultChips?.join(' · ')}</small>
         </div>
       )}
       <div className="junior-equipment-goal" data-testid="equipment-goal">
         <b>다음 목표</b>
-        <span>{nextGoal ? `${nextGoal.name}까지 ${shortage}냥` : '탈것 준비 완료'}</span>
+        <span>{nextGoal ? `${nextGoal.name}까지 ${shortage}냥` : '준비 완료'}</span>
         <small>{nextGoal && 'cargoLimit' in nextGoal ? `${nextGoal.kind === 'boat' ? '바닷길' : '땅길'} 짐칸이 ${nextGoal.cargoLimit}칸이 돼.` : '멀리 떠날 준비가 됐어.'}</small>
       </div>
       <div className="junior-shop-grid junior-vehicle-sections">
@@ -1107,7 +1108,7 @@ function ShopScreen({ save, onVehicle, onBoat, onBack }: { save: JuniorSave; onV
         <span>땅길: {vehicle.name} {vehicle.cargoLimit}칸</span>
         <span>바닷길: {boat.name} {boat.cargoLimit}칸</span>
       </div>
-      <button className="junior-button junior-primary" data-testid="shop-back" onClick={onBack}>도시로</button>
+      </div>
     </section>
   );
 }
@@ -1196,7 +1197,7 @@ export function JuniorApp() {
         {save.currentStep === 'event' && <EventScreen save={save} onSimple={() => { audio.playSfx('reward'); update(resolveSimpleEvent(save)); }} onChoice={(index) => { audio.playSfx('click'); update(resolveChoice(save, index)); }} onQuiz={(option) => { const quiz = event?.quiz; audio.playSfx(quiz && option === quiz.answer ? 'correct' : 'wrong'); update(answerQuiz(save, option)); }} />}
         {save.currentStep === 'eventResult' && <EventResultScreen save={save} onClose={() => { audio.playSfx('click'); update(closeEventResult(save)); }} />}
         {save.currentStep === 'regionalEvent' && regionalEvent && <RegionalEventScreen event={regionalEvent} onClose={() => { audio.playSfx('click'); update(closeRegionalEvent(save)); }} />}
-        {save.currentStep === 'shop' && <ShopScreen save={save} onVehicle={(id) => { audio.playSfx('shop'); update(buyVehicle(save, id)); }} onBoat={(id) => { audio.playSfx('shop'); update(buyBoat(save, id)); }} onBack={() => { audio.playSfx('click'); update(goToCity(save)); }} />}
+        {save.currentStep === 'shop' && <ShopScreen save={save} onVehicle={(id) => { audio.playSfx('shop'); update(buyVehicle(save, id)); }} onBoat={(id) => { audio.playSfx('shop'); update(buyBoat(save, id)); }} />}
         {save.currentStep === 'endingChoice' && <EndingChoiceScreen onHome={() => { audio.playSfx('reward'); update(finishEnding(save)); }} onMore={() => { audio.playSfx('click'); update(continueAfterEnding(save)); }} />}
         {save.currentStep === 'ending' && <EndingScreen onAgain={() => { audio.playSfx('click'); update(resetJuniorGame()); }} onMore={() => { audio.playSfx('click'); update(continueAfterEnding(save)); }} />}
       </section>

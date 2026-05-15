@@ -375,7 +375,7 @@ export function goToMarket(save: JuniorSave): JuniorSave {
 }
 
 export function goToShop(save: JuniorSave): JuniorSave {
-  return { ...save, currentStep: 'shop', message: '탈것을 장만할 수 있어.' };
+  return { ...save, currentStep: 'shop', message: '수레와 배를 장만할 수 있어.' };
 }
 
 export function startTravel(save: JuniorSave, destinationCityId: JuniorCityId): JuniorSave {
