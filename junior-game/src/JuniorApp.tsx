@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react';
 import { ENDING_COINS, FULL_MODE_URL, JUNIOR_BOATS, JUNIOR_CITIES, JUNIOR_ROUTES, JUNIOR_VEHICLES, getGood, publicAsset } from './juniorData';
 import {
   answerQuiz,
@@ -66,6 +66,25 @@ const eventSceneImages: Record<string, string> = {
   sea_dragon: publicAsset('/assets/scenes/jeju.webp'),
   north_merchant: publicAsset('/assets/scenes/west-mudflat.webp')
 };
+
+const historicalCityNames: Partial<Record<JuniorCityId, string>> = {
+  seoul: '한양',
+  incheon: '제물포',
+  gaeseong: '송도',
+  busan: '부산포',
+  mokpo: '목포진',
+  tongyeong: '통제영',
+  jeju: '제주목',
+  sinuiju: '의주',
+  cheongjin: '경흥',
+  china_port: '큰 항구',
+  north_port: '북방장'
+};
+
+function cityDisplayName(city: JuniorCity) {
+  const oldName = historicalCityNames[city.id];
+  return oldName && oldName !== city.name ? `${city.name}(${oldName})` : city.name;
+}
 
 function useJuniorSave() {
   const [save, setSave] = useState<JuniorSave>(() => loadJuniorSave());
@@ -175,7 +194,7 @@ function fairyLines(save: JuniorSave, event?: JuniorEvent) {
     const route = getRoute(save.currentCityId, save.destinationCityId);
     const scenery = getRouteScenery(save.currentCityId, save.destinationCityId);
     const sceneCopy = getTravelSceneCopy(scenery, route?.kind === 'sea', destination.name);
-    return [`정우야, ${destination.name}으로 가는 중이야.`, sceneCopy.hint];
+    return [`정우야, ${cityDisplayName(destination)}으로 가는 중이야.`, sceneCopy.hint];
   }
   if (save.message) return [save.message];
   const lines: Record<string, string[]> = {
@@ -210,7 +229,7 @@ function TopBar({ save, audio }: { save: JuniorSave; audio: ReturnType<typeof us
     <header className="junior-topbar" aria-label="현재 상태">
       <img src={publicAsset('/assets/jeongwoo/jeongwoo.png')} alt="정우" />
       <strong>정우</strong>
-      <span className="junior-pill" data-testid="junior-city-name">{city.name}</span>
+      <span className="junior-pill" data-testid="junior-city-name">{cityDisplayName(city)}</span>
       <span className="junior-pill" data-testid="junior-coins">돈 {save.coins}</span>
       <span className="junior-pill junior-star-pill">별 {save.stars}</span>
       <span className={`junior-pill ${save.cargo.length >= save.cargoLimit ? 'junior-full-cargo' : ''}`}>짐 {save.cargo.length}/{save.cargoLimit}</span>
@@ -273,7 +292,7 @@ function IntroScreen({ save, onStart }: { save: JuniorSave; onStart: () => void 
       {showContinue && (
         <div className="junior-continue-card" data-testid="continue-card">
           <strong>이어하기</strong>
-          <span>{city.name} · 돈 {save.coins} · 별 {save.stars}</span>
+          <span>{cityDisplayName(city)} · 돈 {save.coins} · 별 {save.stars}</span>
           <small>짐 {save.cargo.length}/{save.cargoLimit} · {formatSaveTime(save.lastSavedAt)}</small>
         </div>
       )}
@@ -412,10 +431,10 @@ function cityNodeIcon(city: JuniorCity) {
 
 function marketHintForCity(city?: JuniorCity) {
   if (!city) return '다음 장터에서 인기 많아';
-  if (city.kind === 'west_port' || city.kind === 'east_port' || city.kind === 'south_port') return `${city.name}에서 찾는 사람이 많아`;
-  if (city.kind === 'north_trade_port') return `${city.name}에서 값이 좋아`;
-  if (city.kind === 'island') return `${city.name}에서 인기 많아`;
-  return `${city.name} 장터에서 잘 팔려`;
+  if (city.kind === 'west_port' || city.kind === 'east_port' || city.kind === 'south_port') return `${cityDisplayName(city)}에서 찾는 사람이 많아`;
+  if (city.kind === 'north_trade_port') return `${cityDisplayName(city)}에서 값이 좋아`;
+  if (city.kind === 'island') return `${cityDisplayName(city)}에서 인기 많아`;
+  return `${cityDisplayName(city)} 장터에서 잘 팔려`;
 }
 
 type JuniorGoalAction = 'market' | 'map' | 'shop' | 'ending';
@@ -457,7 +476,7 @@ function getTodayGoal(save: JuniorSave): { text: string; hint: string; action: J
     return { text: `${nextVehicle.name}를 장만하자.`, hint: left ? `${left}냥만 더 모으면 돼.` : '지금 살 수 있어.', action: 'shop', actionLabel: '수레·배' };
   }
   const firstGood = getGood(city.buyGoodIds[0]);
-  return { text: `${city.name}에서 ${firstGood.name}을 사자.`, hint: '이 도시 물건이야.', action: 'market', actionLabel: '장터 가기' };
+  return { text: `${cityDisplayName(city)}에서 ${firstGood.name}을 사자.`, hint: '이 도시 물건이야.', action: 'market', actionLabel: '장터 가기' };
 }
 
 function TodayGoalCard({ goal, onAction }: { goal: ReturnType<typeof getTodayGoal>; onAction: () => void }) {
@@ -525,7 +544,7 @@ function CityScreen({ save, onMarket, onMap, onShop, onEnding }: { save: JuniorS
         <img src={city.backgroundAsset ?? city.scene} alt="" loading="lazy" onError={handleImageFallback} />
         <div>
           <span>{cityKindLabel(city)}</span>
-          <strong>{city.name} 장터</strong>
+          <strong>{cityDisplayName(city)} 장터</strong>
           <small>{city.note}</small>
         </div>
       </div>
@@ -566,7 +585,7 @@ function CityScreen({ save, onMarket, onMap, onShop, onEnding }: { save: JuniorS
       <div className="junior-progress-card" data-testid="junior-progress-card">
         <b>도시 도장 {save.visitedCityIds.length}/{JUNIOR_CITIES.length}</b>
         <div className="junior-city-stamps" data-testid="city-stamp">
-          {save.visitedCityIds.slice(-5).map((cityId) => <span key={cityId}>{getCity(cityId).name}</span>)}
+          {save.visitedCityIds.slice(-5).map((cityId) => <span key={cityId}>{cityDisplayName(getCity(cityId))}</span>)}
         </div>
         <span>{nextGoal}</span>
         {save.badges.length > 0 && <small>{save.badges.slice(-2).join(' · ')}</small>}
@@ -575,41 +594,99 @@ function CityScreen({ save, onMarket, onMap, onShop, onEnding }: { save: JuniorS
   );
 }
 
+const MAP_ZOOM = 1.28;
+const MAP_PAN_LIMIT = 160;
+
+function clampMapPan(value: number) {
+  return Math.max(-MAP_PAN_LIMIT, Math.min(MAP_PAN_LIMIT, value));
+}
+
 function KoreaMap({ save, selectedCityId, onCity, children }: { save: JuniorSave; selectedCityId?: JuniorCityId; onCity: (city: JuniorCity) => void; children?: ReactNode }) {
   const connected = getConnectedCityIds(save);
+  const [pan, setPan] = useState({ x: 0, y: -18 });
+  const dragRef = useRef({ active: false, moved: false, startX: 0, startY: 0, panX: 0, panY: 0 });
+  const ignoreClickRef = useRef(false);
+
+  const startDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (!event.isPrimary || event.button !== 0) return;
+    if ((event.target as HTMLElement).closest('button')) return;
+    dragRef.current = { active: true, moved: false, startX: event.clientX, startY: event.clientY, panX: pan.x, panY: pan.y };
+    event.currentTarget.setPointerCapture(event.pointerId);
+  };
+  const moveDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
+    const drag = dragRef.current;
+    if (!drag.active) return;
+    const dx = event.clientX - drag.startX;
+    const dy = event.clientY - drag.startY;
+    if (Math.abs(dx) + Math.abs(dy) > 5) {
+      drag.moved = true;
+      ignoreClickRef.current = true;
+    }
+    setPan({ x: clampMapPan(drag.panX + dx), y: clampMapPan(drag.panY + dy) });
+  };
+  const endDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
+    const moved = dragRef.current.moved;
+    dragRef.current.active = false;
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+    if (moved) window.setTimeout(() => { ignoreClickRef.current = false; }, 90);
+  };
+
   return (
-    <div className="junior-map-board" data-testid="korea-map">
-      <img className="junior-map-bg" src={publicAsset('/assets/maps/korea-approved-map.webp')} alt="" aria-hidden="true" loading="lazy" onError={handleImageFallback} />
-      <svg className="junior-map-svg" viewBox="0 0 100 100" aria-hidden="true">
-        {JUNIOR_ROUTES.map((route) => {
-          const from = getCity(route.from);
-          const to = getCity(route.to);
-          return <line key={`${route.from}-${route.to}`} x1={from.x} y1={from.y} x2={to.x} y2={to.y} className={route.kind === 'sea' ? 'sea' : 'land'} />;
+    <div
+      className={`junior-map-board ${dragRef.current.active ? 'dragging' : ''}`}
+      data-testid="korea-map"
+      onPointerDown={startDrag}
+      onPointerMove={moveDrag}
+      onPointerUp={endDrag}
+      onPointerCancel={endDrag}
+    >
+      <div
+        className="junior-map-pan-layer"
+        data-testid="map-pan-layer"
+        style={{ '--map-zoom': MAP_ZOOM, transform: `translate(${pan.x}px, ${pan.y}px) scale(${MAP_ZOOM})` } as CSSProperties}
+      >
+        <img className="junior-map-bg" src={publicAsset('/assets/maps/korea-approved-map.webp')} alt="" aria-hidden="true" loading="lazy" onError={handleImageFallback} />
+        <svg className="junior-map-svg" viewBox="0 0 100 100" aria-hidden="true">
+          {JUNIOR_ROUTES.map((route) => {
+            const from = getCity(route.from);
+            const to = getCity(route.to);
+            return <line key={`${route.from}-${route.to}`} x1={from.x} y1={from.y} x2={to.x} y2={to.y} className={route.kind === 'sea' ? 'sea' : 'land'} />;
+          })}
+        </svg>
+        {JUNIOR_CITIES.map((city) => {
+          const current = city.id === save.currentCityId;
+          const selected = city.id === selectedCityId;
+          const unlocked = save.unlockedCities.includes(city.id);
+          const connectedUnlocked = connected.includes(city.id) && unlocked;
+          const reachable = connectedUnlocked && canTravel(save, city.id);
+          const unavailable = !current && connectedUnlocked && !reachable;
+          const disabled = !current && !connectedUnlocked;
+          return (
+            <button
+              key={city.id}
+              className={`junior-city-dot ${current ? 'current' : ''} ${selected ? 'selected' : ''} ${reachable ? 'reachable' : ''} ${unavailable ? 'unavailable' : ''} ${!unlocked ? 'locked' : ''}`}
+              style={{ left: `${city.x}%`, top: `${city.y}%` }}
+              disabled={disabled}
+              data-testid={`city-${city.id}`}
+              aria-label={cityDisplayName(city)}
+              onClick={(event) => {
+                if (ignoreClickRef.current) {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  return;
+                }
+                onCity(city);
+              }}
+            >
+              <span aria-hidden="true">{cityNodeIcon(city)}</span>
+              <strong>{city.name}</strong>
+            </button>
+          );
         })}
-      </svg>
-      {JUNIOR_CITIES.map((city) => {
-        const current = city.id === save.currentCityId;
-        const selected = city.id === selectedCityId;
-        const unlocked = save.unlockedCities.includes(city.id);
-        const connectedUnlocked = connected.includes(city.id) && unlocked;
-        const reachable = connectedUnlocked && canTravel(save, city.id);
-        const unavailable = !current && connectedUnlocked && !reachable;
-        const disabled = !current && !connectedUnlocked;
-        return (
-          <button
-            key={city.id}
-            className={`junior-city-dot ${current ? 'current' : ''} ${selected ? 'selected' : ''} ${reachable ? 'reachable' : ''} ${unavailable ? 'unavailable' : ''} ${!unlocked ? 'locked' : ''}`}
-            style={{ left: `${city.x}%`, top: `${city.y}%` }}
-            disabled={disabled}
-            data-testid={`city-${city.id}`}
-            onClick={() => onCity(city)}
-          >
-            <span aria-hidden="true">{cityNodeIcon(city)}</span>
-            <strong>{city.name}</strong>
-          </button>
-        );
-      })}
-      {children}
+        {children}
+      </div>
     </div>
   );
 }
@@ -642,7 +719,7 @@ function MapScreen({ save, onDepart, onBack }: { save: JuniorSave; onDepart: (ci
           <div className={bubbleClass} style={bubbleStyle} data-testid="map-selection-panel">
             <div className="junior-map-pick">
               <span className="junior-map-region">{selectedCity.region} · {cityKindLabel(selectedCity)}</span>
-              <strong>{selectedCity.name}</strong>
+              <strong>{cityDisplayName(selectedCity)}</strong>
               <span>{selectedCity.note}</span>
               <div className="junior-map-goods" aria-label="대표 물건">
                 {goods.map((item) => (
@@ -676,7 +753,7 @@ function MapScreen({ save, onDepart, onBack }: { save: JuniorSave; onDepart: (ci
               data-testid={`map-quick-${city.id}`}
               onClick={() => setSelectedCityId(city.id)}
             >
-              <strong>{city.name}</strong>
+              <strong>{cityDisplayName(city)}</strong>
               <span>{nextRoute?.kind === 'sea' ? '배길' : '수레길'}</span>
             </button>
           );
@@ -737,7 +814,7 @@ function TravelScreen({ save, onDone }: { save: JuniorSave; onDone: () => void }
         <span className="junior-route-vignette" />
         <div className="junior-travel-start-card">
           <b>출발</b>
-          <span>{fromCity.name} → {destination.name}</span>
+          <span>{cityDisplayName(fromCity)} → {cityDisplayName(destination)}</span>
         </div>
         <div className="junior-travel-guide">
           <strong>{routeTerrain}</strong>
@@ -760,17 +837,17 @@ function TravelScreen({ save, onDone }: { save: JuniorSave; onDone: () => void }
         <span className="junior-travel-cliff" />
         <span className="junior-travel-trees" />
         <span className="junior-travel-marker">{routeHint}</span>
-        <span className="junior-town start">{fromCity.name}</span>
+        <span className="junior-town start">{cityDisplayName(fromCity)}</span>
         <span className="junior-road-line" />
         <span className="junior-route-progress" />
         <span className="junior-dust one" />
         <span className="junior-dust two" />
         <img className="junior-moving-cart" src={isSea ? getBoat(save).image : getVehicle(save).image} alt="" />
         <span className="junior-vehicle-shadow" />
-        <span className="junior-town end">{destination.name}</span>
+        <span className="junior-town end">{cityDisplayName(destination)}</span>
         <div className="junior-travel-arrive-card">
           <b>도착 준비</b>
-          <span>{destination.name} 장터가 보여.</span>
+          <span>{cityDisplayName(destination)} 장터가 보여.</span>
         </div>
       </div>
     </section>
@@ -860,7 +937,7 @@ function MarketScreen({ save, onBuy, onSell, onBack, onMap }: { save: JuniorSave
       <div className="junior-market-hero">
         <img src={city.backgroundAsset ?? city.scene} alt="" loading="lazy" onError={handleImageFallback} />
         <div>
-          <strong>{city.name} 장터</strong>
+          <strong>{cityDisplayName(city)} 장터</strong>
           <span>{city.note}</span>
         </div>
         <img className="junior-market-cart" src={vehicle.image} alt="" />
@@ -989,7 +1066,7 @@ function VisitIntroScreen({ save, onDone }: { save: JuniorSave; onDone: () => vo
       <img className="junior-visit-jeongwoo" src={publicAsset('/assets/jeongwoo/jeongwoo.png')} alt="" />
       <img className="junior-visit-fairy" src={publicAsset('/assets/fairy/fairy-happy.png')} alt="" />
       <div className="junior-visit-card">
-        <strong>{city.name}</strong>
+        <strong>{cityDisplayName(city)}</strong>
         <div className="junior-visit-dialogue">
           <img src={portrait} alt="" />
           <p><b>{speaker}</b>{line}</p>
@@ -1211,7 +1288,7 @@ export function JuniorApp() {
       />
 
       <footer className="junior-goal junior-vehicle-footer" data-testid="vehicle-status-footer" aria-label="목표">
-        <span>{city.name}</span>
+        <span>{cityDisplayName(city)}</span>
         <strong>{save.coins >= ENDING_COINS ? '집으로 갈 수 있어!' : `${ENDING_COINS}냥이면 단서가 보여!`}</strong>
         <span>{selectedGood ? selectedGood.name : `땅길 ${getVehicle(save).cargoLimit}칸 · 바닷길 ${getBoatCargoLimit(save)}칸`}</span>
       </footer>

@@ -153,6 +153,8 @@ test('city-map-market-flow: expanded map and market stay simple', async ({ page 
   await page.getByTestId('open-map').click();
   await expect(page.getByTestId('screen-map')).toBeVisible();
   await expect(page.locator('.junior-map-bg')).toHaveAttribute('src', '/assets/maps/korea-approved-map.webp');
+  await expect(page.getByTestId('map-pan-layer')).toBeVisible();
+  await expect(page.getByTestId('map-pan-layer')).toHaveAttribute('style', /scale\(1\.28\)/);
   await expect(page.locator('.junior-city-dot')).toHaveCount(26);
   await expect(page.getByTestId('city-daegu')).toBeEnabled();
   await expect(page.getByTestId('city-jeju')).toHaveClass(/unavailable/);
@@ -166,6 +168,27 @@ test('city-map-market-flow: expanded map and market stay simple', async ({ page 
   await page.getByTestId('open-market').click();
   await expect(page.getByTestId('buy-cotton_cloth')).toBeVisible();
   await expect(page.getByTestId('buy-cotton_cloth')).toContainText('산 값');
+});
+
+test('map-layout: southern cities stay on land and city names show old names', async ({ page }) => {
+  await seed(page, baseSave({ currentCityId: 'seoul' }));
+  await expect(page.getByTestId('junior-city-name')).toContainText('서울(한양)');
+  await page.getByTestId('open-map').click();
+  await expect(page.getByTestId('city-busan')).toHaveAttribute('aria-label', '부산(부산포)');
+
+  const positions = await page.evaluate(() => {
+    return ['mokpo', 'yeosu', 'tongyeong', 'jeju'].map((id) => {
+      const button = document.querySelector<HTMLElement>(`[data-testid="city-${id}"]`);
+      return { id, left: button?.style.left, top: button?.style.top };
+    });
+  });
+
+  expect(positions).toEqual([
+    { id: 'mokpo', left: '29%', top: '76%' },
+    { id: 'yeosu', left: '42%', top: '76%' },
+    { id: 'tongyeong', left: '50%', top: '75%' },
+    { id: 'jeju', left: '42%', top: '94%' }
+  ]);
 });
 
 test('market-flow: buying changes price and keeps market open', async ({ page }) => {
