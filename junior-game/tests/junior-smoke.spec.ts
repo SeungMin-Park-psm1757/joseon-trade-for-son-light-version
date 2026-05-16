@@ -1,8 +1,8 @@
 import { expect, test } from '@playwright/test';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
-import { JUNIOR_STAR_ITEMS } from '../src/juniorData';
-import { answerQuiz, buyGood, buyStarItem, normalizeJuniorSave, prepareHalfPriceTicket, startFastTravel, useStarConsumable } from '../src/juniorFlow';
+import { JUNIOR_EVENTS, JUNIOR_MAIN_STORY_EVENTS, JUNIOR_MOUNTAINS, JUNIOR_STAR_ITEMS, JUNIOR_STORY_EVENTS } from '../src/juniorData';
+import { answerQuiz, buyGood, buyStarItem, canOpenStoryEnding, closeStoryReward, completeMainStoryEvent, completeStoryEventChoice, getSeyeonNotebookProgress, getStoryMarkerStatus, getVisibleStoryEvents, maybeOpenStoryRumor, maybeQueueMainStoryEvent, normalizeJuniorSave, openEnding, prepareHalfPriceTicket, resolveSimpleEvent, showStoryRumorOnMap, startFastTravel, startIntro, startStoryEventFromMap, useStarConsumable } from '../src/juniorFlow';
 
 const saveKey = 'joseon_trade_junior_save_v1';
 const allCities = [
@@ -40,6 +40,18 @@ function baseSave(overrides = {}) {
     seenEventIds: [],
     seenRegionalEventIds: [],
     storyArcProgress: {},
+    mainStoryStage: 0,
+    seyeonNotebook: { writing: 'locked', math: 'locked', map: 'locked', weather: 'locked', trade: 'locked' },
+    ledgerClues: 0,
+    storyFragments: [],
+    completedStoryEventIds: [],
+    activeStoryEventId: undefined,
+    selectedStoryEventId: undefined,
+    pendingStoryRumorEventId: undefined,
+    storyReturnStep: undefined,
+    heardStoryEventIds: [],
+    unlockedStarItemIds: [],
+    rumorMarkers: { mountain: 'available', sea: 'available' },
     quizWrongStreak: 0,
     storyClues: 0,
     badges: [],
@@ -69,6 +81,89 @@ async function chooseVisibleCorrectSpelling(page) {
   const answer = options.find((option) => correctWords.includes(option.trim())) ?? (options.length === 2 ? options[0].trim() : undefined);
   expect(answer).toBeTruthy();
   await page.getByTestId(`quiz-option-${answer}`).click();
+}
+
+async function finishStoryQueue(page, maxEvents = 4) {
+  for (let eventIndex = 0; eventIndex < maxEvents; eventIndex += 1) {
+    const overlay = page.getByTestId('main-story-dialogue');
+    if (!(await overlay.isVisible().catch(() => false))) return;
+    for (let lineIndex = 0; lineIndex < 6; lineIndex += 1) {
+      if (await page.getByTestId('story-next').isVisible().catch(() => false)) {
+        await page.getByTestId('story-next').click({ force: true });
+      } else if (await page.getByTestId('story-done').isVisible().catch(() => false)) {
+        const done = page.getByTestId('story-done');
+        await done.click({ force: true, timeout: 1000 }).catch(async () => {
+          await done.evaluate((node) => (node as HTMLElement).click()).catch(() => {});
+        });
+        break;
+      } else {
+        await page.waitForTimeout(100);
+      }
+    }
+  }
+}
+
+const expectedStoryEventIds = Array.from({ length: 50 }, (_, index) => `E${String(index + 1).padStart(2, '0')}`);
+const validStoryRewardKeys = new Set([
+  'stars',
+  'coins',
+  'ledgerClue',
+  'ledgerClues',
+  'storyClues',
+  'seyeonNotebookProgress',
+  'notebookTopic',
+  'cityStamp',
+  'storyFragment',
+  'cosmeticItemUnlock',
+  'rumorUnlock',
+  'studyRoomLevel',
+  'badge',
+  'unlockCityId',
+  'loseCargo'
+]);
+
+const restrictedStoryTerms = [
+  '죽음',
+  '죽다',
+  '희생',
+  '납치',
+  '잡아먹',
+  '공격',
+  '피투성이',
+  '처벌',
+  '위협',
+  '강제',
+  '결혼',
+  '폭력',
+  '빼앗',
+  '도적',
+  '해적'
+];
+
+const difficultStoryWords = ['교역', '판매처', '명소', '지역 특산품', '특산품'];
+
+function splitSentences(text: string) {
+  return text.split(/[.!?。！？]|[.?!]/).map((part) => part.trim()).filter(Boolean);
+}
+
+function storyEventTextFields() {
+  return JUNIOR_STORY_EVENTS.flatMap((event) => [
+    event.title,
+    event.storySource,
+    event.mapMarker.label,
+    event.childSafetyNotes,
+    ...event.dialogueCuts.flatMap((cut) => [cut.speaker, cut.text]),
+    ...event.choices.flatMap((choice) => [choice.label, choice.resultText]),
+    ...(event.quiz ? [event.quiz.question, ...event.quiz.options, event.quiz.answer, event.quiz.correctText, event.quiz.wrongText] : [])
+  ]);
+}
+
+function mainStoryTextFields() {
+  return JUNIOR_MAIN_STORY_EVENTS.flatMap((event) => [
+    event.title,
+    event.summary,
+    ...event.dialogue.flatMap((cut) => [cut.speaker, cut.text])
+  ]);
 }
 
 test.beforeEach(async ({ page }) => {
@@ -128,13 +223,353 @@ test('legacy-stars-migrate: old stars become balance and total', () => {
   expect(migrated.consumableItems).toEqual({});
 });
 
+test('main-story-starts: start opens the ledger story', () => {
+  const save = normalizeJuniorSave(baseSave({ currentStep: 'intro', completedTutorial: false, tutorialStage: 0 }));
+  const next = startIntro(save);
+  expect(next.currentStep).toBe('city');
+  expect(next.activeStoryEventId).toBe('M01');
+});
+
+test('seyeon-notebook-unlocks: writing note starts from story gift', () => {
+  const save = normalizeJuniorSave(baseSave({
+    completedStoryEventIds: ['M01', 'M02', 'M03', 'M04'],
+    activeStoryEventId: 'M05'
+  }));
+  const next = completeMainStoryEvent(save, 'M05');
+  expect(next.seyeonNotebook.writing).toBe('started');
+  expect(getSeyeonNotebookProgress(next)).toBe(1);
+});
+
+test('ledger-clue-progress: sub story clue fills ledger clue', () => {
+  const save = normalizeJuniorSave(baseSave({ currentStep: 'event', selectedEventId: 'book_glow', ledgerClues: 0, storyClues: 0 }));
+  const next = resolveSimpleEvent(save);
+  expect(next.storyClues).toBe(1);
+  expect(next.ledgerClues).toBe(1);
+});
+
+test('study-room-progress: story requirements open study room event', () => {
+  const ready = normalizeJuniorSave(baseSave({
+    coins: 300,
+    ledgerClues: 3,
+    completedStoryEventIds: ['M01', 'M02', 'M03', 'M04', 'M05', 'M06', 'M07', 'M08', 'M09', 'M10'],
+    seyeonNotebook: { writing: 'started', math: 'started', map: 'started', weather: 'started', trade: 'started' }
+  }));
+  const queued = maybeQueueMainStoryEvent(ready);
+  expect(queued.activeStoryEventId).toBe('M11');
+  const done = completeMainStoryEvent(queued, 'M11');
+  expect(done.studyRoomLevel).toBe(3);
+});
+
+test('ending-condition-requires-story: money alone cannot open the door', () => {
+  const moneyOnly = normalizeJuniorSave(baseSave({ coins: 300 }));
+  expect(canOpenStoryEnding(moneyOnly)).toBe(false);
+  expect(openEnding(moneyOnly).currentStep).toBe('city');
+
+  const ready = normalizeJuniorSave(baseSave({
+    coins: 300,
+    ledgerClues: 3,
+    studyRoomLevel: 3,
+    completedStoryEventIds: ['M01', 'M02', 'M03', 'M04', 'M05', 'M06', 'M07', 'M08', 'M09', 'M10', 'M11', 'M12'],
+    seyeonNotebook: { writing: 'started', math: 'started', map: 'started', weather: 'started', trade: 'started' }
+  }));
+  expect(canOpenStoryEnding(ready)).toBe(true);
+  expect(openEnding(ready).currentStep).toBe('endingChoice');
+});
+
+test('legacy-save-migration-story-fields: missing story fields are filled', () => {
+  const migrated = normalizeJuniorSave({
+    currentStep: 'city',
+    currentCityId: 'busan',
+    coins: 44,
+    stars: 2,
+    cargo: [],
+    cargoLimit: 2,
+    vehicleId: 'bundle',
+    boatId: 'none',
+    unlockedCities: allCities,
+    visitedCityIds: ['busan'],
+    seenEventIds: [],
+    seenRegionalEventIds: [],
+    storyArcProgress: {},
+    badges: [],
+    marketPressure: { buy: {}, sell: {} }
+  });
+  expect(migrated.mainStoryStage).toBe(0);
+  expect(migrated.seyeonNotebook.writing).toBe('locked');
+  expect(migrated.ledgerClues).toBe(0);
+  expect(migrated.completedStoryEventIds).toEqual([]);
+  expect(migrated.rumorMarkers.mountain).toBe('available');
+});
+
+test('story-events-count-50: Korean substory event set is complete', () => {
+  expect(JUNIOR_STORY_EVENTS).toHaveLength(50);
+  expect(JUNIOR_STORY_EVENTS.map((event) => event.id)).toEqual(expectedStoryEventIds);
+  expect(new Set(JUNIOR_STORY_EVENTS.map((event) => event.id)).size).toBe(50);
+});
+
+test('story-events-have-dialogue: every substory has rumor, event, solution, choice, and reward', () => {
+  for (const event of JUNIOR_STORY_EVENTS) {
+    expect(event.title, event.id).toBeTruthy();
+    expect(event.storySource, event.id).toBeTruthy();
+    expect(event.dialogueCuts.map((cut) => cut.type), event.id).toEqual(['rumor', 'event', 'solution']);
+    expect(event.dialogueCuts.every((cut) => cut.speaker && cut.text), event.id).toBe(true);
+    expect(event.choices.length, event.id).toBeGreaterThan(0);
+    expect(event.choices.every((choice) => choice.label && choice.resultText && choice.reward), event.id).toBe(true);
+    expect(Object.keys(event.reward).length, event.id).toBeGreaterThan(0);
+  }
+});
+
+test('story-events-have-child-safety-notes: all source stories are softened for young children', () => {
+  for (const event of JUNIOR_STORY_EVENTS) {
+    expect(event.childSafetyNotes.trim().length, event.id).toBeGreaterThan(0);
+    expect(event.dialogueCuts.every((cut) => cut.text.length <= 80), event.id).toBe(true);
+  }
+});
+
+test('mountain-events-have-location: every mountain story is connected to a known mountain', () => {
+  const mountainById = new Map(JUNIOR_MOUNTAINS.map((mountain) => [mountain.id, mountain]));
+  const eventById = new Map(JUNIOR_STORY_EVENTS.map((event) => [event.id, event]));
+
+  expect(JUNIOR_MOUNTAINS.map((mountain) => mountain.id)).toEqual([
+    'baekdu',
+    'taebaek',
+    'songni',
+    'gyeryong',
+    'deogyu',
+    'naejang',
+    'mudeung',
+    'gaya',
+    'chiak',
+    'wolchul',
+    'gwanak',
+    'guwol',
+    'jiri',
+    'geumgang',
+    'halla'
+  ]);
+
+  for (const event of JUNIOR_STORY_EVENTS.filter((storyEvent) => storyEvent.category === 'mountain_folktale' || storyEvent.mountainId)) {
+    expect(event.mountainId, event.id).toBeTruthy();
+    expect(mountainById.has(event.mountainId!), event.id).toBe(true);
+    expect(mountainById.get(event.mountainId!)?.storyEventIds, event.id).toContain(event.id);
+  }
+
+  for (const mountain of JUNIOR_MOUNTAINS) {
+    expect(mountain.name, mountain.id).toBeTruthy();
+    expect(mountain.nearbyCityIds.length, mountain.id).toBeGreaterThan(0);
+    expect(mountain.routeType, mountain.id).toBeTruthy();
+    expect(mountain.shortDescription, mountain.id).toBeTruthy();
+    for (const eventId of mountain.storyEventIds) {
+      expect(eventById.get(eventId)?.mountainId, eventId).toBe(mountain.id);
+    }
+  }
+});
+
+test('chained-events-require-prerequisite: follow-up events point to earlier events', () => {
+  const eventIds = new Set(JUNIOR_STORY_EVENTS.map((event) => event.id));
+  for (const event of JUNIOR_STORY_EVENTS) {
+    const isFollowup = event.triggerType === 'chain_followup' || (event.chainStep ?? 1) > 1;
+    if (!isFollowup) continue;
+
+    expect(event.prerequisiteEventIds.length, event.id).toBeGreaterThan(0);
+    for (const prerequisiteId of event.prerequisiteEventIds) {
+      expect(eventIds.has(prerequisiteId), `${event.id} requires ${prerequisiteId}`).toBe(true);
+      expect(expectedStoryEventIds.indexOf(prerequisiteId), `${event.id} requires an earlier event`).toBeLessThan(expectedStoryEventIds.indexOf(event.id));
+    }
+  }
+});
+
+test('rumor-unlocks-map-marker: every event can appear as a child-safe map rumor', () => {
+  for (const event of JUNIOR_STORY_EVENTS) {
+    expect(event.rumorCityIds.length, event.id).toBeGreaterThan(0);
+    expect(event.mapMarker.label, event.id).toBeTruthy();
+    expect(event.mapMarker.status, event.id).toBe('rumor');
+    if (event.reward.rumorUnlock) {
+      expect(event.reward.rumorUnlock.length, event.id).toBeGreaterThan(0);
+    }
+  }
+});
+
+test('reward-types-valid: substory rewards use the junior reward contract', () => {
+  for (const event of JUNIOR_STORY_EVENTS) {
+    const rewardKeys = Object.keys(event.reward);
+    expect(rewardKeys.length, event.id).toBeGreaterThan(0);
+    expect(rewardKeys.every((key) => validStoryRewardKeys.has(key)), event.id).toBe(true);
+    expect(rewardKeys.length, event.id).toBeLessThanOrEqual(3);
+  }
+});
+
+test('story-dialogue-length-valid: story cuts stay short for early readers', () => {
+  for (const event of JUNIOR_STORY_EVENTS) {
+    for (const cut of event.dialogueCuts) {
+      expect(splitSentences(cut.text).length, `${event.id} ${cut.type}`).toBeLessThanOrEqual(2);
+      expect(cut.text.length, `${event.id} ${cut.type}`).toBeLessThanOrEqual(45);
+    }
+    for (const choice of event.choices) {
+      expect(choice.label.length, event.id).toBeLessThanOrEqual(14);
+      expect(choice.resultText.length, event.id).toBeLessThanOrEqual(45);
+    }
+  }
+
+  for (const event of JUNIOR_MAIN_STORY_EVENTS) {
+    for (const cut of event.dialogue) {
+      expect(splitSentences(cut.text).length, `${event.id} ${cut.speaker}`).toBeLessThanOrEqual(2);
+      expect(cut.text.length, `${event.id} ${cut.speaker}`).toBeLessThanOrEqual(36);
+    }
+  }
+});
+
+test('story-child-safety-pass: story text avoids unsafe original elements', () => {
+  for (const text of [...storyEventTextFields(), ...mainStoryTextFields()]) {
+    for (const term of restrictedStoryTerms) {
+      expect(text, `${term} in ${text}`).not.toContain(term);
+    }
+  }
+});
+
+test('story-event-frequency-safe: rumors are gated and never stack during story flow', () => {
+  const tutorial = normalizeJuniorSave(baseSave({ completedTutorial: false, currentCityId: 'seoul' }));
+  expect(maybeOpenStoryRumor(tutorial, 'city', 0).pendingStoryRumorEventId).toBeUndefined();
+
+  const normal = normalizeJuniorSave(baseSave({ completedTutorial: true, currentCityId: 'seoul' }));
+  expect(maybeOpenStoryRumor(normal, 'city', 0.31).pendingStoryRumorEventId).toBeUndefined();
+  const opened = maybeOpenStoryRumor(normal, 'city', 0.29);
+  expect(opened.pendingStoryRumorEventId).toBeTruthy();
+
+  const blocked = maybeOpenStoryRumor(opened, 'market', 0);
+  expect(blocked.pendingStoryRumorEventId).toBe(opened.pendingStoryRumorEventId);
+
+  const active = normalizeJuniorSave(baseSave({ currentStep: 'storyEvent', selectedStoryEventId: 'E01', heardStoryEventIds: ['E01'] }));
+  expect(maybeOpenStoryRumor(active, 'city', 0).pendingStoryRumorEventId).toBeUndefined();
+});
+
+test('story-reward-balance: rewards stay small and clue rewards stay special', () => {
+  const clueEvents = JUNIOR_STORY_EVENTS.filter((event) => event.reward.ledgerClue || event.reward.ledgerClues);
+  expect(clueEvents.map((event) => event.id).sort()).toEqual(['E25', 'E35', 'E42']);
+
+  const cosmeticEvents = JUNIOR_STORY_EVENTS.filter((event) => event.reward.cosmeticItemUnlock);
+  expect(cosmeticEvents).toHaveLength(10);
+
+  for (const event of JUNIOR_STORY_EVENTS) {
+    expect(event.reward.stars ?? 0, event.id).toBeLessThanOrEqual(2);
+    expect(event.reward.coins ?? 0, event.id).toBeLessThanOrEqual(8);
+    if (event.reward.cosmeticItemUnlock) {
+      const item = JUNIOR_STAR_ITEMS.find((starItem) => starItem.id === event.reward.cosmeticItemUnlock);
+      expect(item?.unlockCondition, event.id).toBe(`story:${event.id}`);
+    }
+  }
+});
+
+test('no-scary-terms: junior event copy uses warm labels', () => {
+  const juniorEventCopy = JUNIOR_EVENTS.flatMap((event) => [
+    event.title,
+    event.fairyText,
+    event.quiz?.question,
+    event.quiz?.correctText,
+    event.quiz?.wrongText
+  ]).filter((text): text is string => Boolean(text));
+
+  for (const text of [...juniorEventCopy, ...storyEventTextFields(), ...mainStoryTextFields()]) {
+    for (const term of restrictedStoryTerms) {
+      expect(text, `${term} in ${text}`).not.toContain(term);
+    }
+    for (const word of difficultStoryWords) {
+      expect(text, `${word} in ${text}`).not.toContain(word);
+    }
+  }
+});
+
+test('no-restricted-original-story-elements: key adaptations keep the softened premise', () => {
+  const fairy = JUNIOR_STORY_EVENTS.filter((event) => event.chainId === 'fairy_cloth_safe');
+  expect(fairy).toHaveLength(2);
+  expect(fairy.flatMap((event) => event.dialogueCuts.map((cut) => cut.text)).join(' ')).toContain('옷감');
+  expect(fairy.flatMap((event) => [event.storySource, event.childSafetyNotes]).join(' ')).not.toContain('나무꾼');
+
+  const simcheongText = JUNIOR_STORY_EVENTS.filter((event) => event.chainId === 'simcheong_letter')
+    .flatMap((event) => [event.title, event.storySource, event.childSafetyNotes, ...event.dialogueCuts.map((cut) => cut.text)])
+    .join(' ');
+  expect(simcheongText).toContain('편지');
+  expect(simcheongText).toContain('마음');
+
+  const imText = JUNIOR_STORY_EVENTS.filter((event) => event.chainId === 'im_kkeokjeong')
+    .flatMap((event) => [event.title, event.childSafetyNotes, ...event.dialogueCuts.map((cut) => cut.text)])
+    .join(' ');
+  expect(imText).toContain('정직');
+});
+
+test('rumor-event-appears: city or market can surface a story rumor', () => {
+  const save = normalizeJuniorSave(baseSave({ currentCityId: 'seoul', heardStoryEventIds: [] }));
+  const next = maybeOpenStoryRumor(save, 'market', 0);
+  expect(next.pendingStoryRumorEventId).toBeTruthy();
+  expect(next.heardStoryEventIds).toContain(next.pendingStoryRumorEventId);
+  expect(next.rumorMarkers[next.pendingStoryRumorEventId!]).toBe('available');
+});
+
+test('rumor-unlocks-map-marker: heard story rumor appears on the story map', () => {
+  const rumor = maybeOpenStoryRumor(normalizeJuniorSave(baseSave({ currentCityId: 'seoul' })), 'market', 0);
+  const mapped = showStoryRumorOnMap(rumor);
+  expect(mapped.currentStep).toBe('map');
+  expect(mapped.pendingStoryRumorEventId).toBeUndefined();
+  expect(getVisibleStoryEvents(mapped).map((event) => event.id)).toContain(rumor.heardStoryEventIds[0]);
+});
+
+test('story-notebook-shows-active-event: active rumors are visible for notebook UI', () => {
+  const save = normalizeJuniorSave(baseSave({ heardStoryEventIds: ['E23'], rumorMarkers: { mountain: 'available', sea: 'available', E23: 'available' } }));
+  const visible = getVisibleStoryEvents(save);
+  expect(visible.map((event) => event.id)).toContain('E23');
+  expect(getStoryMarkerStatus(save, 'E23')).toBe('available');
+});
+
+test('event-chain-progresses: completed event unlocks the next chain rumor', () => {
+  const ready = normalizeJuniorSave(baseSave({ heardStoryEventIds: ['E23'], rumorMarkers: { mountain: 'available', sea: 'available', E23: 'available' } }));
+  const active = startStoryEventFromMap(ready, 'E23');
+  const rewarded = completeStoryEventChoice(active, 0);
+  expect(rewarded.currentStep).toBe('storyReward');
+  expect(rewarded.completedStoryEventIds).toContain('E23');
+  expect(rewarded.heardStoryEventIds).toContain('E24');
+  expect(rewarded.rumorMarkers.E24).toBe('available');
+});
+
+test('completed-event-not-repeated: finished stories do not open again', () => {
+  const save = normalizeJuniorSave(baseSave({ heardStoryEventIds: ['E23'], completedStoryEventIds: ['E23'], rumorMarkers: { mountain: 'available', sea: 'available', E23: 'completed' } }));
+  const next = startStoryEventFromMap(save, 'E23');
+  expect(next.currentStep).toBe('city');
+  expect(next.selectedStoryEventId).toBeUndefined();
+});
+
+test('story-reward-applied: story reward updates stars and reward screen state', () => {
+  const save = normalizeJuniorSave(baseSave({ stars: 0, starBalance: 0, totalStarsEarned: 0, heardStoryEventIds: ['E01'], rumorMarkers: { mountain: 'available', sea: 'available', E01: 'available' } }));
+  const active = startStoryEventFromMap(save, 'E01');
+  const rewarded = completeStoryEventChoice(active, 0);
+  expect(rewarded.starBalance).toBe(1);
+  expect(rewarded.totalStarsEarned).toBe(1);
+  expect(rewarded.lastResultChips).toContain('별 +1');
+  const closed = closeStoryReward(rewarded);
+  expect(closed.currentStep).toBe('city');
+});
+
+test('cosmetic-unlocked-by-story: story completion opens the matching star shop item', () => {
+  const save = normalizeJuniorSave(baseSave({ heardStoryEventIds: ['E26'], rumorMarkers: { mountain: 'available', sea: 'available', E26: 'available' } }));
+  const active = startStoryEventFromMap(save, 'E26');
+  const rewarded = completeStoryEventChoice(active, 0);
+  expect(rewarded.unlockedStarItemIds).toContain('story_tiger_rice_charm');
+  expect(JUNIOR_STAR_ITEMS.find((item) => item.id === 'story_tiger_rice_charm')?.unlockCondition).toBe('story:E26');
+});
+
+test('seyeon-notebook-progresses: story notebook reward starts a topic', () => {
+  const save = normalizeJuniorSave(baseSave({ heardStoryEventIds: ['E48'], rumorMarkers: { mountain: 'available', sea: 'available', E48: 'available' } }));
+  const active = startStoryEventFromMap(save, 'E48');
+  const rewarded = completeStoryEventChoice(active, 0);
+  expect(rewarded.seyeonNotebook.weather).toBe('started');
+});
+
 test('star-balance-increases-on-reward: reward stars update balance and total', () => {
   const save = normalizeJuniorSave(baseSave({ currentStep: 'event', selectedEventId: 'bandit_spelling_1', starBalance: 2, totalStarsEarned: 4, stars: 2 }));
   const next = answerQuiz(save, '맞춤법');
   expect(next.starBalance).toBe(3);
   expect(next.stars).toBe(3);
   expect(next.totalStarsEarned).toBe(5);
-  expect(next.badges).toContain('착한 일 배지');
+  expect(next.badges).toContain('칭찬 별 배지');
 });
 
 test('total-stars-not-decrease-on-spend: buying star item spends only balance', () => {
@@ -147,7 +582,7 @@ test('total-stars-not-decrease-on-spend: buying star item spends only balance', 
 });
 
 test('star-item-data-valid: required star shop data is present', () => {
-  expect(JUNIOR_STAR_ITEMS).toHaveLength(18);
+  expect(JUNIOR_STAR_ITEMS).toHaveLength(28);
   for (const item of JUNIOR_STAR_ITEMS) {
     expect(item.id).toBeTruthy();
     expect(item.name).toBeTruthy();
@@ -245,7 +680,7 @@ test('cargo-protect-prevents-loss: charm blocks one cargo loss', () => {
   const next = answerQuiz(protectedSave, '맛춤법');
   expect(next.cargo).toHaveLength(1);
   expect(next.activeEffects.cargoProtectNextEvent).toBe(false);
-  expect(next.lastResultChips).toContain('부적이 지켜줌');
+  expect(next.lastResultChips).toContain('짐 보호');
 });
 
 test('quiz-retry-ticket-allows-retry: wrong answer stays on quiz once', () => {
@@ -289,6 +724,7 @@ test('tutorial-flow: buy, spelling event, first visit intro, sell', async ({ pag
   await expect(page.getByRole('button', { name: '시작하기' })).toBeVisible();
 
   await page.getByTestId('start-play').click();
+  await finishStoryQueue(page);
   await expect(page.getByTestId('screen-city')).toBeVisible();
   await page.getByTestId('open-market').click();
   await expect(page.getByTestId('screen-market')).toBeVisible();
@@ -468,7 +904,7 @@ test('event-quiz-flow: bandit spelling quiz rewards correct answer', async ({ pa
   await expect(page.locator('.junior-star-pill')).toContainText('별 1');
 });
 
-test('event-quiz-flow: pirate spelling quiz works on sea route', async ({ page }) => {
+test('event-quiz-flow: sea spelling quiz works on sea route', async ({ page }) => {
   await seed(page, baseSave({
     currentStep: 'event',
     currentCityId: 'tongyeong',
@@ -479,7 +915,7 @@ test('event-quiz-flow: pirate spelling quiz works on sea route', async ({ page }
   await expect(page.getByTestId('screen-event')).toBeVisible();
   await expect(page.getByTestId('quiz-question')).toContainText('바른 말');
   await page.getByTestId('quiz-option-바닷길').click();
-  await expect(page.getByText('정답! 해적이 길을 비켜줬어.')).toBeVisible();
+  await expect(page.getByText('정답! 바닷길이 열렸어.')).toBeVisible();
 });
 
 test('event-pool: low chance event data has many spelling encounters', async ({ page }) => {
@@ -738,7 +1174,15 @@ test('no-repeated-regional-event: selection avoids the last regional event', asy
 });
 
 test('ending-flow: 300 coins opens home ending', async ({ page }) => {
-  await seed(page, baseSave({ currentStep: 'city', coins: 300, storyClues: 3 }));
+  await seed(page, baseSave({
+    currentStep: 'city',
+    coins: 300,
+    storyClues: 3,
+    ledgerClues: 3,
+    studyRoomLevel: 3,
+    completedStoryEventIds: ['M01', 'M02', 'M03', 'M04', 'M05', 'M06', 'M07', 'M08', 'M09', 'M10', 'M11', 'M12'],
+    seyeonNotebook: { writing: 'started', math: 'started', map: 'started', weather: 'started', trade: 'started' }
+  }));
   await page.getByTestId('open-ending').click();
   await expect(page.getByTestId('screen-ending-choice')).toBeVisible();
   await expect(page.getByTestId('ending-hint')).toBeVisible();

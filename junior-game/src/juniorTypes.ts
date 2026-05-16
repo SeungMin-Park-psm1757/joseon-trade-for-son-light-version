@@ -9,6 +9,8 @@ export type JuniorStep =
   | 'market'
   | 'event'
   | 'eventResult'
+  | 'storyEvent'
+  | 'storyReward'
   | 'regionalEvent'
   | 'shop'
   | 'endingChoice'
@@ -75,6 +77,39 @@ export type JuniorEventType =
 export type JuniorEventMood = 'bad' | 'good' | 'talk' | 'story';
 export type JuniorRouteScenery = 'plain' | 'mountain' | 'river' | 'coast' | 'sea' | 'marketRoad' | 'north';
 export type JuniorRegionalEventType = 'merchant_rumor' | 'dialect' | 'landmark' | 'season' | 'specialty_tip';
+export type JuniorNotebookTopic = 'writing' | 'math' | 'map' | 'weather' | 'trade';
+export type JuniorNotebookStatus = 'locked' | 'started' | 'completed';
+export type JuniorRumorMarkerStatus = 'available' | 'active' | 'completed';
+export type JuniorStoryCategory =
+  | 'mountain_folktale'
+  | 'sea_classic'
+  | 'market_story'
+  | 'historical'
+  | 'regional_learning'
+  | 'main_clue';
+export type JuniorStoryTriggerType =
+  | 'rumor'
+  | 'first_visit'
+  | 'route_travel'
+  | 'city_visit'
+  | 'market_enter'
+  | 'chain_followup';
+export type JuniorMountainId =
+  | 'baekdu'
+  | 'taebaek'
+  | 'songni'
+  | 'gyeryong'
+  | 'deogyu'
+  | 'naejang'
+  | 'mudeung'
+  | 'gaya'
+  | 'chiak'
+  | 'wolchul'
+  | 'gwanak'
+  | 'guwol'
+  | 'jiri'
+  | 'geumgang'
+  | 'halla';
 
 export interface JuniorGood {
   id: JuniorGoodId;
@@ -153,9 +188,75 @@ export interface JuniorReward {
   coins?: number;
   stars?: number;
   storyClues?: number;
+  ledgerClues?: number;
+  ledgerClue?: number;
+  notebookTopic?: JuniorNotebookTopic;
+  seyeonNotebookProgress?: JuniorNotebookTopic;
+  cityStamp?: JuniorCityId;
+  cosmeticItemUnlock?: string;
+  rumorUnlock?: string[];
+  studyRoomLevel?: number;
+  storyFragment?: string;
   badge?: string;
   unlockCityId?: JuniorCityId;
   loseCargo?: number;
+}
+
+export interface JuniorStoryDialogueLine {
+  speaker: '정우' | '세연이' | '바람이' | '장부';
+  icon: 'jeongwoo' | 'seyeon' | 'fairy' | 'ledger';
+  text: string;
+}
+
+export interface JuniorMainStoryEvent {
+  id: string;
+  title: string;
+  summary: string;
+  dialogue: JuniorStoryDialogueLine[];
+  reward?: JuniorReward;
+}
+
+export interface JuniorStoryDialogueCut {
+  type: 'rumor' | 'event' | 'solution';
+  speaker: string;
+  text: string;
+}
+
+export interface JuniorStoryMapMarker {
+  label: string;
+  status: 'rumor' | 'active' | 'completed';
+}
+
+export interface JuniorStoryEvent {
+  id: string;
+  title: string;
+  storySource: string;
+  category: JuniorStoryCategory;
+  regionId: string;
+  mountainId?: JuniorMountainId;
+  routeId?: string;
+  triggerType: JuniorStoryTriggerType;
+  prerequisiteEventIds: string[];
+  rumorCityIds: JuniorCityId[];
+  mapMarker: JuniorStoryMapMarker;
+  dialogueCuts: JuniorStoryDialogueCut[];
+  choices: JuniorEventChoice[];
+  quiz?: JuniorQuiz;
+  requiredGoodId?: JuniorGoodId;
+  reward: JuniorReward;
+  childSafetyNotes: string;
+  once: boolean;
+  chainId?: string;
+  chainStep?: number;
+}
+
+export interface JuniorMountainStoryLocation {
+  id: JuniorMountainId;
+  name: string;
+  nearbyCityIds: JuniorCityId[];
+  routeType: string;
+  shortDescription: string;
+  storyEventIds: string[];
 }
 
 export type JuniorStarItemCategory = 'skin' | 'decoration' | 'title' | 'consumable';
@@ -253,6 +354,8 @@ export interface JuniorActiveEffects {
   marketRecommendCityId?: JuniorCityId;
 }
 
+export type JuniorNotebook = Record<JuniorNotebookTopic, JuniorNotebookStatus>;
+
 export interface JuniorSave {
   saveVersion: number;
   currentStep: JuniorStep;
@@ -284,6 +387,19 @@ export interface JuniorSave {
   lastRegionalEventCityId?: JuniorCityId;
   lastRegionalEventId?: string;
   storyArcProgress: Record<string, number>;
+  mainStoryStage: number;
+  seyeonNotebook: JuniorNotebook;
+  ledgerClues: number;
+  storyFragments: string[];
+  completedStoryEventIds: string[];
+  activeStoryEventId?: string;
+  selectedStoryEventId?: string;
+  pendingStoryRumorEventId?: string;
+  storyReturnStep?: JuniorStep;
+  heardStoryEventIds: string[];
+  unlockedStarItemIds: string[];
+  rumorMarkers: Record<string, JuniorRumorMarkerStatus>;
+  studyRoomLevel: number;
   quizWrongStreak: number;
   storyClues: number;
   badges: string[];

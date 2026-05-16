@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react';
-import { ENDING_COINS, FULL_MODE_URL, JUNIOR_BOATS, JUNIOR_CITIES, JUNIOR_ROUTES, JUNIOR_STAR_ITEMS, JUNIOR_VEHICLES, getGood, publicAsset } from './juniorData';
+import { ENDING_COINS, FULL_MODE_URL, JUNIOR_BOATS, JUNIOR_CITIES, JUNIOR_ROUTES, JUNIOR_STAR_ITEMS, JUNIOR_VEHICLES, STORY_ENDING_LEDGER_CLUES, STORY_ENDING_NOTEBOOK_COUNT, STORY_ENDING_STUDY_ROOM_LEVEL, getGood, publicAsset } from './juniorData';
 import {
   answerQuiz,
   buyBoat,
@@ -11,6 +11,9 @@ import {
   chooseGood,
   closeEventResult,
   closeRegionalEvent,
+  closeStoryReward,
+  completeStoryEventChoice,
+  completeMainStoryEvent,
   completeVisitIntro,
   continueAfterEnding,
   finishEnding,
@@ -22,11 +25,17 @@ import {
   getCity,
   getConnectedCityIds,
   getMarketGoodsForCity,
+  getMainStoryEvent,
   getRoute,
   getRouteScenery,
   getRecommendedMarketGoodId,
   getSelectedEvent,
   getSelectedRegionalEvent,
+  getStoryEvent,
+  getStoryEventLocationLabel,
+  getStoryMarkerStatus,
+  getStoryRewardHint,
+  getVisibleStoryEvents,
   getSellPriceForCargo,
   goToCity,
   goToMap,
@@ -40,6 +49,8 @@ import {
   resolveSimpleEvent,
   saveJuniorGame,
   sellCargoItem,
+  showStoryRumorOnMap,
+  startStoryEventFromMap,
   startIntro,
   startFastTravel,
   startTravel,
@@ -48,7 +59,7 @@ import {
   useStarConsumable
 } from './juniorFlow';
 import { useJuniorAudio, type JuniorAudioScene } from './juniorAudio';
-import type { JuniorBoat, JuniorCargoItem, JuniorCity, JuniorCityId, JuniorEvent, JuniorGood, JuniorGoodId, JuniorRegionalEvent, JuniorSave, JuniorStarItem, JuniorVehicle } from './juniorTypes';
+import type { JuniorBoat, JuniorCargoItem, JuniorCity, JuniorCityId, JuniorEvent, JuniorGood, JuniorGoodId, JuniorMainStoryEvent, JuniorNotebookTopic, JuniorRegionalEvent, JuniorSave, JuniorStarItem, JuniorStoryEvent, JuniorVehicle } from './juniorTypes';
 
 const eventSceneImages: Record<string, string> = {
   bandit: publicAsset('/assets/scenes/inland-city.webp'),
@@ -225,7 +236,7 @@ function audioSceneForStep(step: JuniorSave['currentStep']): JuniorAudioScene {
   if (step === 'market') return 'market';
   if (step === 'map') return 'map';
   if (step === 'travel') return 'travel';
-  if (step === 'event' || step === 'eventResult' || step === 'regionalEvent') return 'event';
+  if (step === 'event' || step === 'eventResult' || step === 'storyEvent' || step === 'storyReward' || step === 'regionalEvent') return 'event';
   if (step === 'shop') return 'shop';
   if (step === 'ending' || step === 'endingChoice') return 'ending';
   return 'city';
@@ -258,6 +269,138 @@ function FairyTalk({ save, lines }: { save: JuniorSave; lines?: string[] }) {
       <img className="junior-fairy-face" src={publicAsset(isHappy ? '/assets/fairy/fairy-happy.png' : '/assets/fairy/fairy-default.png')} alt="바람이" />
       <div className="junior-speech">
         {talkLines.slice(0, 2).map((line) => <p key={line}>{line}</p>)}
+      </div>
+    </section>
+  );
+}
+
+const notebookLabels: Record<JuniorNotebookTopic, string> = {
+  writing: '글',
+  math: '산수',
+  map: '지도',
+  weather: '날씨',
+  trade: '장사'
+};
+
+function storyIcon(icon: JuniorMainStoryEvent['dialogue'][number]['icon']) {
+  if (icon === 'fairy') return publicAsset('/assets/fairy/fairy-happy.png');
+  if (icon === 'ledger') return publicAsset('/assets/events/book.svg');
+  return publicAsset('/assets/jeongwoo/jeongwoo.png');
+}
+
+function StoryDialogueOverlay({ event, onDone }: { event: JuniorMainStoryEvent; onDone: () => void }) {
+  const [index, setIndex] = useState(0);
+  useEffect(() => {
+    setIndex(0);
+  }, [event.id]);
+  const line = event.dialogue[index] ?? event.dialogue[0];
+  const last = index >= event.dialogue.length - 1;
+  return (
+    <section className="junior-story-overlay" data-testid="main-story-dialogue" aria-label="메인 이야기">
+      <div className="junior-story-card">
+        <span className="junior-story-kicker">메인 이야기 {event.id}</span>
+        <strong>{event.title}</strong>
+        <div className="junior-story-line">
+          <img src={storyIcon(line.icon)} alt="" onError={handleImageFallback} />
+          <div>
+            <b>{line.speaker}</b>
+            <p>{line.text}</p>
+          </div>
+        </div>
+        <button
+          className="junior-button junior-primary"
+          data-testid={last ? 'story-done' : 'story-next'}
+          type="button"
+          onClick={() => last ? onDone() : setIndex((value) => value + 1)}
+        >
+          {last ? '좋아' : '다음'}
+        </button>
+      </div>
+    </section>
+  );
+}
+
+function storyEventIcon(event: JuniorStoryEvent) {
+  if (event.category === 'sea_classic') return '바다';
+  if (event.category === 'main_clue') return '단서';
+  if (event.category === 'historical') return '인물';
+  if (event.category === 'market_story') return '장터';
+  return '산';
+}
+
+function storyStatusLabel(status: ReturnType<typeof getStoryMarkerStatus>) {
+  if (status === 'completed') return '완료';
+  if (status === 'active') return '진행 중';
+  return '소문 있음';
+}
+
+function PendingStoryRumorCard({ event, onShowMap }: { event?: JuniorStoryEvent; onShowMap: () => void }) {
+  if (!event) return null;
+  return (
+    <section className="junior-rumor-card" data-testid="rumor-card">
+      <span>장터 소문</span>
+      <strong>{event.title}</strong>
+      <p>{event.dialogueCuts[0]?.text}</p>
+      <small>관련 지역: {getStoryEventLocationLabel(event)}</small>
+      <button type="button" className="junior-button junior-primary" data-testid="rumor-show-map" onClick={onShowMap}>지도에 표시</button>
+    </section>
+  );
+}
+
+function StoryEventScreen({ save, onChoice }: { save: JuniorSave; onChoice: (index: number) => void }) {
+  const event = getStoryEvent(save.selectedStoryEventId);
+  const [index, setIndex] = useState(0);
+  useEffect(() => {
+    setIndex(0);
+  }, [event?.id]);
+  if (!event) return null;
+  const cut = event.dialogueCuts[index] ?? event.dialogueCuts[0];
+  const last = index >= event.dialogueCuts.length - 1;
+  return (
+    <section className={`junior-screen junior-substory-event story-${event.category}`} data-testid="screen-story-event">
+      <div className="junior-substory-visual" aria-hidden="true">
+        <span>{storyEventIcon(event)}</span>
+        <img src={publicAsset(event.category === 'sea_classic' ? '/assets/scenes/south-port.webp' : '/assets/scenes/market-street.webp')} alt="" onError={handleImageFallback} />
+      </div>
+      <div className="junior-substory-dialogue" data-testid="event-dialogue">
+        <span>{event.storySource}</span>
+        <strong>{event.title}</strong>
+        <div className="junior-substory-line">
+          <b>{cut.speaker}</b>
+          <p>{cut.text}</p>
+        </div>
+        <div className="junior-story-dots">
+          {event.dialogueCuts.map((item, dot) => <span key={`${item.type}-${dot}`} className={dot === index ? 'active' : ''} />)}
+        </div>
+        {!last ? (
+          <button type="button" className="junior-button junior-primary" data-testid="story-event-next" onClick={() => setIndex((value) => value + 1)}>다음</button>
+        ) : (
+          <div className="junior-choice-row">
+            {event.choices.map((choice, choiceIndex) => (
+              <button type="button" className="junior-choice" data-testid={`story-choice-${choiceIndex}`} key={choice.label} onClick={() => onChoice(choiceIndex)}>
+                {choice.label}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
+function StoryRewardScreen({ save, onClose }: { save: JuniorSave; onClose: () => void }) {
+  const event = getStoryEvent(save.selectedStoryEventId);
+  const chips = save.lastResultChips?.length ? save.lastResultChips.slice(0, 2) : ['이야기 완료'];
+  return (
+    <section className="junior-screen junior-story-reward-screen" data-testid="screen-story-reward">
+      <div className="junior-story-reward-card" data-testid="story-reward">
+        <span>이야기 선물</span>
+        <strong>{event?.title ?? '이야기 완료'}</strong>
+        <p>{save.eventResultText ?? '좋은 이야기가 수첩에 남았어.'}</p>
+        <div className="junior-result-chips">
+          {chips.map((chip) => <b key={chip}>{chip}</b>)}
+        </div>
+        <button type="button" className="junior-button junior-primary" data-testid="story-reward-ok" onClick={onClose}>수첩에 적기</button>
       </div>
     </section>
   );
@@ -310,7 +453,7 @@ function IntroScreen({ save, onStart }: { save: JuniorSave; onStart: () => void 
 }
 
 function QuickNav({ save, onCity, onMap, onMarket, onShop }: { save: JuniorSave; onCity: () => void; onMap: () => void; onMarket: () => void; onShop: () => void }) {
-  if (['intro', 'pick', 'buy', 'travel', 'visitIntro', 'event', 'eventResult', 'regionalEvent', 'endingChoice', 'ending'].includes(save.currentStep)) return null;
+  if (['intro', 'pick', 'buy', 'travel', 'visitIntro', 'event', 'eventResult', 'storyEvent', 'storyReward', 'regionalEvent', 'endingChoice', 'ending'].includes(save.currentStep)) return null;
   const itemClass = (step: JuniorSave['currentStep']) => save.currentStep === step ? 'active' : '';
   return (
     <nav className="junior-bottom-nav" aria-label="주요 이동">
@@ -526,8 +669,9 @@ function RouteCard({ save, city }: { save: JuniorSave; city: JuniorCity }) {
   );
 }
 
-function CityScreen({ save, onMarket, onMap, onShop, onEnding, onUseRumor }: { save: JuniorSave; onMarket: () => void; onMap: () => void; onShop: () => void; onEnding: () => void; onUseRumor: () => void }) {
+function CityScreen({ save, onMarket, onMap, onShop, onEnding, onUseRumor, onShowRumorMap }: { save: JuniorSave; onMarket: () => void; onMap: () => void; onShop: () => void; onEnding: () => void; onUseRumor: () => void; onShowRumorMap: () => void }) {
   const [showCargo, setShowCargo] = useState(false);
+  const [storyPanel, setStoryPanel] = useState<'note' | 'book' | 'rumor' | undefined>();
   const city = getCity(save.currentCityId);
   const cityGoods = city.buyGoodIds.slice(0, 3).map(getGood);
   const tutorial = !save.completedTutorial && save.tutorialStage <= 1;
@@ -546,6 +690,15 @@ function CityScreen({ save, onMarket, onMap, onShop, onEnding, onUseRumor }: { s
     if (goal.action === 'ending') onEnding();
   };
   const focusClass = (action: JuniorGoalAction) => goal.action === action ? 'today-focus' : '';
+  const completedStory = save.completedStoryEventIds
+    .map((eventId) => getMainStoryEvent(eventId))
+    .filter((event): event is JuniorMainStoryEvent => Boolean(event));
+  const visibleStoryEvents = getVisibleStoryEvents(save);
+  const activeSubStories = visibleStoryEvents.filter((event) => getStoryMarkerStatus(save, event.id) !== 'completed');
+  const completedSubStories = visibleStoryEvents.filter((event) => getStoryMarkerStatus(save, event.id) === 'completed');
+  const pendingRumorEvent = getStoryEvent(save.pendingStoryRumorEventId);
+  const unlockedStoryItems = JUNIOR_STAR_ITEMS.filter((item) => save.unlockedStarItemIds.includes(item.id));
+  const notebookOpen = Object.values(save.seyeonNotebook).filter((status) => status !== 'locked').length;
   return (
     <section className={`junior-screen junior-city-dashboard junior-city-${city.id}`} data-testid="screen-city">
       <div className="junior-city-header-card">
@@ -558,7 +711,7 @@ function CityScreen({ save, onMarket, onMap, onShop, onEnding, onUseRumor }: { s
       </div>
       <div className="junior-city-info-grid">
         <section className="junior-city-panel junior-city-specialties">
-          <b>이곳 특산품</b>
+          <b>이곳 물건</b>
           <div>
             {cityGoods.map((good) => (
               <span key={good.id}>
@@ -574,6 +727,52 @@ function CityScreen({ save, onMarket, onMap, onShop, onEnding, onUseRumor }: { s
         </section>
       </div>
       <TodayGoalCard goal={goal} onAction={runGoal} />
+      <PendingStoryRumorCard event={pendingRumorEvent} onShowMap={onShowRumorMap} />
+      <div className="junior-story-menu" data-testid="story-helper-menu">
+        <button type="button" data-testid="open-seyeon-note" onClick={() => setStoryPanel(storyPanel === 'note' ? undefined : 'note')}>세연이 노트</button>
+        <button type="button" data-testid="open-story-book" onClick={() => setStoryPanel(storyPanel === 'book' ? undefined : 'book')}>이야기 수첩</button>
+        <button type="button" data-testid="open-rumor-map" onClick={() => setStoryPanel(storyPanel === 'rumor' ? undefined : 'rumor')}>소문 지도</button>
+      </div>
+      {storyPanel === 'note' && (
+        <section className="junior-story-panel" data-testid="seyeon-notebook-panel">
+          <b>세연이 노트 {notebookOpen}/{STORY_ENDING_NOTEBOOK_COUNT}</b>
+          <div className="junior-notebook-grid">
+            {(Object.keys(notebookLabels) as JuniorNotebookTopic[]).map((topic) => (
+              <span key={topic} className={`status-${save.seyeonNotebook[topic]}`}>
+                {notebookLabels[topic]}
+                <small>{save.seyeonNotebook[topic] === 'locked' ? '잠김' : save.seyeonNotebook[topic] === 'started' ? '시작' : '완성'}</small>
+              </span>
+            ))}
+          </div>
+        </section>
+      )}
+      {storyPanel === 'book' && (
+        <section className="junior-story-panel" data-testid="story-book-panel">
+          <b>이야기 수첩</b>
+          <span>장부 단서 {save.ledgerClues}/{STORY_ENDING_LEDGER_CLUES}</span>
+          <span>공부방 {save.studyRoomLevel}/{STORY_ENDING_STUDY_ROOM_LEVEL}</span>
+          <span>진행 중 이야기 {activeSubStories.length}</span>
+          <span>완료한 이야기 {completedSubStories.length}</span>
+          <div className="junior-story-log">
+            {activeSubStories.slice(0, 4).map((event) => <small key={event.id}>진행 {event.id} {event.title}</small>)}
+            {completedSubStories.slice(-4).map((event) => <small key={event.id}>완료 {event.id} {event.title}</small>)}
+            {completedStory.slice(-3).map((event) => <small key={event.id}>메인 {event.id} {event.title}</small>)}
+            {visibleStoryEvents.length === 0 && completedStory.length === 0 && <small>아직 적은 이야기가 없어.</small>}
+          </div>
+          <div className="junior-story-unlocks" data-testid="story-unlocked-cosmetics">
+            {unlockedStoryItems.length === 0 ? <small>열린 꾸미기 없음</small> : unlockedStoryItems.slice(-4).map((item) => <small key={item.id}>꾸미기 {item.name}</small>)}
+          </div>
+        </section>
+      )}
+      {storyPanel === 'rumor' && (
+        <section className="junior-story-panel" data-testid="rumor-map-panel">
+          <b>소문 지도</b>
+          <div className="junior-rumor-list">
+            <span>산길 <small>{save.rumorMarkers.mountain === 'completed' ? '완료' : save.rumorMarkers.mountain === 'active' ? '진행 중' : '소문 있음'}</small></span>
+            <span>바닷길 <small>{save.rumorMarkers.sea === 'completed' ? '완료' : save.rumorMarkers.sea === 'active' ? '진행 중' : '소문 있음'}</small></span>
+          </div>
+        </section>
+      )}
       {(save.consumableItems.ticket_extra_rumor ?? 0) > 0 && (
         <button className="junior-inline-consumable" data-testid="use-rumor-ticket" onClick={onUseRumor}>소문 듣기</button>
       )}
@@ -612,8 +811,9 @@ function clampMapPan(value: number) {
   return Math.max(-MAP_PAN_LIMIT, Math.min(MAP_PAN_LIMIT, value));
 }
 
-function KoreaMap({ save, selectedCityId, onCity, children }: { save: JuniorSave; selectedCityId?: JuniorCityId; onCity: (city: JuniorCity) => void; children?: ReactNode }) {
+function KoreaMap({ save, selectedCityId, onCity, onStoryEvent, children }: { save: JuniorSave; selectedCityId?: JuniorCityId; onCity: (city: JuniorCity) => void; onStoryEvent?: (eventId: string) => void; children?: ReactNode }) {
   const connected = getConnectedCityIds(save);
+  const storyEvents = getVisibleStoryEvents(save);
   const [pan, setPan] = useState({ x: 0, y: -18 });
   const dragRef = useRef({ active: false, moved: false, startX: 0, startY: 0, panX: 0, panY: 0 });
   const ignoreClickRef = useRef(false);
@@ -696,20 +896,41 @@ function KoreaMap({ save, selectedCityId, onCity, children }: { save: JuniorSave
             </button>
           );
         })}
+        {storyEvents.map((event, index) => {
+          const markerCity = getCity(event.rumorCityIds[0] ?? save.currentCityId);
+          const status = getStoryMarkerStatus(save, event.id);
+          const left = Math.max(6, Math.min(94, markerCity.x + ((index % 3) - 1) * 3));
+          const top = Math.max(8, Math.min(94, markerCity.y - 5 - (index % 2) * 3));
+          return (
+            <button
+              type="button"
+              key={event.id}
+              className={`junior-story-map-marker status-${status} category-${event.category}`}
+              style={{ left: `${left}%`, top: `${top}%` }}
+              data-testid={`story-map-marker-${event.id}`}
+              onClick={() => onStoryEvent?.(event.id)}
+            >
+              <span>{storyEventIcon(event)}</span>
+              <small>{storyStatusLabel(status)}</small>
+            </button>
+          );
+        })}
         {children}
       </div>
     </div>
   );
 }
 
-function MapScreen({ save, onDepart, onFastDepart, onBack }: { save: JuniorSave; onDepart: (city: JuniorCity) => void; onFastDepart: (city: JuniorCity) => void; onBack: () => void }) {
+function MapScreen({ save, onDepart, onFastDepart, onBack, onStoryStart }: { save: JuniorSave; onDepart: (city: JuniorCity) => void; onFastDepart: (city: JuniorCity) => void; onBack: () => void; onStoryStart: (event: JuniorStoryEvent) => void }) {
   const connectedCities = getConnectedCityIds(save);
   const preferred = !save.completedTutorial
     ? 'daegu'
     : connectedCities.find((cityId) => save.currentCityId === 'busan' && cityId === 'daegu' && canTravel(save, cityId))
       ?? connectedCities.find((cityId) => canTravel(save, cityId));
   const [selectedCityId, setSelectedCityId] = useState<JuniorCityId | undefined>(preferred);
+  const [selectedStoryEventId, setSelectedStoryEventId] = useState<string | undefined>();
   const selectedCity = selectedCityId ? getCity(selectedCityId) : undefined;
+  const selectedStoryEvent = selectedStoryEventId ? getStoryEvent(selectedStoryEventId) : undefined;
   const goods = selectedCity ? selectedCity.buyGoodIds.slice(0, 2).map(getGood) : [];
   const good = goods[0];
   const route = selectedCity ? getRoute(save.currentCityId, selectedCity.id) : undefined;
@@ -723,9 +944,10 @@ function MapScreen({ save, onDepart, onFastDepart, onBack }: { save: JuniorSave;
   const bubbleClass = selectedCity
     ? `junior-map-bubble ${selectedCity.x > 58 ? 'left' : 'right'} ${selectedCity.y > 68 ? 'up' : 'down'}`
     : 'junior-map-bubble';
+  const storyEvents = getVisibleStoryEvents(save);
   return (
     <section className="junior-screen junior-map-screen" data-testid="screen-map">
-      <KoreaMap save={save} selectedCityId={selectedCityId} onCity={(city) => setSelectedCityId(city.id)}>
+      <KoreaMap save={save} selectedCityId={selectedCityId} onCity={(city) => setSelectedCityId(city.id)} onStoryEvent={setSelectedStoryEventId}>
         {selectedCity && good ? (
           <div className={bubbleClass} style={bubbleStyle} data-testid="map-selection-panel">
             <div className="junior-map-pick">
@@ -756,6 +978,24 @@ function MapScreen({ save, onDepart, onFastDepart, onBack }: { save: JuniorSave;
           </div>
         )}
       </KoreaMap>
+      {selectedStoryEvent && (
+        <section className="junior-story-marker-panel" data-testid="story-map-marker-panel">
+          <span>{storyStatusLabel(getStoryMarkerStatus(save, selectedStoryEvent.id))}</span>
+          <strong>{selectedStoryEvent.title}</strong>
+          <small>{selectedStoryEvent.dialogueCuts[0]?.text}</small>
+          <b>갈 곳: {getStoryEventLocationLabel(selectedStoryEvent)}</b>
+          <em>받은 것: {getStoryRewardHint(selectedStoryEvent)}</em>
+          <button
+            type="button"
+            className="junior-button junior-primary"
+            data-testid="start-story-event"
+            disabled={getStoryMarkerStatus(save, selectedStoryEvent.id) === 'completed'}
+            onClick={() => onStoryStart(selectedStoryEvent)}
+          >
+            이야기 시작
+          </button>
+        </section>
+      )}
       <div className="junior-map-destination-rail" data-testid="map-destination-rail" aria-label="갈 수 있는 도시">
         {quickCities.map((city) => {
           const nextRoute = getRoute(save.currentCityId, city.id);
@@ -916,7 +1156,7 @@ function MarketCargoCard({ save, item, good, city, onSell }: { save: JuniorSave;
   );
 }
 
-function MarketScreen({ save, onBuy, onPrepareHalfPrice, onUseMarketTip, onSell, onBack, onMap }: { save: JuniorSave; onBuy: (good: JuniorGood) => void; onPrepareHalfPrice: (good: JuniorGood) => void; onUseMarketTip: () => void; onSell: (cargoId: string) => void; onBack: () => void; onMap: () => void }) {
+function MarketScreen({ save, onBuy, onPrepareHalfPrice, onUseMarketTip, onSell, onBack, onMap, onShowRumorMap }: { save: JuniorSave; onBuy: (good: JuniorGood) => void; onPrepareHalfPrice: (good: JuniorGood) => void; onUseMarketTip: () => void; onSell: (cargoId: string) => void; onBack: () => void; onMap: () => void; onShowRumorMap: () => void }) {
   const [flyingGood, setFlyingGood] = useState<JuniorGood | undefined>();
   const [sellingGood, setSellingGood] = useState<JuniorGood | undefined>();
   const [cargoPulse, setCargoPulse] = useState(false);
@@ -925,6 +1165,7 @@ function MarketScreen({ save, onBuy, onPrepareHalfPrice, onUseMarketTip, onSell,
   const vehicle = getVehicle(save);
   const buyGoods = getMarketGoodsForCity(city.id);
   const recommendedGoodId = getRecommendedMarketGoodId(save);
+  const pendingRumorEvent = getStoryEvent(save.pendingStoryRumorEventId);
   const cargoItems = save.cargo.slice(0, 4);
   const marketItemCount = buyGoods.length + cargoItems.length;
   const densityClass = buyGoods.length >= 6 || marketItemCount >= 7 ? 'junior-market-crowded' : '';
@@ -966,6 +1207,7 @@ function MarketScreen({ save, onBuy, onPrepareHalfPrice, onUseMarketTip, onSell,
         </div>
         <img className="junior-market-cart" src={vehicle.image} alt="" />
       </div>
+      <PendingStoryRumorCard event={pendingRumorEvent} onShowMap={onShowRumorMap} />
       <div className={`junior-market-cargo-summary ${cargoPulse || save.cargo.length >= save.cargoLimit ? 'pulse' : ''}`} data-testid="market-cargo-summary">
         <strong>내 짐 {save.cargo.length}/{save.cargoLimit}</strong>
         <div>
@@ -1250,6 +1492,11 @@ function getStarItemName(itemId?: string) {
   return itemId ? (JUNIOR_STAR_ITEMS.find((item) => item.id === itemId)?.name ?? '없음') : '없음';
 }
 
+function isStarItemVisible(save: JuniorSave, item: JuniorStarItem) {
+  if (!item.unlockCondition?.startsWith('story:')) return true;
+  return save.unlockedStarItemIds.includes(item.id) || save.ownedStarItemIds.includes(item.id);
+}
+
 function StarRewardScreen({
   save,
   onClose,
@@ -1270,7 +1517,7 @@ function StarRewardScreen({
   const ownedDecorations = JUNIOR_STAR_ITEMS.filter((item) => !item.isConsumable && save.ownedStarItemIds.includes(item.id));
   const ownedConsumables = JUNIOR_STAR_ITEMS.filter((item) => item.isConsumable && (save.consumableItems[item.id] ?? 0) > 0);
   const equippedSlots: JuniorStarItem['slot'][] = ['weapon', 'armor', 'tool', 'badge', 'fairy'];
-  const visibleItems = starItemsForTab(tab);
+  const visibleItems = starItemsForTab(tab).filter((item) => isStarItemVisible(save, item));
 
   const shopState = (item: JuniorStarItem) => {
     const owned = save.ownedStarItemIds.includes(item.id);
@@ -1446,6 +1693,7 @@ export function JuniorApp() {
   const city = getCity(save.currentCityId);
   const event = getSelectedEvent(save);
   const regionalEvent = getSelectedRegionalEvent(save);
+  const storyEvent = getMainStoryEvent(save.activeStoryEventId);
   const audio = useJuniorAudio(audioSceneForStep(save.currentStep));
 
   function update(next: JuniorSave) {
@@ -1482,13 +1730,15 @@ export function JuniorApp() {
         {save.currentStep === 'intro' && <IntroScreen save={save} onStart={() => { void audio.prime(); audio.playSfx('click'); update(startIntro(save)); }} />}
         {save.currentStep === 'pick' && <PickScreen save={save} onPick={pick} />}
         {save.currentStep === 'buy' && <BuyScreen save={save} onBuy={() => { audio.playSfx('buy'); update(buySelectedGood(save)); }} />}
-        {save.currentStep === 'city' && <CityScreen save={save} onMarket={() => { audio.playSfx('shop'); update(goToMarket(save)); }} onMap={() => { audio.playSfx('click'); update(goToMap(save)); }} onShop={() => { audio.playSfx('shop'); update(goToShop(save)); }} onEnding={() => { audio.playSfx('reward'); update(openEnding(save)); }} onUseRumor={() => useConsumable('ticket_extra_rumor')} />}
-        {save.currentStep === 'map' && <MapScreen save={save} onDepart={(nextCity) => { const route = getRoute(save.currentCityId, nextCity.id); audio.playSfx(route?.kind === 'sea' ? 'depart' : 'cart'); update(startTravel(save, nextCity.id)); }} onFastDepart={(nextCity) => { audio.playSfx('reward'); update(startFastTravel(save, nextCity.id)); }} onBack={() => { audio.playSfx('click'); update(goToCity(save)); }} />}
+        {save.currentStep === 'city' && <CityScreen save={save} onMarket={() => { audio.playSfx('shop'); update(goToMarket(save)); }} onMap={() => { audio.playSfx('click'); update(goToMap(save)); }} onShop={() => { audio.playSfx('shop'); update(goToShop(save)); }} onEnding={() => { audio.playSfx('reward'); update(openEnding(save)); }} onUseRumor={() => useConsumable('ticket_extra_rumor')} onShowRumorMap={() => { audio.playSfx('reward'); update(showStoryRumorOnMap(save)); }} />}
+        {save.currentStep === 'map' && <MapScreen save={save} onDepart={(nextCity) => { const route = getRoute(save.currentCityId, nextCity.id); audio.playSfx(route?.kind === 'sea' ? 'depart' : 'cart'); update(startTravel(save, nextCity.id)); }} onFastDepart={(nextCity) => { audio.playSfx('reward'); update(startFastTravel(save, nextCity.id)); }} onBack={() => { audio.playSfx('click'); update(goToCity(save)); }} onStoryStart={(story) => { audio.playSfx('reward'); update(startStoryEventFromMap(save, story.id)); }} />}
         {save.currentStep === 'travel' && <TravelScreen save={save} onDone={() => { audio.playSfx('arrive'); update(finishTravel(save)); }} />}
         {save.currentStep === 'visitIntro' && <VisitIntroScreen save={save} onDone={() => { audio.playSfx('click'); update(completeVisitIntro(save)); }} />}
-        {save.currentStep === 'market' && <MarketScreen save={save} onBuy={marketBuy} onPrepareHalfPrice={(good) => { audio.playSfx('reward'); update(prepareHalfPriceTicket(save, good.id)); }} onUseMarketTip={() => useConsumable('ticket_market_tip')} onSell={sell} onBack={() => { audio.playSfx('click'); update(goToCity(save)); }} onMap={() => { audio.playSfx('click'); update(goToMap(save)); }} />}
+        {save.currentStep === 'market' && <MarketScreen save={save} onBuy={marketBuy} onPrepareHalfPrice={(good) => { audio.playSfx('reward'); update(prepareHalfPriceTicket(save, good.id)); }} onUseMarketTip={() => useConsumable('ticket_market_tip')} onSell={sell} onBack={() => { audio.playSfx('click'); update(goToCity(save)); }} onMap={() => { audio.playSfx('click'); update(goToMap(save)); }} onShowRumorMap={() => { audio.playSfx('reward'); update(showStoryRumorOnMap(save)); }} />}
         {save.currentStep === 'event' && <EventScreen save={save} onSimple={() => { audio.playSfx('reward'); update(resolveSimpleEvent(save)); }} onChoice={(index) => { audio.playSfx('click'); update(resolveChoice(save, index)); }} onQuiz={(option) => { const quiz = event?.quiz; audio.playSfx(quiz && option === quiz.answer ? 'correct' : 'wrong'); update(answerQuiz(save, option)); }} onUseCargoProtect={() => useConsumable('charm_cargo_guard')} onUseQuizRetry={() => useConsumable('ticket_quiz_retry')} />}
         {save.currentStep === 'eventResult' && <EventResultScreen save={save} onClose={() => { audio.playSfx('click'); update(closeEventResult(save)); }} />}
+        {save.currentStep === 'storyEvent' && <StoryEventScreen save={save} onChoice={(index) => { audio.playSfx('reward'); update(completeStoryEventChoice(save, index)); }} />}
+        {save.currentStep === 'storyReward' && <StoryRewardScreen save={save} onClose={() => { audio.playSfx('click'); update(closeStoryReward(save)); }} />}
         {save.currentStep === 'regionalEvent' && regionalEvent && <RegionalEventScreen event={regionalEvent} onClose={() => { audio.playSfx('click'); update(closeRegionalEvent(save)); }} />}
         {save.currentStep === 'shop' && <ShopScreen save={save} onVehicle={(id) => { audio.playSfx('shop'); update(buyVehicle(save, id)); }} onBoat={(id) => { audio.playSfx('shop'); update(buyBoat(save, id)); }} />}
         {save.currentStep === 'endingChoice' && <EndingChoiceScreen onHome={() => { audio.playSfx('reward'); update(finishEnding(save)); }} onMore={() => { audio.playSfx('click'); update(continueAfterEnding(save)); }} />}
@@ -1503,6 +1753,13 @@ export function JuniorApp() {
           onEquip={(item) => { audio.playSfx('reward'); update(equipStarItem(save, item.id)); }}
           onUnequip={(slot) => { audio.playSfx('click'); update(unequipStarItem(save, slot)); }}
           onUse={(item) => useConsumable(item.id)}
+        />
+      )}
+
+      {storyEvent && (
+        <StoryDialogueOverlay
+          event={storyEvent}
+          onDone={() => { audio.playSfx('reward'); update(completeMainStoryEvent(save, storyEvent.id)); }}
         />
       )}
 

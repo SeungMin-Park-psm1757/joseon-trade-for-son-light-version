@@ -1,9 +1,20 @@
-import type { JuniorBoat, JuniorCity, JuniorCityId, JuniorEvent, JuniorGood, JuniorGoodId, JuniorRegionalEvent, JuniorReward, JuniorRoute, JuniorSave, JuniorStarItem, JuniorVehicle } from './juniorTypes';
+import type { JuniorBoat, JuniorCity, JuniorCityId, JuniorEvent, JuniorGood, JuniorGoodId, JuniorMainStoryEvent, JuniorMountainStoryLocation, JuniorNotebook, JuniorRegionalEvent, JuniorReward, JuniorRoute, JuniorSave, JuniorStarItem, JuniorStoryCategory, JuniorStoryEvent, JuniorStoryTriggerType, JuniorVehicle } from './juniorTypes';
 
 export const JUNIOR_SAVE_KEY = 'joseon_trade_junior_save_v1';
 export const JUNIOR_SAVE_VERSION = 2;
 export const FULL_MODE_URL = '../starter/';
 export const ENDING_COINS = 300;
+export const STORY_ENDING_NOTEBOOK_COUNT = 5;
+export const STORY_ENDING_LEDGER_CLUES = 3;
+export const STORY_ENDING_STUDY_ROOM_LEVEL = 3;
+
+export const DEFAULT_SEYEON_NOTEBOOK: JuniorNotebook = {
+  writing: 'locked',
+  math: 'locked',
+  map: 'locked',
+  weather: 'locked',
+  trade: 'locked'
+};
 
 export function publicAsset(path: string) {
   if (!path.startsWith('/assets/')) return path;
@@ -195,6 +206,156 @@ export const JUNIOR_STAR_ITEMS: JuniorStarItem[] = [
     ownedText: '이미 갖고 있어.',
     equipText: '바람이가 별지팡이를 들었어!',
     useText: '요정 꾸미기에 써.',
+    isConsumable: false
+  },
+  {
+    id: 'story_tiger_rice_charm',
+    name: '호랑이 떡부적',
+    category: 'decoration',
+    slot: 'badge',
+    starCost: 5,
+    iconAsset: starItemIcon('cargo-protect-charm.png'),
+    description: '떡을 나눈 마음을 떠올리는 작은 부적이야.',
+    childDescription: '호랑이 이야기 뒤에 열리는 부적이야.',
+    ownedText: '이미 갖고 있어.',
+    equipText: '호랑이 떡부적을 달았어.',
+    useText: '이야기 꾸미기에 써.',
+    unlockCondition: 'story:E26',
+    isConsumable: false
+  },
+  {
+    id: 'story_fairy_ribbon',
+    name: '선녀 리본',
+    category: 'decoration',
+    slot: 'fairy',
+    starCost: 5,
+    iconAsset: starItemIcon('fairy-ribbon.png'),
+    description: '잃어버린 옷감을 돌려준 마음이 담긴 리본이야.',
+    childDescription: '선녀의 옷감 이야기 뒤에 열려.',
+    ownedText: '이미 갖고 있어.',
+    equipText: '선녀 리본을 달았어.',
+    useText: '바람이 꾸미기에 써.',
+    unlockCondition: 'story:E28',
+    isConsumable: false
+  },
+  {
+    id: 'story_hong_headband',
+    name: '홍길동 두건',
+    category: 'skin',
+    slot: 'hat',
+    starCost: 6,
+    iconAsset: starItemIcon('hopae.png'),
+    description: '빠른 발보다 바른 마음을 떠올리는 두건이야.',
+    childDescription: '홍길동 이야기 뒤에 열려.',
+    ownedText: '이미 갖고 있어.',
+    equipText: '홍길동 두건을 썼어.',
+    useText: '정우 꾸미기에 써.',
+    unlockCondition: 'story:E21',
+    isConsumable: false
+  },
+  {
+    id: 'story_im_wood_tag',
+    name: '임꺽정 나무패',
+    category: 'decoration',
+    slot: 'badge',
+    starCost: 6,
+    iconAsset: starItemIcon('hopae.png'),
+    description: '정직한 장부 약속을 적은 나무패야.',
+    childDescription: '임꺽정 이야기 뒤에 열려.',
+    ownedText: '이미 갖고 있어.',
+    equipText: '임꺽정 나무패를 달았어.',
+    useText: '이야기 꾸미기에 써.',
+    unlockCondition: 'story:E25',
+    isConsumable: false
+  },
+  {
+    id: 'story_simcheong_lotus_lamp',
+    name: '심청 연꽃등',
+    category: 'decoration',
+    slot: 'tool',
+    starCost: 7,
+    iconAsset: starItemIcon('golden-ledger.png'),
+    description: '마음을 전하는 연꽃 편지를 닮은 등불이야.',
+    childDescription: '심청전 편지 이야기 뒤에 열려.',
+    ownedText: '이미 갖고 있어.',
+    equipText: '심청 연꽃등을 들었어.',
+    useText: '이야기 꾸미기에 써.',
+    unlockCondition: 'story:E35',
+    isConsumable: false
+  },
+  {
+    id: 'story_gold_axe_decor',
+    name: '금도끼 장식',
+    category: 'decoration',
+    slot: 'tool',
+    starCost: 6,
+    iconAsset: starItemIcon('golden-ledger.png'),
+    description: '정직하게 말한 마음을 기억하는 장식이야.',
+    childDescription: '금도끼 이야기 뒤에 열려.',
+    ownedText: '이미 갖고 있어.',
+    equipText: '금도끼 장식을 들었어.',
+    useText: '이야기 꾸미기에 써.',
+    unlockCondition: 'story:E06',
+    isConsumable: false
+  },
+  {
+    id: 'story_goblin_club_decor',
+    name: '도깨비 방망이 장식',
+    category: 'decoration',
+    slot: 'tool',
+    starCost: 6,
+    iconAsset: starItemIcon('market-staff.png'),
+    description: '물건을 톡톡 정리하던 방망이 장식이야.',
+    childDescription: '도깨비 장터 이야기 뒤에 열려.',
+    ownedText: '이미 갖고 있어.',
+    equipText: '도깨비 방망이 장식을 들었어.',
+    useText: '이야기 꾸미기에 써.',
+    unlockCondition: 'story:E08',
+    isConsumable: false
+  },
+  {
+    id: 'story_rain_gauge',
+    name: '측우기',
+    category: 'decoration',
+    slot: 'tool',
+    starCost: 7,
+    iconAsset: starItemIcon('rain-gauge.png'),
+    description: '비의 양을 살피는 배움 도구야.',
+    childDescription: '장영실 이야기 뒤에 열려.',
+    ownedText: '이미 갖고 있어.',
+    equipText: '측우기를 들었어.',
+    useText: '이야기 꾸미기에 써.',
+    unlockCondition: 'story:E48',
+    isConsumable: false
+  },
+  {
+    id: 'story_admiral_sword_decor',
+    name: '충무공 검 장식',
+    category: 'skin',
+    slot: 'weapon',
+    starCost: 8,
+    iconAsset: starItemIcon('admiral-sword.png'),
+    description: '차분히 준비하는 마음을 떠올리는 검 장식이야.',
+    childDescription: '충무공의 바람 이야기 뒤에 열려.',
+    ownedText: '이미 갖고 있어.',
+    equipText: '충무공 검 장식을 들었어.',
+    useText: '정우 꾸미기에 써.',
+    unlockCondition: 'story:E42',
+    isConsumable: false
+  },
+  {
+    id: 'story_dragon_shell_decor',
+    name: '용궁 조개 장식',
+    category: 'decoration',
+    slot: 'badge',
+    starCost: 6,
+    iconAsset: starItemIcon('compass.png'),
+    description: '바닷길 편지를 담는 반짝 조개야.',
+    childDescription: '별주부전 이야기 뒤에 열려.',
+    ownedText: '이미 갖고 있어.',
+    equipText: '용궁 조개 장식을 달았어.',
+    useText: '이야기 꾸미기에 써.',
+    unlockCondition: 'story:E38',
     isConsumable: false
   },
   {
@@ -856,18 +1017,18 @@ export const JUNIOR_EVENTS: JuniorEvent[] = [
   spellingEvent('north_merchant_2', 'quiz_merchant', 'land', '강가 장터', 'north_merchant', '강가에서 바른 말을 골라봐.', ['강가', '강까', '간가'], '강가', '정답! 장터길을 배웠어.', '괜찮아. 천천히 다시 보자.', { storyClues: 1 }, { coins: -5 }, 'north_merchant', 2, ['north_capital_road', 'border_river_road', 'northeast_coast_road', 'northeast_cold_road']),
   spellingEvent('north_merchant_3', 'quiz_merchant', 'land', '먼 길 추천', 'north_merchant', '상인이 팔기 좋은 말을 물어봐.', ['약초', '약쵸', '약초오'], '약초', '정답! 약초를 기억했어.', '괜찮아. 바람이가 다시 알려줄게.', { coins: 5 }, { coins: -5 }, 'north_merchant', 3, ['north_capital_road', 'border_river_road', 'northeast_coast_road', 'northeast_cold_road']),
   spellingEvent('north_merchant_4', 'quiz_merchant', 'land', '북방 길 배지', 'north_merchant', '마지막으로 바른 인사를 골라봐.', ['고마워', '고마오', '고마워어'], '고마워', '정답! 북방 길 배지를 받았어.', '괜찮아. 다음 길에서 또 해보자.', { badge: '북방 길 배지', stars: 1 }, { coins: -5 }, 'north_merchant', 4, ['north_capital_road', 'border_river_road', 'northeast_coast_road', 'northeast_cold_road']),
-  spellingEvent('bandit_spelling_1', 'quiz_bandit', 'land', '도적이 길을 막았어', 'bandit', '바른 말을 고르면 지나갈 수 있어.', ['맛춤법', '맞춤법', '맟춤법'], '맞춤법', '정답! 길이 열렸어.', '괜찮아. 짐 하나를 다시 묶었어.', { stars: 1 }, { coins: -5, loseCargo: 1 }),
-  spellingEvent('bandit_spelling_2', 'quiz_bandit', 'land', '도적의 말놀이', 'bandit', '도적이 바른 말을 묻고 있어.', ['괜찮아', '괜찬아', '괜차나'], '괜찮아', '정답! 도적이 비켜줬어.', '조금 돌아가느라 돈을 잃었어.'),
-  spellingEvent('bandit_spelling_3', 'quiz_bandit', 'land', '고개 길 도적', 'bandit', '바른 낱말을 골라보자.', ['어떻게', '어떡해', '어떠케'], '어떻게', '정답! 수레가 지나갔어.', '천천히 다시 가자.', { coins: 5 }, { coins: -5 }),
-  spellingEvent('bandit_spelling_4', 'quiz_bandit', 'land', '숲길 도적', 'bandit', '헷갈리는 말을 골라야 해.', ['가르치다', '가리키다', '가르키다'], '가르치다', '정답! 도적이 놀랐어.', '조금 헤매다 지나갔어.'),
-  spellingEvent('bandit_spelling_5', 'quiz_bandit', 'land', '다리 앞 도적', 'bandit', '바르게 쓴 말을 찾아보자.', ['며칠', '몇일', '멧일'], '며칠', '정답! 다리를 건넜어.', '돈을 조금 내고 건넜어.'),
-  spellingEvent('bandit_spelling_6', 'quiz_bandit', 'land', '장터길 도적', 'bandit', '침착하게 바른 말을 골라봐.', ['안 돼', '안 되', '않 돼'], '안 돼', '정답! 무사히 지나갔어.', '괜찮아. 다시 묶고 가자.', { stars: 1 }, { coins: -5, loseCargo: 1 }),
-  spellingEvent('pirate_spelling_1', 'quiz_pirate', 'sea', '해적이 배를 세웠어', 'pirate', '맞춤말을 맞히면 지나갈 수 있어.', ['바닷길', '바다길', '바닫길'], '바닷길', '정답! 해적이 길을 비켜줬어.', '파도가 높아 조금 돌아갔어.'),
-  spellingEvent('pirate_spelling_2', 'quiz_pirate', 'sea', '해적의 말문제', 'pirate', '바른 말을 고르면 무사히 지나가.', ['돛단배', '돗단배', '돛딴배'], '돛단배', '정답! 바람이 도와줬어.', '배를 천천히 돌렸어.', { stars: 1 }, { coins: -5, loseCargo: 1 }),
+  spellingEvent('bandit_spelling_1', 'quiz_bandit', 'land', '길동무의 말놀이', 'bandit', '바른 말을 고르면 지나갈 수 있어.', ['맛춤법', '맞춤법', '맟춤법'], '맞춤법', '정답! 길이 열렸어.', '괜찮아. 짐 하나를 다시 묶었어.', { stars: 1 }, { coins: -5, loseCargo: 1 }),
+  spellingEvent('bandit_spelling_2', 'quiz_bandit', 'land', '길동무 말놀이', 'bandit', '길동무가 바른 말을 묻고 있어.', ['괜찮아', '괜찬아', '괜차나'], '괜찮아', '정답! 길동무가 웃었어.', '조금 돌아가느라 돈을 썼어.'),
+  spellingEvent('bandit_spelling_3', 'quiz_bandit', 'land', '고개 말놀이', 'bandit', '바른 낱말을 골라보자.', ['어떻게', '어떡해', '어떠케'], '어떻게', '정답! 수레가 지나갔어.', '천천히 다시 가자.', { coins: 5 }, { coins: -5 }),
+  spellingEvent('bandit_spelling_4', 'quiz_bandit', 'land', '숲길 말놀이', 'bandit', '헷갈리는 말을 골라야 해.', ['가르치다', '가리키다', '가르키다'], '가르치다', '정답! 길동무가 끄덕였어.', '조금 헤매다 지나갔어.'),
+  spellingEvent('bandit_spelling_5', 'quiz_bandit', 'land', '다리 앞 말놀이', 'bandit', '바르게 쓴 말을 찾아보자.', ['며칠', '몇일', '멧일'], '며칠', '정답! 다리를 건넜어.', '돈을 조금 내고 건넜어.'),
+  spellingEvent('bandit_spelling_6', 'quiz_bandit', 'land', '장터길 말놀이', 'bandit', '침착하게 바른 말을 골라봐.', ['안 돼', '안 되', '않 돼'], '안 돼', '정답! 길이 환해졌어.', '괜찮아. 다시 묶고 가자.', { stars: 1 }, { coins: -5, loseCargo: 1 }),
+  spellingEvent('pirate_spelling_1', 'quiz_pirate', 'sea', '바다 말놀이꾼', 'pirate', '맞춤말을 맞히면 지나갈 수 있어.', ['바닷길', '바다길', '바닫길'], '바닷길', '정답! 바닷길이 열렸어.', '파도가 높아 조금 돌아갔어.'),
+  spellingEvent('pirate_spelling_2', 'quiz_pirate', 'sea', '바다 말문제', 'pirate', '바른 말을 고르면 무사히 지나가.', ['돛단배', '돗단배', '돛딴배'], '돛단배', '정답! 바람이 도와줬어.', '배를 천천히 돌렸어.', { stars: 1 }, { coins: -5, loseCargo: 1 }),
   spellingEvent('pirate_spelling_3', 'quiz_pirate', 'sea', '바다 위 퀴즈', 'pirate', '차분히 보고 골라봐.', ['도착', '도작', '도착크'], '도착', '정답! 곧 항구에 닿아.', '조금 늦었지만 괜찮아.', { coins: 5 }, { coins: -5 }),
-  spellingEvent('pirate_spelling_4', 'quiz_pirate', 'sea', '안개 속 해적', 'pirate', '안개 속에서도 바른 말을 찾아보자.', ['물결', '물껼', '물결르'], '물결', '정답! 물길이 열렸어.', '조금 돌아서 갔어.'),
-  spellingEvent('pirate_spelling_5', 'quiz_pirate', 'sea', '섬 앞 해적', 'pirate', '섬 이름보다 말을 먼저 골라야 해.', ['괜히', '괜이', '괜히이'], '괜히', '정답! 해적이 웃으며 보내줬어.', '돈을 조금 잃었어.'),
-  spellingEvent('pirate_spelling_6', 'quiz_pirate', 'sea', '큰 파도 해적', 'pirate', '바른 말을 고르면 파도를 넘어가.', ['금세', '금새', '금쎄'], '금세', '정답! 금세 지나갔어.', '잠깐 멈췄다가 갔어.'),
+  spellingEvent('pirate_spelling_4', 'quiz_pirate', 'sea', '안개 속 말놀이', 'pirate', '안개 속에서도 바른 말을 찾아보자.', ['물결', '물껼', '물결르'], '물결', '정답! 물길이 열렸어.', '조금 돌아서 갔어.'),
+  spellingEvent('pirate_spelling_5', 'quiz_pirate', 'sea', '섬 앞 말놀이', 'pirate', '섬 이름보다 말을 먼저 골라야 해.', ['괜히', '괜이', '괜히이'], '괜히', '정답! 모두 웃으며 보내줬어.', '돈을 조금 썼어.'),
+  spellingEvent('pirate_spelling_6', 'quiz_pirate', 'sea', '큰 파도 말놀이', 'pirate', '바른 말을 고르면 파도를 넘어가.', ['금세', '금새', '금쎄'], '금세', '정답! 금세 지나갔어.', '잠깐 멈췄다가 갔어.'),
   spellingEvent('animal_spelling_1', 'quiz_animal', 'land', '산길의 멧돼지', 'animal', '놀라지 말고 바른 말을 골라봐.', ['멧돼지', '멧되찌', '메돼지'], '멧돼지', '정답! 조용히 지나갔어.', '짐 하나가 흔들렸어.', { stars: 1 }, { loseCargo: 1 }),
   spellingEvent('animal_spelling_2', 'quiz_animal', 'land', '숲속 까치', 'animal', '까치가 글자를 물어봤어.', ['까치', '가치', '깟치'], '까치', '정답! 까치가 길을 알려줬어.', '조금 돌아갔어.'),
   spellingEvent('animal_spelling_3', 'quiz_animal', 'land', '산토끼의 질문', 'animal', '토끼가 뛰기 전에 골라보자.', ['토끼', '토기', '톳끼'], '토끼', '정답! 산길이 편해졌어.', '천천히 따라갔어.'),
@@ -1137,6 +1298,258 @@ export const JUNIOR_REGIONAL_EVENTS: JuniorRegionalEvent[] = [
   }
 ];
 
+type JuniorStoryEventSeed = {
+  id: string;
+  title: string;
+  storySource: string;
+  category: JuniorStoryCategory;
+  regionId: string;
+  mountainId?: JuniorStoryEvent['mountainId'];
+  routeId?: string;
+  triggerType: JuniorStoryTriggerType;
+  prerequisiteEventIds?: string[];
+  rumorCityIds: JuniorCityId[];
+  marker: string;
+  rumor: string;
+  event: string;
+  solution: string;
+  choice: string;
+  result: string;
+  quiz?: JuniorStoryEvent['quiz'];
+  requiredGoodId?: JuniorGoodId;
+  reward: JuniorReward;
+  childSafetyNotes: string;
+  chainId?: string;
+  chainStep?: number;
+};
+
+function juniorStoryEvent(seed: JuniorStoryEventSeed): JuniorStoryEvent {
+  return {
+    id: seed.id,
+    title: seed.title,
+    storySource: seed.storySource,
+    category: seed.category,
+    regionId: seed.regionId,
+    mountainId: seed.mountainId,
+    routeId: seed.routeId,
+    triggerType: seed.triggerType,
+    prerequisiteEventIds: seed.prerequisiteEventIds ?? [],
+    rumorCityIds: seed.rumorCityIds,
+    mapMarker: { label: seed.marker, status: 'rumor' },
+    dialogueCuts: [
+      { type: 'rumor', speaker: '소문꾼', text: seed.rumor },
+      { type: 'event', speaker: '바람이', text: seed.event },
+      { type: 'solution', speaker: '정우', text: seed.solution }
+    ],
+    choices: [{ label: seed.choice, resultText: seed.result, reward: seed.reward }],
+    quiz: seed.quiz,
+    requiredGoodId: seed.requiredGoodId,
+    reward: seed.reward,
+    childSafetyNotes: seed.childSafetyNotes,
+    once: true,
+    chainId: seed.chainId,
+    chainStep: seed.chainStep
+  };
+}
+
+export const JUNIOR_MOUNTAINS: JuniorMountainStoryLocation[] = [
+  { id: 'baekdu', name: '백두산', nearbyCityIds: ['cheongjin', 'north_port', 'sinuiju'], routeType: 'northeast_mountain_road', shortDescription: '하얀 산길과 맑은 바람 이야기.', storyEventIds: ['E01', 'E02'] },
+  { id: 'taebaek', name: '태백산', nearbyCityIds: ['gangneung', 'wonsan', 'hamheung'], routeType: 'east_mountain_road', shortDescription: '천천히 기다리는 마음을 배우는 산.', storyEventIds: ['E03', 'E04'] },
+  { id: 'songni', name: '속리산', nearbyCityIds: ['andong', 'daegu', 'jeonju'], routeType: 'mountain_paper_road', shortDescription: '정직한 마음을 비추는 숲길.', storyEventIds: ['E05', 'E06'] },
+  { id: 'gyeryong', name: '계룡산', nearbyCityIds: ['seoul', 'jeonju', 'gaeseong'], routeType: 'inland_market_road', shortDescription: '밤 장터 소문이 도는 산길.', storyEventIds: ['E07', 'E08'] },
+  { id: 'deogyu', name: '덕유산', nearbyCityIds: ['jeonju', 'gwangju', 'jinju'], routeType: 'south_inland_road', shortDescription: '서로 나누는 형제 마음 이야기.', storyEventIds: ['E09', 'E10'] },
+  { id: 'naejang', name: '내장산', nearbyCityIds: ['jeonju', 'gwangju', 'mokpo'], routeType: 'autumn_leaf_road', shortDescription: '단풍잎에 편지를 싣는 산.', storyEventIds: ['E11', 'E12'] },
+  { id: 'mudeung', name: '무등산', nearbyCityIds: ['gwangju', 'suncheon', 'mokpo'], routeType: 'stone_pillar_road', shortDescription: '돌기둥과 약속을 배우는 산.', storyEventIds: ['E13', 'E14'] },
+  { id: 'gaya', name: '가야산', nearbyCityIds: ['andong', 'daegu', 'jinju'], routeType: 'book_wind_road', shortDescription: '책장 넘기는 바람이 부는 산.', storyEventIds: ['E15', 'E16'] },
+  { id: 'chiak', name: '치악산', nearbyCityIds: ['chuncheon', 'seoul', 'gangneung'], routeType: 'north_capital_road', shortDescription: '작은 도움을 기억하는 산길.', storyEventIds: ['E17', 'E18'] },
+  { id: 'wolchul', name: '월출산', nearbyCityIds: ['mokpo', 'gwangju', 'yeosu'], routeType: 'moon_bridge_road', shortDescription: '달과 별을 올려다보는 산.', storyEventIds: ['E19', 'E20'] },
+  { id: 'gwanak', name: '관악산', nearbyCityIds: ['seoul', 'incheon', 'gaeseong'], routeType: 'capital_hill_road', shortDescription: '빠른 발보다 바른 마음을 보는 산.', storyEventIds: ['E21', 'E22'] },
+  { id: 'guwol', name: '구월산', nearbyCityIds: ['pyongyang', 'nampo', 'sinuiju'], routeType: 'north_market_road', shortDescription: '정직한 장부를 살피는 산.', storyEventIds: ['E23', 'E24', 'E25'] },
+  { id: 'jiri', name: '지리산', nearbyCityIds: ['jinju', 'suncheon', 'daegu'], routeType: 'rice_cake_pass', shortDescription: '떡고개와 약속을 잇는 산길.', storyEventIds: ['E26', 'E27'] },
+  { id: 'geumgang', name: '금강산', nearbyCityIds: ['wonsan', 'gangneung', 'hamheung'], routeType: 'fairy_cloth_road', shortDescription: '잃어버린 옷감을 돌려주는 산.', storyEventIds: ['E28', 'E29'] },
+  { id: 'halla', name: '한라산', nearbyCityIds: ['jeju', 'tongyeong', 'yeosu'], routeType: 'jeju_sea_route', shortDescription: '큰 손과 바람, 말 이야기가 있는 산.', storyEventIds: ['E30', 'E31'] }
+];
+
+export const JUNIOR_STORY_EVENTS: JuniorStoryEvent[] = [
+  juniorStoryEvent({ id: 'E01', title: '백두산 흰 호랑이 1', storySource: '백두산 호랑이 설화', category: 'mountain_folktale', regionId: 'hamgyeong', mountainId: 'baekdu', routeId: 'northeast_mountain_road', triggerType: 'rumor', rumorCityIds: ['cheongjin', 'north_port'], marker: '백두산 소문', rumor: '백두산 길에 하얀 호랑이가 떡 냄새를 찾는대.', event: '배고픈 호랑이가 떡 보따리를 보고 있어.', solution: '떡을 조금 나누고 길을 물어보자.', choice: '떡을 나누기', result: '호랑이가 고맙다며 눈길 표식을 알려 줬어.', requiredGoodId: 'rice', reward: { stars: 1, storyFragment: 'baekdu_tiger_kindness' }, childSafetyNotes: '호랑이는 배고픈 길동무로 순화한다.', chainId: 'baekdu_tiger', chainStep: 1 }),
+  juniorStoryEvent({ id: 'E02', title: '백두산 흰 호랑이 2', storySource: '백두산 호랑이 설화', category: 'mountain_folktale', regionId: 'hamgyeong', mountainId: 'baekdu', routeId: 'northeast_mountain_road', triggerType: 'chain_followup', prerequisiteEventIds: ['E01'], rumorCityIds: ['cheongjin'], marker: '흰 발자국', rumor: '흰 발자국이 장부 빛을 따라간대.', event: '호랑이가 눈 위에 둥근 길표를 남겼어.', solution: '발자국을 따라 장부 조각을 찾아보자.', choice: '발자국 따라가기', result: '장부에 산바람 그림이 남았어.', reward: { coins: 6, storyFragment: 'baekdu_snow_mark' }, childSafetyNotes: '호랑이는 길을 알려 주는 장면으로 만든다.', chainId: 'baekdu_tiger', chainStep: 2 }),
+  juniorStoryEvent({ id: 'E03', title: '태백산 곰의 인내 1', storySource: '곰의 인내 설화', category: 'mountain_folktale', regionId: 'gangwon', mountainId: 'taebaek', routeId: 'east_mountain_road', triggerType: 'rumor', rumorCityIds: ['gangneung', 'wonsan'], marker: '태백산 기다림', rumor: '태백산 곰은 천천히 기다리는 법을 안대.', event: '곰이 비가 그칠 때까지 조용히 앉아 있어.', solution: '서두르지 말고 날씨를 살피자.', choice: '기다리기', result: '비가 그치고 길이 반짝였어.', quiz: { question: '비 올 때 먼저 볼 것은?', options: ['날씨', '소리'], answer: '날씨', correctText: '맞아. 날씨를 먼저 봐.', wrongText: '괜찮아. 다시 살펴보자.' }, reward: { seyeonNotebookProgress: 'weather', storyFragment: 'bear_patience' }, childSafetyNotes: '곰은 인내를 알려 주는 친구로 표현한다.', chainId: 'bear_patience', chainStep: 1 }),
+  juniorStoryEvent({ id: 'E04', title: '태백산 곰의 인내 2', storySource: '곰의 인내 설화', category: 'mountain_folktale', regionId: 'gangwon', mountainId: 'taebaek', routeId: 'east_mountain_road', triggerType: 'chain_followup', prerequisiteEventIds: ['E03'], rumorCityIds: ['gangneung'], marker: '곰의 표식', rumor: '곰이 기다린 자리에는 작은 돌탑이 선대.', event: '작은 돌탑 옆에 쉬어 가는 길이 있어.', solution: '돌탑을 정리하고 다음 사람을 돕자.', choice: '돌탑 정리', result: '세연이 노트에 기다림 표시가 생겼어.', reward: { stars: 1, storyFragment: 'bear_stone_stack' }, childSafetyNotes: '시련을 강요하지 않고 쉬어 가는 태도로 각색한다.', chainId: 'bear_patience', chainStep: 2 }),
+  juniorStoryEvent({ id: 'E05', title: '속리산 금도끼 1', storySource: '금도끼 은도끼', category: 'mountain_folktale', regionId: 'chungcheong', mountainId: 'songni', routeId: 'mountain_paper_road', triggerType: 'rumor', rumorCityIds: ['jeonju', 'andong'], marker: '정직한 샘', rumor: '속리산 샘은 정직한 마음을 비춘대.', event: '샘가에 잃어버린 나무 도끼가 있어.', solution: '주인을 찾아 돌려주자.', choice: '도끼 돌려주기', result: '주인이 고맙다며 길값을 보태 줬어.', reward: { coins: 8, storyFragment: 'honest_axe_return' }, childSafetyNotes: '욕심 비교보다 정직하게 물건을 돌려주는 흐름으로 단순화한다.', chainId: 'honest_axe', chainStep: 1 }),
+  juniorStoryEvent({ id: 'E06', title: '속리산 금도끼 2', storySource: '금도끼 은도끼', category: 'mountain_folktale', regionId: 'chungcheong', mountainId: 'songni', routeId: 'mountain_paper_road', triggerType: 'chain_followup', prerequisiteEventIds: ['E05'], rumorCityIds: ['jeonju'], marker: '빛나는 도끼', rumor: '샘물이 반짝이면 장부도 같이 빛난대.', event: '샘 위에 금빛 그림자가 잠깐 떠올랐어.', solution: '진짜 내 것이 아니라고 말하자.', choice: '정직하게 말하기', result: '장부에 정직 표식이 생겼어.', reward: { stars: 1, storyFragment: 'honest_axe_light', cosmeticItemUnlock: 'story_gold_axe_decor' }, childSafetyNotes: '탐내는 장면보다 정직한 선택만 다룬다.', chainId: 'honest_axe', chainStep: 2 }),
+  juniorStoryEvent({ id: 'E07', title: '계룡산 도깨비 장터 1', storySource: '도깨비 장터 설화', category: 'market_story', regionId: 'chungcheong', mountainId: 'gyeryong', routeId: 'inland_market_road', triggerType: 'rumor', rumorCityIds: ['seoul', 'jeonju'], marker: '밤 장터', rumor: '계룡산 밤 장터엔 이상한 물건 이름이 많대.', event: '도깨비들이 웃으며 물건 이름 맞히기를 해.', solution: '차분히 이름표를 읽어 주자.', choice: '이름표 읽기', result: '도깨비가 별 모양 콩을 줬어.', quiz: { question: '장터에서 먼저 보는 것은?', options: ['이름표', '구름'], answer: '이름표', correctText: '맞아. 이름표를 보자.', wrongText: '괜찮아. 천천히 보자.' }, reward: { stars: 1, storyFragment: 'goblin_market_names' }, childSafetyNotes: '도깨비는 장난 많은 상인으로 표현하고 겁주는 장면을 빼다.', chainId: 'goblin_market', chainStep: 1 }),
+  juniorStoryEvent({ id: 'E08', title: '계룡산 도깨비 방망이 2', storySource: '도깨비 방망이 설화', category: 'market_story', regionId: 'chungcheong', mountainId: 'gyeryong', routeId: 'inland_market_road', triggerType: 'chain_followup', prerequisiteEventIds: ['E07'], rumorCityIds: ['seoul'], marker: '장난 방망이', rumor: '도깨비 방망이는 물건을 정리할 때만 반짝인대.', event: '방망이가 흩어진 물건을 톡톡 정리해.', solution: '필요한 물건만 가지자.', choice: '물건 정리', result: '장터가 깨끗해지고 소문이 좋아졌어.', reward: { rumorUnlock: ['gyeryong_clean_market'], storyFragment: 'goblin_club_sorting', cosmeticItemUnlock: 'story_goblin_club_decor' }, childSafetyNotes: '방망이는 때리는 도구가 아니라 정리 도구로 각색한다.', chainId: 'goblin_market', chainStep: 2 }),
+  juniorStoryEvent({ id: 'E09', title: '덕유산 의좋은 형제 1', storySource: '의좋은 형제', category: 'mountain_folktale', regionId: 'jeolla', mountainId: 'deogyu', routeId: 'south_inland_road', triggerType: 'rumor', rumorCityIds: ['jeonju', 'gwangju'], marker: '나눔 볏단', rumor: '덕유산 아래 형제가 서로 쌀을 나눈대.', event: '두 형제가 몰래 볏단을 서로에게 옮기고 있어.', solution: '서로의 마음을 알려 주자.', choice: '마음 전하기', result: '형제가 웃으며 함께 밥을 먹었어.', reward: { coins: 5, storyFragment: 'brothers_share_rice' }, childSafetyNotes: '가난을 슬프게 강조하지 않고 서로 돕는 마음에 초점을 둔다.', chainId: 'good_brothers', chainStep: 1 }),
+  juniorStoryEvent({ id: 'E10', title: '덕유산 의좋은 형제 2', storySource: '의좋은 형제', category: 'mountain_folktale', regionId: 'jeolla', mountainId: 'deogyu', routeId: 'south_inland_road', triggerType: 'chain_followup', prerequisiteEventIds: ['E09'], rumorCityIds: ['gwangju'], marker: '함께 짓는 곳간', rumor: '형제가 작은 곳간을 함께 고친대.', event: '곳간 문이 삐걱여 곡식을 넣기 어려워.', solution: '나무판을 잡아 주고 문을 고치자.', choice: '곳간 돕기', result: '함께 쓰는 곳간이 튼튼해졌어.', reward: { stars: 1, storyFragment: 'brothers_storehouse' }, childSafetyNotes: '부족함보다 협동과 나눔을 밝게 보여 준다.', chainId: 'good_brothers', chainStep: 2 }),
+  juniorStoryEvent({ id: 'E11', title: '내장산 단풍 편지 1', storySource: '내장산 단풍 설화', category: 'regional_learning', regionId: 'jeolla', mountainId: 'naejang', routeId: 'autumn_leaf_road', triggerType: 'rumor', rumorCityIds: ['jeonju', 'gwangju'], marker: '단풍 편지', rumor: '내장산 단풍잎에는 고운 말이 적힌대.', event: '단풍잎 한 장이 세연이 노트에 내려앉았어.', solution: '짧은 편지를 적어 보자.', choice: '편지 쓰기', result: '세연이가 글 공부를 더 좋아하게 됐어.', requiredGoodId: 'paper', reward: { seyeonNotebookProgress: 'writing', storyFragment: 'maple_letter_start' }, childSafetyNotes: '쓸쓸한 이별 정서 없이 계절 편지로 표현한다.', chainId: 'maple_letter', chainStep: 1 }),
+  juniorStoryEvent({ id: 'E12', title: '내장산 단풍 편지 2', storySource: '내장산 단풍 설화', category: 'regional_learning', regionId: 'jeolla', mountainId: 'naejang', routeId: 'autumn_leaf_road', triggerType: 'chain_followup', prerequisiteEventIds: ['E11'], rumorCityIds: ['gwangju'], marker: '붉은 답장', rumor: '단풍잎 답장은 바람을 타고 온대.', event: '세연이의 답장이 장부 사이에 꽂혔어.', solution: '답장을 읽고 노트에 붙이자.', choice: '노트에 붙이기', result: '글 노트가 한 칸 채워졌어.', reward: { stars: 1, storyFragment: 'maple_letter_reply' }, childSafetyNotes: '편지는 따뜻한 소통으로만 다룬다.', chainId: 'maple_letter', chainStep: 2 }),
+  juniorStoryEvent({ id: 'E13', title: '무등산 돌기둥 1', storySource: '무등산 주상절리 이야기', category: 'regional_learning', regionId: 'jeolla', mountainId: 'mudeung', routeId: 'stone_pillar_road', triggerType: 'first_visit', rumorCityIds: ['gwangju'], marker: '돌기둥 길', rumor: '무등산 돌기둥은 줄을 맞춰 선 책 같대.', event: '큰 돌기둥들이 나란히 서 있어.', solution: '모양을 세어 산수 노트에 적자.', choice: '기둥 세기', result: '세연이가 수를 세는 법을 익혔어.', reward: { seyeonNotebookProgress: 'math', storyFragment: 'mudeung_pillars_count' }, childSafetyNotes: '자연 지형을 관찰 학습으로 다룬다.', chainId: 'mudeung_pillars', chainStep: 1 }),
+  juniorStoryEvent({ id: 'E14', title: '무등산 돌기둥 2', storySource: '무등산 주상절리 이야기', category: 'regional_learning', regionId: 'jeolla', mountainId: 'mudeung', routeId: 'stone_pillar_road', triggerType: 'chain_followup', prerequisiteEventIds: ['E13'], rumorCityIds: ['gwangju', 'suncheon'], marker: '돌그림 지도', rumor: '돌기둥 그림을 이으면 길 모양이 된대.', event: '돌 그림이 지도처럼 이어져 있어.', solution: '돌그림을 따라 안전한 길을 표시하자.', choice: '길 표시하기', result: '지도 노트에 돌길 표시가 생겼어.', reward: { seyeonNotebookProgress: 'map', storyFragment: 'mudeung_stone_map' }, childSafetyNotes: '높은 곳 묘사는 줄이고 관찰 길로 바꾼다.', chainId: 'mudeung_pillars', chainStep: 2 }),
+  juniorStoryEvent({ id: 'E15', title: '가야산 책 바람 1', storySource: '가야산과 책 이야기', category: 'regional_learning', regionId: 'gyeongsang', mountainId: 'gaya', routeId: 'book_wind_road', triggerType: 'rumor', rumorCityIds: ['andong', 'daegu'], marker: '책 바람', rumor: '가야산에는 책장을 넘기는 바람이 분대.', event: '바람이 책갈피를 살짝 넘겼어.', solution: '잃어버린 책갈피를 찾아 주자.', choice: '책갈피 찾기', result: '책 주인이 고맙다며 좋은 글귀를 알려 줬어.', requiredGoodId: 'paper', reward: { stars: 1, storyFragment: 'gaya_book_wind' }, childSafetyNotes: '종교적 세부보다 책과 배움의 분위기에 집중한다.', chainId: 'gaya_books', chainStep: 1 }),
+  juniorStoryEvent({ id: 'E16', title: '가야산 책 바람 2', storySource: '가야산과 책 이야기', category: 'regional_learning', regionId: 'gyeongsang', mountainId: 'gaya', routeId: 'book_wind_road', triggerType: 'chain_followup', prerequisiteEventIds: ['E15'], rumorCityIds: ['andong'], marker: '바람 책갈피', rumor: '바람 책갈피는 읽은 곳을 기억한대.', event: '책갈피가 세연이 노트 위에 내려앉았어.', solution: '오늘 배운 말을 한 줄 적자.', choice: '한 줄 쓰기', result: '세연이 글 노트가 반짝였어.', reward: { seyeonNotebookProgress: 'writing', storyFragment: 'gaya_bookmark_line' }, childSafetyNotes: '공부 압박이 아니라 발견의 기쁨으로 표현한다.', chainId: 'gaya_books', chainStep: 2 }),
+  juniorStoryEvent({ id: 'E17', title: '치악산 은혜 갚은 꿩 1', storySource: '은혜 갚은 꿩', category: 'mountain_folktale', regionId: 'gangwon', mountainId: 'chiak', routeId: 'north_capital_road', triggerType: 'rumor', rumorCityIds: ['chuncheon', 'seoul'], marker: '꿩의 부탁', rumor: '치악산 꿩이 길 잃은 아이를 도와준대.', event: '꿩이 작은 종끈을 부리로 물고 있어.', solution: '끈이 걸린 가지를 풀어 주자.', choice: '가지 풀기', result: '꿩이 고운 울음으로 길을 알려 줬어.', reward: { stars: 1, storyFragment: 'pheasant_helped' }, childSafetyNotes: '걸린 끈을 풀어 주는 도움으로 순화한다.', chainId: 'pheasant_gratitude', chainStep: 1 }),
+  juniorStoryEvent({ id: 'E18', title: '치악산 은혜 갚은 꿩 2', storySource: '은혜 갚은 꿩', category: 'mountain_folktale', regionId: 'gangwon', mountainId: 'chiak', routeId: 'north_capital_road', triggerType: 'chain_followup', prerequisiteEventIds: ['E17'], rumorCityIds: ['chuncheon'], marker: '고마운 울음', rumor: '꿩 울음이 들리면 좋은 길이 열린대.', event: '꿩이 종소리 같은 울음으로 쉬운 길을 알려 줘.', solution: '소리를 따라 조용히 이동하자.', choice: '소리 따라가기', result: '먼 길을 편하게 지나갔어.', reward: { coins: 5, storyFragment: 'pheasant_safe_path' }, childSafetyNotes: '보은의 의미만 살리고 공포 요소는 제거한다.', chainId: 'pheasant_gratitude', chainStep: 2 }),
+  juniorStoryEvent({ id: 'E19', title: '월출산 달토끼 1', storySource: '달토끼 설화', category: 'mountain_folktale', regionId: 'jeolla', mountainId: 'wolchul', routeId: 'moon_bridge_road', triggerType: 'rumor', rumorCityIds: ['mokpo', 'gwangju'], marker: '달토끼 절구', rumor: '월출산 달빛 아래 토끼가 떡을 빚는대.', event: '달토끼가 작은 떡을 둥글게 만들고 있어.', solution: '쌀 한 줌을 전하고 달 모양을 배우자.', choice: '쌀 전하기', result: '달토끼가 둥근 달 표시를 그려 줬어.', requiredGoodId: 'rice', reward: { stars: 1, storyFragment: 'moon_rabbit_rice' }, childSafetyNotes: '달토끼는 평화로운 밤 친구로 표현한다.', chainId: 'moon_rabbit', chainStep: 1 }),
+  juniorStoryEvent({ id: 'E20', title: '월출산 별다리 2', storySource: '월출산 달과 별 이야기', category: 'mountain_folktale', regionId: 'jeolla', mountainId: 'wolchul', routeId: 'moon_bridge_road', triggerType: 'chain_followup', prerequisiteEventIds: ['E19'], rumorCityIds: ['mokpo'], marker: '별다리', rumor: '달토끼가 별을 이어 다리를 놓는대.', event: '별점들이 지도처럼 이어져 있어.', solution: '별을 세고 방향을 적자.', choice: '별 세기', result: '날씨 노트에 밤하늘 칸이 열렸어.', reward: { seyeonNotebookProgress: 'weather', storyFragment: 'moon_star_bridge' }, childSafetyNotes: '밤은 별 관찰 시간으로 다룬다.', chainId: 'moon_rabbit', chainStep: 2 }),
+  juniorStoryEvent({ id: 'E21', title: '관악산 홍길동 1', storySource: '홍길동전', category: 'historical', regionId: 'gyeonggi', mountainId: 'gwanak', routeId: 'capital_hill_road', triggerType: 'rumor', rumorCityIds: ['seoul', 'incheon'], marker: '빠른 발 소문', rumor: '관악산 길에 홍길동 이름을 아는 사람이 있대.', event: '홍길동이 빠른 발보다 바른 말을 먼저 보자고 해.', solution: '상인 장부의 틀린 값을 찾아 주자.', choice: '값 확인하기', result: '홍길동이 정직한 장사라며 웃었어.', quiz: { question: '장부에서 먼저 볼 것은?', options: ['값', '색'], answer: '값', correctText: '맞아. 값을 확인해.', wrongText: '괜찮아. 다시 보자.' }, reward: { seyeonNotebookProgress: 'math', storyFragment: 'hong_gildong_honest_count', cosmeticItemUnlock: 'story_hong_headband' }, childSafetyNotes: '홍길동은 싸우는 인물이 아니라 빠르고 공정한 조언자로 표현한다.', chainId: 'hong_gildong', chainStep: 1 }),
+  juniorStoryEvent({ id: 'E22', title: '관악산 홍길동 2', storySource: '홍길동전', category: 'historical', regionId: 'gyeonggi', mountainId: 'gwanak', routeId: 'capital_hill_road', triggerType: 'chain_followup', prerequisiteEventIds: ['E21'], rumorCityIds: ['seoul'], marker: '공정한 길', rumor: '홍길동은 빠른 길보다 모두가 편한 길을 고른대.', event: '두 갈래 길 앞에서 아이들이 망설여.', solution: '지도에 쉬운 길을 표시하자.', choice: '쉬운 길 표시', result: '지도 노트에 공정한 길이 생겼어.', reward: { seyeonNotebookProgress: 'map', storyFragment: 'hong_gildong_fair_path' }, childSafetyNotes: '공정함과 길 안내만 남긴다.', chainId: 'hong_gildong', chainStep: 2 }),
+  juniorStoryEvent({ id: 'E23', title: '구월산 임꺽정 1', storySource: '임꺽정 이야기', category: 'historical', regionId: 'hwanghae', mountainId: 'guwol', routeId: 'north_market_road', triggerType: 'rumor', rumorCityIds: ['pyongyang', 'nampo'], marker: '정직 시험', rumor: '구월산에 정직한 장사를 묻는 임꺽정 소문이 있어.', event: '임꺽정이 장부 숫자가 맞는지 물어봐.', solution: '산 물건과 판 물건을 차근차근 세자.', choice: '장부 세기', result: '숫자가 맞아서 길이 밝아졌어.', reward: { coins: 7, storyFragment: 'im_kkeokjeong_ledger_check' }, childSafetyNotes: '임꺽정은 정직함을 묻는 인물로 순화한다.', chainId: 'im_kkeokjeong', chainStep: 1 }),
+  juniorStoryEvent({ id: 'E24', title: '구월산 임꺽정 2', storySource: '임꺽정 이야기', category: 'historical', regionId: 'hwanghae', mountainId: 'guwol', routeId: 'north_market_road', triggerType: 'chain_followup', prerequisiteEventIds: ['E23'], rumorCityIds: ['nampo'], marker: '나눔 장부', rumor: '임꺽정은 나눌 물건도 장부에 적는대.', event: '길손들이 종이와 소금을 함께 나누고 있어.', solution: '필요한 만큼만 적어 주자.', choice: '나눔 적기', result: '나눔 장부가 깔끔해졌어.', reward: { stars: 1, storyFragment: 'im_kkeokjeong_share_list' }, childSafetyNotes: '의적 서사를 나눔과 기록의 이야기로 바꾼다.', chainId: 'im_kkeokjeong', chainStep: 2 }),
+  juniorStoryEvent({ id: 'E25', title: '구월산 임꺽정 3', storySource: '임꺽정 이야기', category: 'main_clue', regionId: 'hwanghae', mountainId: 'guwol', routeId: 'north_market_road', triggerType: 'chain_followup', prerequisiteEventIds: ['E24'], rumorCityIds: ['pyongyang'], marker: '장부 단서', rumor: '구월산 장부에는 돌아갈 문 단서가 있대.', event: '정직한 기록 위에 장부 빛이 떠올랐어.', solution: '빛나는 줄을 따라 단서를 읽자.', choice: '단서 읽기', result: '장부 단서 하나를 찾았어.', reward: { ledgerClue: 1, storyFragment: 'im_kkeokjeong_main_clue', cosmeticItemUnlock: 'story_im_wood_tag' }, childSafetyNotes: '거친 묘사 없이 정직한 기록이 단서를 여는 장면으로 만든다.', chainId: 'im_kkeokjeong', chainStep: 3 }),
+  juniorStoryEvent({ id: 'E26', title: '지리산 호랑이 떡고개 1', storySource: '호랑이 떡고개 이야기', category: 'mountain_folktale', regionId: 'gyeongsang', mountainId: 'jiri', routeId: 'rice_cake_pass', triggerType: 'rumor', rumorCityIds: ['jinju', 'suncheon'], marker: '떡고개', rumor: '지리산 고개에 떡을 좋아하는 호랑이가 있대.', event: '호랑이가 떡 냄새를 맡고 배를 만져.', solution: '떡을 나누고 길 약속을 하자.', choice: '떡 나누기', result: '호랑이가 고개 이름을 알려 줬어.', requiredGoodId: 'rice', reward: { stars: 1, storyFragment: 'jiri_rice_cake_pass', cosmeticItemUnlock: 'story_tiger_rice_charm' }, childSafetyNotes: '호랑이는 떡을 찾는 배고픈 친구로 순화한다.', chainId: 'jiri_tiger', chainStep: 1 }),
+  juniorStoryEvent({ id: 'E27', title: '지리산 호랑이 약속 2', storySource: '호랑이 떡고개 이야기', category: 'mountain_folktale', regionId: 'gyeongsang', mountainId: 'jiri', routeId: 'rice_cake_pass', triggerType: 'chain_followup', prerequisiteEventIds: ['E26'], rumorCityIds: ['jinju'], marker: '호랑이 약속', rumor: '떡고개 호랑이는 약속을 잘 지킨대.', event: '호랑이가 다음 길손 몫의 떡을 남겨 두었어.', solution: '약속 표식을 장부에 적자.', choice: '약속 적기', result: '장사 노트에 약속 칸이 생겼어.', reward: { seyeonNotebookProgress: 'trade', storyFragment: 'jiri_tiger_promise' }, childSafetyNotes: '원전의 무서운 요소를 약속과 배려 이야기로 바꾼다.', chainId: 'jiri_tiger', chainStep: 2 }),
+  juniorStoryEvent({ id: 'E28', title: '금강산 선녀의 옷감 1', storySource: '선녀의 옷감 이야기', category: 'mountain_folktale', regionId: 'gangwon', mountainId: 'geumgang', routeId: 'fairy_cloth_road', triggerType: 'rumor', rumorCityIds: ['wonsan', 'gangneung'], marker: '잃어버린 옷감', rumor: '금강산 바람에 고운 옷감이 날아갔대.', event: '선녀가 잃어버린 옷감을 찾고 있어.', solution: '나뭇가지에 걸린 옷감을 내려 주자.', choice: '옷감 돌려주기', result: '선녀가 고맙다며 바람 길을 알려 줬어.', requiredGoodId: 'cotton_cloth', reward: { stars: 1, storyFragment: 'fairy_cloth_returned', cosmeticItemUnlock: 'story_fairy_ribbon' }, childSafetyNotes: '잃어버린 옷감 돌려주기로만 각색한다.', chainId: 'fairy_cloth_safe', chainStep: 1 }),
+  juniorStoryEvent({ id: 'E29', title: '금강산 선녀의 옷감 2', storySource: '선녀의 옷감 이야기', category: 'main_clue', regionId: 'gangwon', mountainId: 'geumgang', routeId: 'fairy_cloth_road', triggerType: 'chain_followup', prerequisiteEventIds: ['E28'], rumorCityIds: ['wonsan'], marker: '옷감 무늬', rumor: '돌려준 옷감 무늬에 장부 글자가 보인대.', event: '옷감 가장자리에 작은 별 무늬가 빛나.', solution: '무늬를 장부에 대 보자.', choice: '무늬 맞추기', result: '장부에 새 바람 글자가 남았어.', reward: { storyFragment: 'fairy_cloth_pattern' }, childSafetyNotes: '선녀는 도움을 받는 독립적인 인물로 표현한다.', chainId: 'fairy_cloth_safe', chainStep: 2 }),
+  juniorStoryEvent({ id: 'E30', title: '한라산 설문대할망 1', storySource: '설문대할망 설화', category: 'mountain_folktale', regionId: 'jeju', mountainId: 'halla', routeId: 'jeju_sea_route', triggerType: 'first_visit', rumorCityIds: ['jeju'], marker: '큰 손 이야기', rumor: '한라산에는 큰 손으로 섬을 돌본 할망 이야기가 있대.', event: '설문대할망이 돌길을 고르게 놓아 줘.', solution: '돌을 세며 길 모양을 배우자.', choice: '돌길 살피기', result: '제주 길이 지도에 또렷해졌어.', reward: { cityStamp: 'jeju', storyFragment: 'seolmundae_stone_path' }, childSafetyNotes: '섬을 돌보는 할머니로 표현한다.', chainId: 'seolmundae', chainStep: 1 }),
+  juniorStoryEvent({ id: 'E31', title: '한라산 바람과 말 2', storySource: '제주 바람과 말 이야기', category: 'regional_learning', regionId: 'jeju', mountainId: 'halla', routeId: 'jeju_sea_route', triggerType: 'chain_followup', prerequisiteEventIds: ['E30'], rumorCityIds: ['jeju'], marker: '바람과 말', rumor: '한라산 바람은 말의 갈기를 흔든대.', event: '말들이 바람 방향을 보고 천천히 걷고 있어.', solution: '바람 방향을 날씨 노트에 적자.', choice: '바람 적기', result: '날씨 노트에 제주 바람이 생겼어.', reward: { seyeonNotebookProgress: 'weather', storyFragment: 'halla_wind_horse' }, childSafetyNotes: '말은 탈것이 아니라 자연을 알려 주는 친구로 다룬다.', chainId: 'seolmundae', chainStep: 2 }),
+  juniorStoryEvent({ id: 'E32', title: '심청전 1 한양 소문', storySource: '심청전 각색', category: 'sea_classic', regionId: 'gyeonggi', routeId: 'west_river_salt_road', triggerType: 'rumor', rumorCityIds: ['seoul'], marker: '연꽃 편지 소문', rumor: '한양에 마음을 전하는 연꽃 편지 소문이 있어.', event: '한양 장터에서 연꽃 무늬 편지를 보았어.', solution: '편지를 보낼 길을 물어보자.', choice: '길 묻기', result: '인천 바닷길 소문을 들었어.', reward: { rumorUnlock: ['simcheong_lotus_letter'], storyFragment: 'simcheong_hanyang_rumor' }, childSafetyNotes: '편지와 마음 전달로 각색한다.', chainId: 'simcheong_letter', chainStep: 1 }),
+  juniorStoryEvent({ id: 'E33', title: '심청전 2 인천 연꽃 편지', storySource: '심청전 각색', category: 'sea_classic', regionId: 'gyeonggi', routeId: 'west_river_salt_road', triggerType: 'chain_followup', prerequisiteEventIds: ['E32'], rumorCityIds: ['incheon'], marker: '연꽃 편지', rumor: '인천 물길에 연꽃 편지를 띄우면 마음이 닿는대.', event: '연꽃 편지가 물 위에서 천천히 떠가.', solution: '젖지 않게 종이를 접어 주자.', choice: '편지 접기', result: '편지가 반듯하게 떠갔어.', requiredGoodId: 'paper', reward: { seyeonNotebookProgress: 'writing', storyFragment: 'simcheong_incheon_letter' }, childSafetyNotes: '바다는 편지가 이동하는 길로 표현한다.', chainId: 'simcheong_letter', chainStep: 2 }),
+  juniorStoryEvent({ id: 'E34', title: '심청전 3 서해 용궁 우체부', storySource: '심청전 각색', category: 'sea_classic', regionId: 'west_sea', routeId: 'island_sea_route', triggerType: 'chain_followup', prerequisiteEventIds: ['E33'], rumorCityIds: ['mokpo', 'incheon'], marker: '용궁 우체부', rumor: '서해 물결에는 용궁 우체부가 편지를 나른대.', event: '작은 물고기 우체부가 연꽃 편지를 들고 있어.', solution: '받는 곳 이름을 또박또박 써 주자.', choice: '이름 쓰기', result: '우체부가 길을 잃지 않았어.', reward: { stars: 1, storyFragment: 'simcheong_sea_post' }, childSafetyNotes: '용궁은 밝은 우체국처럼 표현한다.', chainId: 'simcheong_letter', chainStep: 3 }),
+  juniorStoryEvent({ id: 'E35', title: '심청전 4 마음이 닿은 편지', storySource: '심청전 각색', category: 'main_clue', regionId: 'west_sea', routeId: 'island_sea_route', triggerType: 'chain_followup', prerequisiteEventIds: ['E34'], rumorCityIds: ['mokpo'], marker: '마음 답장', rumor: '연꽃 편지의 답장에 장부 단서가 있대.', event: '연꽃 편지가 따뜻한 답장을 싣고 돌아왔어.', solution: '답장을 장부 사이에 넣어 보자.', choice: '답장 넣기', result: '장부 단서가 반짝였어.', reward: { ledgerClue: 1, storyFragment: 'simcheong_letter_clue', cosmeticItemUnlock: 'story_simcheong_lotus_lamp' }, childSafetyNotes: '가족 마음이 전해지는 편지로 마무리한다.', chainId: 'simcheong_letter', chainStep: 4 }),
+  juniorStoryEvent({ id: 'E36', title: '별주부전 1 목포 토끼 소문', storySource: '별주부전 각색', category: 'sea_classic', regionId: 'jeolla_sea', routeId: 'south_coast_market_road', triggerType: 'rumor', rumorCityIds: ['mokpo'], marker: '토끼 소문', rumor: '목포 장터에 말 잘하는 토끼 소문이 있어.', event: '토끼가 바닷길 이야기를 듣고 귀를 쫑긋해.', solution: '토끼에게 길을 천천히 설명하자.', choice: '길 설명하기', result: '토끼가 고맙다며 수수께끼를 냈어.', quiz: { question: '토끼가 잘하는 것은?', options: ['지혜', '소금'], answer: '지혜', correctText: '맞아. 토끼는 지혜로워.', wrongText: '괜찮아. 다시 생각해 보자.' }, reward: { stars: 1, storyFragment: 'rabbit_mokpo_rumor' }, childSafetyNotes: '잡아간다는 설정을 빼고 토끼의 지혜와 대화로 각색한다.', chainId: 'rabbit_turtle', chainStep: 1 }),
+  juniorStoryEvent({ id: 'E37', title: '별주부전 2 제주 토끼의 지혜', storySource: '별주부전 각색', category: 'sea_classic', regionId: 'jeju', routeId: 'jeju_sea_route', triggerType: 'chain_followup', prerequisiteEventIds: ['E36'], rumorCityIds: ['jeju'], marker: '토끼의 지혜', rumor: '제주 바람길에서 토끼가 좋은 꾀를 냈대.', event: '토끼가 서로 기분 상하지 않는 말을 고르고 있어.', solution: '부드러운 말을 함께 골라 주자.', choice: '좋은 말 고르기', result: '토끼가 말솜씨 책갈피를 줬어.', reward: { seyeonNotebookProgress: 'trade', storyFragment: 'rabbit_jeju_wisdom' }, childSafetyNotes: '속임수보다 말의 지혜와 예의를 배우는 장면으로 바꾼다.', chainId: 'rabbit_turtle', chainStep: 2 }),
+  juniorStoryEvent({ id: 'E38', title: '별주부전 3 용왕의 사과 편지', storySource: '별주부전 각색', category: 'sea_classic', regionId: 'south_sea', routeId: 'jeju_sea_route', triggerType: 'chain_followup', prerequisiteEventIds: ['E37'], rumorCityIds: ['tongyeong', 'jeju'], marker: '사과 편지', rumor: '용왕이 토끼에게 사과 편지를 보냈대.', event: '물결 위에 정중한 편지가 떠 있어.', solution: '편지를 토끼에게 전하자.', choice: '편지 전하기', result: '토끼와 용궁 친구들이 화해했어.', reward: { coins: 6, storyFragment: 'dragon_king_apology', cosmeticItemUnlock: 'story_dragon_shell_decor' }, childSafetyNotes: '사과 편지와 화해로 순화한다.', chainId: 'rabbit_turtle', chainStep: 3 }),
+  juniorStoryEvent({ id: 'E39', title: '바다 용왕의 물결 1', storySource: '용왕 설화', category: 'sea_classic', regionId: 'south_sea', routeId: 'island_sea_route', triggerType: 'rumor', rumorCityIds: ['yeosu', 'tongyeong'], marker: '물결 무늬', rumor: '남해 물결에 용왕의 물결 무늬가 보인대.', event: '물결이 길 표시처럼 반짝이고 있어.', solution: '물결 방향을 지도에 적자.', choice: '물결 적기', result: '바닷길 지도가 또렷해졌어.', reward: { seyeonNotebookProgress: 'map', storyFragment: 'sea_king_wave_map' }, childSafetyNotes: '용왕은 바닷길을 알려 주는 존재로 표현한다.', chainId: 'sea_king_wave', chainStep: 1 }),
+  juniorStoryEvent({ id: 'E40', title: '바다 용왕의 물결 2', storySource: '용왕 설화', category: 'sea_classic', regionId: 'south_sea', routeId: 'island_sea_route', triggerType: 'chain_followup', prerequisiteEventIds: ['E39'], rumorCityIds: ['tongyeong'], marker: '잔잔한 물결', rumor: '용왕 물결을 읽으면 안전한 때를 알 수 있대.', event: '바람이가 물결이 잔잔한 때를 알려 줘.', solution: '출발하기 좋은 때를 기다리자.', choice: '때 기다리기', result: '배가 편하게 움직였어.', reward: { stars: 1, storyFragment: 'sea_king_calm_wave' }, childSafetyNotes: '거친 파도 대신 기다림과 관찰을 배우는 이야기로 만든다.', chainId: 'sea_king_wave', chainStep: 2 }),
+  juniorStoryEvent({ id: 'E41', title: '충무공의 바람 1', storySource: '이순신 장군 이야기', category: 'historical', regionId: 'south_sea', routeId: 'south_coast_market_road', triggerType: 'rumor', rumorCityIds: ['tongyeong', 'yeosu'], marker: '충무공 바람', rumor: '통영 바닷길에는 충무공의 차분한 바람 이야기가 있대.', event: '바람 방향을 살피는 어른들이 조용히 모였어.', solution: '바람과 물때를 노트에 적자.', choice: '바람 적기', result: '세연이가 날씨 보는 법을 배웠어.', reward: { seyeonNotebookProgress: 'weather', storyFragment: 'admiral_wind_note' }, childSafetyNotes: '관찰, 준비, 책임감에 초점을 둔다.', chainId: 'admiral_wind', chainStep: 1 }),
+  juniorStoryEvent({ id: 'E42', title: '충무공의 바람 2', storySource: '이순신 장군 이야기', category: 'main_clue', regionId: 'south_sea', routeId: 'south_coast_market_road', triggerType: 'chain_followup', prerequisiteEventIds: ['E41'], rumorCityIds: ['tongyeong'], marker: '바람 단서', rumor: '충무공의 바람길에 장부 단서가 숨었대.', event: '바람 방향표와 장부 무늬가 딱 맞아.', solution: '방향표를 장부 위에 올려 보자.', choice: '방향표 맞추기', result: '장부 단서 하나가 더 빛났어.', reward: { ledgerClue: 1, storyFragment: 'admiral_wind_clue', cosmeticItemUnlock: 'story_admiral_sword_decor' }, childSafetyNotes: '역사 인물은 차분히 준비하는 지도자로 표현한다.', chainId: 'admiral_wind', chainStep: 2 }),
+  juniorStoryEvent({ id: 'E43', title: '흥부와 제비 1', storySource: '흥부전', category: 'market_story', regionId: 'jeolla', routeId: 'spring_flower_road', triggerType: 'rumor', rumorCityIds: ['jeonju', 'gwangju'], marker: '제비 소식', rumor: '봄 장터에 흥부와 제비 소식이 들린대.', event: '제비가 작은 박씨를 물고 쉬고 있어.', solution: '제비가 쉴 자리를 마련하자.', choice: '쉴 자리 만들기', result: '제비가 박씨를 살짝 내려놓았어.', reward: { stars: 1, storyFragment: 'heungbu_swallow_rest' }, childSafetyNotes: '쉬어 가는 도움으로 순화한다.', chainId: 'heungbu_seed', chainStep: 1 }),
+  juniorStoryEvent({ id: 'E44', title: '흥부와 박씨 2', storySource: '흥부전', category: 'market_story', regionId: 'jeolla', routeId: 'spring_flower_road', triggerType: 'chain_followup', prerequisiteEventIds: ['E43'], rumorCityIds: ['jeonju'], marker: '박씨 선물', rumor: '흥부의 박씨는 욕심보다 나눔을 좋아한대.', event: '작은 박이 열리고 씨앗 봉투가 나왔어.', solution: '씨앗을 필요한 집에 나누자.', choice: '씨앗 나누기', result: '마을 사람들이 함께 밭을 가꾸기로 했어.', reward: { coins: 5, storyFragment: 'heungbu_seed_share' }, childSafetyNotes: '작은 나눔의 기쁨으로 표현한다.', chainId: 'heungbu_seed', chainStep: 2 }),
+  juniorStoryEvent({ id: 'E45', title: '콩쥐의 물동이 1', storySource: '콩쥐팥쥐 각색', category: 'market_story', regionId: 'jeolla', routeId: 'west_river_salt_road', triggerType: 'rumor', rumorCityIds: ['jeonju'], marker: '물동이', rumor: '전주 길에 콩쥐의 물동이 이야기가 있대.', event: '콩쥐가 물동이에 금이 갔는지 살피고 있어.', solution: '새는 곳을 천으로 감싸 주자.', choice: '물동이 돕기', result: '물이 새지 않아 밭에 줄 수 있었어.', requiredGoodId: 'cotton_cloth', reward: { stars: 1, storyFragment: 'kongjwi_water_jar' }, childSafetyNotes: '어려운 일을 함께 돕는 장면으로 바꾼다.', chainId: 'kongjwi_kindness', chainStep: 1 }),
+  juniorStoryEvent({ id: 'E46', title: '콩쥐의 고운 마음 2', storySource: '콩쥐팥쥐 각색', category: 'market_story', regionId: 'jeolla', routeId: 'west_river_salt_road', triggerType: 'chain_followup', prerequisiteEventIds: ['E45'], rumorCityIds: ['jeonju', 'gwangju'], marker: '고운 마음', rumor: '콩쥐가 고운 마음으로 작은 선물을 나눈대.', event: '콩쥐가 남은 곡식을 필요한 곳에 나누려 해.', solution: '누구에게 필요한지 같이 적자.', choice: '나눔 명단 쓰기', result: '장사 노트에 따뜻한 거래가 적혔어.', reward: { seyeonNotebookProgress: 'trade', storyFragment: 'kongjwi_kind_list' }, childSafetyNotes: '친절과 기록에 집중한다.', chainId: 'kongjwi_kindness', chainStep: 2 }),
+  juniorStoryEvent({ id: 'E47', title: '우렁이 논도우미', storySource: '우렁각시 각색', category: 'regional_learning', regionId: 'jeolla', routeId: 'field_rice_road', triggerType: 'market_enter', rumorCityIds: ['gwangju', 'suncheon'], marker: '논도우미', rumor: '논에서 우렁이가 일을 도와준다는 이야기가 있대.', event: '작은 우렁이가 논물 길을 막지 않게 알려 줘.', solution: '물길을 살짝 터 주자.', choice: '물길 터 주기', result: '논물이 고르게 흘렀어.', reward: { coins: 4, storyFragment: 'snail_field_helper' }, childSafetyNotes: '논을 돕는 작은 생명 이야기로 각색한다.' }),
+  juniorStoryEvent({ id: 'E48', title: '장영실의 측우기', storySource: '장영실과 측우기', category: 'historical', regionId: 'gyeonggi', routeId: 'capital_rain_road', triggerType: 'city_visit', rumorCityIds: ['seoul'], marker: '측우기', rumor: '한양에 비의 양을 재는 멋진 그릇이 있대.', event: '장영실이 빗물을 재는 방법을 알려 줘.', solution: '눈금과 숫자를 함께 읽자.', choice: '눈금 읽기', result: '세연이가 날씨와 산수를 함께 배웠어.', quiz: { question: '측우기는 무엇을 재나요?', options: ['비', '불'], answer: '비', correctText: '맞아. 비를 재.', wrongText: '괜찮아. 다시 보자.' }, reward: { seyeonNotebookProgress: 'weather', storyFragment: 'jang_yeongsil_rain_gauge', cosmeticItemUnlock: 'story_rain_gauge' }, childSafetyNotes: '역사 인물을 발명과 관찰의 선생님으로 표현한다.' }),
+  juniorStoryEvent({ id: 'E49', title: '김만덕의 나눔', storySource: '김만덕 이야기', category: 'historical', regionId: 'jeju', routeId: 'jeju_sea_route', triggerType: 'city_visit', rumorCityIds: ['jeju'], marker: '나눔 장터', rumor: '제주 장터에는 김만덕의 나눔 이야기가 전해진대.', event: '김만덕이 필요한 물건을 공평하게 나누고 있어.', solution: '물건 이름과 수량을 장부에 적자.', choice: '나눔 장부 쓰기', result: '세연이가 좋은 장사의 뜻을 배웠어.', reward: { seyeonNotebookProgress: 'trade', storyFragment: 'kim_mandeok_sharing' }, childSafetyNotes: '나눔과 책임감에 초점을 둔다.' }),
+  juniorStoryEvent({ id: 'E50', title: '안동 선비의 책갈피', storySource: '안동 선비와 책 이야기', category: 'regional_learning', regionId: 'gyeongsang', routeId: 'mountain_paper_road', triggerType: 'market_enter', rumorCityIds: ['andong'], marker: '책갈피', rumor: '안동 선비가 잃어버린 책갈피를 찾는대.', event: '책갈피에 고을 이름과 물건 이름이 적혀 있어.', solution: '책갈피를 돌려주고 글자를 읽어 보자.', choice: '책갈피 돌려주기', result: '세연이 글 노트에 새 낱말이 붙었어.', requiredGoodId: 'paper', reward: { seyeonNotebookProgress: 'writing', storyFragment: 'andong_bookmark_words' }, childSafetyNotes: '엄격한 훈계가 아니라 조용히 책을 나누는 이야기로 표현한다.' })
+];
+
+export const JUNIOR_MAIN_STORY_EVENTS: JuniorMainStoryEvent[] = [
+  {
+    id: 'M01',
+    title: '장부의 빛',
+    summary: '낡은 장부가 빛나고 정우가 조선에 온다.',
+    dialogue: [
+      { speaker: '장부', icon: 'ledger', text: '낡은 장부가 반짝였어.' },
+      { speaker: '정우', icon: 'jeongwoo', text: '여기는 어디지?' },
+      { speaker: '바람이', icon: 'fairy', text: '정우야, 여긴 조선이야.' }
+    ],
+    reward: { storyFragment: 'ledger_light' }
+  },
+  {
+    id: 'M02',
+    title: '조선의 세연이',
+    summary: '부산 장터에서 세연이를 만난다.',
+    dialogue: [
+      { speaker: '정우', icon: 'jeongwoo', text: '세연이랑 닮은 아이가 있어!' },
+      { speaker: '세연이', icon: 'seyeon', text: '안녕. 나는 세연이야.' },
+      { speaker: '바람이', icon: 'fairy', text: '이 만남은 장부가 부른 거야.' }
+    ],
+    reward: { storyFragment: 'meet_seyeon' }
+  },
+  {
+    id: 'M03',
+    title: '배우고 싶은 아이',
+    summary: '세연이가 배우고 싶은 마음을 말한다.',
+    dialogue: [
+      { speaker: '세연이', icon: 'seyeon', text: '나는 글도 배우고 싶어.' },
+      { speaker: '세연이', icon: 'seyeon', text: '지도와 날씨도 알고 싶어.' },
+      { speaker: '바람이', icon: 'fairy', text: '세연이의 꿈을 도와주자.' }
+    ],
+    reward: { storyFragment: 'notebook_open' }
+  },
+  {
+    id: 'M04',
+    title: '첫 장사',
+    summary: '부산 물건을 다른 고을에서 판다.',
+    dialogue: [
+      { speaker: '정우', icon: 'jeongwoo', text: '물건을 팔아서 돈을 벌었어.' },
+      { speaker: '바람이', icon: 'fairy', text: '좋아. 이 돈은 꿈을 돕는 돈이야.' }
+    ],
+    reward: { stars: 1, storyFragment: 'first_trade' }
+  },
+  {
+    id: 'M05',
+    title: '첫 공부 선물',
+    summary: '한지와 책 이야기로 글 공부를 시작한다.',
+    dialogue: [
+      { speaker: '세연이', icon: 'seyeon', text: '종이에 글을 써 보고 싶어.' },
+      { speaker: '정우', icon: 'jeongwoo', text: '내가 공부 선물을 보낼게.' }
+    ],
+    reward: { notebookTopic: 'writing', storyFragment: 'writing_started' }
+  },
+  {
+    id: 'M06',
+    title: '산수 장부',
+    summary: '장터 계산으로 산수를 배운다.',
+    dialogue: [
+      { speaker: '바람이', icon: 'fairy', text: '장사는 더하고 빼는 일이야.' },
+      { speaker: '세연이', icon: 'seyeon', text: '나도 값을 셀 수 있어.' }
+    ],
+    reward: { notebookTopic: 'math', storyFragment: 'math_started' }
+  },
+  {
+    id: 'M07',
+    title: '팔도 지도',
+    summary: '도시 도장으로 지도를 배운다.',
+    dialogue: [
+      { speaker: '세연이', icon: 'seyeon', text: '지도에는 길이 보여.' },
+      { speaker: '정우', icon: 'jeongwoo', text: '우리가 간 고을을 표시하자.' }
+    ],
+    reward: { notebookTopic: 'map', storyFragment: 'map_started' }
+  },
+  {
+    id: 'M08',
+    title: '비와 별',
+    summary: '날씨와 별 이야기를 배운다.',
+    dialogue: [
+      { speaker: '바람이', icon: 'fairy', text: '비는 재고, 별은 길을 알려 줘.' },
+      { speaker: '세연이', icon: 'seyeon', text: '하늘도 공부가 되는구나.' }
+    ],
+    reward: { notebookTopic: 'weather', storyFragment: 'weather_started' }
+  },
+  {
+    id: 'M09',
+    title: '장사 배우기',
+    summary: '세연이가 작은 장부를 쓴다.',
+    dialogue: [
+      { speaker: '세연이', icon: 'seyeon', text: '오늘 산 것과 판 것을 적을래.' },
+      { speaker: '정우', icon: 'jeongwoo', text: '세연이 장부가 생겼네.' }
+    ],
+    reward: { notebookTopic: 'trade', storyFragment: 'trade_started' }
+  },
+  {
+    id: 'M10',
+    title: '장부 단서 첫 반짝임',
+    summary: '서브 이야기에서 장부 단서를 찾는다.',
+    dialogue: [
+      { speaker: '장부', icon: 'ledger', text: '장부 한쪽이 반짝였어.' },
+      { speaker: '바람이', icon: 'fairy', text: '돌아가는 문 단서야.' }
+    ],
+    reward: { ledgerClues: 1, storyFragment: 'first_ledger_clue' }
+  },
+  {
+    id: 'M11',
+    title: '세연이의 공부방',
+    summary: '돈과 노트로 공부방을 완성한다.',
+    dialogue: [
+      { speaker: '세연이', icon: 'seyeon', text: '작은 공부방이 생겼어.' },
+      { speaker: '정우', icon: 'jeongwoo', text: '이제 마음껏 배울 수 있어.' }
+    ],
+    reward: { studyRoomLevel: STORY_ENDING_STUDY_ROOM_LEVEL, storyFragment: 'study_room_done' }
+  },
+  {
+    id: 'M12',
+    title: '돌아가는 문',
+    summary: '세연이의 꿈을 돕고 돌아갈 문을 연다.',
+    dialogue: [
+      { speaker: '바람이', icon: 'fairy', text: '문이 열렸어.' },
+      { speaker: '세연이', icon: 'seyeon', text: '정우야, 고마워.' },
+      { speaker: '정우', icon: 'jeongwoo', text: '세연이의 꿈을 꼭 기억할게.' }
+    ],
+    reward: { storyFragment: 'door_open' }
+  }
+];
+
 export const DEFAULT_JUNIOR_SAVE: JuniorSave = {
   saveVersion: JUNIOR_SAVE_VERSION,
   currentStep: 'intro',
@@ -1164,6 +1577,22 @@ export const DEFAULT_JUNIOR_SAVE: JuniorSave = {
   seenEventIds: [],
   seenRegionalEventIds: [],
   storyArcProgress: {},
+  mainStoryStage: 0,
+  seyeonNotebook: { ...DEFAULT_SEYEON_NOTEBOOK },
+  ledgerClues: 0,
+  storyFragments: [],
+  completedStoryEventIds: [],
+  activeStoryEventId: undefined,
+  selectedStoryEventId: undefined,
+  pendingStoryRumorEventId: undefined,
+  storyReturnStep: undefined,
+  heardStoryEventIds: [],
+  unlockedStarItemIds: [],
+  rumorMarkers: {
+    mountain: 'available',
+    sea: 'available'
+  },
+  studyRoomLevel: 0,
   quizWrongStreak: 0,
   storyClues: 0,
   badges: [],
