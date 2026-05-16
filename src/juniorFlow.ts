@@ -1,8 +1,8 @@
-import type { JuniorBoat, JuniorCargoItem, JuniorCityId, JuniorEvent, JuniorGoodId, JuniorMarketPressure, JuniorRegionalEvent, JuniorReward, JuniorSave, JuniorStarItem, JuniorStep, JuniorVehicle } from './juniorTypes';
-import { DEFAULT_JUNIOR_SAVE, ENDING_COINS, JUNIOR_BOATS, JUNIOR_CITIES, JUNIOR_EVENTS, JUNIOR_GOODS, JUNIOR_REGIONAL_EVENTS, JUNIOR_ROUTES, JUNIOR_SAVE_KEY, JUNIOR_SAVE_VERSION, JUNIOR_STAR_ITEMS, JUNIOR_VEHICLES, getGood } from './juniorData';
+import type { JuniorBoat, JuniorCargoItem, JuniorCityId, JuniorEvent, JuniorGoodId, JuniorMarketPressure, JuniorNotebook, JuniorNotebookStatus, JuniorNotebookTopic, JuniorRegionalEvent, JuniorReward, JuniorSave, JuniorStarItem, JuniorStep, JuniorStoryEvent, JuniorVehicle } from './juniorTypes';
+import { DEFAULT_JUNIOR_SAVE, DEFAULT_SEYEON_NOTEBOOK, ENDING_COINS, JUNIOR_BOATS, JUNIOR_CITIES, JUNIOR_EVENTS, JUNIOR_GOODS, JUNIOR_MAIN_STORY_EVENTS, JUNIOR_MOUNTAINS, JUNIOR_REGIONAL_EVENTS, JUNIOR_ROUTES, JUNIOR_SAVE_KEY, JUNIOR_SAVE_VERSION, JUNIOR_STAR_ITEMS, JUNIOR_STORY_EVENTS, JUNIOR_VEHICLES, STORY_ENDING_LEDGER_CLUES, STORY_ENDING_NOTEBOOK_COUNT, STORY_ENDING_STUDY_ROOM_LEVEL, getGood } from './juniorData';
 
 function isStep(value: unknown): value is JuniorStep {
-  return typeof value === 'string' && ['intro', 'pick', 'buy', 'city', 'map', 'travel', 'visitIntro', 'market', 'event', 'eventResult', 'regionalEvent', 'shop', 'endingChoice', 'ending'].includes(value);
+  return typeof value === 'string' && ['intro', 'pick', 'buy', 'city', 'map', 'travel', 'visitIntro', 'market', 'event', 'eventResult', 'storyEvent', 'storyReward', 'regionalEvent', 'shop', 'endingChoice', 'ending'].includes(value);
 }
 
 function isCity(value: unknown): value is JuniorCityId {
@@ -28,6 +28,12 @@ function cloneSave(save: JuniorSave): JuniorSave {
     seenEventIds: [...save.seenEventIds],
     seenRegionalEventIds: [...save.seenRegionalEventIds],
     storyArcProgress: { ...save.storyArcProgress },
+    seyeonNotebook: { ...save.seyeonNotebook },
+    storyFragments: [...save.storyFragments],
+    completedStoryEventIds: [...save.completedStoryEventIds],
+    heardStoryEventIds: [...save.heardStoryEventIds],
+    unlockedStarItemIds: [...save.unlockedStarItemIds],
+    rumorMarkers: { ...save.rumorMarkers },
     badges: [...save.badges],
     ownedStarItemIds: [...save.ownedStarItemIds],
     equippedStarItems: { ...save.equippedStarItems },
@@ -55,6 +61,11 @@ function stringArray(value: unknown) {
 
 function starItemIds(value: unknown) {
   const ids = new Set(JUNIOR_STAR_ITEMS.map((item) => item.id));
+  return stringArray(value).filter((id, index, array) => ids.has(id) && array.indexOf(id) === index);
+}
+
+function storyEventIds(value: unknown) {
+  const ids = new Set(JUNIOR_STORY_EVENTS.map((event) => event.id));
   return stringArray(value).filter((id, index, array) => ids.has(id) && array.indexOf(id) === index);
 }
 
@@ -103,6 +114,32 @@ function normalizeStoryArcProgress(value: unknown) {
   const next: Record<string, number> = {};
   for (const [key, progress] of Object.entries(value as Record<string, unknown>)) {
     if (typeof progress === 'number' && Number.isFinite(progress)) next[key] = progress;
+  }
+  return next;
+}
+
+function normalizeNotebookStatus(value: unknown): JuniorNotebookStatus {
+  return value === 'started' || value === 'completed' ? value : 'locked';
+}
+
+function normalizeSeyeonNotebook(value: unknown): JuniorNotebook {
+  if (!value || typeof value !== 'object') return { ...DEFAULT_SEYEON_NOTEBOOK };
+  const raw = value as Partial<Record<JuniorNotebookTopic, unknown>>;
+  return {
+    writing: normalizeNotebookStatus(raw.writing),
+    math: normalizeNotebookStatus(raw.math),
+    map: normalizeNotebookStatus(raw.map),
+    weather: normalizeNotebookStatus(raw.weather),
+    trade: normalizeNotebookStatus(raw.trade)
+  };
+}
+
+function normalizeRumorMarkers(value: unknown): JuniorSave['rumorMarkers'] {
+  const fallback = { ...DEFAULT_JUNIOR_SAVE.rumorMarkers };
+  if (!value || typeof value !== 'object') return fallback;
+  const next = { ...fallback };
+  for (const [key, status] of Object.entries(value as Record<string, unknown>)) {
+    if (status === 'available' || status === 'active' || status === 'completed') next[key] = status;
   }
   return next;
 }
@@ -178,6 +215,19 @@ export function normalizeJuniorSave(raw: unknown): JuniorSave {
     lastRegionalEventCityId: isCity(value.lastRegionalEventCityId) ? value.lastRegionalEventCityId : undefined,
     lastRegionalEventId: typeof value.lastRegionalEventId === 'string' ? value.lastRegionalEventId : undefined,
     storyArcProgress: normalizeStoryArcProgress(value.storyArcProgress),
+    mainStoryStage: Math.max(0, Math.min(12, Math.floor(numberOr(value.mainStoryStage, 0)))),
+    seyeonNotebook: normalizeSeyeonNotebook(value.seyeonNotebook),
+    ledgerClues: Math.max(0, Math.min(STORY_ENDING_LEDGER_CLUES, Math.floor(numberOr(value.ledgerClues, numberOr(value.storyClues, 0))))),
+    storyFragments: stringArray(value.storyFragments),
+    completedStoryEventIds: stringArray(value.completedStoryEventIds),
+    activeStoryEventId: typeof value.activeStoryEventId === 'string' && JUNIOR_MAIN_STORY_EVENTS.some((event) => event.id === value.activeStoryEventId) ? value.activeStoryEventId : undefined,
+    selectedStoryEventId: typeof value.selectedStoryEventId === 'string' && JUNIOR_STORY_EVENTS.some((event) => event.id === value.selectedStoryEventId) ? value.selectedStoryEventId : undefined,
+    pendingStoryRumorEventId: typeof value.pendingStoryRumorEventId === 'string' && JUNIOR_STORY_EVENTS.some((event) => event.id === value.pendingStoryRumorEventId) ? value.pendingStoryRumorEventId : undefined,
+    storyReturnStep: isStep(value.storyReturnStep) ? value.storyReturnStep : undefined,
+    heardStoryEventIds: storyEventIds(value.heardStoryEventIds),
+    unlockedStarItemIds: starItemIds(value.unlockedStarItemIds),
+    rumorMarkers: normalizeRumorMarkers(value.rumorMarkers),
+    studyRoomLevel: Math.max(0, Math.min(STORY_ENDING_STUDY_ROOM_LEVEL, Math.floor(numberOr(value.studyRoomLevel, 0)))),
     quizWrongStreak: numberOr(value.quizWrongStreak, 0),
     storyClues: numberOr(value.storyClues, 0),
     badges: stringArray(value.badges),
@@ -246,6 +296,19 @@ export function resetJuniorGame(): JuniorSave {
     lastRegionalEventCityId: undefined,
     lastRegionalEventId: undefined,
     storyArcProgress: {},
+    mainStoryStage: 0,
+    seyeonNotebook: { ...DEFAULT_SEYEON_NOTEBOOK },
+    ledgerClues: 0,
+    storyFragments: [],
+    completedStoryEventIds: [],
+    activeStoryEventId: undefined,
+    selectedStoryEventId: undefined,
+    pendingStoryRumorEventId: undefined,
+    storyReturnStep: undefined,
+    heardStoryEventIds: [],
+    unlockedStarItemIds: [],
+    rumorMarkers: { ...DEFAULT_JUNIOR_SAVE.rumorMarkers },
+    studyRoomLevel: 0,
     quizWrongStreak: 0,
     lastResultChips: undefined,
     marketPressure: { buy: {}, sell: {} }
@@ -402,8 +465,270 @@ export function getRecommendedMarketGoodId(save: JuniorSave): JuniorGoodId | und
   return city.buyGoodIds[0] ?? JUNIOR_GOODS[0]?.id;
 }
 
+function storyNumber(eventId: string) {
+  return Number(eventId.replace('M', '')) || 0;
+}
+
+function hasStory(save: JuniorSave, eventId: string) {
+  return save.completedStoryEventIds.includes(eventId);
+}
+
+function addStoryFragment(save: JuniorSave, fragment?: string): JuniorSave {
+  if (!fragment || save.storyFragments.includes(fragment)) return save;
+  return { ...save, storyFragments: [...save.storyFragments, fragment] };
+}
+
+function startStoryEvent(save: JuniorSave, eventId?: string): JuniorSave {
+  if (!eventId || save.activeStoryEventId || hasStory(save, eventId)) return save;
+  return { ...save, activeStoryEventId: eventId };
+}
+
+function notebookOpenCount(save: JuniorSave) {
+  return Object.values(save.seyeonNotebook).filter((status) => status !== 'locked').length;
+}
+
+function applyStoryReward(save: JuniorSave, reward?: JuniorReward): JuniorSave {
+  if (!reward) return save;
+  let next = addStoryFragment(save, reward.storyFragment);
+  if (reward.notebookTopic) {
+    next = {
+      ...next,
+      seyeonNotebook: {
+        ...next.seyeonNotebook,
+        [reward.notebookTopic]: next.seyeonNotebook[reward.notebookTopic] === 'completed' ? 'completed' : 'started'
+      }
+    };
+  }
+  if (reward.ledgerClues) {
+    next = { ...next, ledgerClues: Math.max(next.ledgerClues, Math.min(STORY_ENDING_LEDGER_CLUES, reward.ledgerClues)) };
+  }
+  if (reward.studyRoomLevel) {
+    next = { ...next, studyRoomLevel: Math.max(next.studyRoomLevel, Math.min(STORY_ENDING_STUDY_ROOM_LEVEL, reward.studyRoomLevel)) };
+  }
+  return next;
+}
+
+function updateStudyRoomProgress(save: JuniorSave): JuniorSave {
+  const openCount = notebookOpenCount(save);
+  const earnedLevel = openCount >= 5 && save.ledgerClues >= 2
+    ? 2
+    : openCount >= 3
+      ? 1
+      : save.studyRoomLevel;
+  return earnedLevel > save.studyRoomLevel ? { ...save, studyRoomLevel: earnedLevel } : save;
+}
+
+export function getMainStoryEvent(eventId?: string) {
+  return JUNIOR_MAIN_STORY_EVENTS.find((event) => event.id === eventId);
+}
+
+export function getStoryEvent(eventId?: string) {
+  return JUNIOR_STORY_EVENTS.find((event) => event.id === eventId);
+}
+
+function hasCompletedStoryEvent(save: JuniorSave, eventId: string) {
+  return save.completedStoryEventIds.includes(eventId);
+}
+
+function storyRumorSeed(save: JuniorSave, returnStep: JuniorStep, salt = '') {
+  const text = `${salt}:${save.currentCityId}:${returnStep}:${save.coins}:${save.stars}:${save.heardStoryEventIds.length}:${save.completedStoryEventIds.length}:${save.cargo.length}`;
+  return Array.from(text).reduce((sum, char) => sum + char.charCodeAt(0), 0);
+}
+
+function storyPrerequisitesMet(save: JuniorSave, event: JuniorStoryEvent) {
+  return event.prerequisiteEventIds.every((eventId) => hasCompletedStoryEvent(save, eventId));
+}
+
+function storyRumorFits(event: JuniorStoryEvent, save: JuniorSave, cityId: JuniorCityId) {
+  if (!event.rumorCityIds.includes(cityId)) return false;
+  if (hasCompletedStoryEvent(save, event.id)) return false;
+  if (save.heardStoryEventIds.includes(event.id)) return false;
+  if (!storyPrerequisitesMet(save, event)) return false;
+  return true;
+}
+
+function selectStoryRumor(save: JuniorSave, cityId: JuniorCityId) {
+  const candidates = JUNIOR_STORY_EVENTS.filter((event) => storyRumorFits(event, save, cityId));
+  if (!candidates.length) return undefined;
+  const seed = storyRumorSeed(save, save.currentStep, 'story-rumor-pick');
+  return candidates[seed % candidates.length];
+}
+
+function markStoryRumor(save: JuniorSave, event: JuniorStoryEvent): JuniorSave {
+  const heardStoryEventIds = save.heardStoryEventIds.includes(event.id) ? save.heardStoryEventIds : [...save.heardStoryEventIds, event.id];
+  return {
+    ...save,
+    heardStoryEventIds,
+    pendingStoryRumorEventId: event.id,
+    rumorMarkers: { ...save.rumorMarkers, [event.id]: 'available' },
+    message: `${event.title} 소문을 들었어.`
+  };
+}
+
+export function maybeOpenStoryRumor(save: JuniorSave, returnStep: JuniorStep = 'city', forcedRoll?: number): JuniorSave {
+  if (!save.completedTutorial) return save;
+  if (save.pendingStoryRumorEventId || save.selectedStoryEventId || save.currentStep === 'storyEvent' || save.currentStep === 'storyReward') return save;
+  const roll = forcedRoll ?? ((storyRumorSeed(save, returnStep, 'story-rumor-roll') % 100) / 100);
+  if (roll >= 0.3) return save;
+  const event = selectStoryRumor(save, save.currentCityId);
+  return event ? markStoryRumor(save, event) : save;
+}
+
+export function showStoryRumorOnMap(save: JuniorSave): JuniorSave {
+  return {
+    ...save,
+    currentStep: 'map',
+    pendingStoryRumorEventId: undefined,
+    selectedGoodId: undefined,
+    message: '지도에 이야기 표식을 붙였어.'
+  };
+}
+
+export function getVisibleStoryEvents(save: JuniorSave) {
+  const visibleIds = new Set([...save.heardStoryEventIds, ...save.completedStoryEventIds.filter((id) => id.startsWith('E'))]);
+  return JUNIOR_STORY_EVENTS.filter((event) => visibleIds.has(event.id));
+}
+
+export function getStoryMarkerStatus(save: JuniorSave, eventId: string) {
+  if (hasCompletedStoryEvent(save, eventId)) return 'completed' as const;
+  if (save.selectedStoryEventId === eventId || save.rumorMarkers[eventId] === 'active') return 'active' as const;
+  return 'available' as const;
+}
+
+export function getStoryEventLocationLabel(event: JuniorStoryEvent) {
+  if (event.mountainId) {
+    const mountain = JUNIOR_MOUNTAINS.find((item) => item.id === event.mountainId);
+    if (mountain) return mountain.name;
+  }
+  const city = event.rumorCityIds[0] ? getCity(event.rumorCityIds[0]) : undefined;
+  if (city) return city.name;
+  return event.routeId ? '이야기 길' : '조선 이야기';
+}
+
+export function getStoryRewardHint(event: JuniorStoryEvent) {
+  if (event.reward.ledgerClue || event.reward.ledgerClues || event.category === 'main_clue') return '장부 단서';
+  if (event.reward.seyeonNotebookProgress || event.reward.notebookTopic) return '세연이 노트';
+  if (event.reward.cosmeticItemUnlock) return '새 꾸미기';
+  if (event.reward.stars) return `별 +${event.reward.stars}`;
+  if (event.reward.coins) return `돈 +${event.reward.coins}`;
+  return '이야기 조각';
+}
+
+export function startStoryEventFromMap(save: JuniorSave, eventId: string): JuniorSave {
+  const event = getStoryEvent(eventId);
+  if (!event || hasCompletedStoryEvent(save, event.id) || !save.heardStoryEventIds.includes(event.id)) return save;
+  return {
+    ...save,
+    currentStep: 'storyEvent',
+    selectedStoryEventId: event.id,
+    storyReturnStep: 'city',
+    pendingStoryRumorEventId: undefined,
+    rumorMarkers: { ...save.rumorMarkers, [event.id]: 'active' },
+    message: undefined
+  };
+}
+
+function unlockNextStoryChainRumor(save: JuniorSave, event: JuniorStoryEvent): JuniorSave {
+  if (!event.chainId) return save;
+  const nextEvent = JUNIOR_STORY_EVENTS.find((candidate) => (
+    candidate.chainId === event.chainId
+    && (candidate.chainStep ?? 1) === (event.chainStep ?? 1) + 1
+    && !hasCompletedStoryEvent(save, candidate.id)
+    && !save.heardStoryEventIds.includes(candidate.id)
+    && storyPrerequisitesMet(save, candidate)
+  ));
+  if (!nextEvent) return save;
+  return {
+    ...save,
+    heardStoryEventIds: [...save.heardStoryEventIds, nextEvent.id],
+    rumorMarkers: { ...save.rumorMarkers, [nextEvent.id]: 'available' },
+    message: `${nextEvent.title} 소문이 이어졌어.`
+  };
+}
+
+export function completeStoryEventChoice(save: JuniorSave, choiceIndex = 0): JuniorSave {
+  const event = getStoryEvent(save.selectedStoryEventId);
+  if (!event) return { ...save, currentStep: 'city', selectedStoryEventId: undefined };
+  const choice = event.choices[choiceIndex] ?? event.choices[0];
+  const reward = choice?.reward ?? event.reward;
+  const completedStoryEventIds = hasCompletedStoryEvent(save, event.id) ? save.completedStoryEventIds : [...save.completedStoryEventIds, event.id];
+  const rewarded = applyReward({
+    ...save,
+    completedStoryEventIds,
+    currentStep: 'storyReward',
+    rumorMarkers: { ...save.rumorMarkers, [event.id]: 'completed' },
+    eventResultText: choice?.resultText ?? event.dialogueCuts[event.dialogueCuts.length - 1]?.text,
+    lastResultChips: rewardChips(reward).slice(0, 2)
+  }, reward);
+  return maybeQueueMainStoryEvent(unlockNextStoryChainRumor(rewarded, event));
+}
+
+export function closeStoryReward(save: JuniorSave): JuniorSave {
+  const returnStep = save.storyReturnStep && save.storyReturnStep !== 'storyEvent' && save.storyReturnStep !== 'storyReward'
+    ? save.storyReturnStep
+    : 'city';
+  return maybeQueueMainStoryEvent({
+    ...save,
+    currentStep: returnStep,
+    selectedStoryEventId: undefined,
+    storyReturnStep: undefined,
+    eventResultText: undefined,
+    lastResultChips: undefined
+  });
+}
+
+export function getSeyeonNotebookProgress(save: JuniorSave) {
+  return notebookOpenCount(save);
+}
+
+export function canStartReturnDoorStory(save: JuniorSave) {
+  return save.coins >= ENDING_COINS
+    && getSeyeonNotebookProgress(save) >= STORY_ENDING_NOTEBOOK_COUNT
+    && save.ledgerClues >= STORY_ENDING_LEDGER_CLUES
+    && save.studyRoomLevel >= STORY_ENDING_STUDY_ROOM_LEVEL;
+}
+
+export function canOpenStoryEnding(save: JuniorSave) {
+  return canStartReturnDoorStory(save) && hasStory(save, 'M12');
+}
+
+export function maybeQueueMainStoryEvent(save: JuniorSave): JuniorSave {
+  const next = updateStudyRoomProgress(save);
+  if (next.activeStoryEventId) return next;
+  if (!hasStory(next, 'M01') && !next.completedTutorial && next.tutorialStage >= 1) return startStoryEvent(next, 'M01');
+  if (hasStory(next, 'M01') && !hasStory(next, 'M02') && next.currentCityId === 'busan') return startStoryEvent(next, 'M02');
+  if (hasStory(next, 'M02') && !hasStory(next, 'M03')) return startStoryEvent(next, 'M03');
+  if (hasStory(next, 'M03') && !hasStory(next, 'M04') && next.storyFragments.includes('first_trade_ready')) return startStoryEvent(next, 'M04');
+  if (hasStory(next, 'M04') && !hasStory(next, 'M05') && next.storyFragments.includes('paper_gift_ready')) return startStoryEvent(next, 'M05');
+  if (hasStory(next, 'M05') && !hasStory(next, 'M06') && next.coins >= 60) return startStoryEvent(next, 'M06');
+  if (hasStory(next, 'M06') && !hasStory(next, 'M07') && next.visitedCityIds.length >= 3) return startStoryEvent(next, 'M07');
+  if (hasStory(next, 'M07') && !hasStory(next, 'M08') && (next.visitedCityIds.length >= 4 || next.seenEventIds.some((id) => id.includes('weather')))) return startStoryEvent(next, 'M08');
+  if (hasStory(next, 'M08') && !hasStory(next, 'M09') && next.coins >= 100) return startStoryEvent(next, 'M09');
+  if (hasStory(next, 'M09') && !hasStory(next, 'M10') && next.ledgerClues >= 1) return startStoryEvent(next, 'M10');
+  if (hasStory(next, 'M10') && !hasStory(next, 'M11') && next.coins >= ENDING_COINS && notebookOpenCount(next) >= STORY_ENDING_NOTEBOOK_COUNT && next.ledgerClues >= STORY_ENDING_LEDGER_CLUES) return startStoryEvent(next, 'M11');
+  return next;
+}
+
+export function completeMainStoryEvent(save: JuniorSave, eventId: string): JuniorSave {
+  const event = getMainStoryEvent(eventId);
+  if (!event) return { ...save, activeStoryEventId: undefined };
+  const completedStoryEventIds = hasStory(save, eventId) ? save.completedStoryEventIds : [...save.completedStoryEventIds, eventId];
+  const rewarded = applyStoryReward(addStars({
+    ...save,
+    activeStoryEventId: undefined,
+    completedStoryEventIds,
+    mainStoryStage: Math.max(save.mainStoryStage, storyNumber(eventId)),
+    lastResultChips: rewardChips(event.reward),
+    message: event.summary
+  }, event.reward?.stars ?? 0), event.reward);
+  if (eventId === 'M12') {
+    return { ...rewarded, currentStep: 'endingChoice', message: '?꾨?濡??뚯븘媛??臾몄씠 ?대졇??' };
+  }
+  return maybeQueueMainStoryEvent(rewarded);
+}
+
 export function startIntro(save: JuniorSave): JuniorSave {
-  return { ...save, currentStep: 'city', tutorialStage: Math.max(save.tutorialStage, 1), message: '먼저 부산 장터에 가보자.' };
+  return maybeQueueMainStoryEvent({ ...save, currentStep: 'city', tutorialStage: Math.max(save.tutorialStage, 1), message: '먼저 부산 장터에 가 보자.' });
 }
 
 export function chooseGood(save: JuniorSave, goodId: JuniorGoodId): JuniorSave {
@@ -420,8 +745,8 @@ export function buyGood(save: JuniorSave, goodId: JuniorGoodId): JuniorSave {
   const usesHalfPrice = save.activeEffects.halfPriceNextGoodId === goodId;
   const price = usesHalfPrice ? Math.max(1, Math.ceil(basePrice / 2)) : basePrice;
   const good = getGood(goodId);
-  if (save.cargo.length >= save.cargoLimit) return { ...save, currentStep: 'market', message: '짐칸이 꽉 찼어. 이제 팔러 가자.' };
-  if (save.coins < price) return { ...save, currentStep: 'market', message: '돈이 조금 모자라.' };
+  if (save.cargo.length >= save.cargoLimit) return { ...save, currentStep: 'market', message: '吏먯뭏??苑?李쇱뼱. ?댁젣 ?붾윭 媛??' };
+  if (save.coins < price) return { ...save, currentStep: 'market', message: '?덉씠 議곌툑 紐⑥옄??' };
   const cargoItem: JuniorCargoItem = {
     id: `${good.id}-${Date.now()}-${save.cargo.length}`,
     goodId: good.id,
@@ -436,70 +761,75 @@ export function buyGood(save: JuniorSave, goodId: JuniorGoodId): JuniorSave {
       activeEffects: { ...save.activeEffects, halfPriceNextGoodId: undefined }
     }, 'ticket_half_price_good')
     : save;
-  return {
-    ...afterTicket,
-    coins: afterTicket.coins - price,
-    cargo: [...afterTicket.cargo, cargoItem],
+  const storyReady = goodId === 'paper' && hasStory(afterTicket, 'M04')
+    ? addStoryFragment(afterTicket, 'paper_gift_ready')
+    : afterTicket;
+  return maybeQueueMainStoryEvent({
+    ...storyReady,
+    coins: storyReady.coins - price,
+    cargo: [...storyReady.cargo, cargoItem],
     currentStep: 'market',
-    tutorialStage: Math.max(afterTicket.tutorialStage, 3),
+    tutorialStage: Math.max(storyReady.tutorialStage, 3),
     marketPressure: {
-      ...afterTicket.marketPressure,
-      buy: { ...afterTicket.marketPressure.buy, [key]: (afterTicket.marketPressure.buy[key] ?? 0) + 1 }
+      ...storyReady.marketPressure,
+      buy: { ...storyReady.marketPressure.buy, [key]: (storyReady.marketPressure.buy[key] ?? 0) + 1 }
     },
-    lastResultChips: [`돈 -${price}냥`, ...(usesHalfPrice ? ['반값권 사용'] : []), '짐 +1'],
+    lastResultChips: [`-${price}냥`, ...(usesHalfPrice ? ['반값권 사용'] : []), '짐 +1'],
     message: usesHalfPrice
-      ? `반값권을 썼어! ${good.name}을 싸게 샀어.`
-      : bestCity ? `${good.name}을 샀어. ${bestCity.name}에서 인기 많아.` : `${good.name}을 짐에 실었어.`
-  };
+      ? `${good.name}을 싸게 샀어.`
+      : bestCity ? `${good.name}은 ${bestCity.name}에서 좋아해.` : `${good.name}을 짐에 넣었어.`
+  });
 }
 
 export function prepareHalfPriceTicket(save: JuniorSave, goodId: JuniorGoodId): JuniorSave {
-  if (save.currentStep !== 'market') return { ...save, message: '반값권은 장터에서 쓸 수 있어.' };
-  if (!save.completedTutorial) return { ...save, message: '첫 연습이 끝난 뒤에 써보자.' };
-  if ((save.consumableItems.ticket_half_price_good ?? 0) <= 0) return { ...save, message: '반값권이 없어.' };
+  if (save.currentStep !== 'market') return { ...save, message: '諛섍컪沅뚯? ?ν꽣?먯꽌 ?????덉뼱.' };
+  if (!save.completedTutorial) return { ...save, message: '泥??곗뒿???앸궃 ?ㅼ뿉 ?⑤낫??' };
+  if ((save.consumableItems.ticket_half_price_good ?? 0) <= 0) return { ...save, message: '諛섍컪沅뚯씠 ?놁뼱.' };
   return {
     ...save,
     activeEffects: { ...save.activeEffects, halfPriceNextGoodId: goodId },
-    message: '이 물건에 반값권을 쓸까? 다시 누르면 싸게 사.'
+    message: '??臾쇨굔??諛섍컪沅뚯쓣 ?멸퉴? ?ㅼ떆 ?꾨Ⅴ硫??멸쾶 ??'
   };
 }
 
 export function goToMap(save: JuniorSave): JuniorSave {
-  return { ...save, currentStep: 'map', selectedGoodId: undefined, message: '갈 곳을 골라봐.' };
+  return maybeQueueMainStoryEvent({ ...save, currentStep: 'map', selectedGoodId: undefined, message: '媛?怨녹쓣 怨⑤씪遊?' });
 }
 
 export function goToCity(save: JuniorSave): JuniorSave {
-  return { ...save, currentStep: 'city', selectedGoodId: undefined, message: undefined };
+  return maybeQueueMainStoryEvent({ ...save, currentStep: 'city', selectedGoodId: undefined, message: undefined });
 }
 
 export function goToMarket(save: JuniorSave): JuniorSave {
-  return maybeOpenRegionalEvent({ ...save, currentStep: 'market', selectedGoodId: undefined, message: '사거나 팔 물건을 골라봐.' }, 'market');
+  const market = maybeQueueMainStoryEvent({ ...save, currentStep: 'market', selectedGoodId: undefined, message: '장터에서 물건을 골라보자.' });
+  const withStoryRumor = maybeOpenStoryRumor(market, 'market');
+  return withStoryRumor.pendingStoryRumorEventId ? withStoryRumor : maybeQueueMainStoryEvent(maybeOpenRegionalEvent(withStoryRumor, 'market'));
 }
 
 export function goToShop(save: JuniorSave): JuniorSave {
-  return { ...save, currentStep: 'shop', message: '수레와 배를 장만할 수 있어.' };
+  return { ...save, currentStep: 'shop', message: '?섎젅? 諛곕? ?λ쭔?????덉뼱.' };
 }
 
 export function startTravel(save: JuniorSave, destinationCityId: JuniorCityId): JuniorSave {
-  if (!canTravel(save, destinationCityId)) return { ...save, message: '아직 갈 수 없는 길이야.' };
+  if (!canTravel(save, destinationCityId)) return { ...save, message: '?꾩쭅 媛????녿뒗 湲몄씠??' };
   return {
     ...save,
     destinationCityId,
     currentStep: 'travel',
     tutorialStage: Math.max(save.tutorialStage, 5),
     lastResultChips: undefined,
-    message: save.activeEffects.fastTravelNextRoute ? '바람길을 탔어! 이번 길은 빠르게 지나가.' : `${getCity(destinationCityId).name}으로 출발!`
+    message: save.activeEffects.fastTravelNextRoute ? '바람길로 빨리 가자.' : `${getCity(destinationCityId).name}으로 출발!`
   };
 }
 
 export function startFastTravel(save: JuniorSave, destinationCityId: JuniorCityId): JuniorSave {
-  if ((save.consumableItems.ticket_fast_travel ?? 0) <= 0) return { ...save, message: '신속 이동권이 없어.' };
+  if ((save.consumableItems.ticket_fast_travel ?? 0) <= 0) return { ...save, message: '?좎냽 ?대룞沅뚯씠 ?놁뼱.' };
   const prepared = consumeConsumableItem({
     ...save,
     activeEffects: { ...save.activeEffects, fastTravelNextRoute: true }
   }, 'ticket_fast_travel');
   const traveling = startTravel(prepared, destinationCityId);
-  return { ...traveling, message: '바람길을 탔어! 이번 길은 빠르게 지나가.' };
+  return { ...traveling, message: '바람길로 빨리 가자.' };
 }
 
 function eventSeed(save: JuniorSave, routeKind?: string, distance = 1, salt = '') {
@@ -657,19 +987,22 @@ export function sellCargoItem(save: JuniorSave, cargoId: string): JuniorSave {
   const localProduction = city.buyGoodIds.includes(cargoItem.goodId);
   const goodPlace = !localProduction && (city.sellGoodIds.includes(cargoItem.goodId) || city.id === 'seoul');
   const earnedStars = goodPlace ? 1 : 0;
+  const storyBase = cargoItem.fromCityId === 'busan' && save.currentCityId !== 'busan'
+    ? addStoryFragment(save, 'first_trade_ready')
+    : save;
   const next = applyMilestones(addStars({
-    ...save,
-    coins: save.coins + price,
+    ...storyBase,
+    coins: storyBase.coins + price,
     cargo: nextCargo,
-    completedTutorial: save.completedTutorial || save.tutorialStage >= 5,
-    tutorialStage: Math.max(save.tutorialStage, 9),
-    currentStep: save.coins + price >= ENDING_COINS ? 'endingChoice' : 'market',
+    completedTutorial: storyBase.completedTutorial || storyBase.tutorialStage >= 5,
+    tutorialStage: Math.max(storyBase.tutorialStage, 9),
+    currentStep: storyBase.coins + price >= ENDING_COINS ? 'city' : 'market',
     marketPressure: {
-      ...save.marketPressure,
-      sell: { ...save.marketPressure.sell, [key]: (save.marketPressure.sell[key] ?? 0) + 1 }
+      ...storyBase.marketPressure,
+      sell: { ...storyBase.marketPressure.sell, [key]: (storyBase.marketPressure.sell[key] ?? 0) + 1 }
     },
-    lastResultChips: [`돈 +${price}냥`, ...(earnedStars ? ['별 +1'] : []), '짐 -1'],
-    message: `${good.name}을 팔았어. 돈이 늘고 짐칸이 비었어.`
+    lastResultChips: [`+${price}냥`, ...(earnedStars ? ['별 +1'] : []), '짐 -1'],
+    message: `${good.name}을 팔았어.`
   }, earnedStars));
   return next;
 }
@@ -697,22 +1030,54 @@ function applyReward(save: JuniorSave, reward?: JuniorReward): JuniorSave {
   const unlockedCities = reward.unlockCityId && !afterCargo.unlockedCities.includes(reward.unlockCityId)
     ? [...afterCargo.unlockedCities, reward.unlockCityId]
     : afterCargo.unlockedCities;
-  return addStars({
+  const storyClueGain = reward.storyClues ?? 0;
+  const ledgerGain = storyClueGain + (reward.ledgerClues ?? 0) + (reward.ledgerClue ?? 0);
+  const ledgerClues = Math.min(STORY_ENDING_LEDGER_CLUES, Math.max(afterCargo.ledgerClues, afterCargo.ledgerClues + ledgerGain));
+  const rumorMarkers = {
+    ...afterCargo.rumorMarkers,
+    ...(storyClueGain > 0 || reward.ledgerClue ? { mountain: 'completed' as const } : {}),
+    ...Object.fromEntries((reward.rumorUnlock ?? []).map((id) => [id, 'available' as const]))
+  };
+  const unlockedStarItemIds = reward.cosmeticItemUnlock && !afterCargo.unlockedStarItemIds.includes(reward.cosmeticItemUnlock)
+    ? [...afterCargo.unlockedStarItemIds, reward.cosmeticItemUnlock]
+    : afterCargo.unlockedStarItemIds;
+  const visitedCityIds = reward.cityStamp && !afterCargo.visitedCityIds.includes(reward.cityStamp)
+    ? [...afterCargo.visitedCityIds, reward.cityStamp]
+    : afterCargo.visitedCityIds;
+  let next = addStoryFragment({
     ...afterCargo,
     coins: Math.max(0, afterCargo.coins + (reward.coins ?? 0)),
-    storyClues: afterCargo.storyClues + (reward.storyClues ?? 0),
+    storyClues: afterCargo.storyClues + storyClueGain,
+    ledgerClues,
+    rumorMarkers,
     badges,
-    unlockedCities
-  }, reward.stars ?? 0);
+    unlockedCities,
+    visitedCityIds,
+    unlockedStarItemIds
+  }, reward.storyFragment);
+  const notebookTopic = reward.seyeonNotebookProgress ?? reward.notebookTopic;
+  if (notebookTopic) {
+    next = {
+      ...next,
+      seyeonNotebook: {
+        ...next.seyeonNotebook,
+        [notebookTopic]: next.seyeonNotebook[notebookTopic] === 'completed' ? 'completed' : 'started'
+      }
+    };
+  }
+  return addStars(next, reward.stars ?? 0);
 }
 
 function rewardChips(reward?: JuniorReward, protectedCargo = false): string[] {
   if (!reward) return [];
   const chips: string[] = [];
-  if (reward.coins) chips.push(reward.coins > 0 ? `돈 +${reward.coins}냥` : `돈 ${reward.coins}냥`);
+  if (reward.coins) chips.push(reward.coins > 0 ? `돈 +${reward.coins}` : `돈 ${reward.coins}`);
   if (reward.stars) chips.push(`별 +${reward.stars}`);
-  if (reward.storyClues) chips.push(`이야기 +${reward.storyClues}`);
-  if (reward.loseCargo) chips.push(protectedCargo ? '부적이 지켜줌' : '짐 하나 잃음');
+  if (reward.storyClues || reward.ledgerClue || reward.ledgerClues) chips.push(`장부 단서 +${reward.storyClues ?? reward.ledgerClue ?? reward.ledgerClues}`);
+  if (reward.seyeonNotebookProgress || reward.notebookTopic) chips.push(`세연이 노트: ${reward.seyeonNotebookProgress ?? reward.notebookTopic}`);
+  if (reward.cosmeticItemUnlock) chips.push('새 꾸미기 열림');
+  if (reward.cityStamp) chips.push('도시 도장');
+  if (reward.loseCargo) chips.push(protectedCargo ? '짐 보호' : '짐 -1');
   if (reward.badge) chips.push('배지');
   if (reward.unlockCityId) chips.push('새 도시');
   return chips;
@@ -726,7 +1091,7 @@ export function resolveSimpleEvent(save: JuniorSave): JuniorSave {
   const event = getSelectedEvent(save);
   const protectedCargo = willProtectCargo(save, event?.reward);
   const rewarded = applyReward(save, event?.reward);
-  return applyMilestones({ ...rewarded, currentStep: 'eventResult', eventResultText: protectedCargo ? '부적이 짐을 지켜줬어!' : event?.reward ? '좋은 일이 생겼어!' : '무사히 지나갔어.', lastResultChips: rewardChips(event?.reward, protectedCargo) });
+  return applyMilestones({ ...rewarded, currentStep: 'eventResult', eventResultText: protectedCargo ? '遺?곸씠 吏먯쓣 吏耳쒖ㄼ??' : event?.reward ? '醫뗭? ?쇱씠 ?앷꼈??' : '臾댁궗??吏?섍컮??', lastResultChips: rewardChips(event?.reward, protectedCargo) });
 }
 
 export function resolveChoice(save: JuniorSave, choiceIndex: number): JuniorSave {
@@ -734,7 +1099,7 @@ export function resolveChoice(save: JuniorSave, choiceIndex: number): JuniorSave
   const choice = event?.choices?.[choiceIndex];
   const protectedCargo = willProtectCargo(save, choice?.reward);
   const rewarded = applyReward(save, choice?.reward);
-  return applyMilestones({ ...rewarded, currentStep: 'eventResult', eventResultText: protectedCargo ? '부적이 짐을 지켜줬어!' : choice?.resultText ?? '잘했어!', lastResultChips: rewardChips(choice?.reward, protectedCargo) });
+  return applyMilestones({ ...rewarded, currentStep: 'eventResult', eventResultText: protectedCargo ? '遺?곸씠 吏먯쓣 吏耳쒖ㄼ??' : choice?.resultText ?? '?섑뻽??', lastResultChips: rewardChips(choice?.reward, protectedCargo) });
 }
 
 export function answerQuiz(save: JuniorSave, option: string): JuniorSave {
@@ -748,15 +1113,15 @@ export function answerQuiz(save: JuniorSave, option: string): JuniorSave {
       ...save,
       activeEffects: { ...save.activeEffects, quizRetryAvailable: false },
       quizWrongStreak: nextWrongStreak,
-      lastResultChips: ['다시풀기권 사용'],
-      message: '한 번 더 해볼 수 있어.'
+      lastResultChips: ['?ㅼ떆?湲곌텒 ?ъ슜'],
+      message: '??踰????대낵 ???덉뼱.'
     };
   }
   const reward = correct ? quiz.reward : quiz.wrongReward;
   const protectedCargo = willProtectCargo(save, reward);
   const rewarded = applyReward(save, reward);
-  const hintText = nextWrongStreak >= 2 ? `${quiz.wrongText} 바람이가 힌트를 줄게.` : quiz.wrongText;
-  return applyMilestones({ ...rewarded, quizWrongStreak: nextWrongStreak, currentStep: 'eventResult', eventResultText: protectedCargo ? '부적이 짐을 지켜줬어!' : correct ? quiz.correctText : hintText, lastResultChips: rewardChips(reward, protectedCargo) });
+  const hintText = nextWrongStreak >= 2 ? `${quiz.wrongText} 諛붾엺?닿? ?뚰듃瑜?以꾧쾶.` : quiz.wrongText;
+  return applyMilestones({ ...rewarded, quizWrongStreak: nextWrongStreak, currentStep: 'eventResult', eventResultText: protectedCargo ? '遺?곸씠 吏먯쓣 吏耳쒖ㄼ??' : correct ? quiz.correctText : hintText, lastResultChips: rewardChips(reward, protectedCargo) });
 }
 
 export function closeEventResult(save: JuniorSave): JuniorSave {
@@ -768,7 +1133,7 @@ export function closeEventResult(save: JuniorSave): JuniorSave {
     eventResultText: undefined,
     tutorialStage: Math.max(save.tutorialStage, 7),
     lastResultChips: undefined,
-    message: '도착했어. 장터를 살펴보자.'
+    message: '?꾩갑?덉뼱. ?ν꽣瑜??댄렣蹂댁옄.'
   };
 }
 
@@ -777,22 +1142,24 @@ export function completeVisitIntro(save: JuniorSave): JuniorSave {
     ...save,
     currentStep: 'city',
     tutorialStage: Math.max(save.tutorialStage, 8),
-    message: `${getCity(save.currentCityId).name}을 둘러보자.`
+    message: `${getCity(save.currentCityId).name}???섎윭蹂댁옄.`
   };
-  return save.completedTutorial ? maybeOpenRegionalEvent(next, 'city', 0, true) : next;
+  if (!save.completedTutorial) return maybeQueueMainStoryEvent(next);
+  const withStoryRumor = maybeOpenStoryRumor(next, 'city');
+  return maybeQueueMainStoryEvent(withStoryRumor.pendingStoryRumorEventId ? withStoryRumor : maybeOpenRegionalEvent(withStoryRumor, 'city', 0, true));
 }
 
 export function buyVehicle(save: JuniorSave, vehicleId: JuniorVehicle['id']): JuniorSave {
   const vehicle = JUNIOR_VEHICLES.find((item) => item.id === vehicleId);
   if (!vehicle || vehicle.id === save.vehicleId) return save;
-  if (save.coins < vehicle.cost) return { ...save, message: '돈을 조금 더 모으자.' };
+  if (save.coins < vehicle.cost) return { ...save, message: '?덉쓣 議곌툑 ??紐⑥쑝??' };
   return applyMilestones({
     ...save,
     coins: save.coins - vehicle.cost,
     vehicleId: vehicle.id,
     cargoLimit: vehicle.cargoLimit,
     badges: save.badges.includes(vehicle.name) ? save.badges : [...save.badges, vehicle.name],
-    lastResultChips: [`돈 -${vehicle.cost}냥`, `짐칸 ${vehicle.cargoLimit}칸`],
+    lastResultChips: [`-${vehicle.cost}냥`, `짐 ${vehicle.cargoLimit}칸`],
     message: `${vehicle.name}를 장만했어!`
   });
 }
@@ -800,13 +1167,13 @@ export function buyVehicle(save: JuniorSave, vehicleId: JuniorVehicle['id']): Ju
 export function buyBoat(save: JuniorSave, boatId: JuniorBoat['id']): JuniorSave {
   const boat = JUNIOR_BOATS.find((item) => item.id === boatId);
   if (!boat || boat.id === 'none' || boat.id === save.boatId) return save;
-  if (save.coins < boat.cost) return { ...save, message: '돈을 조금 더 모으자.' };
+  if (save.coins < boat.cost) return { ...save, message: '?덉쓣 議곌툑 ??紐⑥쑝??' };
   return applyMilestones({
     ...save,
     coins: save.coins - boat.cost,
     boatId: boat.id,
     badges: save.badges.includes(boat.name) ? save.badges : [...save.badges, boat.name],
-    lastResultChips: [`돈 -${boat.cost}냥`, `바닷길 짐칸 ${boat.cargoLimit}칸`],
+    lastResultChips: [`-${boat.cost}냥`, `바닷길 짐 ${boat.cargoLimit}칸`],
     message: `${boat.name}를 장만했어!`
   });
 }
@@ -814,18 +1181,21 @@ export function buyBoat(save: JuniorSave, boatId: JuniorBoat['id']): JuniorSave 
 export function buyStarItem(save: JuniorSave, itemId: JuniorStarItem['id']): JuniorSave {
   const item = JUNIOR_STAR_ITEMS.find((candidate) => candidate.id === itemId);
   if (!item) return save;
-  if (save.starBalance < item.starCost) return { ...save, message: '별을 조금 더 모으자.' };
+  if (item.unlockCondition?.startsWith('story:') && !save.unlockedStarItemIds.includes(item.id) && !save.ownedStarItemIds.includes(item.id)) {
+    return { ...save, message: '이야기를 끝내면 별 상점에 열려.' };
+  }
+  if (save.starBalance < item.starCost) return { ...save, message: '蹂꾩쓣 議곌툑 ??紐⑥쑝??' };
 
   if (item.isConsumable) {
     const currentCount = save.consumableItems[item.id] ?? 0;
     const maxOwned = item.maxOwned ?? 99;
-    if (currentCount >= maxOwned) return { ...save, message: '이미 충분히 갖고 있어.' };
+    if (currentCount >= maxOwned) return { ...save, message: '?대? 異⑸텇??媛뽮퀬 ?덉뼱.' };
     const afterSpend = spendStars(save, item.starCost);
     return {
       ...afterSpend,
       consumableItems: { ...afterSpend.consumableItems, [item.id]: currentCount + 1 },
-      lastResultChips: [`별 -${item.starCost}`, `${item.name} +1`],
-      message: `${item.name}을 받았어!`
+      lastResultChips: [`蹂?-${item.starCost}`, `${item.name} +1`],
+      message: `${item.name}??諛쏆븯??`
     };
   }
 
@@ -834,19 +1204,19 @@ export function buyStarItem(save: JuniorSave, itemId: JuniorStarItem['id']): Jun
   return {
     ...afterSpend,
     ownedStarItemIds: [...afterSpend.ownedStarItemIds, item.id],
-    lastResultChips: [`별 -${item.starCost}`, '꾸미기 +1'],
-    message: `${item.name}을 얻었어!`
+    lastResultChips: [`蹂?-${item.starCost}`, '袁몃?湲?+1'],
+    message: `${item.name}???살뿀??`
   };
 }
 
 export function equipStarItem(save: JuniorSave, itemId: JuniorStarItem['id']): JuniorSave {
   const item = JUNIOR_STAR_ITEMS.find((candidate) => candidate.id === itemId);
   if (!item || item.isConsumable || item.slot === 'none') return save;
-  if (!save.ownedStarItemIds.includes(item.id)) return { ...save, message: '먼저 별로 얻어야 해.' };
+  if (!save.ownedStarItemIds.includes(item.id)) return { ...save, message: '癒쇱? 蹂꾨줈 ?살뼱????' };
   return {
     ...save,
     equippedStarItems: { ...save.equippedStarItems, [item.slot]: item.id },
-    lastResultChips: ['꾸미기 바꿈'],
+    lastResultChips: ['袁몃?湲?諛붽퓞'],
     message: item.equipText
   };
 }
@@ -858,8 +1228,8 @@ export function unequipStarItem(save: JuniorSave, slot: JuniorStarItem['slot']):
   return {
     ...save,
     equippedStarItems: nextEquipped,
-    lastResultChips: ['꾸미기 뺐어'],
-    message: '장식을 잠시 빼두었어.'
+    lastResultChips: ['袁몃?湲?類먯뼱'],
+    message: '?μ떇???좎떆 鍮쇰몢?덉뼱.'
   };
 }
 
@@ -868,55 +1238,55 @@ export function useStarConsumable(save: JuniorSave, itemId: JuniorStarItem['id']
   const currentCount = save.consumableItems[itemId] ?? 0;
   if (!item || currentCount <= 0) return save;
   if (itemId === 'ticket_fast_travel') {
-    if (save.currentStep !== 'map') return { ...save, message: '지도에서 쓸 수 있어.' };
+    if (save.currentStep !== 'map') return { ...save, message: '吏?꾩뿉???????덉뼱.' };
     const consumed = consumeConsumableItem(save, itemId);
     return {
       ...consumed,
       activeEffects: { ...consumed.activeEffects, fastTravelNextRoute: true },
-      lastResultChips: ['신속 이동권 -1'],
-      message: '바람길을 준비했어. 출발해보자.'
+      lastResultChips: ['?좎냽 ?대룞沅?-1'],
+      message: '諛붾엺湲몄쓣 以鍮꾪뻽?? 異쒕컻?대낫??'
     };
   }
   if (itemId === 'ticket_half_price_good') {
-    return { ...save, message: save.currentStep === 'market' ? '살 물건을 누르면 반값권을 쓸 수 있어.' : '장터에서 쓸 수 있어.' };
+    return { ...save, message: save.currentStep === 'market' ? '??臾쇨굔???꾨Ⅴ硫?諛섍컪沅뚯쓣 ?????덉뼱.' : '?ν꽣?먯꽌 ?????덉뼱.' };
   }
   if (itemId === 'charm_cargo_guard') {
-    if (save.activeEffects.cargoProtectNextEvent) return { ...save, message: '이미 부적이 준비됐어.' };
+    if (save.activeEffects.cargoProtectNextEvent) return { ...save, message: '?대? 遺?곸씠 以鍮꾨릱??' };
     const consumed = consumeConsumableItem(save, itemId);
     return {
       ...consumed,
       activeEffects: { ...consumed.activeEffects, cargoProtectNextEvent: true },
-      lastResultChips: ['짐 보호 부적 -1'],
-      message: '다음 위험에서 짐을 지켜줄 거야.'
+      lastResultChips: ['吏?蹂댄샇 遺??-1'],
+      message: '?ㅼ쓬 ?꾪뿕?먯꽌 吏먯쓣 吏耳쒖쨪 嫄곗빞.'
     };
   }
   if (itemId === 'ticket_quiz_retry') {
     const event = getSelectedEvent(save);
-    if (save.currentStep !== 'event' || !event?.quiz) return { ...save, message: '퀴즈에서 쓸 수 있어.' };
-    if (save.activeEffects.quizRetryAvailable) return { ...save, message: '이미 다시풀기권이 준비됐어.' };
+    if (save.currentStep !== 'event' || !event?.quiz) return { ...save, message: '?댁쫰?먯꽌 ?????덉뼱.' };
+    if (save.activeEffects.quizRetryAvailable) return { ...save, message: '?대? ?ㅼ떆?湲곌텒??以鍮꾨릱??' };
     const consumed = consumeConsumableItem(save, itemId);
     return {
       ...consumed,
       activeEffects: { ...consumed.activeEffects, quizRetryAvailable: true },
-      lastResultChips: ['다시풀기권 -1'],
-      message: '틀려도 한 번 더 해볼 수 있어.'
+      lastResultChips: ['?ㅼ떆?湲곌텒 -1'],
+      message: '??ㅻ룄 ??踰????대낵 ???덉뼱.'
     };
   }
   if (itemId === 'ticket_market_tip') {
-    if (save.currentStep !== 'market') return { ...save, message: '장터에서 쓸 수 있어.' };
-    if (save.activeEffects.marketRecommendCityId === save.currentCityId) return { ...save, message: '이미 추천이 보이고 있어.' };
+    if (save.currentStep !== 'market') return { ...save, message: '?ν꽣?먯꽌 ?????덉뼱.' };
+    if (save.activeEffects.marketRecommendCityId === save.currentCityId) return { ...save, message: '?대? 異붿쿇??蹂댁씠怨??덉뼱.' };
     const consumed = consumeConsumableItem(save, itemId);
     return {
       ...consumed,
       activeEffects: { ...consumed.activeEffects, marketRecommendCityId: save.currentCityId },
-      lastResultChips: ['장터 추천권 -1'],
-      message: '요정이 좋은 물건을 알려줬어.'
+      lastResultChips: ['?ν꽣 異붿쿇沅?-1'],
+      message: '?붿젙??醫뗭? 臾쇨굔???뚮젮以ъ뼱.'
     };
   }
   if (itemId === 'ticket_extra_rumor') {
-    if (save.currentStep !== 'city' && save.currentStep !== 'market') return { ...save, message: '도시나 장터에서 쓸 수 있어.' };
+    if (save.currentStep !== 'city' && save.currentStep !== 'market') return { ...save, message: '?꾩떆???ν꽣?먯꽌 ?????덉뼱.' };
     const event = selectRegionalEvent(save, save.currentCityId);
-    if (!event) return { ...save, message: '지금은 새 소문이 없어.' };
+    if (!event) return { ...save, message: '吏湲덉? ???뚮Ц???놁뼱.' };
     const consumed = consumeConsumableItem(save, itemId);
     return {
       ...consumed,
@@ -926,8 +1296,8 @@ export function useStarConsumable(save: JuniorSave, itemId: JuniorStarItem['id']
       seenRegionalEventIds: consumed.seenRegionalEventIds.includes(event.id) ? consumed.seenRegionalEventIds : [...consumed.seenRegionalEventIds, event.id],
       lastRegionalEventCityId: save.currentCityId,
       lastRegionalEventId: event.id,
-      lastResultChips: ['소문 듣기권 -1'],
-      message: '상인이 소문을 들려줬어.'
+      lastResultChips: ['?뚮Ц ?ｊ린沅?-1'],
+      message: '?곸씤???뚮Ц???ㅻ젮以ъ뼱.'
     };
   }
   return save;
@@ -935,20 +1305,27 @@ export function useStarConsumable(save: JuniorSave, itemId: JuniorStarItem['id']
 
 export function applyMilestones(save: JuniorSave): JuniorSave {
   let next = save;
-  if (next.coins >= 100 && !next.badges.includes('꼬마 장사꾼')) next = { ...next, badges: [...next.badges, '꼬마 장사꾼'] };
+  if (next.coins >= 100 && !next.badges.includes('꼬마 상인')) next = { ...next, badges: [...next.badges, '꼬마 상인'] };
   if (next.visitedCityIds.length >= 3 && !next.badges.includes('도시 도장 3개')) next = { ...next, badges: [...next.badges, '도시 도장 3개'] };
   if (next.visitedCityIds.length >= 7 && !next.badges.includes('도시 도장 7개')) next = { ...next, badges: [...next.badges, '도시 도장 7개'] };
   if (next.visitedCityIds.length >= 14 && !next.badges.includes('도시 도장 14개')) next = { ...next, badges: [...next.badges, '도시 도장 14개'] };
   if (next.visitedCityIds.length >= JUNIOR_CITIES.length && !next.badges.includes('팔도 도장')) next = { ...next, badges: [...next.badges, '팔도 도장'] };
-  if (next.visitedCityIds.includes('jeju') && !next.badges.includes('제주까지 다녀왔어요')) next = { ...next, badges: [...next.badges, '제주까지 다녀왔어요'] };
-  if (next.totalStarsEarned >= 5 && !next.badges.includes('착한 일 배지')) next = { ...next, badges: [...next.badges, '착한 일 배지'] };
-  if (next.totalStarsEarned >= 10 && !next.badges.includes('퀴즈 달인')) next = { ...next, badges: [...next.badges, '퀴즈 달인'] };
+  if (next.visitedCityIds.includes('jeju') && !next.badges.includes('제주까지 다녀왔어')) next = { ...next, badges: [...next.badges, '제주까지 다녀왔어'] };
+  if (next.totalStarsEarned >= 5 && !next.badges.includes('칭찬 별 배지')) next = { ...next, badges: [...next.badges, '칭찬 별 배지'] };
+  if (next.totalStarsEarned >= 10 && !next.badges.includes('퀴즈 장인')) next = { ...next, badges: [...next.badges, '퀴즈 장인'] };
   if (next.coins >= 220 && next.storyClues < 3) next = { ...next, storyClues: Math.max(next.storyClues, 3) };
-  return next;
+  if (next.storyClues >= 1 && next.ledgerClues < 1) next = { ...next, ledgerClues: 1 };
+  return maybeQueueMainStoryEvent(next);
 }
 
 export function openEnding(save: JuniorSave): JuniorSave {
-  return { ...save, currentStep: 'endingChoice', message: undefined };
+  if (canOpenStoryEnding(save)) return { ...save, currentStep: 'endingChoice', message: undefined };
+  if (canStartReturnDoorStory(save)) return { ...save, activeStoryEventId: 'M12', message: undefined };
+  return {
+    ...save,
+    currentStep: 'city',
+    message: `돈 ${ENDING_COINS}냥, 세연이 노트 5개, 장부 단서 3개, 공부방이 필요해.`
+  };
 }
 
 export function finishEnding(save: JuniorSave): JuniorSave {
@@ -957,7 +1334,7 @@ export function finishEnding(save: JuniorSave): JuniorSave {
     currentStep: 'ending',
     completedEnding: true,
     completedRuns: save.completedRuns + 1,
-    badges: save.badges.includes('꼬마 거상 정우') ? save.badges : [...save.badges, '꼬마 거상 정우']
+    badges: save.badges.includes('瑗щ쭏 嫄곗긽 ?뺤슦') ? save.badges : [...save.badges, '瑗щ쭏 嫄곗긽 ?뺤슦']
   };
 }
 
@@ -994,3 +1371,4 @@ export function getMarketGoodsForCity(cityId: JuniorCityId) {
   JUNIOR_GOODS.map((good) => good.id).forEach(push);
   return ordered.slice(0, Math.max(2, Math.min(7, desiredCount))).map(getGood);
 }
+

@@ -2,6 +2,15 @@
 
 Last QA pass: 2026-05-14
 
+## 2026-05-16 Main Story Balance
+
+- The 300 coin goal is still the money target, but it is no longer the only ending gate.
+- The emotional goal is 세연이의 배움: five notebook topics, three ledger clues, and a complete study room.
+- Stars remain a praise and decoration currency. Main story can grant a small star reward, but coins still come from trade.
+- Legacy saves keep their economy state. Missing story fields migrate to safe defaults.
+- Completed tutorial saves do not automatically show M01, so old play sessions are not blocked by a new dialogue overlay.
+- The opening M01-M03 sequence is for new starts and explains why 정우 begins trading.
+
 ## Target Pace
 
 | Goal | Expected play | Target time | QA result |
