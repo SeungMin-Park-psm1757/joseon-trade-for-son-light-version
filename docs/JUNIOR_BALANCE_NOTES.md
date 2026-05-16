@@ -22,6 +22,42 @@ Last QA pass: 2026-05-14
 - Repeated buying in the same city nudges buy prices up.
 - Repeated selling of the same good in the same city nudges sell prices down.
 
+## Star Economy
+
+- Stars are not a replacement for coins.
+- `starBalance` is the spendable star count shown in the top bar.
+- `totalStarsEarned` is the lifetime count used for badge milestones.
+- Existing saves with only `stars` migrate into both fields, so children keep their old stars.
+- Cosmetic star items cost 4-12 stars and do not change cargo, price, route, or combat strength.
+- Consumable star items cost 3-6 stars and are limited to convenience effects.
+- Badge thresholds use lifetime stars: 5 stars for `착한 일 배지`, 10 stars for `퀴즈 달인`.
+- Real playtest watchpoint: if children spend all stars and feel punished, add clearer "모은 별 총 N개" copy to the star shop goal line.
+- The top-bar star chip is the reward-system entry point. This avoids adding another bottom tab.
+- The star shop is separated from the cart/boat screen so children do not confuse stars with core trade upgrades.
+- Owned non-consumable cosmetics cannot be bought twice. They move to the treasure box for equipping/removing.
+- Consumable counts are visible in the treasure box; their detailed effects remain intentionally convenience-only.
+
+## 2026-05-16 Consumable Balance
+
+- 신속 이동권 is a pacing helper. It shortens the next trip presentation but still uses the normal travel/arrival flow, so it does not unlock routes or skip story state.
+- 물건 1개 반값권 applies to one selected market good only. It consumes the ticket on purchase and then clears the pending effect, preventing repeated discounts.
+- 짐 보호 부적 is defensive only. It prevents one cargo-loss penalty from a risky event or wrong quiz result, then disappears.
+- 퀴즈 다시풀기권 lowers frustration for younger children by keeping them on the same quiz once after a wrong answer. It does not grant extra coins or stars by itself.
+- 장터 추천권 highlights a useful good in the current city. It is information help, not a price bonus.
+- 소문 듣기권 opens a local regional story when one is available. It supports learning and does not grant direct trade power.
+- The current costs, 3-6 stars, feel safe because children must still earn coins through buying, moving, and selling.
+- Watchpoint: if half-price tickets make early coin growth too fast in real play, restrict them to non-tutorial sessions or raise the cost from 6 to 7 stars.
+
+## 2026-05-16 Star System QA
+
+- Star earning remains small and readable: good sale +1, quiz/event success usually +1, special story rewards at +1 to +2 only.
+- Cosmetic prices are balanced for desire without replacing trade goals: starter decoration 4-5 stars, regular clothes/tools 6-8, premium items 10-12.
+- Consumables are priced below premium skins but high enough to avoid spam: recommendation/rumor 3, quiz retry 4, fast travel/protection 5, half-price 6.
+- Half-price ticket is the strongest convenience item, so it applies once to one selected good and consumes on purchase.
+- Fast travel keeps the route result intact and only shortens the presentation, preserving the map/travel rhythm.
+- Cargo protection and quiz retry reduce frustration but do not generate direct profit.
+- Automated QA confirms `starBalance` drops on purchase, `totalStarsEarned` does not, and legacy `stars` saves migrate.
+
 ## Upgrade Costs
 
 | Upgrade | Cost | Effect | QA judgment |

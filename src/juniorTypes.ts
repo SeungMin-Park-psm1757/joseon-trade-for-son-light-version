@@ -158,6 +158,39 @@ export interface JuniorReward {
   loseCargo?: number;
 }
 
+export type JuniorStarItemCategory = 'skin' | 'decoration' | 'title' | 'consumable';
+export type JuniorStarItemSlot = 'weapon' | 'armor' | 'tool' | 'hat' | 'badge' | 'fairy' | 'cartSkin' | 'boatSkin' | 'none';
+export type JuniorConsumableEffectType =
+  | 'fast_travel'
+  | 'half_price_next_good'
+  | 'protect_cargo'
+  | 'quiz_retry'
+  | 'market_recommendation'
+  | 'force_rumor';
+
+export interface JuniorConsumableEffect {
+  type: JuniorConsumableEffectType;
+  description: string;
+}
+
+export interface JuniorStarItem {
+  id: string;
+  name: string;
+  category: JuniorStarItemCategory;
+  slot: JuniorStarItemSlot;
+  starCost: number;
+  iconAsset: string;
+  description: string;
+  childDescription: string;
+  ownedText: string;
+  equipText: string;
+  useText: string;
+  consumableEffect?: JuniorConsumableEffect;
+  maxOwned?: number;
+  unlockCondition?: string;
+  isConsumable: boolean;
+}
+
 export interface JuniorEventChoice {
   label: string;
   resultText: string;
@@ -212,6 +245,14 @@ export interface JuniorMarketPressure {
   sell: Record<string, number>;
 }
 
+export interface JuniorActiveEffects {
+  fastTravelNextRoute: boolean;
+  halfPriceNextGoodId?: JuniorGoodId;
+  cargoProtectNextEvent: boolean;
+  quizRetryAvailable: boolean;
+  marketRecommendCityId?: JuniorCityId;
+}
+
 export interface JuniorSave {
   saveVersion: number;
   currentStep: JuniorStep;
@@ -224,6 +265,12 @@ export interface JuniorSave {
   eventResultText?: string;
   coins: number;
   stars: number;
+  totalStarsEarned: number;
+  starBalance: number;
+  ownedStarItemIds: string[];
+  equippedStarItems: Partial<Record<JuniorStarItemSlot, string>>;
+  consumableItems: Record<string, number>;
+  activeEffects: JuniorActiveEffects;
   cargo: JuniorCargoItem[];
   cargoLimit: number;
   vehicleId: JuniorVehicle['id'];

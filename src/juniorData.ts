@@ -1,4 +1,4 @@
-import type { JuniorBoat, JuniorCity, JuniorCityId, JuniorEvent, JuniorGood, JuniorGoodId, JuniorRegionalEvent, JuniorReward, JuniorRoute, JuniorSave, JuniorVehicle } from './juniorTypes';
+import type { JuniorBoat, JuniorCity, JuniorCityId, JuniorEvent, JuniorGood, JuniorGoodId, JuniorRegionalEvent, JuniorReward, JuniorRoute, JuniorSave, JuniorStarItem, JuniorVehicle } from './juniorTypes';
 
 export const JUNIOR_SAVE_KEY = 'joseon_trade_junior_save_v1';
 export const JUNIOR_SAVE_VERSION = 2;
@@ -7,7 +7,8 @@ export const ENDING_COINS = 300;
 
 export function publicAsset(path: string) {
   if (!path.startsWith('/assets/')) return path;
-  return `${import.meta.env.BASE_URL}${path.slice(1)}`;
+  const baseUrl = import.meta.env?.BASE_URL ?? '/';
+  return `${baseUrl}${path.slice(1)}`;
 }
 
 export const JUNIOR_GOODS: JuniorGood[] = [
@@ -23,6 +24,275 @@ export const JUNIOR_GOODS: JuniorGood[] = [
   { id: 'silk', name: '비단', image: publicAsset('/assets/goods/silk.png'), baseBuyCoins: 18, baseSellCoins: 30 },
   { id: 'ceramics', name: '도자기', image: publicAsset('/assets/goods/ceramics.png'), baseBuyCoins: 17, baseSellCoins: 28 },
   { id: 'horse', name: '말', image: publicAsset('/assets/goods/horse.png'), baseBuyCoins: 20, baseSellCoins: 34 }
+];
+
+const starItemIcon = (filename: string) => publicAsset(`/assets/star-items/${filename}`);
+
+export const JUNIOR_STAR_ITEMS: JuniorStarItem[] = [
+  {
+    id: 'decor_blue_dragon_blade',
+    name: '청룡언월도 장식',
+    category: 'skin',
+    slot: 'weapon',
+    starCost: 8,
+    iconAsset: starItemIcon('blue-dragon-glaive.png'),
+    description: '전설 속 무기처럼 멋진 장식이야.',
+    childDescription: '멋져 보이는 장식이야. 힘은 그대로야.',
+    ownedText: '이미 갖고 있어.',
+    equipText: '청룡언월도 장식을 달았어!',
+    useText: '장식은 꾸미기에 써.',
+    isConsumable: false
+  },
+  {
+    id: 'decor_chungmugong_sword',
+    name: '충무공 검 장식',
+    category: 'skin',
+    slot: 'weapon',
+    starCost: 10,
+    iconAsset: starItemIcon('admiral-sword.png'),
+    description: '용감한 마음을 떠올리게 하는 검 장식이야.',
+    childDescription: '정우가 씩씩해 보여. 힘은 그대로야.',
+    ownedText: '이미 갖고 있어.',
+    equipText: '충무공 검 장식을 달았어!',
+    useText: '장식은 꾸미기에 써.',
+    isConsumable: false
+  },
+  {
+    id: 'decor_market_staff',
+    name: '장터 호신봉 장식',
+    category: 'skin',
+    slot: 'weapon',
+    starCost: 4,
+    iconAsset: starItemIcon('market-staff.png'),
+    description: '정우가 씩씩해 보이는 장식이야.',
+    childDescription: '가벼운 장식이야. 싸우는 물건은 아니야.',
+    ownedText: '이미 갖고 있어.',
+    equipText: '호신봉 장식을 달았어!',
+    useText: '장식은 꾸미기에 써.',
+    isConsumable: false
+  },
+  {
+    id: 'skin_general_armor',
+    name: '장군 갑옷',
+    category: 'skin',
+    slot: 'armor',
+    starCost: 10,
+    iconAsset: starItemIcon('general-armor.png'),
+    description: '장군처럼 멋져 보여.',
+    childDescription: '멋진 옷 스킨이야. 힘은 그대로야.',
+    ownedText: '이미 갖고 있어.',
+    equipText: '장군 갑옷을 입었어!',
+    useText: '옷 스킨은 꾸미기에 써.',
+    isConsumable: false
+  },
+  {
+    id: 'skin_silk_robe',
+    name: '비단 도포',
+    category: 'skin',
+    slot: 'armor',
+    starCost: 7,
+    iconAsset: starItemIcon('silk-robe.png'),
+    description: '큰 장터에 어울리는 고운 옷이야.',
+    childDescription: '고운 옷 스킨이야. 능력치는 그대로야.',
+    ownedText: '이미 갖고 있어.',
+    equipText: '비단 도포를 입었어!',
+    useText: '옷 스킨은 꾸미기에 써.',
+    isConsumable: false
+  },
+  {
+    id: 'skin_merchant_coat',
+    name: '상인 두루마기',
+    category: 'skin',
+    slot: 'armor',
+    starCost: 5,
+    iconAsset: starItemIcon('merchant-robe.png'),
+    description: '꼬마 상인 정우에게 잘 어울려.',
+    childDescription: '장터에 어울리는 옷이야.',
+    ownedText: '이미 갖고 있어.',
+    equipText: '상인 두루마기를 입었어!',
+    useText: '옷 스킨은 꾸미기에 써.',
+    isConsumable: false
+  },
+  {
+    id: 'decor_rain_gauge',
+    name: '측우기',
+    category: 'decoration',
+    slot: 'tool',
+    starCost: 7,
+    iconAsset: starItemIcon('rain-gauge.png'),
+    description: '비가 얼마나 왔는지 살피는 옛 도구야.',
+    childDescription: '옛 과학 도구 장식이야.',
+    ownedText: '이미 갖고 있어.',
+    equipText: '측우기를 들었어!',
+    useText: '도구 장식은 꾸미기에 써.',
+    isConsumable: false
+  },
+  {
+    id: 'decor_compass',
+    name: '나침반',
+    category: 'decoration',
+    slot: 'tool',
+    starCost: 6,
+    iconAsset: starItemIcon('compass.png'),
+    description: '길을 찾는 기분이 드는 장식이야.',
+    childDescription: '길잡이 장식이야. 길이 더 쉬워지진 않아.',
+    ownedText: '이미 갖고 있어.',
+    equipText: '나침반을 들었어!',
+    useText: '도구 장식은 꾸미기에 써.',
+    isConsumable: false
+  },
+  {
+    id: 'decor_hopae',
+    name: '호패',
+    category: 'decoration',
+    slot: 'badge',
+    starCost: 5,
+    iconAsset: starItemIcon('hopae.png'),
+    description: '정우의 이름표 같은 장식이야.',
+    childDescription: '이름표처럼 멋진 장식이야.',
+    ownedText: '이미 갖고 있어.',
+    equipText: '호패를 달았어!',
+    useText: '호패는 꾸미기에 써.',
+    isConsumable: false
+  },
+  {
+    id: 'decor_gold_ledger',
+    name: '금빛 장부',
+    category: 'decoration',
+    slot: 'tool',
+    starCost: 12,
+    iconAsset: starItemIcon('golden-ledger.png'),
+    description: '장사 기록이 더 멋져 보여.',
+    childDescription: '반짝이는 장부 장식이야.',
+    ownedText: '이미 갖고 있어.',
+    equipText: '금빛 장부를 들었어!',
+    useText: '장부 장식은 꾸미기에 써.',
+    isConsumable: false
+  },
+  {
+    id: 'fairy_ribbon',
+    name: '요정 리본',
+    category: 'decoration',
+    slot: 'fairy',
+    starCost: 4,
+    iconAsset: starItemIcon('fairy-ribbon.png'),
+    description: '바람이가 더 귀여워져.',
+    childDescription: '바람이에게 달아주는 리본이야.',
+    ownedText: '이미 갖고 있어.',
+    equipText: '바람이가 리본을 달았어!',
+    useText: '요정 꾸미기에 써.',
+    isConsumable: false
+  },
+  {
+    id: 'fairy_star_wand',
+    name: '요정 별지팡이',
+    category: 'decoration',
+    slot: 'fairy',
+    starCost: 6,
+    iconAsset: starItemIcon('fairy-star-wand.png'),
+    description: '요정이 반짝반짝해 보여.',
+    childDescription: '바람이가 반짝이는 장식을 들어.',
+    ownedText: '이미 갖고 있어.',
+    equipText: '바람이가 별지팡이를 들었어!',
+    useText: '요정 꾸미기에 써.',
+    isConsumable: false
+  },
+  {
+    id: 'ticket_fast_travel',
+    name: '신속 이동권',
+    category: 'consumable',
+    slot: 'none',
+    starCost: 5,
+    iconAsset: starItemIcon('fast-travel-ticket.png'),
+    description: '이번 이동을 빠르게 해줘.',
+    childDescription: '다음 길을 빠르게 지나가는 표야.',
+    ownedText: '표를 갖고 있어.',
+    equipText: '표는 필요할 때 써.',
+    useText: '다음 이동을 빠르게 해줘.',
+    consumableEffect: { type: 'fast_travel', description: '다음 이동 장면을 짧게 줄인다.' },
+    maxOwned: 3,
+    isConsumable: true
+  },
+  {
+    id: 'ticket_half_price_good',
+    name: '물건 1개 반값권',
+    category: 'consumable',
+    slot: 'none',
+    starCost: 6,
+    iconAsset: starItemIcon('half-price-ticket.png'),
+    description: '물건 하나를 반값에 살 수 있어.',
+    childDescription: '다음 물건 하나를 싸게 사는 표야.',
+    ownedText: '표를 갖고 있어.',
+    equipText: '표는 필요할 때 써.',
+    useText: '다음 상품 1개를 반값으로 사.',
+    consumableEffect: { type: 'half_price_next_good', description: '다음 상품 1개 구매 가격을 50% 낮춘다.' },
+    maxOwned: 2,
+    isConsumable: true
+  },
+  {
+    id: 'charm_cargo_guard',
+    name: '짐 보호 부적',
+    category: 'consumable',
+    slot: 'none',
+    starCost: 5,
+    iconAsset: starItemIcon('cargo-protect-charm.png'),
+    description: '길 위 사건에서 짐을 지켜줘.',
+    childDescription: '짐을 한 번 지켜주는 부적이야.',
+    ownedText: '부적을 갖고 있어.',
+    equipText: '부적은 필요할 때 써.',
+    useText: '다음 짐 손실을 한 번 막아.',
+    consumableEffect: { type: 'protect_cargo', description: '다음 오답/위험 이벤트의 짐 손실 1회를 막는다.' },
+    maxOwned: 3,
+    isConsumable: true
+  },
+  {
+    id: 'ticket_quiz_retry',
+    name: '퀴즈 다시풀기권',
+    category: 'consumable',
+    slot: 'none',
+    starCost: 4,
+    iconAsset: starItemIcon('quiz-retry-ticket.png'),
+    description: '퀴즈를 한 번 더 풀 수 있어.',
+    childDescription: '틀려도 한 번 더 해보는 표야.',
+    ownedText: '표를 갖고 있어.',
+    equipText: '표는 필요할 때 써.',
+    useText: '퀴즈를 한 번 더 풀어.',
+    consumableEffect: { type: 'quiz_retry', description: '오답 시 한 번 재도전한다.' },
+    maxOwned: 3,
+    isConsumable: true
+  },
+  {
+    id: 'ticket_market_tip',
+    name: '장터 추천권',
+    category: 'consumable',
+    slot: 'none',
+    starCost: 3,
+    iconAsset: starItemIcon('market-recommend-ticket.png'),
+    description: '오늘 사기 좋은 물건을 알려줘.',
+    childDescription: '추천 물건을 더 잘 보이게 해줘.',
+    ownedText: '표를 갖고 있어.',
+    equipText: '표는 필요할 때 써.',
+    useText: '현재 장터 추천 상품을 알려줘.',
+    consumableEffect: { type: 'market_recommendation', description: '현재 장터 추천 상품을 강조한다.' },
+    maxOwned: 4,
+    isConsumable: true
+  },
+  {
+    id: 'ticket_extra_rumor',
+    name: '소문 듣기권',
+    category: 'consumable',
+    slot: 'none',
+    starCost: 3,
+    iconAsset: starItemIcon('rumor-ticket.png'),
+    description: '상인 소문을 하나 더 들어.',
+    childDescription: '장터 이야기를 하나 더 듣는 표야.',
+    ownedText: '표를 갖고 있어.',
+    equipText: '표는 필요할 때 써.',
+    useText: '지역 소문을 하나 더 들어.',
+    consumableEffect: { type: 'force_rumor', description: '지역 소문 이벤트를 강제로 연다.' },
+    maxOwned: 4,
+    isConsumable: true
+  }
 ];
 
 export const JUNIOR_CITIES: JuniorCity[] = [
@@ -873,6 +1143,16 @@ export const DEFAULT_JUNIOR_SAVE: JuniorSave = {
   currentCityId: 'busan',
   coins: 30,
   stars: 0,
+  totalStarsEarned: 0,
+  starBalance: 0,
+  ownedStarItemIds: [],
+  equippedStarItems: {},
+  consumableItems: {},
+  activeEffects: {
+    fastTravelNextRoute: false,
+    cargoProtectNextEvent: false,
+    quizRetryAvailable: false
+  },
   cargo: [],
   cargoLimit: 2,
   vehicleId: 'bundle',
