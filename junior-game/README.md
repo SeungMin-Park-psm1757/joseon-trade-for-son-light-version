@@ -67,6 +67,8 @@ Avoid:
 - Event / quiz
 - Event result
 - Vehicle shop
+- Star shop
+- Treasure box
 - Ending choice
 - Ending
 
@@ -80,6 +82,7 @@ joseon_trade_junior_save_v1
 
 The save migration keeps older saves playable and fills defaults for newer fields such as result chips.
 It also fills regional event defaults so older saves can keep going without losing progress.
+Old star saves migrate into `starBalance` and `totalStarsEarned`. Spending stars only reduces `starBalance`, while badge milestones keep using lifetime stars.
 
 ## Test
 
@@ -96,6 +99,8 @@ Validated flows:
 - event result card
 - upgrade celebration
 - vehicle current status, cart/boat prices, land/sea cargo
+- star chip, star shop purchase, treasure-box equip/remove, consumable counts
+- consumable effects: fast travel, half-price good, cargo protect, quiz retry, market recommendation, rumor ticket
 - regional merchant rumor, dialect, landmark, and repeat prevention
 - city stamps and badges
 - ending hint
@@ -124,6 +129,8 @@ Release checks:
 - service worker loads
 - offline fallback loads
 - continue works after reload
+- star shop opens from the top star chip
+- treasure box purchase/equip/use state persists after reload
 - console errors are 0
 
 ## Asset Policy

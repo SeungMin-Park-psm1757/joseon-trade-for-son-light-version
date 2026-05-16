@@ -1,4 +1,8 @@
 import { expect, test } from '@playwright/test';
+import { existsSync } from 'node:fs';
+import path from 'node:path';
+import { JUNIOR_STAR_ITEMS } from '../src/juniorData';
+import { answerQuiz, buyGood, buyStarItem, normalizeJuniorSave, prepareHalfPriceTicket, startFastTravel, useStarConsumable } from '../src/juniorFlow';
 
 const saveKey = 'joseon_trade_junior_save_v1';
 const allCities = [
@@ -15,6 +19,16 @@ function baseSave(overrides = {}) {
     currentCityId: 'busan',
     coins: 30,
     stars: 0,
+    totalStarsEarned: 0,
+    starBalance: 0,
+    ownedStarItemIds: [],
+    equippedStarItems: {},
+    consumableItems: {},
+    activeEffects: {
+      fastTravelNextRoute: false,
+      cargoProtectNextEvent: false,
+      quizRetryAvailable: false
+    },
     cargo: [],
     cargoLimit: 2,
     vehicleId: 'bundle',
@@ -86,7 +100,7 @@ test('save-flow: corrupted save falls back to a playable start', async ({ page }
 });
 
 test('save-flow: continue data includes version and last saved time', async ({ page }) => {
-  await seed(page, baseSave({ currentStep: 'intro', completedTutorial: true, coins: 84, stars: 2, cargoLimit: 3 }));
+  await seed(page, baseSave({ currentStep: 'intro', completedTutorial: true, coins: 84, stars: 2, starBalance: 2, totalStarsEarned: 2, cargoLimit: 3 }));
   await expect(page.getByTestId('continue-card')).toBeVisible();
   await expect(page.getByTestId('continue-card')).toContainText('부산');
   await expect(page.getByTestId('continue-card')).toContainText('돈 84');
@@ -95,6 +109,179 @@ test('save-flow: continue data includes version and last saved time', async ({ p
   const saved = await page.evaluate(([key]) => JSON.parse(localStorage.getItem(key) ?? '{}'), [saveKey]);
   expect(saved.saveVersion).toBe(2);
   expect(typeof saved.lastSavedAt).toBe('string');
+});
+
+test('legacy-stars-migrate: old stars become balance and total', () => {
+  const migrated = normalizeJuniorSave({
+    ...baseSave(),
+    starBalance: undefined,
+    totalStarsEarned: undefined,
+    ownedStarItemIds: undefined,
+    equippedStarItems: undefined,
+    consumableItems: undefined,
+    stars: 7
+  });
+  expect(migrated.stars).toBe(7);
+  expect(migrated.starBalance).toBe(7);
+  expect(migrated.totalStarsEarned).toBe(7);
+  expect(migrated.ownedStarItemIds).toEqual([]);
+  expect(migrated.consumableItems).toEqual({});
+});
+
+test('star-balance-increases-on-reward: reward stars update balance and total', () => {
+  const save = normalizeJuniorSave(baseSave({ currentStep: 'event', selectedEventId: 'bandit_spelling_1', starBalance: 2, totalStarsEarned: 4, stars: 2 }));
+  const next = answerQuiz(save, '맞춤법');
+  expect(next.starBalance).toBe(3);
+  expect(next.stars).toBe(3);
+  expect(next.totalStarsEarned).toBe(5);
+  expect(next.badges).toContain('착한 일 배지');
+});
+
+test('total-stars-not-decrease-on-spend: buying star item spends only balance', () => {
+  const save = normalizeJuniorSave(baseSave({ starBalance: 10, totalStarsEarned: 12, stars: 10 }));
+  const next = buyStarItem(save, 'decor_market_staff');
+  expect(next.starBalance).toBe(6);
+  expect(next.stars).toBe(6);
+  expect(next.totalStarsEarned).toBe(12);
+  expect(next.ownedStarItemIds).toContain('decor_market_staff');
+});
+
+test('star-item-data-valid: required star shop data is present', () => {
+  expect(JUNIOR_STAR_ITEMS).toHaveLength(18);
+  for (const item of JUNIOR_STAR_ITEMS) {
+    expect(item.id).toBeTruthy();
+    expect(item.name).toBeTruthy();
+    expect(item.starCost).toBeGreaterThan(0);
+    expect(item.iconAsset).toBeTruthy();
+    expect(item.iconAsset).toContain('/assets/star-items/');
+    expect(item.childDescription.length).toBeGreaterThan(0);
+  }
+});
+
+test('star-item-assets-exist: all star item icons are registered files', () => {
+  for (const item of JUNIOR_STAR_ITEMS) {
+    const assetPath = item.iconAsset.replace(/^\//, '');
+    expect(existsSync(path.resolve('public', assetPath)), `${item.id} uses ${item.iconAsset}`).toBeTruthy();
+  }
+});
+
+test('consumable-items-have-effect-type: every consumable has a convenience effect', () => {
+  const consumables = JUNIOR_STAR_ITEMS.filter((item) => item.isConsumable);
+  expect(consumables.map((item) => item.id)).toEqual([
+    'ticket_fast_travel',
+    'ticket_half_price_good',
+    'charm_cargo_guard',
+    'ticket_quiz_retry',
+    'ticket_market_tip',
+    'ticket_extra_rumor'
+  ]);
+  for (const item of consumables) {
+    expect(item.category).toBe('consumable');
+    expect(item.slot).toBe('none');
+    expect(item.consumableEffect?.type).toBeTruthy();
+  }
+});
+
+test('skin-items-have-no-stat-effect: skins and decorations are cosmetic only', () => {
+  const cosmetics = JUNIOR_STAR_ITEMS.filter((item) => !item.isConsumable);
+  for (const item of cosmetics) {
+    expect(item.category === 'skin' || item.category === 'decoration' || item.category === 'title').toBeTruthy();
+    expect(item.consumableEffect).toBeUndefined();
+    expect((item as unknown as { cargoLimit?: number; attack?: number; priceBonus?: number }).cargoLimit).toBeUndefined();
+    expect((item as unknown as { cargoLimit?: number; attack?: number; priceBonus?: number }).attack).toBeUndefined();
+    expect((item as unknown as { cargoLimit?: number; attack?: number; priceBonus?: number }).priceBonus).toBeUndefined();
+  }
+});
+
+test('save-active-effects: active consumable effects migrate and persist shape', () => {
+  const save = normalizeJuniorSave(baseSave({
+    activeEffects: {
+      fastTravelNextRoute: true,
+      halfPriceNextGoodId: 'dried_fish',
+      cargoProtectNextEvent: true,
+      quizRetryAvailable: true,
+      marketRecommendCityId: 'busan'
+    }
+  }));
+  expect(save.activeEffects.fastTravelNextRoute).toBe(true);
+  expect(save.activeEffects.halfPriceNextGoodId).toBe('dried_fish');
+  expect(save.activeEffects.cargoProtectNextEvent).toBe(true);
+  expect(save.activeEffects.quizRetryAvailable).toBe(true);
+  expect(save.activeEffects.marketRecommendCityId).toBe('busan');
+});
+
+test('use-fast-travel-ticket: ticket marks the next route and decreases count', () => {
+  const save = normalizeJuniorSave(baseSave({ currentStep: 'map', consumableItems: { ticket_fast_travel: 1 } }));
+  const next = startFastTravel(save, 'daegu');
+  expect(next.currentStep).toBe('travel');
+  expect(next.activeEffects.fastTravelNextRoute).toBe(true);
+  expect(next.consumableItems.ticket_fast_travel).toBeUndefined();
+});
+
+test('use-half-price-ticket: preparing a ticket marks one good', () => {
+  const save = normalizeJuniorSave(baseSave({ currentStep: 'market', coins: 50, consumableItems: { ticket_half_price_good: 1 } }));
+  const prepared = prepareHalfPriceTicket(save, 'dried_fish');
+  expect(prepared.activeEffects.halfPriceNextGoodId).toBe('dried_fish');
+  expect(prepared.consumableItems.ticket_half_price_good).toBe(1);
+});
+
+test('half-price-applies-once: buying clears the ticket effect', () => {
+  const save = normalizeJuniorSave(baseSave({ currentStep: 'market', coins: 50, consumableItems: { ticket_half_price_good: 1 } }));
+  const prepared = prepareHalfPriceTicket(save, 'dried_fish');
+  const next = buyGood(prepared, 'dried_fish');
+  expect(next.coins).toBeGreaterThan(40);
+  expect(next.activeEffects.halfPriceNextGoodId).toBeUndefined();
+  expect(next.consumableItems.ticket_half_price_good).toBeUndefined();
+});
+
+test('cargo-protect-prevents-loss: charm blocks one cargo loss', () => {
+  const save = normalizeJuniorSave(baseSave({
+    currentStep: 'event',
+    selectedEventId: 'bandit_spelling_1',
+    cargo: [{ id: 'cargo-1', goodId: 'dried_fish', fromCityId: 'busan', buyPrice: 6 }],
+    consumableItems: { charm_cargo_guard: 1 }
+  }));
+  const protectedSave = useStarConsumable(save, 'charm_cargo_guard');
+  const next = answerQuiz(protectedSave, '맛춤법');
+  expect(next.cargo).toHaveLength(1);
+  expect(next.activeEffects.cargoProtectNextEvent).toBe(false);
+  expect(next.lastResultChips).toContain('부적이 지켜줌');
+});
+
+test('quiz-retry-ticket-allows-retry: wrong answer stays on quiz once', () => {
+  const save = normalizeJuniorSave(baseSave({
+    currentStep: 'event',
+    selectedEventId: 'bandit_spelling_1',
+    consumableItems: { ticket_quiz_retry: 1 }
+  }));
+  const ready = useStarConsumable(save, 'ticket_quiz_retry');
+  const retry = answerQuiz(ready, '맛춤법');
+  expect(retry.currentStep).toBe('event');
+  expect(retry.activeEffects.quizRetryAvailable).toBe(false);
+  expect(retry.consumableItems.ticket_quiz_retry).toBeUndefined();
+});
+
+test('market-recommend-ticket-highlights-good: ticket marks current market city', () => {
+  const save = normalizeJuniorSave(baseSave({ currentStep: 'market', consumableItems: { ticket_market_tip: 1 } }));
+  const next = useStarConsumable(save, 'ticket_market_tip');
+  expect(next.activeEffects.marketRecommendCityId).toBe('busan');
+  expect(next.consumableItems.ticket_market_tip).toBeUndefined();
+});
+
+test('rumor-ticket-triggers-regional-event: ticket opens a local story', () => {
+  const save = normalizeJuniorSave(baseSave({ currentStep: 'city', consumableItems: { ticket_extra_rumor: 1 } }));
+  const next = useStarConsumable(save, 'ticket_extra_rumor');
+  expect(next.currentStep).toBe('regionalEvent');
+  expect(next.selectedRegionalEventId).toBeTruthy();
+  expect(next.consumableItems.ticket_extra_rumor).toBeUndefined();
+});
+
+test('consumable-count-decreases and cannot-use-with-zero-count', () => {
+  const save = normalizeJuniorSave(baseSave({ currentStep: 'market', consumableItems: { ticket_market_tip: 1 } }));
+  const next = useStarConsumable(save, 'ticket_market_tip');
+  expect(next.consumableItems.ticket_market_tip).toBeUndefined();
+  const again = useStarConsumable(next, 'ticket_market_tip');
+  expect(again).toEqual(next);
 });
 
 test('tutorial-flow: buy, spelling event, first visit intro, sell', async ({ page }) => {
@@ -382,6 +569,97 @@ test('vehicle-shop-layout: shop uses cart-boat wording and scrolls the next goal
   await expect(page.getByTestId('shop-scroll-area')).toContainText('다음 목표');
   await expect(page.getByTestId('shop-back')).toHaveCount(0);
   await expect(page.getByTestId('nav-shop')).toContainText('수레·배');
+});
+
+test('star-chip-opens-shop: tapping the star chip opens the reward menu', async ({ page }) => {
+  await seed(page, baseSave({ currentStep: 'city', starBalance: 4, totalStarsEarned: 6, stars: 4 }));
+  await page.getByTestId('star-chip').click();
+  await expect(page.getByTestId('star-reward-screen')).toBeVisible();
+  await expect(page.getByTestId('star-shop-main')).toContainText('별 4개');
+  await expect(page.getByTestId('star-reward-screen')).toContainText('모은 별 6개');
+});
+
+test('buy-star-item-spends-star-balance: star shop buys a cosmetic reward', async ({ page }) => {
+  await seed(page, baseSave({ currentStep: 'city', starBalance: 4, totalStarsEarned: 6, stars: 4 }));
+  await page.getByTestId('star-chip').click();
+  await page.getByTestId('star-item-decor_market_staff').click();
+  await expect(page.locator('.junior-star-pill')).toContainText('별 0');
+  const saved = await page.evaluate(([key]) => JSON.parse(localStorage.getItem(key) ?? '{}'), [saveKey]);
+  expect(saved.starBalance).toBe(0);
+  expect(saved.stars).toBe(0);
+  expect(saved.ownedStarItemIds).toContain('decor_market_staff');
+});
+
+test('total-stars-remains-after-purchase: lifetime stars stay unchanged', async ({ page }) => {
+  await seed(page, baseSave({ currentStep: 'city', starBalance: 4, totalStarsEarned: 6, stars: 4 }));
+  await page.getByTestId('star-chip').click();
+  await page.getByTestId('star-item-decor_market_staff').click();
+  const saved = await page.evaluate(([key]) => JSON.parse(localStorage.getItem(key) ?? '{}'), [saveKey]);
+  expect(saved.totalStarsEarned).toBe(6);
+});
+
+test('equip-skin-item: treasure box equips an owned decoration', async ({ page }) => {
+  await seed(page, baseSave({ currentStep: 'city', starBalance: 4, totalStarsEarned: 6, stars: 4 }));
+  await page.getByTestId('star-chip').click();
+  await page.getByTestId('star-item-decor_market_staff').click();
+  await page.getByTestId('inventory-tab').click();
+  await page.getByTestId('inventory-item-decor_market_staff').getByRole('button', { name: '착용하기' }).click();
+  await expect(page.getByTestId('equipped-item')).toContainText('장터 호신봉 장식');
+  const saved = await page.evaluate(([key]) => JSON.parse(localStorage.getItem(key) ?? '{}'), [saveKey]);
+  expect(saved.equippedStarItems.weapon).toBe('decor_market_staff');
+});
+
+test('unequip-skin-item: treasure box can remove a decoration', async ({ page }) => {
+  await seed(page, baseSave({
+    currentStep: 'city',
+    starBalance: 4,
+    totalStarsEarned: 6,
+    stars: 4,
+    ownedStarItemIds: ['decor_market_staff'],
+    equippedStarItems: { weapon: 'decor_market_staff' }
+  }));
+  await page.getByTestId('star-chip').click();
+  await page.getByTestId('inventory-tab').click();
+  await page.getByTestId('unequip-weapon').click();
+  await expect(page.getByTestId('equipped-item')).toContainText('무기: 없음');
+  const saved = await page.evaluate(([key]) => JSON.parse(localStorage.getItem(key) ?? '{}'), [saveKey]);
+  expect(saved.equippedStarItems.weapon).toBeUndefined();
+});
+
+test('consumable-owned-count: bought consumables appear in the treasure box', async ({ page }) => {
+  await seed(page, baseSave({ currentStep: 'city', starBalance: 3, totalStarsEarned: 6, stars: 3 }));
+  await page.getByTestId('star-chip').click();
+  await page.getByTestId('star-tab-consumables').click();
+  await page.getByTestId('star-item-ticket_market_tip').click();
+  await page.getByTestId('inventory-tab').click();
+  await expect(page.getByTestId('owned-consumable-ticket_market_tip')).toContainText('x1');
+  const saved = await page.evaluate(([key]) => JSON.parse(localStorage.getItem(key) ?? '{}'), [saveKey]);
+  expect(saved.consumableItems.ticket_market_tip).toBe(1);
+});
+
+test('cannot-buy-without-stars: item button explains missing stars', async ({ page }) => {
+  await seed(page, baseSave({ currentStep: 'city', starBalance: 0, totalStarsEarned: 6, stars: 0 }));
+  await page.getByTestId('star-chip').click();
+  const item = page.getByTestId('star-item-decor_market_staff');
+  await expect(item).toContainText('별이 부족해');
+  await expect(item).toBeDisabled();
+});
+
+test('owned-non-consumable-cannot-duplicate: owned cosmetics are not bought twice', async ({ page }) => {
+  await seed(page, baseSave({
+    currentStep: 'city',
+    starBalance: 10,
+    totalStarsEarned: 12,
+    stars: 10,
+    ownedStarItemIds: ['decor_market_staff']
+  }));
+  await page.getByTestId('star-chip').click();
+  const item = page.getByTestId('star-item-decor_market_staff');
+  await expect(item).toContainText('보유 중');
+  await expect(item).toBeDisabled();
+  const saved = await page.evaluate(([key]) => JSON.parse(localStorage.getItem(key) ?? '{}'), [saveKey]);
+  expect(saved.starBalance).toBe(10);
+  expect(saved.ownedStarItemIds).toContain('decor_market_staff');
 });
 
 test('cart-prices-visible: every cart card shows a price and state', async ({ page }) => {
