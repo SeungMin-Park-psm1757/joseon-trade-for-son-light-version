@@ -63,9 +63,9 @@ Date: 2026-05-16
 
 ## 7. GitHub Pages
 
-- Commit: pending at log creation time.
-- Push: pending at log creation time.
-- Pages verification: pending at log creation time.
+- Commit: `26035c8` (`feat(junior): add star shop cosmetics and consumables`).
+- Push: success to `origin/main`.
+- Pages app verification: pass. The published app loaded, the star chip opened the star shop, star-item asset references were present in the deployed JavaScript, and console/page errors were 0 in the 390x844 browser check.
 
 ## 8. Remaining Limits
 
